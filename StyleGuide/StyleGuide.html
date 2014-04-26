@@ -1,0 +1,131 @@
+﻿<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ulles C++ Style-Guide</title>
+      <link rel="stylesheet" type="text/css" href="StyleSheets\main.css" />
+      <link rel="stylesheet" type="text/css" href="StyleSheets\sh_kwrite.css" />
+      <script type="text/javascript" src="JavaScript\main.js"></script>
+      <script type="text/javascript" src="JavaScript\sh_main.js"></script>
+      <script type="text/javascript" src="JavaScript\sh_cpp.js"></script>
+      <noscript>
+        <div class="noscript">
+          Bitte JavaScript aktivieren, um den vollen Dokumentationsumfang nutzen zu können! <br />
+          Wenn JavaScript aktiviert ist:
+          <ul>
+            <li>wird das Inhalts-, Abbildungs- und Tabellenverzeichnis automatisch generiert</li>
+            <li>werden Verlinkungen zu Kapiteln, Tabellen und Abbildungen automatisch generiert</li>
+            <li>werden Tabellen- und Bildunterschriften automatisch generiert</li>
+            <li>werden in den Tabellen Tooltips erzeugt</li>
+          </ul>
+        </div>
+      </noscript>
+  </head>
+  <body onload="init(); sh_highlightDocument();">
+    <h1>ToDo</h1>
+    <ul>
+      <li>Umgebung definieren -> QtCreator + Plugins</li> 
+      <li>element initialisierer ?</li> 
+      <li>andere style guides berücksichtigen (google ...)</li> 
+      <li>portabler code - kein #pragma once</li> 
+      <li>kein void in leeren Klammern</li> 
+      <li>Qt Benennung von GUI-Elementen</li> 
+      <li>Exceptions ja/nein</li>
+      <li>public declarations vor private -> public interessiert mich als Anwender - private nicht!</li>
+      <li>keine for schleife, wenn der Sinn nicht klar wird - besser while: z. B. for (GrabResult r; pStreamGrabber->RetrieveResult(r);); --> unsinnig</li>
+      <li>Schreibweise von konstanten c_aConstant???</li>
+      <li>keine Macros -> nur inline functions</li>
+      <li>keine defines -> nur constanten, bzw. enums  - Konstanten mit führendem c -> c_countOfImagesToGrab</li>
+      <li>kein struct ->nur class</li>
+      <li>kein typedef - ViPICTURE -> ViPIXEL**; ViPIXEL -> ViUBYTE; ViUBYTE ->unsigned char das führt nur zur Verwirrung - besser unsigned char** -  Falls man Code wirklich portieren will, kann man diese stupiden Ersetzungen auch per Script machen (der Präcompiler macht nichst anderes!)</li>
+      <li>auto nur bei begrenztem scope und wenn es wirklich Schreibarbeit erspart, z. B. bei Iteratoren</li>
+      <li>jede variablendefinition hat eine eigene Zeile. double meanValue; double median; double standardDeviation nicht double meanValue, median, standardDeviation - zusätzliche schreibarbeit kann durch Block-Editing verhindert werden</li>
+      <li>if ((bValid == true) || (bBreak == true)) --> if (bValid || bBreak)</li>
+      <li>globale Variablen mit g_ deklarieren? allgemein: keine globalen Variablen!!!</li>
+    </ul>
+
+    <h1>AStyle</h1>
+    Style-Guides werden nur dann akzeptiert, wenn sie durch die Bank weg einheitlich angwendet werden. <br />
+    Um Grundsatzdiskussionen zu vermeiden
+    Um die Anwendung eines Style-Guides zu vereinfachen gibt es das Tool Artistic Style (AStyle).
+    
+    <h1>Sprache</h1>
+    Grundsätzlich werden Quellcode und Kommentare in englischer Sprache verfasst!
+    
+    <h1>Kommentare</h1>
+    Nach Möglichkeit sollte auf Kommentare verzichtet werden. Der Code sollte ohne Kommentare verständlich sein. <br />
+    Wenn man sich dabei erwischt lange Kommentare zu verfassen, dann sollte man eher über ein Refactoring nachdenken.
+    
+    <h1>Trennung zwischen Header und SourceFile</h1>
+    Header-Dateien haben die Endung 'h'. <!-- ToDo hpp? --><br />
+    Source-Dateien haben die Endung 'cpp'. <br />
+    In der Header-Datei wird kein Code implementiert! Ausnahme sind inline-Funktions, diese können ausserhalb der Klassendeklaration im Header implementiert werden.
+
+    <h1>Benennung</h1>
+    Variablen und Funktionsnamen sollten immer sprechend sein. Ändert sich die Aufgabe einer Funktion, sollte die Funktion auch umbenannt werden! <br />
+    Grundsätzlich werden Namen in Camel-Case Schreibweise geschrieben.<br />
+    Variablen und Funktionsnamen beginnen mit einem Kleinbuchstaben, Klassen mit einem Großbuchstaben. <br />
+    <!-- Funktionsnamen beginnen mit einem kleinen Buchstaben um besser zwischen Funktionsaufruf und Objekterstellung zu Unterscheiden. -->
+    Member werden nicht speziell deklariert! Möchte man hervorheben, dass es sich um einen Member handelt wird <code>this-></code> vorangestellt. <!-- ToDo m_ kann praktisch sein --><br />
+    Pointer werden auch nicht speziell deklariert. Pointer kommen in C++ so oft vor, dass eine spezielle Auszeichnung keinen Sinn macht!
+    
+    <figure>
+      <div>
+        <pre class="sh_cpp">
+          aCamelCaseMember
+          aVariableWithXmlAbbreviation // not: aVariableWithXMLAbbreviation
+          aCamelCaseVariable
+          aCamelCaseFunction()
+          ACamelCaseClass
+        </pre>
+      </div>
+      <figcaption>Camel-Case Schreibweise</figcaption>
+    </figure>
+    
+    <h1>Komplettes Beispiel</h1>
+    <figure>
+      <div>
+        MyStyleGuideClass.h <br />
+        <pre class="sh_cpp">
+          aCamelCaseMember
+          aCamelCaseVariable
+          aCamelCaseFunction()
+          ACamelCaseClass
+        </pre>
+      </div>
+      <figcaption>MyStyleGuideClass</figcaption>
+    </figure>
+    
+    <h1>Verschiedenes</h1>
+    <h2>Überflüssiges 'void'</h2>
+    Manchmal findet man die Schreibweise
+    <figure>
+      <div>
+        <pre class="sh_cpp">
+          class AuthenticationType
+          {
+          public:
+            AuthenticationType(void);
+          }
+        </pre>
+      </div>
+    </figure>
+    Den Ausdruck 'void' in den Klammern kann man löschen!
+    
+    <h2>Überflüssige Klammern</h2>
+    Manchmal findet man die Schreibweise
+    <figure>
+      <pre class="sh_cpp">
+        return (0);
+      </pre>
+    </figure>
+    Die Klammern um den return value kann man löschen! Man würde ja auch nicht 
+     <figure>
+        <pre class="sh_cpp">
+          int a = 10;
+          int b = (a);
+        </pre>
+    </figure>
+    schreiben!
+  </body>
+</html> 

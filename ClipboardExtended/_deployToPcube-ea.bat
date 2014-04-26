@@ -1,0 +1,1 @@
+copy release\ClipboardExtended.exe ..\..\PortablePrograms\ClipboardExtended\ClipboardExtended.exe

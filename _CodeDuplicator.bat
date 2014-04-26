@@ -1,0 +1,1 @@
+start .\CodeDuplicator\release\CodeDuplicator.exe

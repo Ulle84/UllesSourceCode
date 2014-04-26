@@ -1,0 +1,1 @@
+start .\RegExp\release\RegExp.exe

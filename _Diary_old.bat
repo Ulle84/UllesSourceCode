@@ -1,0 +1,1 @@
+start .\Diary_old\release\Diary.exe

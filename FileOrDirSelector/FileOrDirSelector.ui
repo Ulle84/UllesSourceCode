@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FileOrDirSelector</class>
+ <widget class="QWidget" name="FileOrDirSelector">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>632</width>
+    <height>185</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FileOrDirSelector</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="checkBoxProject">
+       <property name="text">
+        <string>Project</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxSolution">
+       <property name="text">
+        <string>Solution</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLabel" name="labelRelativeFile">
+     <property name="text">
+      <string>relative file</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLineEdit" name="lineEditRelativeFile">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLineEdit" name="lineEditRelativeFolder">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QPushButton" name="pushButtonSelectBaseFolder">
+     <property name="text">
+      <string>select</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="labelRelativeFolder">
+     <property name="text">
+      <string>relative folder</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="pushButtonSelectRelativeFile">
+     <property name="text">
+      <string>select</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="labelBaselFolder">
+     <property name="text">
+      <string>base folder</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="pushButtonSelectRelativeFolder">
+     <property name="text">
+      <string>select</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="lineEditBaseFolder"/>
+   </item>
+   <item row="0" column="4">
+    <widget class="QPushButton" name="pushButtonCopyBaseFolderToClipboard">
+     <property name="text">
+      <string>copy to clipboard</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="pushButtonCopyRelativeFolderToClipboard">
+     <property name="text">
+      <string>copy to clipboard</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
+    <widget class="QPushButton" name="pushButtonCopyRelativeFileToClipboard">
+     <property name="text">
+      <string>copy to clipboard</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="5">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>lineEditBaseFolder</tabstop>
+  <tabstop>pushButtonSelectBaseFolder</tabstop>
+  <tabstop>pushButtonCopyBaseFolderToClipboard</tabstop>
+  <tabstop>lineEditRelativeFolder</tabstop>
+  <tabstop>pushButtonSelectRelativeFolder</tabstop>
+  <tabstop>pushButtonCopyRelativeFolderToClipboard</tabstop>
+  <tabstop>lineEditRelativeFile</tabstop>
+  <tabstop>pushButtonSelectRelativeFile</tabstop>
+  <tabstop>pushButtonCopyRelativeFileToClipboard</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

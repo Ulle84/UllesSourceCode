@@ -1,0 +1,1 @@
+start .\ColorPicker\release\ColorPicker.exe

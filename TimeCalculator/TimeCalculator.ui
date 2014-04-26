@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TimeCalculator</class>
+ <widget class="QWidget" name="TimeCalculator">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>344</width>
+    <height>220</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TimeCalculator</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="labelNanoseconds">
+     <property name="text">
+      <string>nanoseconds</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEditNanoseconds"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="lineEditMiroseconds"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelMicroseconds">
+     <property name="text">
+      <string>microseconds</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelMilliseconds">
+     <property name="text">
+      <string>milliseconds</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelSeconds">
+     <property name="text">
+      <string>seconds</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelMinutes">
+     <property name="text">
+      <string>minutes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelHours">
+     <property name="text">
+      <string>hours</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="labelDays">
+     <property name="text">
+      <string>days</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="labelYears">
+     <property name="text">
+      <string>years</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEditMilliseconds"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="lineEditSeconds"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="lineEditMinutes"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="lineEditHours"/>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="lineEditDays"/>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLineEdit" name="lineEditYears"/>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
