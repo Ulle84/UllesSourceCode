@@ -35,6 +35,8 @@
         $file = fopen($fileName, "r");
 
         for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
+            //&quot;
+
             $articleDescription[$i] = rtrim(fgets($file));
             $size[$i] = rtrim(fgets($file));
             $notes[$i] = rtrim(fgets($file));
@@ -57,10 +59,10 @@
         echo '<tr class="data">';
 
         echo '<td>' . $i . '</td>';
-        echo '<td><input value="' . $articleDescription[$i] . '" type="text" size="30" maxlength="200" /></td>';
-        echo '<td><input value="' . $size[$i] . '" type="text" size="4" maxlength="4" /></td>';
-        echo '<td><input value="' . $notes[$i] . '" type="text" size="30" maxlength="200" /></td>';
-        echo '<td><input value="' . $price[$i] . '" type="text" size="6" maxlength="6" /></td>';
+        echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="30" maxlength="200" /></td>';
+        echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
+        echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($notes[$i]) . '" type="text" size="30" maxlength="200" /></td>';
+        echo '<td><input onblur="checkPrice(this)" onchange="checkPrice(this)" class="right" value="' . htmlspecialchars($price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
 
         echo '</tr>';
     }
@@ -69,7 +71,6 @@
 
     ?>
 
-    <!--<div class="button" onclick="save()">Speichern</div>-->
     <br />
     <input type="button" value="Tabelle speichern" onclick="save()" /> <br />
 

@@ -10,14 +10,11 @@ function save() {
 
     for (var i = 0; i < data.length; i++) {
         var dataContent = data[i].getElementsByTagName("td");
-        content += dataContent[1].firstChild.value;
-        content += "\n";
-        content += dataContent[2].firstChild.value;
-        content += "\n";
-        content += dataContent[3].firstChild.value;
-        content += "\n";
-        content += dataContent[4].firstChild.value;
-        content += "\n";
+
+        for (var j = 1; j < dataContent.length; j++) {
+            content += dataContent[j].firstChild.value;
+            content += "\n";
+        }
     }
 
     var xmlhttp = new XMLHttpRequest();
@@ -31,4 +28,41 @@ function save() {
     xmlhttp.open("POST", "../PHP/articleListSaver.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("content=" + content);
+}
+
+function checkContent(element) {
+    // string.replace(new RegExp("\"", 'g'), "&quot;");
+    if (element.value.contains("&")) {
+        alert("Das Zeichen '&' ist ein unerlaubtes Sonderzeichen und wurde entfernt!");
+        element.value = element.value.replace(new RegExp("&", 'g'), "");
+    }
+}
+
+function checkPrice(element) {
+    if (element.value == "") {
+        return;
+    }
+
+    var number = parseFloat(element.value.replace(",", "."));
+    if (isNaN(number)) {
+        element.value = ""; // first delete, otherwise the following message is doubled (due to the onblur-event, which occurs because of the alert)
+        alert("Der eingegebene Preis ist ungültig und wurde gelöscht!")
+    }
+    else {
+        if (number < 0) {
+            element.value = "";
+            alert("Negative Preise sind unsinnig!\nDer eingegebene Preis wurde gelöscht");
+            return;
+        }
+
+        if (number > 999.99) {
+            element.value = ""; // set, so onblur-function does return immediatly
+            alert("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
+            number = 999.99;
+        }
+
+        element.value = number.toFixed(2);
+        element.value = element.value.replace(".", ",");
+    }
+
 }
