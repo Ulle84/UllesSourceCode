@@ -72,8 +72,10 @@ $pdf->SetLineWidth(.3);
 // Data
 $rowCount = 0;
 for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-    if ($rowCount % 43 == 0 && $i < $maxArticleNumber) {
+    if ($rowCount % 41 == 0 && $i < $maxArticleNumber) {
         // Header
+        $pdf->Cell(200, 10, 'Verkaeufer Nummer: ' . $sellerNumber);
+        $pdf->Ln();
         $pdf->SetFont('', 'B');
         for ($j = 0; $j < count($header); $j++) {
             $pdf->Cell($w[$j], 7, $header[$j], 1, 0, 'C', true);
