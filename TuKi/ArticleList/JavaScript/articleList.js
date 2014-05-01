@@ -1,4 +1,4 @@
-function save() {
+function save(sellerNumber) {
     var httpResponse = document.getElementById("httpResponse");
     httpResponse.textContent = "";
 
@@ -27,7 +27,14 @@ function save() {
 
     xmlhttp.open("POST", "../PHP/articleListSaver.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("content=" + content);
+    xmlhttp.send("sellerNumber=" + sellerNumber + "&content=" + content);
+}
+
+function print(id) {
+    if (confirm("Haben Sie die Artikelliste gespeichert?")) {
+        //window.location.href = "../PHP/printArticleList.php";
+        window.open("../PHP/printArticleList.php?id=" + id);
+    }
 }
 
 function checkContent(element) {
