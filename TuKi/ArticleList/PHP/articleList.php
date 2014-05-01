@@ -93,7 +93,7 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
 
         echo '<td>' . $i . '</td>';
         echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="30" maxlength="200" /></td>';
-        echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
+        echo '<td><input onblur="checkSize(this)" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
         echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($notes[$i]) . '" type="text" size="30" maxlength="200" /></td>';
         echo '<td><input onblur="checkPrice(this)" onchange="checkPrice(this)" class="right" value="' . htmlspecialchars($price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
 
@@ -104,9 +104,9 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
 
 
     echo '<br/>';
-    echo '<input type="button" value="Tabelle speichern" onclick="save(' . $sellerNumber . ')"/>';
+    echo '<input type="button" value="Tabelle auf Server speichern" onclick="save(' . $sellerNumber . ')"/>';
 
-    echo '<input type="button" value="Tabelle drucken" onclick="print(\'' . $id . '\')"/> <br/>';
+    echo '<input type="button" value="Tabelle lokal speichern und drucken" onclick="print(\'' . $id . '\')"/> <br/>';
 
     ?>
 

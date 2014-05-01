@@ -73,3 +73,37 @@ function checkPrice(element) {
     }
 
 }
+
+function checkSize(element) {
+    if (element.value == "") {
+        return;
+    }
+
+    var number = parseInt(element.value);
+    if (isNaN(number)) {
+        element.value = ""; // first delete, otherwise the following message is doubled (due to the onblur-event, which occurs because of the alert)
+        alert("Die eingegebene Größe ist ungültig und wurde gelöscht!")
+    }
+    else {
+        if (number < 50) {
+            element.value = "";
+            alert("Die eingegebene Größe ist zu klein und wurde gelöscht");
+            return;
+        }
+
+        if (number > 188) {
+            element.value = "";
+            alert("Die eingegebene Größe ist zu groß und wurde gelöscht");
+            return;
+        }
+
+        if ((number - 50) % 6 != 0) {
+            element.value = "";
+            alert("Die eingegebene Größe ist zu falsch und wurde gelöscht");
+            return;
+        }
+
+        element.value = number;
+    }
+
+}
