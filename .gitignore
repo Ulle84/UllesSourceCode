@@ -1,2 +1,5 @@
 .DS_Store
 *.pro.user
+*.o
+
+TuKi/ArticleList/.idea/workspace.xml

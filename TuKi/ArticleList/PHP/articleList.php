@@ -92,9 +92,9 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
         echo '<tr class="data">';
 
         echo '<td>' . $i . '</td>';
-        echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="30" maxlength="200" /></td>';
-        echo '<td><input onblur="checkSize(this)" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
-        echo '<td><input onblur="checkContent(this)" value="' . htmlspecialchars($notes[$i]) . '" type="text" size="30" maxlength="200" /></td>';
+        echo '<td><input onblur="checkContent(this)" onchange="checkContent(this)" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="30" maxlength="200" /></td>';
+        echo '<td><input onblur="checkContent(this)" onchange="checkContent(this)" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
+        echo '<td><input onblur="checkContent(this)" onchange="checkContent(this)" value="' . htmlspecialchars($notes[$i]) . '" type="text" size="30" maxlength="200" /></td>';
         echo '<td><input onblur="checkPrice(this)" onchange="checkPrice(this)" class="right" value="' . htmlspecialchars($price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
 
         echo '</tr>';
