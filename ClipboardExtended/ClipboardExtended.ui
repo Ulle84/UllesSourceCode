@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ClipboardExtended</class>
+ <widget class="QWidget" name="ClipboardExtended">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>452</width>
+    <height>704</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ClipboardExtended</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="labelContentClipboard">
+     <property name="text">
+      <string>Content of Clipboard</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="plainTextEditClipboard">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelHistory">
+     <property name="text">
+      <string>History</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListView" name="listViewHistory"/>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonClearHistory">
+     <property name="text">
+      <string>Clear History</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
