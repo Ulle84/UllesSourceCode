@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         TuKiBasar.cpp \
     Evaluation.cpp \
-    Settings.cpp
+    Settings.cpp \
+    ProductItem.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
-    Settings.h
+    Settings.h \
+    ProductItem.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \
