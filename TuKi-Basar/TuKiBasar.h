@@ -2,6 +2,9 @@
 #define TUKIBASAR_H
 
 #include <QMainWindow>
+#include <QStandardItemModel>
+
+#include "ProductItemManager.h"
 
 namespace Ui {
 class TuKiBasar;
@@ -20,6 +23,8 @@ private slots:
 
 private:
     Ui::TuKiBasar *ui;
+    ProductItemManager m_productItemManager;
+    QStandardItemModel* m_model
 };
 
 #endif // TUKIBASAR_H
