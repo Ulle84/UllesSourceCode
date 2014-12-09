@@ -15,6 +15,9 @@ public:
     explicit TuKiBasar(QWidget *parent = 0);
     ~TuKiBasar();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::TuKiBasar *ui;
 };
