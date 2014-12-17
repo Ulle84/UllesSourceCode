@@ -8,6 +8,7 @@
 <body>
 <a href="PHP/articleList.php">Artikel Liste erstellen</a><br />
 <a href="PHP/printArticleList.php">Artikel Liste drucken</a><br />
+<a href="PHP/printAll.php">Alle Artikellisten drucken</a><br />
 <a href="PHP/uniqueIdListCreator.php">Unique IDs erstellen</a><br />
 
 </body>

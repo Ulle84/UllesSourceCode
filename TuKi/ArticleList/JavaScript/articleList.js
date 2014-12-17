@@ -40,8 +40,8 @@ function print(id) {
 function checkContent(element) {
     // string.replace(new RegExp("\"", 'g'), "&quot;");
     if (element.value.contains("&")) {
-        alert("Das Zeichen '&' ist ein unerlaubtes Sonderzeichen und wurde entfernt!");
         element.value = element.value.replace(new RegExp("&", 'g'), "");
+        alert("Das Zeichen '&' ist ein unerlaubtes Sonderzeichen und wurde entfernt!");
     }
 }
 
@@ -63,7 +63,7 @@ function checkPrice(element) {
         }
 
         if (number > 999.99) {
-            element.value = ""; // set, so onblur-function does return immediatly
+            element.value = ""; // set, so onblur-function does return immediately
             alert("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
             number = 999.99;
         }
@@ -99,7 +99,7 @@ function checkSize(element) {
 
         if ((number - 50) % 6 != 0) {
             element.value = "";
-            alert("Die eingegebene Größe ist zu falsch und wurde gelöscht");
+            alert("Die eingegebene Größe ist falsch und wurde gelöscht");
             return;
         }
 

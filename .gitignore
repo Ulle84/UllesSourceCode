@@ -1,2 +1,7 @@
 .DS_Store
 *.pro.user
+*.o
+
+TuKi/ArticleList/.idea/workspace.xml
+
+build-TuKi-Basar-Qt_4_8_6-Debug/*
