@@ -1,8 +1,8 @@
 function save(sellerNumber) {
-    var httpResponse = document.getElementById("httpResponse");
+    /*var httpResponse = document.getElementById("httpResponse");
     httpResponse.textContent = "";
 
-    document.getElementById("httpResponse").innerHTML = "";
+    document.getElementById("httpResponse").innerHTML = "";*/
 
     var content = "";
 
@@ -19,11 +19,11 @@ function save(sellerNumber) {
 
     var xmlhttp = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function () {
+    /*xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             httpResponse.textContent = xmlhttp.responseText;
         }
-    }
+    }*/
 
     xmlhttp.open("POST", "../PHP/articleListSaver.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -31,10 +31,10 @@ function save(sellerNumber) {
 }
 
 function print(id) {
-    if (confirm("Haben Sie die Artikelliste gespeichert?")) {
+    //if (confirm("Haben Sie die Artikelliste gespeichert?")) {
         //window.location.href = "../PHP/printArticleList.php";
         window.open("../PHP/printArticleList.php?id=" + id);
-    }
+    //}
 }
 
 function checkContent(element) {

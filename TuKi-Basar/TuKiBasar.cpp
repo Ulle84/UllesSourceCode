@@ -2,6 +2,7 @@
 #include "ui_TuKiBasar.h"
 
 #include "Settings.h"
+#include "Evaluation.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
@@ -9,7 +10,7 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_model = new QStandardItemModel(0, 3, this);
+    /*m_model = new QStandardItemModel(0, 3, this);
     model->setHorizontalHeaderItem(0, new QStandardItem(tr("Verkäufer")));
     model->setHorizontalHeaderItem(1, new QStandardItem(tr("Artikel")));
     model->setHorizontalHeaderItem(2, new QStandardItem(tr("Preis")));
@@ -25,17 +26,29 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 
     m_productItemManager.addProductItem(pi100);
     m_productItemManager.addProductItem(pi200);
-    m_productItemManager.addProductItem(pi300);
+    m_productItemManager.addProductItem(pi300);*/
 }
 
 TuKiBasar::~TuKiBasar()
 {
     delete ui;
-    delete m_model;
+    //delete m_model;
 }
 
-void TuKiBasar::on_pushButton_clicked()
+/*void TuKiBasar::on_pushButton_clicked()
 {
     Settings settings(this);
     settings.exec();
+}*/
+
+void TuKiBasar::on_actionSettings_triggered(bool checked)
+{
+    Settings settings;
+    settings.exec();
+}
+
+void TuKiBasar::on_actionEvaluation_triggered(bool checked)
+{
+    Evaluation evaluation;
+    evaluation.exec();
 }

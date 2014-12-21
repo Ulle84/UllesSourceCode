@@ -19,12 +19,16 @@ public:
     ~TuKiBasar();
 
 private slots:
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
+
+    void on_actionSettings_triggered(bool checked);
+
+    void on_actionEvaluation_triggered(bool checked);
 
 private:
     Ui::TuKiBasar *ui;
-    ProductItemManager m_productItemManager;
-    QStandardItemModel* m_model
+    //ProductItemManager m_productItemManager;
+    //QStandardItemModel* m_model;
 };
 
 #endif // TUKIBASAR_H

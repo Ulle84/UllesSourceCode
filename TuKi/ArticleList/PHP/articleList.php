@@ -51,10 +51,9 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
 <table>
     <tr>
         <th>Artikelnummer</th>
-        <th>Artikelbeschreibung</th>
-        <th>Größe</th>
-        <th>Bemerkungen</th>
         <th>Preis</th>
+        <th>Größe</th>
+        <th>Artikelbeschreibung</th>
     </tr>
 
     <?php
@@ -65,25 +64,23 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
     $fileName = "../Data/articleList_" . $sellerNumber . ".txt";
     $articleDescription = array();
     $size = array();
-    $notes = array();
     $price = array();
     if (file_exists($fileName)) {
 
         $file = fopen($fileName, "r");
 
         for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-            $articleDescription[$i] = rtrim(fgets($file));
-            $size[$i] = rtrim(fgets($file));
-            $notes[$i] = rtrim(fgets($file));
             $price[$i] = rtrim(fgets($file));
+            $size[$i] = rtrim(fgets($file));
+            $articleDescription[$i] = rtrim(fgets($file));
+
         }
         fclose($file);
     } else {
         for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-            $articleDescription[$i] = "";
-            $size[$i] = "";
-            $notes[$i] = "";
             $price[$i] = "";
+            $size[$i] = "";
+            $articleDescription[$i] = "";
         }
     }
 
@@ -92,10 +89,9 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
         echo '<tr class="data">';
 
         echo '<td>' . $i . '</td>';
-        echo '<td><input onblur="checkContent(this)" onchange="checkContent(this)" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="30" maxlength="200" /></td>';
-        echo '<td><input onblur="checkContent(this)" onchange="checkContent(this)" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
-        echo '<td><input onblur="checkContent(this)" onchange="checkContent(this)" value="' . htmlspecialchars($notes[$i]) . '" type="text" size="30" maxlength="200" /></td>';
-        echo '<td><input onblur="checkPrice(this)" onchange="checkPrice(this)" class="right" value="' . htmlspecialchars($price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
+        echo '<td><input onblur="checkPrice(this); save(' . $sellerNumber . ')" onchange="checkPrice(this); save(' . $sellerNumber . ')" class="right" value="' . htmlspecialchars($price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
+        echo '<td><input onblur="checkContent(this); save(' . $sellerNumber . ')" onchange="checkContent(this); save(' . $sellerNumber . ')" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
+        echo '<td><input onblur="checkContent(this); save(' . $sellerNumber . ')" onchange="checkContent(this); save(' . $sellerNumber . ')" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
 
         echo '</tr>';
     }
@@ -104,14 +100,14 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
 
 
     echo '<br/>';
-    echo '<input type="button" value="Tabelle auf Server speichern" onclick="save(' . $sellerNumber . ')"/>';
+    //echo '<input type="button" value="Tabelle auf Server speichern" onclick="save(' . $sellerNumber . ')"/>';
 
-    echo '<input type="button" value="Tabelle lokal speichern und drucken" onclick="print(\'' . $id . '\')"/> <br/>';
+    echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="print(\'' . $id . '\')"/> <br/>';
 
     ?>
 
 
-    Antwort vom Server: <span id="httpResponse"></span>
+    <!--Antwort vom Server: <span id="httpResponse"></span>-->
 </body>
 </html>
 

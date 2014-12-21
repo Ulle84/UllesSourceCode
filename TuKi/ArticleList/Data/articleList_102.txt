@@ -1,11 +1,18 @@
+999,99
+123
+öüuß das ist eine ganz lange Artikelbeschreibung!!
 
 
+hier noch eine etwas längerer Beschreibung um zu s
 
 
+automatisch gespeichert
 
 
+103 autosave
 
 
+123
 
 
 
@@ -290,111 +297,4 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-test
-
-hallo
 
