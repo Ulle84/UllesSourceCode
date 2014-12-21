@@ -4,7 +4,10 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 
-#include "ProductItemManager.h"
+//#include "ProductItemManager.h"
+
+#include "Settings.h"
+#include "Evaluation.h"
 
 namespace Ui {
 class TuKiBasar;
@@ -27,6 +30,8 @@ private slots:
 
 private:
     Ui::TuKiBasar *ui;
+    Settings m_settings;
+    Evaluation m_evaluation;
     //ProductItemManager m_productItemManager;
     //QStandardItemModel* m_model;
 };

@@ -1,9 +1,6 @@
 #include "TuKiBasar.h"
 #include "ui_TuKiBasar.h"
 
-#include "Settings.h"
-#include "Evaluation.h"
-
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TuKiBasar)
@@ -43,12 +40,10 @@ TuKiBasar::~TuKiBasar()
 
 void TuKiBasar::on_actionSettings_triggered(bool checked)
 {
-    Settings settings;
-    settings.exec();
+    m_settings.exec();
 }
 
 void TuKiBasar::on_actionEvaluation_triggered(bool checked)
 {
-    Evaluation evaluation;
-    evaluation.exec();
+    m_evaluation.exec();
 }
