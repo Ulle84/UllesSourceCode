@@ -29,6 +29,7 @@
     <property name="title">
      <string>Erweitert</string>
     </property>
+    <addaction name="actionImportArticleLists"/>
     <addaction name="actionEvaluation"/>
     <addaction name="actionSettings"/>
    </widget>
@@ -51,6 +52,11 @@
   <action name="actionSettings">
    <property name="text">
     <string>Einstellungen</string>
+   </property>
+  </action>
+  <action name="actionImportArticleLists">
+   <property name="text">
+    <string>Artikellisten importieren</string>
    </property>
   </action>
  </widget>

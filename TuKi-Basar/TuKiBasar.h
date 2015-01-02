@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 
-//#include "ProductItemManager.h"
-
+#include "ProductItemManager.h"
 #include "Settings.h"
 #include "Evaluation.h"
 
@@ -28,12 +27,13 @@ private slots:
 
     void on_actionEvaluation_triggered(bool checked);
 
+    void on_actionImportArticleLists_triggered(bool checked);
+
 private:
     Ui::TuKiBasar *ui;
     Settings m_settings;
     Evaluation m_evaluation;
-    //ProductItemManager m_productItemManager;
-    //QStandardItemModel* m_model;
+    ProductItemManager m_productItemManager;
 };
 
 #endif // TUKIBASAR_H

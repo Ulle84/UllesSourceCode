@@ -4,12 +4,14 @@ function save(sellerNumber) {
 
     document.getElementById("httpResponse").innerHTML = "";*/
 
-    var content = "";
+    var content = "Article List\nVersion 1.0\n" + sellerNumber + "\n";
 
     var data = window.document.getElementsByClassName("data");
 
     for (var i = 0; i < data.length; i++) {
         var dataContent = data[i].getElementsByTagName("td");
+
+        content += dataContent[0].textContent + "\n";
 
         for (var j = 1; j < dataContent.length; j++) {
             content += dataContent[j].firstChild.value;
