@@ -8,7 +8,7 @@
 #include "TuKiBasar.h"
 #include "ui_TuKiBasar.h"
 
-#include "ProductItem.h"
+#include "Article.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
@@ -135,8 +135,8 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
             double prize = fileContent.value(headerOffset + linesPerArticle * i + 1).replace(",", ".").toDouble();
             QString description = fileContent.at(headerOffset + linesPerArticle * i + 3);
 
-            ProductItem* pi = new ProductItem(articleNumber, sellerNumber, prize, description);
-            m_productItemManager.addProductItem(pi);
+            Article* pi = new Article(articleNumber, sellerNumber, prize, description);
+            m_articleManager.addArticle(pi);
 
             articleCounter++;
         }

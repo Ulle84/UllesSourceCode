@@ -16,14 +16,14 @@ SOURCES += main.cpp\
         TuKiBasar.cpp \
     Evaluation.cpp \
     Settings.cpp \
-    ProductItem.cpp \
-    ProductItemManager.cpp
+    Article.cpp \
+    ArticleManager.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
     Settings.h \
-    ProductItem.h \
-    ProductItemManager.h
+    Article.h \
+    ArticleManager.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \

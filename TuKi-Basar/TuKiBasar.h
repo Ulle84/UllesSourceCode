@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 
-#include "ProductItemManager.h"
+#include "ArticleManager.h"
 #include "Settings.h"
 #include "Evaluation.h"
 
@@ -33,7 +33,7 @@ private:
     Ui::TuKiBasar *ui;
     Settings m_settings;
     Evaluation m_evaluation;
-    ProductItemManager m_productItemManager;
+    ArticleManager m_articleManager;
 };
 
 #endif // TUKIBASAR_H

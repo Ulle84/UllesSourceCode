@@ -1,6 +1,6 @@
-#include "ProductItem.h"
+#include "Article.h"
 
-ProductItem::ProductItem(unsigned int articleNumber, unsigned int sellerNumber, double prize, QString description)
+Article::Article(unsigned int articleNumber, unsigned int sellerNumber, double prize, QString description)
     : m_articleNumber(articleNumber),
       m_sellerNumber(sellerNumber),
       m_prize(prize),
