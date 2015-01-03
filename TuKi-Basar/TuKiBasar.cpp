@@ -59,10 +59,8 @@ void TuKiBasar::on_actionEvaluation_triggered(bool checked)
 
 void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
 {
-    // clear current content first?
+    //TODO clear current content first?
 
-
-    // open folder selection dialog
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten wählen...")); //TODO set folder of last selection?
 
     QDir dir(dirName);
@@ -79,7 +77,6 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
     const int headerOffset = 3;
     const int linesPerArticle = 4;
 
-    // read the seller number from the file
     for (int i = 0; i < fileNames.length(); i++)
     {
         QString filePath = dir.filePath(fileNames.at(i));
@@ -118,10 +115,10 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
 
         //TODO use version information if nessessary
 
-        bool conversionOkay;
-        int sellerNumber = fileContent.at(2).toInt(&conversionOkay);
+        bool conversionSellerNumber;
+        int sellerNumber = fileContent.at(2).toInt(&conversionSellerNumber);
 
-        if (!conversionOkay)
+        if (!conversionSellerNumber)
         {
             file.close();
             continue;
@@ -131,25 +128,28 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
 
         for (int i = 0; i < numberOfArticles; i++)
         {
+            bool conversionPrize;
+            double prize = fileContent.value(headerOffset + linesPerArticle * i + 1).replace(",", ".").toDouble(&conversionPrize);
+            if (!conversionPrize)
+            {
+                continue;
+            }
+
             int articleNumber = fileContent.at(headerOffset + linesPerArticle * i).toInt();
-            double prize = fileContent.value(headerOffset + linesPerArticle * i + 1).replace(",", ".").toDouble();
+            QString size = fileContent.at(headerOffset + linesPerArticle * i + 2);
             QString description = fileContent.at(headerOffset + linesPerArticle * i + 3);
 
-            Article* pi = new Article(articleNumber, sellerNumber, prize, description);
-            m_articleManager.addArticle(pi);
+            Article* article = new Article(articleNumber, sellerNumber, prize, size, description);
+            m_articleManager.addArticle(article); //TODO check that no article is added twice
 
             articleCounter++;
         }
 
         file.close();
         sellerCounter++;
+
+        m_articleManager.toXml();
     }
-
-    // open file and read content to ProductItems
-
-    // append content to ProductItemManager
-
-    // show sucess message
 
     QMessageBox mb;
     mb.setText(tr("Es wurden erfolgreich %1 Artikel von %2 Verkäufern importiert.").arg(articleCounter).arg(sellerCounter));

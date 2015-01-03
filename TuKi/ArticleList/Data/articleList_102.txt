@@ -1,0 +1,7 @@
+Article List
+Version 1.0
+102
+100
+999,99
+123
+öüuß das ist eine ganz lange Artikelbeschreibung!!

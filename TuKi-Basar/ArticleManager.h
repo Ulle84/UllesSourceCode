@@ -13,8 +13,12 @@ public:
 
     void addArticle(Article* article);
 
+    bool fromXml();
+    bool toXml();
+
 private:
-    QList<Article*> articles;
+    QList<Article*> m_articles;
+    QString m_fileName;
 };
 
 #endif // ARTICLEMANAGER_H
