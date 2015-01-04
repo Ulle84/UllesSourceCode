@@ -21,13 +21,10 @@ public:
     ~TuKiBasar();
 
 private slots:
-    //void on_pushButton_clicked();
-
     void on_actionSettings_triggered(bool checked);
-
     void on_actionEvaluation_triggered(bool checked);
-
     void on_actionImportArticleLists_triggered(bool checked);
+    void on_lineEditScannerInput_returnPressed();
 
 private:
     Ui::TuKiBasar *ui;

@@ -16,36 +16,26 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    /*m_model = new QStandardItemModel(0, 3, this);
-    model->setHorizontalHeaderItem(0, new QStandardItem(tr("Verkäufer")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(tr("Artikel")));
-    model->setHorizontalHeaderItem(2, new QStandardItem(tr("Preis")));
+    // font depends on operating system
+    #ifdef Q_WS_MAC
+      ui->plainTextEditArticleList->setFont(QFont::QFont("Monaco", 14, 0, false));
+    #endif
+    #ifdef Q_WS_WIN
+      ui->plainTextEditArticleList->setFont(QFont::QFont("Courier", 10, 0, false));
+    #endif
 
-    QStandardItem *firstRow = new QStandardItem(QString("ColumnValue"));
-    model->setItem(0, 0, firstRow);
 
-    ui->tableViewProductItems->setModel(model);
 
-    ProductItem* pi100 = new ProductItem(100, 101, 100.0, "einhundert");
-    ProductItem* pi200 = new ProductItem(200, 202, 200.0, "zweihundert");
-    ProductItem* pi300 = new ProductItem(300, 303, 300.0, "dreihundert");
-
-    m_productItemManager.addProductItem(pi100);
-    m_productItemManager.addProductItem(pi200);
-    m_productItemManager.addProductItem(pi300);*/
+    /*ui->spinBoxArticleNumber->setMinimum(m_settings.getProductMin());
+    ui->spinBoxArticleNumber->setMaximum(m_settings.getProductMax());
+    ui->spinBoxSellerNumber->setMinimum(m_settings.getSellerMin());
+    ui->spinBoxSellerNumber->setMaximum(m_settings.getSellerMax());*/
 }
 
 TuKiBasar::~TuKiBasar()
 {
     delete ui;
-    //delete m_model;
 }
-
-/*void TuKiBasar::on_pushButton_clicked()
-{
-    Settings settings(this);
-    settings.exec();
-}*/
 
 void TuKiBasar::on_actionSettings_triggered(bool checked)
 {
@@ -59,9 +49,20 @@ void TuKiBasar::on_actionEvaluation_triggered(bool checked)
 
 void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
 {
-    //TODO clear current content first?
+    QMessageBox::StandardButton reply;
+      reply = QMessageBox::question(this, tr("Vorhandene Artikel löschen?"),
+                                    tr("Möchten Sie die bereits importierten Artikel löschen?"),
+                                    QMessageBox::Yes|QMessageBox::No);
+      if (reply == QMessageBox::Yes) {
+          m_articleManager.clear();
+      }
 
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten wählen...")); //TODO set folder of last selection?
+
+    if (dirName.isEmpty())
+    {
+        return;
+    }
 
     QDir dir(dirName);
 
@@ -147,11 +148,53 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
 
         file.close();
         sellerCounter++;
-
-        m_articleManager.toXml();
     }
 
+    m_articleManager.toXml();
+
     QMessageBox mb;
-    mb.setText(tr("Es wurden erfolgreich %1 Artikel von %2 Verkäufern importiert.").arg(articleCounter).arg(sellerCounter));
-    mb.exec();
+    if (articleCounter > 0)
+    {
+        mb.setText(tr("Es wurden erfolgreich %1 Artikel von %2 Verkäufern importiert.").arg(articleCounter).arg(sellerCounter));
+    }
+    else
+    {
+        mb.setText(tr("Es wurden keine Artikel importiert."));
+    }
+
+    mb.exec();    
+}
+
+void TuKiBasar::on_lineEditScannerInput_returnPressed()
+{
+    QString input = ui->lineEditScannerInput->text();
+
+    bool conversion1 = false;
+    bool conversion2 = false;
+
+    int sellerNumber = input.left(3).toInt(&conversion1);
+    int articleNumber = input.right(3).toInt(&conversion2);
+
+    ui->lineEditScannerInput->clear();
+    if (!conversion1 || !conversion2)
+    {
+        return;
+    }
+
+    Article* article = m_articleManager.getArticle(sellerNumber, articleNumber);
+
+    if (article != 0)
+    {
+        m_articleManager.addArticleToCurrentSale(article);
+        ui->plainTextEditArticleList->setPlainText(m_articleManager.currentSaleToText());
+        ui->textEdit->setHtml(m_articleManager.currentSaleToHtml());
+
+        QTableWidgetItem *tableWidgetItemArticleNumber = new QTableWidgetItem(QString("%1").arg(articleNumber));
+        ui->tableWidget->setItem(0, 0, tableWidgetItemArticleNumber);
+
+        ui->tableWidget->setRowCount(ui->tableWidget->rowCount() + 1);
+
+    }
+
+
 }

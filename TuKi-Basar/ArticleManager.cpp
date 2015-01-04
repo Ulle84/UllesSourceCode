@@ -24,6 +24,23 @@ void ArticleManager::addArticle(Article* article)
     m_articles.append(article);
 }
 
+void ArticleManager::clear()
+{
+    m_articles.clear();
+}
+
+Article* ArticleManager::getArticle(int sellerNumber, int articleNumber)
+{
+    for (auto it = m_articles.begin(); it != m_articles.end(); it++)
+    {
+        if ((*it)->m_sellerNumber == sellerNumber && (*it)->m_articleNumber == articleNumber)
+        {
+            return *it;
+        }
+    }
+    return 0;
+}
+
 bool ArticleManager::fromXml()
 {
     QFile file(m_fileName);
@@ -128,4 +145,54 @@ bool ArticleManager::toXml()
     file.close();
 
     return true;
+}
+
+void ArticleManager::resetCurrentSale()
+{
+    m_currentSale.clear();
+}
+
+void ArticleManager::addArticleToCurrentSale(Article* article)
+{
+    m_currentSale.append(article);
+}
+
+QString ArticleManager::currentSaleToText()
+{
+    QString currentSaleText;
+    for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    {
+        currentSaleText += QString("%1 %2 %3 %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg((*it)->m_prize).arg((*it)->m_description);
+    }
+    return currentSaleText;
+}
+
+QString ArticleManager::currentSaleToHtml()
+{
+    QString currentSaleHtml;
+    currentSaleHtml += "<html>";
+    currentSaleHtml += "<table>";
+    currentSaleHtml += "<tr>";
+    currentSaleHtml += "<th>Verkäufernummer</th>";
+    currentSaleHtml += "<th>Artikelnummer</th>";
+    currentSaleHtml += "<th>Preis</th>";
+    currentSaleHtml += "<th>Beschreibung</th>";
+    currentSaleHtml += "</tr>";
+
+    for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    {
+        currentSaleHtml += "<tr>";
+                //QString("%1 %2 %3 %4\n"));
+        currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_sellerNumber);
+        currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_articleNumber);
+        currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_prize);
+        currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_description);
+
+        currentSaleHtml += "</tr>";
+    }
+
+    currentSaleHtml += "</table>";
+    currentSaleHtml += "</html>";
+
+    return currentSaleHtml;
 }

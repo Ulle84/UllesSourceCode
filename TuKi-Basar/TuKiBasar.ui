@@ -6,22 +6,75 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>585</width>
-    <height>401</height>
+    <width>654</width>
+    <height>445</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>TuKiBasar</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_3"/>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEditScannerInput">
+      <property name="maxLength">
+       <number>6</number>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="2">
+     <widget class="QPlainTextEdit" name="plainTextEditArticleList">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QTableWidget" name="tableWidget">
+      <column>
+       <property name="text">
+        <string>Verkäufernummer</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Artikelnummer</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Preis</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Beschreibung</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Eingabe</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="2">
+     <widget class="QTextEdit" name="textEdit">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>585</width>
+     <width>654</width>
      <height>22</height>
     </rect>
    </property>
@@ -61,6 +114,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>lineEditScannerInput</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
