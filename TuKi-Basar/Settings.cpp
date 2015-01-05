@@ -2,12 +2,18 @@
 #include "ui_Settings.h"
 
 #include <QMessageBox>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QFile>
+#include <QVariant>
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Settings)
 {
+    m_fileName = "Settings.xml";
     ui->setupUi(this);
+    fromXml();
 }
 
 Settings::~Settings()
@@ -40,6 +46,113 @@ int Settings::getSellerMax()
     return ui->spinBoxSellerMax->value();
 }
 
+void Settings::setPc(int value)
+{
+    ui->spinBoxPc->setValue(value);
+}
+
+void Settings::setProductMin(int value)
+{
+    ui->spinBoxProductMin->setValue(value);
+}
+
+void Settings::setProductMax(int value)
+{
+    ui->spinBoxProductMax->setValue(value);
+}
+
+void Settings::setSellerMin(int value)
+{
+    ui->spinBoxSellerMin->setValue(value);
+}
+
+void Settings::setSellerMax(int value)
+{
+    ui->spinBoxSellerMax->setValue(value);
+}
+
+bool Settings::fromXml()
+{
+    QFile file(m_fileName);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return false;
+    }
+
+    QXmlStreamReader xml(&file);
+
+    if (!xml.readNextStartElement())
+    {
+        return false;
+    }
+
+    if (xml.name() != "TuKiBazarSettings")
+    {
+        return false;
+    }
+
+    while (xml.readNextStartElement())
+    {
+        if (xml.name() == "Pc")
+        {
+            setPc(QVariant(xml.readElementText()).toInt());
+        }
+        else if (xml.name() == "SellerMin")
+        {
+            setSellerMin(QVariant(xml.readElementText()).toInt());
+        }
+        else if (xml.name() == "SellerMax")
+        {
+            setSellerMax(QVariant(xml.readElementText()).toInt());
+        }
+        else if (xml.name() == "ProductMin")
+        {
+            setProductMin(QVariant(xml.readElementText()).toInt());
+        }
+        else if (xml.name() == "ProductMax")
+        {
+            setProductMax(QVariant(xml.readElementText()).toInt());
+        }
+        else
+        {
+            xml.skipCurrentElement();
+        }
+    }
+
+    return true;
+}
+
+bool Settings::toXml()
+{
+    QFile file(m_fileName);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        return false;
+    }
+
+    QXmlStreamWriter xml(&file);
+    xml.setAutoFormatting(true);
+    xml.setAutoFormattingIndent(2);
+    xml.writeStartDocument();
+
+    xml.writeStartElement("TuKiBazarSettings");
+
+    xml.writeTextElement("Pc", QString("%1").arg(getPc()));
+    xml.writeTextElement("SellerMin", QString("%1").arg(getSellerMin()));
+    xml.writeTextElement("SellerMax", QString("%1").arg(getSellerMax()));
+    xml.writeTextElement("ProductMin", QString("%1").arg(getProductMin()));
+    xml.writeTextElement("ProductMax", QString("%1").arg(getProductMax()));
+
+    xml.writeEndElement(); // TuKiBazarSettings
+    xml.writeEndDocument();
+
+    file.close();
+
+    return true;
+}
+
 void Settings::on_pushButtonOk_clicked()
 {
     if (ui->spinBoxSellerMax->value() < ui->spinBoxSellerMin->value())
@@ -57,6 +170,8 @@ void Settings::on_pushButtonOk_clicked()
         mb.exec();
         return;
     }
+
+    toXml();
 
     this->accept();
 }
