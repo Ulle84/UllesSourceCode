@@ -160,7 +160,6 @@ void ArticleManager::addArticleToCurrentSale(Article* article)
 QString ArticleManager::currentSaleToText()
 {
     QString currentSaleText = "Ver  Art  Preis   Beschreibung\n";
-    currentSaleText += "Verkäufer Artikel Preis Beschreibung\n";
     for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         currentSaleText += QString("%1  %2  %3  %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg(prizeToString((*it)->m_prize)).arg((*it)->m_description);
