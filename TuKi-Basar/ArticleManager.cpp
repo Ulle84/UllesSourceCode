@@ -159,10 +159,10 @@ void ArticleManager::addArticleToCurrentSale(Article* article)
 
 QString ArticleManager::currentSaleToText()
 {
-    QString currentSaleText;
+    QString currentSaleText = "Ver  Art  Preis   Beschreibung\n";
     for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
-        currentSaleText += QString("%1 %2 %3 %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg((*it)->m_prize).arg((*it)->m_description);
+        currentSaleText += QString("%1  %2  %3  %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg(prizeToString((*it)->m_prize)).arg((*it)->m_description);
     }
     return currentSaleText;
 }
@@ -173,7 +173,7 @@ QString ArticleManager::currentSaleToHtml()
     currentSaleHtml += "<html>";
     currentSaleHtml += "<table>";
     currentSaleHtml += "<tr>";
-    currentSaleHtml += "<th>Verk√§ufernummer</th>";
+    currentSaleHtml += "<th>Verk‰ufernummer</th>";
     currentSaleHtml += "<th>Artikelnummer</th>";
     currentSaleHtml += "<th>Preis</th>";
     currentSaleHtml += "<th>Beschreibung</th>";
@@ -195,4 +195,21 @@ QString ArticleManager::currentSaleToHtml()
     currentSaleHtml += "</html>";
 
     return currentSaleHtml;
+}
+
+QString ArticleManager::prizeToString(double prize)
+{
+  QString string = QString::number(prize, 'f', 2).replace('.', ',');
+
+  if (prize < 100)
+  {
+    string.prepend(" ");
+  }
+
+  if (prize < 10)
+  {
+    string.prepend(" ");
+  }
+
+  return string;
 }

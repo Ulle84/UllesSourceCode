@@ -22,6 +22,7 @@ public:
     void addArticleToCurrentSale(Article* article);
     QString currentSaleToText();
     QString currentSaleToHtml();
+    QString prizeToString(double prize);
 
 private:
     QList<Article*> m_articles;
