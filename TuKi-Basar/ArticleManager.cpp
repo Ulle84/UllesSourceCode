@@ -160,6 +160,7 @@ void ArticleManager::addArticleToCurrentSale(Article* article)
 QString ArticleManager::currentSaleToText()
 {
     QString currentSaleText = "Ver  Art  Preis   Beschreibung\n";
+    currentSaleText += "Verkäufer Artikel Preis Beschreibung\n";
     for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         currentSaleText += QString("%1  %2  %3  %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg(prizeToString((*it)->m_prize)).arg((*it)->m_description);
@@ -170,10 +171,36 @@ QString ArticleManager::currentSaleToText()
 QString ArticleManager::currentSaleToHtml()
 {
     QString currentSaleHtml;
+    currentSaleHtml += "<!DOCTYPE html>";
+    currentSaleHtml += "<meta charset=\"utf-8\">";
     currentSaleHtml += "<html>";
+    currentSaleHtml += "<style>\
+        table {\
+            font-size: 14pt;\
+            border: 2px solid black;\
+            border-spacing: 0px;\
+        }\
+        \
+        th, td {\
+            text-align: center;\
+            min-width: 30px;\
+            padding: 5px 5px 5px 5px;\
+            vertical-align: middle;\
+            border-bottom: 1px solid grey;\
+            border-right: 1px solid grey;\
+        }\
+        \
+        td:last-child, th:last-child {\
+            border-right: 0px;\
+        }\
+        \
+        tr:last-child > td {\
+            border-bottom: 0px;\
+        }";
+    currentSaleHtml += "</style>";
     currentSaleHtml += "<table>";
     currentSaleHtml += "<tr>";
-    currentSaleHtml += "<th>Verk�ufernummer</th>";
+    currentSaleHtml += "<th>Verkäufernummer</th>";
     currentSaleHtml += "<th>Artikelnummer</th>";
     currentSaleHtml += "<th>Preis</th>";
     currentSaleHtml += "<th>Beschreibung</th>";
@@ -182,12 +209,10 @@ QString ArticleManager::currentSaleToHtml()
     for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         currentSaleHtml += "<tr>";
-                //QString("%1 %2 %3 %4\n"));
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_sellerNumber);
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_articleNumber);
-        currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_prize);
+        currentSaleHtml += QString("<td>%1 &euro;</td>").arg((*it)->m_prize);
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_description);
-
         currentSaleHtml += "</tr>";
     }
 
