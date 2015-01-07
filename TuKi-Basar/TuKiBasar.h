@@ -14,23 +14,29 @@ class TuKiBasar;
 
 class TuKiBasar : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TuKiBasar(QWidget *parent = 0);
-    ~TuKiBasar();
+  explicit TuKiBasar(QWidget *parent = 0);
+  ~TuKiBasar();
 
 private slots:
-    void on_actionSettings_triggered(bool checked);
-    void on_actionEvaluation_triggered(bool checked);
-    void on_actionImportArticleLists_triggered(bool checked);
-    void on_lineEditScannerInput_returnPressed();
+  void on_actionSettings_triggered(bool checked);
+  void on_actionEvaluation_triggered(bool checked);
+  void on_actionImportArticleLists_triggered(bool checked);
+  void on_lineEditInput_returnPressed();
+
+  void on_pushButtonDeleteLastInput_clicked();
 
 private:
-    Ui::TuKiBasar *ui;
-    Settings m_settings;
-    Evaluation m_evaluation;
-    ArticleManager m_articleManager;
+  void setLastArticleInformation(Article* article);
+  void clearLastArticleInformation();
+  void updateArticleView();
+
+  Ui::TuKiBasar *ui;
+  Settings m_settings;
+  Evaluation m_evaluation;
+  ArticleManager m_articleManager;
 };
 
 #endif // TUKIBASAR_H

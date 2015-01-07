@@ -9,33 +9,33 @@ class Settings;
 
 class Settings : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit Settings(QWidget *parent = 0);
-    ~Settings();
+  explicit Settings(QWidget *parent = 0);
+  ~Settings();
 
-    int getPc();
-    int getProductMin();
-    int getProductMax();
-    int getSellerMin();
-    int getSellerMax();
+  int getPc();
+  int getProductMin();
+  int getProductMax();
+  int getSellerMin();
+  int getSellerMax();
 
-    void setPc(int value);
-    void setProductMin(int value);
-    void setProductMax(int value);
-    void setSellerMin(int value);
-    void setSellerMax(int value);
+  void setPc(int value);
+  void setProductMin(int value);
+  void setProductMax(int value);
+  void setSellerMin(int value);
+  void setSellerMax(int value);
 
-    bool fromXml();
-    bool toXml();
+  bool fromXml();
+  bool toXml();
 
 private slots:
-    void on_pushButtonOk_clicked();
+  void on_pushButtonOk_clicked();
 
 private:
-    Ui::Settings *ui;
-    QString m_fileName;
+  Ui::Settings *ui;
+  QString m_fileName;
 };
 
 #endif // SETTINGS_H

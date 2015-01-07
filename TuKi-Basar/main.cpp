@@ -4,11 +4,11 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+  QApplication a(argc, argv);
+  QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
-    TuKiBasar w;
-    w.show();
+  TuKiBasar w;
+  w.show();
 
-    return a.exec();
+  return a.exec();
 }
