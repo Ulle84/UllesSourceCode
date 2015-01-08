@@ -20,12 +20,14 @@ public:
   int getProductMax();
   int getSellerMin();
   int getSellerMax();
+  double getDeductionPercentage();
 
   void setPc(int value);
   void setProductMin(int value);
   void setProductMax(int value);
   void setSellerMin(int value);
   void setSellerMax(int value);
+  void setDeductionPercentage(double value);
 
   bool fromXml();
   bool toXml();

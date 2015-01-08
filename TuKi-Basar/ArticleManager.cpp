@@ -4,10 +4,15 @@
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QVariant>
+#include <QDateTime>
+#include <QStringList>
 
-ArticleManager::ArticleManager()
+#include "Settings.h"
+
+ArticleManager::ArticleManager(Settings* settings, QString fileName)
+  : m_settings(settings),
+    m_fileName(fileName)
 {
-  m_fileName = "Articles.xml";
   fromXml();
 }
 
@@ -66,11 +71,13 @@ bool ArticleManager::fromXml()
   {
     if (xml.name() == "Article")
     {
-      unsigned int articleNumber;
-      unsigned int sellerNumber;
-      double prize;
+      unsigned int articleNumber = 0;
+      unsigned int sellerNumber = 0;
+      unsigned int soldOnPc = 0;
+      double prize = 0.0;
       QString size;
       QString description;
+      QString soldTime;
 
       while (xml.readNextStartElement())
       {
@@ -94,13 +101,21 @@ bool ArticleManager::fromXml()
         {
           description = xml.readElementText();
         }
+        else if (xml.name() == "SoldOnPc")
+        {
+          soldOnPc = xml.readElementText().toInt();
+        }
+        else if (xml.name() == "SoldTime")
+        {
+          soldTime = xml.readElementText();
+        }
         else
         {
           xml.skipCurrentElement();
         }
       }
 
-      Article* article = new Article(articleNumber, sellerNumber, prize, size, description);
+      Article* article = new Article(articleNumber, sellerNumber, soldOnPc, prize, size, description, soldTime);
       addArticle(article);
     }
     else
@@ -136,6 +151,8 @@ bool ArticleManager::toXml()
     xml.writeTextElement("Prize", QString("%1").arg((*it)->m_prize));
     xml.writeTextElement("Size", (*it)->m_size);
     xml.writeTextElement("Description", (*it)->m_description);
+    xml.writeTextElement("SoldOnPc", QString("%1").arg((*it)->m_soldOnPc));
+    xml.writeTextElement("SoldTime", (*it)->m_soldTime);
     xml.writeEndElement(); // Article
   }
 
@@ -163,6 +180,25 @@ void ArticleManager::removeLastArticleFromCurrentSale()
   {
     m_currentSale.removeLast();
   }
+}
+
+void ArticleManager::finishCurrentSale(unsigned int pcNumber)
+{
+  QString soldTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+  for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+  {
+    (*it)->m_soldOnPc = pcNumber;
+    (*it)->m_soldTime = soldTime;
+  }
+
+  resetCurrentSale();
+  toXml();
+}
+
+bool ArticleManager::isCurrentSaleEmpty()
+{
+  return m_currentSale.isEmpty();
 }
 
 Article *ArticleManager::getLastArticleInCurrentSale()
@@ -264,4 +300,44 @@ QString ArticleManager::prizeToString(double prize)
   }
 
   return string;
+}
+
+void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale)
+{
+  *volumeOfSale = 0.0;
+  *countOfSoldArticles = 0;
+
+  *deductionPercentage = m_settings->getDeductionPercentage();
+
+
+  QStringList soldTimes;
+
+  for (auto it = m_articles.begin(); it != m_articles.end(); it++)
+  {
+    if ((*it)->m_soldOnPc == m_settings->getPc())
+    {
+      *volumeOfSale += (*it)->m_prize;
+      (*countOfSoldArticles)++;
+      if (!soldTimes.contains((*it)->m_soldTime))
+      {
+        soldTimes.append((*it)->m_soldTime);
+      }
+    }
+  }
+
+  *countOfSales = soldTimes.length();
+  if (*countOfSales == 0)
+  {
+    *articlesPerSale = 0;
+  }
+  else
+  {
+    *articlesPerSale = *countOfSoldArticles * 1.0 / *countOfSales;
+  }
+  *deduction = *volumeOfSale * m_settings->getDeductionPercentage() / 100.0;
+}
+
+void ArticleManager::sync(ArticleManager *other)
+{
+  // check if article was sold on other PC -> show error
 }

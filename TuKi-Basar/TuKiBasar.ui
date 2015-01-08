@@ -139,6 +139,7 @@
     </property>
     <addaction name="actionImportArticleLists"/>
     <addaction name="actionEvaluation"/>
+    <addaction name="actionCompleteEvaluation"/>
     <addaction name="actionSettings"/>
    </widget>
    <addaction name="menuErweitert"/>
@@ -165,6 +166,11 @@
   <action name="actionImportArticleLists">
    <property name="text">
     <string>Artikellisten importieren</string>
+   </property>
+  </action>
+  <action name="actionCompleteEvaluation">
+   <property name="text">
+    <string>Gesamtauswertung</string>
    </property>
   </action>
  </widget>

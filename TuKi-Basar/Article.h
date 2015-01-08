@@ -8,14 +8,15 @@ class Article
   //friend class ArticleManager;
 
 public:
-  Article(unsigned int articleNumber, unsigned int sellerNumber, double prize, QString size, QString description);
+  Article(unsigned int articleNumber, unsigned int sellerNumber, unsigned int soldOnPc, double prize, QString size, QString description, QString soldTime);
 
-  bool m_sold;
+  unsigned int m_soldOnPc;
   unsigned int m_articleNumber;
   unsigned int m_sellerNumber;
   double m_prize;
   QString m_size;
   QString m_description;
+  QString m_soldTime;
 
 private:
   //TODO declare variables private again?

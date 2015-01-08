@@ -5,7 +5,7 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QFile>
-#include <QVariant>
+//#include <QVariant>
 
 Settings::Settings(QWidget *parent) :
   QDialog(parent),
@@ -46,6 +46,11 @@ int Settings::getSellerMax()
   return ui->spinBoxSellerMax->value();
 }
 
+double Settings::getDeductionPercentage()
+{
+  return ui->doubleSpinBoxDeductionPercentage->value();
+}
+
 void Settings::setPc(int value)
 {
   ui->spinBoxPc->setValue(value);
@@ -69,6 +74,11 @@ void Settings::setSellerMin(int value)
 void Settings::setSellerMax(int value)
 {
   ui->spinBoxSellerMax->setValue(value);
+}
+
+void Settings::setDeductionPercentage(double value)
+{
+  ui->doubleSpinBoxDeductionPercentage->setValue(value);
 }
 
 bool Settings::fromXml()
@@ -96,23 +106,27 @@ bool Settings::fromXml()
   {
     if (xml.name() == "Pc")
     {
-      setPc(QVariant(xml.readElementText()).toInt());
+      setPc(xml.readElementText().toInt());
     }
     else if (xml.name() == "SellerMin")
     {
-      setSellerMin(QVariant(xml.readElementText()).toInt());
+      setSellerMin(xml.readElementText().toInt());
     }
     else if (xml.name() == "SellerMax")
     {
-      setSellerMax(QVariant(xml.readElementText()).toInt());
+      setSellerMax(xml.readElementText().toInt());
     }
     else if (xml.name() == "ProductMin")
     {
-      setProductMin(QVariant(xml.readElementText()).toInt());
+      setProductMin(xml.readElementText().toInt());
     }
     else if (xml.name() == "ProductMax")
     {
-      setProductMax(QVariant(xml.readElementText()).toInt());
+      setProductMax(xml.readElementText().toInt());
+    }
+    else if (xml.name() == "DeductionPercentage")
+    {
+      setDeductionPercentage(xml.readElementText().toDouble());
     }
     else
     {
@@ -144,6 +158,7 @@ bool Settings::toXml()
   xml.writeTextElement("SellerMax", QString("%1").arg(getSellerMax()));
   xml.writeTextElement("ProductMin", QString("%1").arg(getProductMin()));
   xml.writeTextElement("ProductMax", QString("%1").arg(getProductMax()));
+  xml.writeTextElement("DeductionPercentage", QString("%1").arg(getDeductionPercentage()));
 
   xml.writeEndElement(); // TuKiBazarSettings
   xml.writeEndDocument();

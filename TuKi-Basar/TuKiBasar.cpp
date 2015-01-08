@@ -1,3 +1,13 @@
+/* TODO
+------------------------------
+ * Total Evaluation
+ * Correct Prize Feature
+ * Meldungen bei Falscher Eingabe
+ * write some statistics to status bar
+ * beim schliessen nachfragen, ob der letzte Verkauf noch abgeschlossen werden soll -> call function askuserToFinishcurrentsale
+ */
+
+
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
@@ -9,12 +19,20 @@
 #include "ui_TuKiBasar.h"
 
 #include "Article.h"
+#include "ArticleManager.h"
+#include "Evaluation.h"
+#include "Settings.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::TuKiBasar)
 {
   ui->setupUi(this);
+
+  m_settings = new Settings();
+  m_articleManager = new ArticleManager(m_settings, "Articles.xml");
+  m_evaluation = new Evaluation(m_articleManager);
+
 
   // font depends on operating system
 #ifdef Q_WS_MAC
@@ -27,27 +45,37 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 
 TuKiBasar::~TuKiBasar()
 {
+  delete m_evaluation;
+
+  m_articleManager->toXml();
+  delete m_articleManager;
+
+  delete m_settings;
+
   delete ui;
 }
 
-void TuKiBasar::on_actionSettings_triggered(bool checked)
+void TuKiBasar::on_actionSettings_triggered()
 {
-  m_settings.exec();
+  m_settings->exec();
 }
 
-void TuKiBasar::on_actionEvaluation_triggered(bool checked)
+void TuKiBasar::on_actionEvaluation_triggered()
 {
-  m_evaluation.exec();
+  askUserToFinishCurrentSale();
+
+  m_evaluation->doEvaluation();
+  m_evaluation->exec();
 }
 
-void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
+void TuKiBasar::on_actionImportArticleLists_triggered()
 {
   QMessageBox::StandardButton reply;
   reply = QMessageBox::question(this, tr("Vorhandene Artikel löschen?"),
                                 tr("Möchten Sie die bereits importierten Artikel löschen?"),
                                 QMessageBox::Yes|QMessageBox::No);
   if (reply == QMessageBox::Yes) {
-    m_articleManager.clear();
+    m_articleManager->clear();
   }
 
   QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten wählen...")); //TODO set folder of last selection?
@@ -133,8 +161,8 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
       QString size = fileContent.at(headerOffset + linesPerArticle * i + 2);
       QString description = fileContent.at(headerOffset + linesPerArticle * i + 3);
 
-      Article* article = new Article(articleNumber, sellerNumber, prize, size, description);
-      m_articleManager.addArticle(article); //TODO check that no article is added twice
+      Article* article = new Article(articleNumber, sellerNumber, 0, prize, size, description, "");
+      m_articleManager->addArticle(article); //TODO check that no article is added twice
 
       articleCounter++;
     }
@@ -143,7 +171,7 @@ void TuKiBasar::on_actionImportArticleLists_triggered(bool checked)
     sellerCounter++;
   }
 
-  m_articleManager.toXml();
+  m_articleManager->toXml();
 
   QMessageBox mb;
   if (articleCounter > 0)
@@ -174,13 +202,13 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     return;
   }
 
-  Article* article = m_articleManager.getArticle(sellerNumber, articleNumber);
+  Article* article = m_articleManager->getArticle(sellerNumber, articleNumber);
 
   if (article != 0)
   {
     setLastArticleInformation(article);
 
-    m_articleManager.addArticleToCurrentSale(article);
+    m_articleManager->addArticleToCurrentSale(article);
 
     updateArticleView();
   }
@@ -188,8 +216,8 @@ void TuKiBasar::on_lineEditInput_returnPressed()
 
 void TuKiBasar::on_pushButtonDeleteLastInput_clicked()
 {
-  m_articleManager.removeLastArticleFromCurrentSale();
-  Article* article = m_articleManager.getLastArticleInCurrentSale();
+  m_articleManager->removeLastArticleFromCurrentSale();
+  Article* article = m_articleManager->getLastArticleInCurrentSale();
 
   if (article != 0)
   {
@@ -208,7 +236,7 @@ void TuKiBasar::setLastArticleInformation(Article *article)
   ui->labelArticleNumber->setText(QString("%1").arg(article->m_articleNumber));
   ui->labelSellerNumber->setText(QString("%1").arg(article->m_sellerNumber));
   ui->labelDescription->setText(article->m_description);
-  ui->labelPrize->setText(m_articleManager.prizeToString(article->m_prize));
+  ui->labelPrize->setText(m_articleManager->prizeToString(article->m_prize));
 }
 
 void TuKiBasar::clearLastArticleInformation()
@@ -221,5 +249,69 @@ void TuKiBasar::clearLastArticleInformation()
 
 void TuKiBasar::updateArticleView()
 {
-  ui->plainTextEditArticleList->setPlainText(m_articleManager.currentSaleToText());
+  ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
+}
+
+void TuKiBasar::askUserToFinishCurrentSale()
+{
+  if(m_articleManager->isCurrentSaleEmpty())
+  {
+    return;
+  }
+
+  QMessageBox::StandardButton reply;
+  reply = QMessageBox::question(this, tr("Aktuellen Verkauf abschließen?"),
+                                tr("Möchten Sie erst den aktuellen Verkauf abschließen?"),
+                                QMessageBox::Yes|QMessageBox::No);
+  if (reply == QMessageBox::Yes) {
+    on_pushButtonNextCustomer_clicked();
+  }
+}
+
+void TuKiBasar::on_pushButtonNextCustomer_clicked()
+{
+  m_articleManager->finishCurrentSale(m_settings->getPc());
+  clearLastArticleInformation();
+  updateArticleView();
+}
+
+void TuKiBasar::on_actionCompleteEvaluation_triggered()
+{
+  askUserToFinishCurrentSale();
+
+  /*QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten wählen...")); //TODO set folder of last selection?
+
+  if (dirName.isEmpty())
+  {
+    return;
+  }*/
+
+  QStringList files = QFileDialog::getOpenFileNames(this, "Bitte Dateien auswählen", "", "XML-Dateien (*.xml)");
+
+  if (files.empty())
+  {
+    return;
+  }
+
+  ArticleManager* totalArticleManager = new ArticleManager(m_settings, files.at(0));
+
+  for (int i = 1; i < files.length(); i++)
+  {
+    ArticleManager* articleManagerToSync = new ArticleManager(m_settings, files.at(0));
+
+    delete articleManagerToSync;
+  }
+
+  // sync all following files
+
+  // doEvaluation
+  Evaluation* totalEvaluation = new Evaluation(totalArticleManager);
+  totalEvaluation->doEvaluation();
+  totalEvaluation->exec();
+
+  // show result of evaluation
+
+  // clean up
+  delete totalEvaluation;
+  delete totalArticleManager;
 }
