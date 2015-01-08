@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>214</height>
+    <width>496</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelVolumeOfSaleDisplay">
      <property name="text">
       <string>Umsatz</string>
      </property>
@@ -42,45 +42,17 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Gesamtanzahl der Artikel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Anzahl der Verkäufe</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Anzahl der verkauften Artikel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="labelCountOfSales">
+   <item row="4" column="1">
+    <widget class="QLabel" name="labelArticlesPerSale">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="2">
-    <widget class="QPushButton" name="pushButtonPrintEvaluation">
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelCountOfSoldArticlesDisplay">
      <property name="text">
-      <string>Auswertung drucken</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Artikel pro Verkauf</string>
+      <string>Anzahl der verkauften Artikel</string>
      </property>
     </widget>
    </item>
@@ -91,22 +63,29 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="labelVolumeOfSale">
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelArticlesPerSaleDisplay">
+     <property name="text">
+      <string>Artikel pro Verkauf</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="labelCountOfSales">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="labelArticlesPerSale">
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelCountOfAllArticlesDisplay">
      <property name="text">
-      <string/>
+      <string>Gesamtanzahl der Artikel</string>
      </property>
     </widget>
    </item>
    <item row="6" column="0">
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="labelPercentageOfSoldArticlesDisplay">
      <property name="text">
       <string>Verkaufte Artikel</string>
      </property>
@@ -119,8 +98,48 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="labelVolumeOfSale">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QPushButton" name="pushButtonPrintEvaluation">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Auswertung drucken</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelCountOfSalesDisplay">
+     <property name="text">
+      <string>Anzahl der Verkäufe</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="2">
+    <widget class="QWebView" name="webView">
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

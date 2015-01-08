@@ -24,10 +24,31 @@ public:
 
 private slots:
   void on_pushButtonPrintEvaluation_clicked();
+  void on_webView_loadFinished(bool loadFinished);
 
 private:
+  void updateHtmlView();
+
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;
+
+  double m_volumeOfSale;
+  double m_deduction;
+  double m_deductionPercentage;
+  int m_countOfSales;
+  int m_countOfSoldArticles;
+  double m_articlesPerSale;
+  int m_countOfAllArticles;
+  double m_percentageOfSoldArticles;
+
+  QString m_volumeOfSaleString;
+  QString m_deductionString;
+  QString m_deductionDisplayString;
+  QString m_countOfSalesString;
+  QString m_countOfSoldArticlesString;
+  QString m_articlesPerSaleString;
+  QString m_countOfAllArticlesString;
+  QString m_percentageOfSoldArticlesString;
 };
 
 #endif // EVALUATION_H

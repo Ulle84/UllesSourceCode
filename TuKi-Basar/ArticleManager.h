@@ -1,6 +1,8 @@
 #ifndef ARTICLEMANAGER_H
 #define ARTICLEMANAGER_H
 
+#include <map>
+
 #include <QList>
 
 #include "Article.h"
@@ -32,7 +34,11 @@ public:
   QString prizeToString(double prize);
 
   void calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale, int* countOfAllArticles, double* percentageOfSoldArticles);
+  std::map<int, double> getSellerMatrix();
+  std::map<int, double> getArticleMatrix(int sellerNumber);
   void sync(ArticleManager* other);
+
+  double getPayOutFactor();
 
 private:
   QList<Article*> m_articles;
