@@ -28,9 +28,10 @@ private slots:
   void on_pushButtonDeleteLastInput_clicked();
   void on_pushButtonNextCustomer_clicked();
   void on_actionCompleteEvaluation_triggered();
+  void on_pushButtonCorrectPrize_clicked();
 
 private:
-  void setLastArticleInformation(Article* article);
+  void setLastArticleInformation();
   void clearLastArticleInformation();
   void updateArticleView();
   void askUserToFinishCurrentSale();

@@ -6,6 +6,7 @@
  * beim schliessen nachfragen, ob der letzte Verkauf noch abgeschlossen werden soll -> call function askuserToFinishcurrentsale
  * Evaluation: Total Count of Articles, Percentage of Sold Articles
  * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie könnte man Fehler korrigieren?
+ * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
  */
 
 
@@ -23,6 +24,7 @@
 #include "ArticleManager.h"
 #include "Evaluation.h"
 #include "Settings.h"
+#include "PrizeCorrection.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
   QMainWindow(parent),
@@ -207,10 +209,8 @@ void TuKiBasar::on_lineEditInput_returnPressed()
 
   if (article != 0)
   {
-    setLastArticleInformation(article);
-
     m_articleManager->addArticleToCurrentSale(article);
-
+    setLastArticleInformation();
     updateArticleView();
   }
 }
@@ -222,7 +222,7 @@ void TuKiBasar::on_pushButtonDeleteLastInput_clicked()
 
   if (article != 0)
   {
-    setLastArticleInformation(article);
+    setLastArticleInformation();
   }
   else
   {
@@ -232,8 +232,10 @@ void TuKiBasar::on_pushButtonDeleteLastInput_clicked()
   updateArticleView();
 }
 
-void TuKiBasar::setLastArticleInformation(Article *article)
+void TuKiBasar::setLastArticleInformation()
 {
+  Article *article = m_articleManager->getLastArticleInCurrentSale();
+
   ui->labelArticleNumber->setText(QString("%1").arg(article->m_articleNumber));
   ui->labelSellerNumber->setText(QString("%1").arg(article->m_sellerNumber));
   ui->labelDescription->setText(article->m_description);
@@ -315,4 +317,24 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
   // clean up
   delete totalEvaluation;
   delete totalArticleManager;
+}
+
+void TuKiBasar::on_pushButtonCorrectPrize_clicked()
+{
+  Article* article = m_articleManager->getLastArticleInCurrentSale();
+
+  if (article == 0)
+  {
+    return;
+  }
+
+  PrizeCorrection prizeCorrection;
+  prizeCorrection.setPrize(article->m_prize);
+  if (prizeCorrection.exec() == QDialog::Accepted)
+  {
+    article->m_prize = prizeCorrection.getPrize();
+  }
+
+  updateArticleView();
+  setLastArticleInformation();
 }
