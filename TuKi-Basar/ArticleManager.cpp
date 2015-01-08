@@ -310,22 +310,25 @@ void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction
   *deductionPercentage = m_settings->getDeductionPercentage();
 
 
-  QStringList soldTimes;
+  QStringList transactions;
 
   for (auto it = m_articles.begin(); it != m_articles.end(); it++)
   {
-    if ((*it)->m_soldOnPc == m_settings->getPc())
+    //if ((*it)->m_soldOnPc == m_settings->getPc())
+    if ((*it)->m_soldOnPc != 0)
     {
+      QString transaction = QString("%1 %2").arg((*it)->m_soldOnPc).arg((*it)->m_soldTime);
+
       *volumeOfSale += (*it)->m_prize;
       (*countOfSoldArticles)++;
-      if (!soldTimes.contains((*it)->m_soldTime))
+      if (!transactions.contains(transaction))
       {
-        soldTimes.append((*it)->m_soldTime);
+        transactions.append(transaction);
       }
     }
   }
 
-  *countOfSales = soldTimes.length();
+  *countOfSales = transactions.length();
   if (*countOfSales == 0)
   {
     *articlesPerSale = 0;
@@ -340,4 +343,27 @@ void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction
 void ArticleManager::sync(ArticleManager *other)
 {
   // check if article was sold on other PC -> show error
+  for (auto it = other->m_articles.begin(); it != other->m_articles.end(); it++)
+  {
+    if ((*it)->m_soldOnPc != 0) //TODO do more checks
+    {
+      Article* article = getArticle((*it)->m_sellerNumber, (*it)->m_articleNumber);
+      if (article != 0)
+      {
+        if (article->m_soldOnPc == 0)
+        {
+          article->m_soldOnPc = (*it)->m_soldOnPc;
+          article->m_soldTime = (*it)->m_soldTime;
+        }
+        else
+        {
+          // what is to do?
+        }
+      }
+      else
+      {
+        // append new article or error?
+      }
+    }
+  }
 }

@@ -31,6 +31,7 @@ public:
   QString prizeToString(double prize);
 
   void calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale);
+  void sync(ArticleManager* other);
 
 private:
   QList<Article*> m_articles;

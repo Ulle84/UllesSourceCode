@@ -1,10 +1,11 @@
 /* TODO
 ------------------------------
- * Total Evaluation
  * Correct Prize Feature
- * Meldungen bei Falscher Eingabe
+ * Meldungen bei Falscher Eingabe (Artikelnumer nicht in Range, Verkäufernummer nicht in Range, Artikel schon eingegeben (in aktueller Liste, bzw. bei vorherigem Verkauf)
  * write some statistics to status bar
  * beim schliessen nachfragen, ob der letzte Verkauf noch abgeschlossen werden soll -> call function askuserToFinishcurrentsale
+ * Evaluation: Total Count of Articles, Percentage of Sold Articles
+ * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie könnte man Fehler korrigieren?
  */
 
 
@@ -297,8 +298,8 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
 
   for (int i = 1; i < files.length(); i++)
   {
-    ArticleManager* articleManagerToSync = new ArticleManager(m_settings, files.at(0));
-
+    ArticleManager* articleManagerToSync = new ArticleManager(m_settings, files.at(i));
+    totalArticleManager->sync(articleManagerToSync);
     delete articleManagerToSync;
   }
 
