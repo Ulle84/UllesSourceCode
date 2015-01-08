@@ -118,7 +118,7 @@
     <item row="3" column="0" colspan="2">
      <widget class="QPushButton" name="pushButtonNextCustomer">
       <property name="text">
-       <string>Eingabe abschließen</string>
+       <string>Nächster Kunde</string>
       </property>
      </widget>
     </item>

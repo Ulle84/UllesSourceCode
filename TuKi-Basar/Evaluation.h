@@ -19,6 +19,11 @@ public:
   ~Evaluation();
 
   void doEvaluation();
+  void setPrintButtonVisible(bool visible);
+  void printEvaluation();
+
+private slots:
+  void on_pushButtonPrintEvaluation_clicked();
 
 private:
   Ui::Evaluation *ui;

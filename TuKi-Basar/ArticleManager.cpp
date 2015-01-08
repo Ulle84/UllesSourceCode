@@ -201,6 +201,18 @@ bool ArticleManager::isCurrentSaleEmpty()
   return m_currentSale.isEmpty();
 }
 
+bool ArticleManager::isArticleInCurrentSale(unsigned int sellerNumber, unsigned int articleNumber)
+{
+  for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+  {
+    if ((*it)->m_sellerNumber == sellerNumber && (*it)->m_articleNumber == articleNumber)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 Article *ArticleManager::getLastArticleInCurrentSale()
 {
   Article* article = 0;
@@ -302,7 +314,7 @@ QString ArticleManager::prizeToString(double prize)
   return string;
 }
 
-void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale)
+void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale, int* countOfAllArticles, double* percentageOfSoldArticles)
 {
   *volumeOfSale = 0.0;
   *countOfSoldArticles = 0;
@@ -338,14 +350,16 @@ void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction
     *articlesPerSale = *countOfSoldArticles * 1.0 / *countOfSales;
   }
   *deduction = *volumeOfSale * m_settings->getDeductionPercentage() / 100.0;
+
+  *countOfAllArticles = m_articles.length();
+  *percentageOfSoldArticles = *countOfSoldArticles * 100.0 / *countOfAllArticles;
 }
 
 void ArticleManager::sync(ArticleManager *other)
 {
-  // check if article was sold on other PC -> show error
   for (auto it = other->m_articles.begin(); it != other->m_articles.end(); it++)
   {
-    if ((*it)->m_soldOnPc != 0) //TODO do more checks
+    if ((*it)->m_soldOnPc != 0)
     {
       Article* article = getArticle((*it)->m_sellerNumber, (*it)->m_articleNumber);
       if (article != 0)
@@ -357,12 +371,13 @@ void ArticleManager::sync(ArticleManager *other)
         }
         else
         {
-          // what is to do?
+          // TODO article was also sold on this PC, what shall we do? which prize shall we take?
         }
       }
       else
       {
-        // append new article or error?
+        Article* newArticle = new Article((*it)->m_articleNumber, (*it)->m_sellerNumber, (*it)->m_soldOnPc, (*it)->m_prize, (*it)->m_size, (*it)->m_description, (*it)->m_soldTime);
+        m_articles.append(newArticle);
       }
     }
   }

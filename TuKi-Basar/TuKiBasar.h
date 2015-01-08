@@ -31,10 +31,12 @@ private slots:
   void on_pushButtonCorrectPrize_clicked();
 
 private:
+  void closeEvent(QCloseEvent *event);
   void setLastArticleInformation();
   void clearLastArticleInformation();
   void updateArticleView();
   void askUserToFinishCurrentSale();
+  void prepareForNextInput();
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;

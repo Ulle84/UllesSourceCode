@@ -16,15 +16,15 @@ public:
   ~Settings();
 
   int getPc();
-  int getProductMin();
-  int getProductMax();
+  int getArticleMin();
+  int getArticleMax();
   int getSellerMin();
   int getSellerMax();
   double getDeductionPercentage();
 
   void setPc(int value);
-  void setProductMin(int value);
-  void setProductMax(int value);
+  void setArticleMin(int value);
+  void setArticleMax(int value);
   void setSellerMin(int value);
   void setSellerMax(int value);
   void setDeductionPercentage(double value);

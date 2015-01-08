@@ -26,14 +26,14 @@ int Settings::getPc()
   return ui->spinBoxPc->value();
 }
 
-int Settings::getProductMin()
+int Settings::getArticleMin()
 {
-  return ui->spinBoxProductMin->value();
+  return ui->spinBoxArticleMin->value();
 }
 
-int Settings::getProductMax()
+int Settings::getArticleMax()
 {
-  return ui->spinBoxProductMax->value();
+  return ui->spinBoxArticleMax->value();
 }
 
 int Settings::getSellerMin()
@@ -56,14 +56,14 @@ void Settings::setPc(int value)
   ui->spinBoxPc->setValue(value);
 }
 
-void Settings::setProductMin(int value)
+void Settings::setArticleMin(int value)
 {
-  ui->spinBoxProductMin->setValue(value);
+  ui->spinBoxArticleMin->setValue(value);
 }
 
-void Settings::setProductMax(int value)
+void Settings::setArticleMax(int value)
 {
-  ui->spinBoxProductMax->setValue(value);
+  ui->spinBoxArticleMax->setValue(value);
 }
 
 void Settings::setSellerMin(int value)
@@ -118,11 +118,11 @@ bool Settings::fromXml()
     }
     else if (xml.name() == "ProductMin")
     {
-      setProductMin(xml.readElementText().toInt());
+      setArticleMin(xml.readElementText().toInt());
     }
     else if (xml.name() == "ProductMax")
     {
-      setProductMax(xml.readElementText().toInt());
+      setArticleMax(xml.readElementText().toInt());
     }
     else if (xml.name() == "DeductionPercentage")
     {
@@ -156,8 +156,8 @@ bool Settings::toXml()
   xml.writeTextElement("Pc", QString("%1").arg(getPc()));
   xml.writeTextElement("SellerMin", QString("%1").arg(getSellerMin()));
   xml.writeTextElement("SellerMax", QString("%1").arg(getSellerMax()));
-  xml.writeTextElement("ProductMin", QString("%1").arg(getProductMin()));
-  xml.writeTextElement("ProductMax", QString("%1").arg(getProductMax()));
+  xml.writeTextElement("ProductMin", QString("%1").arg(getArticleMin()));
+  xml.writeTextElement("ProductMax", QString("%1").arg(getArticleMax()));
   xml.writeTextElement("DeductionPercentage", QString("%1").arg(getDeductionPercentage()));
 
   xml.writeEndElement(); // TuKiBazarSettings
@@ -178,7 +178,7 @@ void Settings::on_pushButtonOk_clicked()
     return;
   }
 
-  if (ui->spinBoxProductMax->value() < ui->spinBoxProductMin->value())
+  if (ui->spinBoxArticleMax->value() < ui->spinBoxArticleMin->value())
   {
     QMessageBox mb;
     mb.setText(tr("Die maximale Produktnummer darf nicht kleiner als die minimale Produktnummer sein!"));

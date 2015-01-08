@@ -25,12 +25,13 @@ public:
   void removeLastArticleFromCurrentSale();
   void finishCurrentSale(unsigned int pcNumber);
   bool isCurrentSaleEmpty();
+  bool isArticleInCurrentSale(unsigned int sellerNumber, unsigned int articleNumber);
   Article* getLastArticleInCurrentSale();
   QString currentSaleToText();
   QString currentSaleToHtml();
   QString prizeToString(double prize);
 
-  void calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale);
+  void calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale, int* countOfAllArticles, double* percentageOfSoldArticles);
   void sync(ArticleManager* other);
 
 private:

@@ -1,12 +1,11 @@
 /* TODO
 ------------------------------
- * Correct Prize Feature
- * Meldungen bei Falscher Eingabe (Artikelnumer nicht in Range, Verkäufernummer nicht in Range, Artikel schon eingegeben (in aktueller Liste, bzw. bei vorherigem Verkauf)
- * write some statistics to status bar
- * beim schliessen nachfragen, ob der letzte Verkauf noch abgeschlossen werden soll -> call function askuserToFinishcurrentsale
- * Evaluation: Total Count of Articles, Percentage of Sold Articles
+ * write some statistics to status bar?
  * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie könnte man Fehler korrigieren?
  * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
+ * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
+ * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren.
+ * Ausdruck für Verkäufer erstellen -> void Evaluation::printEvaluation()
  */
 
 
@@ -16,6 +15,8 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QRegExp>
+#include <QRegExpValidator>
 
 #include "TuKiBasar.h"
 #include "ui_TuKiBasar.h"
@@ -32,6 +33,9 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  QRegExp rx ("[0-9]{6}");
+  ui->lineEditInput->setValidator(new QRegExpValidator (rx, this));
+
   m_settings = new Settings();
   m_articleManager = new ArticleManager(m_settings, "Articles.xml");
   m_evaluation = new Evaluation(m_articleManager);
@@ -44,6 +48,8 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 #ifdef Q_WS_WIN
   ui->plainTextEditArticleList->setFont(QFont::QFont("Courier", 10, 0, false));
 #endif
+
+  prepareForNextInput();
 }
 
 TuKiBasar::~TuKiBasar()
@@ -199,19 +205,90 @@ void TuKiBasar::on_lineEditInput_returnPressed()
   int sellerNumber = input.left(3).toInt(&conversion1);
   int articleNumber = input.right(3).toInt(&conversion2);
 
-  ui->lineEditInput->clear();
   if (!conversion1 || !conversion2)
   {
+    // should not happen, since we use a QRegExpValidator
+    QMessageBox mb;
+    mb.setText(tr("Die Eingabe ist fehlerhaft!"));
+    mb.exec();
+    return;
+  }
+
+  if (sellerNumber > m_settings->getSellerMax())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Die eingegebene Verkäufernummer ist zu hoch!\nDas Maximum ist %1!").arg(m_settings->getSellerMax()));
+    mb.exec();
+    return;
+  }
+
+  if (sellerNumber < m_settings->getSellerMin())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Die eingegebene Verkäufernummer ist zu niedrig!\nDas Minimum ist %1!").arg(m_settings->getSellerMin()));
+    mb.exec();
+    return;
+  }
+
+  if (articleNumber > m_settings->getArticleMax())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Die eingegebene Artikelnummer ist zu hoch!\nDas Maximum ist %1!").arg(m_settings->getArticleMax()));
+    mb.exec();
+    return;
+  }
+
+  if (articleNumber < m_settings->getArticleMin())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Die eingegebene Artikelnummer ist zu niedrig!\nDas Minimum ist %1!").arg(m_settings->getArticleMin()));
+    mb.exec();
+    return;
+  }
+
+  if (m_articleManager->isArticleInCurrentSale(sellerNumber, articleNumber))
+  {
+    QMessageBox mb;
+    mb.setText(tr("Der eingegebene Artikel ist bereits in der aktuellen Artikelliste enthalten!"));
+    mb.exec();
     return;
   }
 
   Article* article = m_articleManager->getArticle(sellerNumber, articleNumber);
 
+  bool prizeCorrectionRequired = false;
   if (article != 0)
   {
+    if (article->m_soldOnPc != 0)
+    {
+      QMessageBox mb;
+      mb.setText(tr("Der eingegebene Artikel wurde bereits verkauft!"));
+      mb.exec();
+      return;
+    }
+
     m_articleManager->addArticleToCurrentSale(article);
-    setLastArticleInformation();
-    updateArticleView();
+  }
+  else
+  {
+    Article* newArticle = new Article(articleNumber, sellerNumber, 0, 0.0, "", "", "");
+    m_articleManager->addArticle(newArticle);
+    m_articleManager->addArticleToCurrentSale(newArticle);
+
+    QMessageBox mb;
+    mb.setText(tr("Der eingegebene Artikel ist im System nicht hinterlegt.\nBitte Preis manuell eingeben!"));
+    mb.exec();
+    prizeCorrectionRequired = true;
+  }
+
+  setLastArticleInformation();
+  updateArticleView();
+
+  ui->lineEditInput->clear();
+
+  if (prizeCorrectionRequired)
+  {
+    on_pushButtonCorrectPrize_clicked();
   }
 }
 
@@ -230,6 +307,7 @@ void TuKiBasar::on_pushButtonDeleteLastInput_clicked()
   }
 
   updateArticleView();
+  prepareForNextInput();
 }
 
 void TuKiBasar::setLastArticleInformation()
@@ -271,23 +349,23 @@ void TuKiBasar::askUserToFinishCurrentSale()
   }
 }
 
+void TuKiBasar::prepareForNextInput()
+{
+  ui->lineEditInput->clear();
+  ui->lineEditInput->setFocus();
+}
+
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
 {
   m_articleManager->finishCurrentSale(m_settings->getPc());
   clearLastArticleInformation();
   updateArticleView();
+  prepareForNextInput();
 }
 
 void TuKiBasar::on_actionCompleteEvaluation_triggered()
 {
   askUserToFinishCurrentSale();
-
-  /*QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten wählen...")); //TODO set folder of last selection?
-
-  if (dirName.isEmpty())
-  {
-    return;
-  }*/
 
   QStringList files = QFileDialog::getOpenFileNames(this, "Bitte Dateien auswählen", "", "XML-Dateien (*.xml)");
 
@@ -305,18 +383,15 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
     delete articleManagerToSync;
   }
 
-  // sync all following files
-
-  // doEvaluation
   Evaluation* totalEvaluation = new Evaluation(totalArticleManager);
   totalEvaluation->doEvaluation();
+  totalEvaluation->setPrintButtonVisible(true);
   totalEvaluation->exec();
 
-  // show result of evaluation
-
-  // clean up
   delete totalEvaluation;
   delete totalArticleManager;
+
+  prepareForNextInput();
 }
 
 void TuKiBasar::on_pushButtonCorrectPrize_clicked()
@@ -325,6 +400,7 @@ void TuKiBasar::on_pushButtonCorrectPrize_clicked()
 
   if (article == 0)
   {
+    prepareForNextInput();
     return;
   }
 
@@ -337,4 +413,12 @@ void TuKiBasar::on_pushButtonCorrectPrize_clicked()
 
   updateArticleView();
   setLastArticleInformation();
+  prepareForNextInput();
+}
+
+void TuKiBasar::closeEvent(QCloseEvent *event)
+{
+  askUserToFinishCurrentSale();
+
+  event->accept();
 }

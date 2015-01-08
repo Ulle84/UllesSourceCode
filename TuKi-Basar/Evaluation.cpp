@@ -10,6 +10,7 @@ Evaluation::Evaluation(ArticleManager* articleManager, QWidget *parent) :
   m_articleManager(articleManager)
 {
   ui->setupUi(this);
+  ui->pushButtonPrintEvaluation->setVisible(false);
 }
 
 Evaluation::~Evaluation()
@@ -25,8 +26,10 @@ void Evaluation::doEvaluation()
   int countOfSales;
   int countOfSoldArticles;
   double articlesPerSale;
+  int countOfAllArticles;
+  double percentageOfSoldArticles;
 
-  m_articleManager->calculateStatistics(&volumeOfSale, &deduction, &deductionPercentage, &countOfSales, &countOfSoldArticles, &articlesPerSale);
+  m_articleManager->calculateStatistics(&volumeOfSale, &deduction, &deductionPercentage, &countOfSales, &countOfSoldArticles, &articlesPerSale, &countOfAllArticles, &percentageOfSoldArticles);
 
   ui->labelVolumeOfSale->setText(QString("%1 Euro").arg(QString::number(volumeOfSale, 'f', 2).replace('.', ',')));
   ui->labelDeduction->setText(QString("%1 Euro").arg(QString::number(deduction, 'f', 2).replace('.', ',')));
@@ -34,4 +37,21 @@ void Evaluation::doEvaluation()
   ui->labelCountOfSales->setText(QString("%1").arg(countOfSales));
   ui->labelCountOfSoldArticles->setText(QString("%1").arg(countOfSoldArticles));
   ui->labelArticlesPerSale->setText(QString::number(articlesPerSale, 'f', 1).replace('.', ','));
+  ui->labelCountOfAllArticles->setText(QString("%1").arg(countOfAllArticles));
+  ui->labelPercentageOfSoldArticles->setText(QString("%1 Prozent").arg(QString::number(percentageOfSoldArticles, 'f', 1).replace('.', ',')));
+}
+
+void Evaluation::setPrintButtonVisible(bool visible)
+{
+  ui->pushButtonPrintEvaluation->setVisible(visible);
+}
+
+void Evaluation::printEvaluation()
+{
+  //TODO
+}
+
+void Evaluation::on_pushButtonPrintEvaluation_clicked()
+{
+  printEvaluation();
 }
