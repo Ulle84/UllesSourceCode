@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QDir>
 #include <QByteArray>
+#include <QTextDocument>
 
 #include "ArticleManager.h"
 #include "Settings.h"
@@ -50,7 +51,7 @@ void Evaluation::doEvaluation()
   ui->labelCountOfAllArticles->setText(m_countOfAllArticlesString);
   ui->labelPercentageOfSoldArticles->setText(m_percentageOfSoldArticlesString);
 
-  updateHtmlView();
+  updateWebView();
 }
 
 void Evaluation::setPrintButtonVisible(bool visible)
@@ -60,20 +61,31 @@ void Evaluation::setPrintButtonVisible(bool visible)
 
 void Evaluation::printEvaluation()
 {
-    QString outputFile = "Auswertung.pdf";
+  QString outputFile = "Auswertung.pdf";
 
-    QPrinter printer(QPrinter::HighResolution); //HighResolution
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setPageSize(QPrinter::A4);
-    int margin = 5;
-    printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
-    printer.setColorMode(QPrinter::GrayScale);
-    printer.setOutputFileName(outputFile);
-    ui->webView->page()->mainFrame()->print(&printer);
+  QPrinter printer(QPrinter::HighResolution); //HighResolution
+  printer.setOutputFormat(QPrinter::PdfFormat);
+  printer.setPageSize(QPrinter::A4);
+  int margin = 5;
+  printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
+  printer.setColorMode(QPrinter::GrayScale);
+  printer.setOutputFileName(outputFile);
 
 
-    // show pdf with external viewer
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
+  ui->webView->page()->mainFrame()->print(&printer);
+
+  /*QTextDocument *document = new QTextDocument();
+  document->setHtml(createHtmlCode());
+  document->print(&printer);
+
+  printer.newPage();
+  printer.newPage();
+  document->print(&printer);
+
+  delete document;*/
+
+  // show pdf with external viewer
+  QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
 }
 
 void Evaluation::on_pushButtonPrintEvaluation_clicked()
@@ -83,118 +95,123 @@ void Evaluation::on_pushButtonPrintEvaluation_clicked()
 
 void Evaluation::on_webView_loadFinished(bool loadFinished)
 {
-    if (!loadFinished)
-      {
-        return;
-      }
-ui->pushButtonPrintEvaluation->setEnabled(true);
-
+  if (!loadFinished)
+  {
+    return;
+  }
+  ui->pushButtonPrintEvaluation->setEnabled(true);
 }
 
-void Evaluation::updateHtmlView()
+void Evaluation::updateWebView()
 {
-    QByteArray html;
-    html.append("<!DOCTYPE html>");
-    html.append("<html><head>");
-    html.append("<meta charset=\"utf-8\">");
-    //html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"global.css\" media=\"all\"/>");
-    html.append("<style>");
-    //html.append("h1{background-color: red}");
-    html.append("</style>");
-    html.append("<title>test</title></head><body>");
-    html.append("<h1>Zusammenfassung</h1>");
-    html.append("<table>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(ui->labelVolumeOfSaleDisplay->text()));
-    html.append(QString("<td>%1</td>").arg(m_volumeOfSaleString));
-    html.append("</tr>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(m_deductionDisplayString));
-    html.append(QString("<td>%1</td>").arg(m_deductionString));
-    html.append("</tr>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(ui->labelCountOfSalesDisplay->text()));
-    html.append(QString("<td>%1</td>").arg(m_countOfSalesString));
-    html.append("</tr>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(ui->labelCountOfSoldArticlesDisplay->text()));
-    html.append(QString("<td>%1</td>").arg(m_countOfSoldArticlesString));
-    html.append("</tr>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(ui->labelArticlesPerSaleDisplay->text()));
-    html.append(QString("<td>%1</td>").arg(m_articlesPerSaleString));
-    html.append("</tr>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(ui->labelCountOfAllArticlesDisplay->text()));
-    html.append(QString("<td>%1</td>").arg(m_countOfAllArticlesString));
-    html.append("</tr>");
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg(ui->labelPercentageOfSoldArticlesDisplay->text()));
-    html.append(QString("<td>%1</td>").arg(m_percentageOfSoldArticlesString));
-    html.append("</tr>");
-    /*
+  ui->webView->setContent(createHtmlCode());
+}
+
+QByteArray Evaluation::createHtmlCode()
+{
+  QByteArray html;
+  html.append("<!DOCTYPE html>");
+  html.append("<html><head>");
+  html.append("<meta charset=\"utf-8\">");
+  //html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"global.css\" media=\"all\"/>");
+  html.append("<style>");
+  //html.append("h1{background-color: red}");
+  html.append("</style>");
+  html.append("<title>test</title></head><body>");
+  html.append("<h1>Zusammenfassung</h1>");
+  html.append("<table>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(ui->labelVolumeOfSaleDisplay->text()));
+  html.append(QString("<td>%1</td>").arg(m_volumeOfSaleString));
+  html.append("</tr>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(m_deductionDisplayString));
+  html.append(QString("<td>%1</td>").arg(m_deductionString));
+  html.append("</tr>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(ui->labelCountOfSalesDisplay->text()));
+  html.append(QString("<td>%1</td>").arg(m_countOfSalesString));
+  html.append("</tr>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(ui->labelCountOfSoldArticlesDisplay->text()));
+  html.append(QString("<td>%1</td>").arg(m_countOfSoldArticlesString));
+  html.append("</tr>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(ui->labelArticlesPerSaleDisplay->text()));
+  html.append(QString("<td>%1</td>").arg(m_articlesPerSaleString));
+  html.append("</tr>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(ui->labelCountOfAllArticlesDisplay->text()));
+  html.append(QString("<td>%1</td>").arg(m_countOfAllArticlesString));
+  html.append("</tr>");
+  html.append("<tr>");
+  html.append(QString("<td>%1</td>").arg(ui->labelPercentageOfSoldArticlesDisplay->text()));
+  html.append(QString("<td>%1</td>").arg(m_percentageOfSoldArticlesString));
+  html.append("</tr>");
+  /*
     html.append("<tr>");
     html.append(QString("<td>%1</td>").arg());
     html.append(QString("<td>%1</td>").arg());
     html.append("</tr>");
     */
-    html.append("</table>");
+  html.append("</table>");
+  html.append("<div style=\"page-break-after: always; border: 1px solid;\">end of text</div>");
+  html.append("<table>");
+  html.append("<tr>");
+  html.append("<th>Verkäufernummer</th>");
+  html.append("<th>Summe</th>");
+  html.append("<th>Auszuzahlen</th>");
+  html.append("</tr>");
+
+  std::map<int, double> matrix = m_articleManager->getSellerMatrix();
+  double payOutFactor = m_articleManager->getPayOutFactor();
+
+  for (auto it = matrix.begin(); it != matrix.end(); ++it)
+  {
+    html.append("<tr>");
+    html.append(QString("<td>%1</td>").arg(it->first));
+    html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second, 'f', 2).replace('.', ',')));
+    html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second * payOutFactor, 'f', 2).replace('.', ',')));
+    html.append("</tr>");
+  }
+
+  html.append("</table>");
+
+  for (auto it = matrix.begin(); it != matrix.end(); ++it)
+  {
+    std::map<int, double> articles = m_articleManager->getArticleMatrix(it->first);
+
+    html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
     html.append("<table>");
     html.append("<tr>");
-    html.append("<th>Verkäufernummer</th>");
-    html.append("<th>Summe</th>");
-    html.append("<th>Auszuzahlen</th>");
+    html.append(QString("<td>Umsatz</td>"));
+    html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second, 'f', 2).replace('.', ',')));
     html.append("</tr>");
+    html.append("<tr>");
+    html.append(QString("<td>Einbehalt</td>"));
+    html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second * (1.0 - payOutFactor), 'f', 2).replace('.', ',')));
+    html.append("</tr>");
+    html.append("<tr>");
+    html.append(QString("<td><b>Auszahlbetrag</b></td>"));
+    html.append(QString("<td><b>%1 Euro</b></td>").arg(QString::number(it->second * payOutFactor, 'f', 2).replace('.', ',')));
+    html.append("</tr>");
+    html.append("</table>");
 
-    std::map<int, double> matrix = m_articleManager->getSellerMatrix();
-    double payOutFactor = m_articleManager->getPayOutFactor();
+    html.append("<h2>Liste der verkauften Artikel</h2>");
+    html.append("<table>");
 
-    for (auto it = matrix.begin(); it != matrix.end(); ++it)
+    for (auto itA = articles.begin(); itA != articles.end(); ++itA)
     {
-        html.append("<tr>");
-        html.append(QString("<td>%1</td>").arg(it->first));
-        html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second, 'f', 2).replace('.', ',')));
-        html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second * payOutFactor, 'f', 2).replace('.', ',')));
-        html.append("</tr>");
+      html.append("<tr>");
+      html.append(QString("<td>%1</td>").arg(itA->first));
+      html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
+      html.append("</tr>");
     }
 
     html.append("</table>");
+  }
 
-    for (auto it = matrix.begin(); it != matrix.end(); ++it)
-    {
-        std::map<int, double> articles = m_articleManager->getArticleMatrix(it->first);
+  html.append("</body></html>");
 
-        html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
-        html.append("<table>");
-        html.append("<tr>");
-        html.append(QString("<td>Umsatz</td>"));
-        html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second, 'f', 2).replace('.', ',')));
-        html.append("</tr>");
-        html.append("<tr>");
-        html.append(QString("<td>Einbehalt</td>"));
-        html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second * (1.0 - payOutFactor), 'f', 2).replace('.', ',')));
-        html.append("</tr>");
-        html.append("<tr>");
-        html.append(QString("<td><b>Auszahlbetrag</b></td>"));
-        html.append(QString("<td><b>%1 Euro</b></td>").arg(QString::number(it->second * payOutFactor, 'f', 2).replace('.', ',')));
-        html.append("</tr>");
-        html.append("</table>");
-
-        html.append("<h2>Liste der verkauften Artikel</h2>");
-        html.append("<table>");
-
-        for (auto itA = articles.begin(); itA != articles.end(); ++itA)
-        {
-            html.append("<tr>");
-            html.append(QString("<td>%1</td>").arg(itA->first));
-            html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
-            html.append("</tr>");
-        }
-
-        html.append("</table>");
-    }
-
-    html.append("</body></html>");
-
-    ui->webView->setContent(html);
+  return html;
 }

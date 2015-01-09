@@ -1,11 +1,18 @@
 /* TODO
 ------------------------------
  * write some statistics to status bar?
- * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie kˆnnte man Fehler korrigieren?
- * Styling ¸berarbeiten -> Schriftgrˆﬂen, Ausrichtung der GUI-Elemente
+ * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie k√∂nnte man Fehler korrigieren?
+ * Styling √ºberarbeiten -> Schriftgr√∂√üen, Ausrichtung der GUI-Elemente
  * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
  * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren.
- * Ausdruck f¸r Verk‰ufer erstellen -> void Evaluation::printEvaluation()
+ * Ausdruck f√ºr Verk√§ufer erstellen -> void Evaluation::printEvaluation()
+ */
+
+
+/* Printing
+ * print webview -> page break not possible
+ * print QTextDocument -> styles are not fully taken, encoding does not fit
+ * do printing by myself -> don't think, that this is a good idea!
  */
 
 
@@ -80,14 +87,14 @@ void TuKiBasar::on_actionEvaluation_triggered()
 void TuKiBasar::on_actionImportArticleLists_triggered()
 {
   QMessageBox::StandardButton reply;
-  reply = QMessageBox::question(this, tr("Vorhandene Artikel lˆschen?"),
-                                tr("Mˆchten Sie die bereits importierten Artikel lˆschen?"),
+  reply = QMessageBox::question(this, tr("Vorhandene Artikel l√∂schen?"),
+                                tr("M√∂chten Sie die bereits importierten Artikel l√∂schen?"),
                                 QMessageBox::Yes|QMessageBox::No);
   if (reply == QMessageBox::Yes) {
     m_articleManager->clear();
   }
 
-  QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten w‰hlen...")); //TODO set folder of last selection?
+  QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten w√§hlen...")); //TODO set folder of last selection?
 
   if (dirName.isEmpty())
   {
@@ -185,7 +192,7 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
   QMessageBox mb;
   if (articleCounter > 0)
   {
-    mb.setText(tr("Es wurden erfolgreich %1 Artikel von %2 Verk‰ufern importiert.").arg(articleCounter).arg(sellerCounter));
+    mb.setText(tr("Es wurden erfolgreich %1 Artikel von %2 Verk√§ufern importiert.").arg(articleCounter).arg(sellerCounter));
   }
   else
   {
@@ -211,22 +218,25 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     QMessageBox mb;
     mb.setText(tr("Die Eingabe ist fehlerhaft!"));
     mb.exec();
+    ui->lineEditInput->selectAll();
     return;
   }
 
   if (sellerNumber > m_settings->getSellerMax())
   {
     QMessageBox mb;
-    mb.setText(tr("Die eingegebene Verk‰ufernummer ist zu hoch!\nDas Maximum ist %1!").arg(m_settings->getSellerMax()));
+    mb.setText(tr("Die eingegebene Verk√§ufernummer ist zu hoch!\nDas Maximum ist %1!").arg(m_settings->getSellerMax()));
     mb.exec();
+    ui->lineEditInput->selectAll();
     return;
   }
 
   if (sellerNumber < m_settings->getSellerMin())
   {
     QMessageBox mb;
-    mb.setText(tr("Die eingegebene Verk‰ufernummer ist zu niedrig!\nDas Minimum ist %1!").arg(m_settings->getSellerMin()));
+    mb.setText(tr("Die eingegebene Verk√§ufernummer ist zu niedrig!\nDas Minimum ist %1!").arg(m_settings->getSellerMin()));
     mb.exec();
+    ui->lineEditInput->selectAll();
     return;
   }
 
@@ -235,6 +245,7 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     QMessageBox mb;
     mb.setText(tr("Die eingegebene Artikelnummer ist zu hoch!\nDas Maximum ist %1!").arg(m_settings->getArticleMax()));
     mb.exec();
+    ui->lineEditInput->selectAll();
     return;
   }
 
@@ -243,6 +254,7 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     QMessageBox mb;
     mb.setText(tr("Die eingegebene Artikelnummer ist zu niedrig!\nDas Minimum ist %1!").arg(m_settings->getArticleMin()));
     mb.exec();
+    ui->lineEditInput->selectAll();
     return;
   }
 
@@ -251,6 +263,7 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     QMessageBox mb;
     mb.setText(tr("Der eingegebene Artikel ist bereits in der aktuellen Artikelliste enthalten!"));
     mb.exec();
+    ui->lineEditInput->selectAll();
     return;
   }
 
@@ -264,6 +277,7 @@ void TuKiBasar::on_lineEditInput_returnPressed()
       QMessageBox mb;
       mb.setText(tr("Der eingegebene Artikel wurde bereits verkauft!"));
       mb.exec();
+      ui->lineEditInput->selectAll();
       return;
     }
 
@@ -341,8 +355,8 @@ void TuKiBasar::askUserToFinishCurrentSale()
   }
 
   QMessageBox::StandardButton reply;
-  reply = QMessageBox::question(this, tr("Aktuellen Verkauf abschlieﬂen?"),
-                                tr("Mˆchten Sie erst den aktuellen Verkauf abschlieﬂen?"),
+  reply = QMessageBox::question(this, tr("Aktuellen Verkauf abschlie√üen?"),
+                                tr("M√∂chten Sie erst den aktuellen Verkauf abschlie√üen?"),
                                 QMessageBox::Yes|QMessageBox::No);
   if (reply == QMessageBox::Yes) {
     on_pushButtonNextCustomer_clicked();
@@ -367,7 +381,7 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
 {
   askUserToFinishCurrentSale();
 
-  QStringList files = QFileDialog::getOpenFileNames(this, "Bitte Dateien ausw‰hlen", "", "XML-Dateien (*.xml)");
+  QStringList files = QFileDialog::getOpenFileNames(this, "Bitte Dateien ausw√§hlen", "", "XML-Dateien (*.xml)");
 
   if (files.empty())
   {

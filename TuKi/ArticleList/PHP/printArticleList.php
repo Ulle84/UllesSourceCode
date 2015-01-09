@@ -43,11 +43,18 @@ $fileName = "../Data/articleList_" . $sellerNumber . ".txt";
 $articleDescription = array();
 $size = array();
 $price = array();
+$articleNumber = array();
 if (file_exists($fileName)) {
 
     $file = fopen($fileName, "r");
 
+    $fileDescription = rtrim(fgets($file));
+    $versionNumber = rtrim(fgets($file));
+    $sellerNumberFile = rtrim(fgets($file));
+
+    //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
     for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
+        $articleNumber[$i] = rtrim(fgets($file));
         $price[$i] = rtrim(fgets($file));
         $size[$i] = rtrim(fgets($file));
         $articleDescription[$i] = rtrim(fgets($file));

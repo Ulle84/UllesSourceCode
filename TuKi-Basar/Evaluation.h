@@ -27,7 +27,8 @@ private slots:
   void on_webView_loadFinished(bool loadFinished);
 
 private:
-  void updateHtmlView();
+  void updateWebView();
+  QByteArray createHtmlCode();
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;

@@ -352,7 +352,15 @@ void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction
     *deduction = *volumeOfSale * m_settings->getDeductionPercentage() / 100.0;
 
     *countOfAllArticles = m_articles.length();
-    *percentageOfSoldArticles = *countOfSoldArticles * 100.0 / *countOfAllArticles;
+
+    if (*countOfAllArticles == 0)
+    {
+      *percentageOfSoldArticles = 0.0;
+    }
+    else
+    {
+      *percentageOfSoldArticles = *countOfSoldArticles * 100.0 / *countOfAllArticles;
+    }
 }
 
 std::map<int, double> ArticleManager::getSellerMatrix()
