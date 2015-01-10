@@ -446,6 +446,8 @@ void TuKiBasar::closeEvent(QCloseEvent *event)
 
 void TuKiBasar::on_actionExportSoldArticles_triggered()
 {
+  askUserToFinishCurrentSale();
+
   QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1_PC%2.xml").arg(tr("VerkaufteArtikel")).arg(m_settings->getPc()), QString("XML-%1 (*.xml)").arg(tr("Datei")));
 
   if (outputFile.isEmpty())
