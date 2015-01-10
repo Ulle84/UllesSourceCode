@@ -4,7 +4,8 @@
  * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie könnte man Fehler korrigieren?
  * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
  * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
- * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren.
+ * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren. -> alles nochmal sauber als UTF-8 erstellen, am besten unter Windwos (Zielplattform)
+ * check file save select on Windows - FileName should be predefined
  */
 
 
@@ -52,7 +53,7 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 
   m_settings = new Settings();
   m_articleManager = new ArticleManager(m_settings, "Articles.xml");
-  m_evaluation = new Evaluation(m_articleManager);
+  m_evaluation = new Evaluation(m_articleManager, m_settings);
 
 
   // font depends on operating system
@@ -404,7 +405,7 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
     delete articleManagerToSync;
   }
 
-  Evaluation* totalEvaluation = new Evaluation(totalArticleManager);
+  Evaluation* totalEvaluation = new Evaluation(totalArticleManager, m_settings);
   totalEvaluation->doEvaluation();
   totalEvaluation->exec();
 

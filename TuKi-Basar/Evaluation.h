@@ -15,7 +15,7 @@ class Evaluation : public QDialog
   Q_OBJECT
 
 public:
-  explicit Evaluation(ArticleManager* articleManager, QWidget *parent = 0);
+  explicit Evaluation(ArticleManager* articleManager, Settings* settings, QWidget *parent = 0);
   ~Evaluation();
 
   void doEvaluation();
@@ -35,6 +35,7 @@ private:
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;
+  Settings* m_settings;
 
   double m_volumeOfSale;
   double m_deduction;

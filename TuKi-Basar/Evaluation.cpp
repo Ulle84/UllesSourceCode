@@ -16,10 +16,11 @@
 #include "ArticleManager.h"
 #include "Settings.h"
 
-Evaluation::Evaluation(ArticleManager* articleManager, QWidget *parent) :
+Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, QWidget *parent) :
   QDialog(parent),
   ui(new Ui::Evaluation),
-  m_articleManager(articleManager)
+  m_articleManager(articleManager),
+  m_settings(settings)
 {
   ui->setupUi(this);
   ui->webViewOverview->setVisible(false);
@@ -219,7 +220,7 @@ QByteArray Evaluation::createHtmlCodeSoldArticles()
   std::map<int, double> matrix = m_articleManager->getSellerMatrix();
   double payOutFactor = m_articleManager->getPayOutFactor();
 
-  for (auto it = matrix.begin(); it != matrix.end(); ++it) //TODO iterate over all sellers! -> needs acces to settings
+  for (auto it = matrix.begin(); it != matrix.end(); ++it)
   {
     std::map<int, double> articles = m_articleManager->getArticleMatrix(it->first);
 
