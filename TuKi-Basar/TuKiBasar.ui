@@ -130,7 +130,7 @@
      <x>0</x>
      <y>0</y>
      <width>850</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuErweitert">
@@ -138,6 +138,7 @@
      <string>Erweitert</string>
     </property>
     <addaction name="actionImportArticleLists"/>
+    <addaction name="actionExportSoldArticles"/>
     <addaction name="actionEvaluation"/>
     <addaction name="actionCompleteEvaluation"/>
     <addaction name="actionSettings"/>
@@ -171,6 +172,11 @@
   <action name="actionCompleteEvaluation">
    <property name="text">
     <string>Gesamtauswertung</string>
+   </property>
+  </action>
+  <action name="actionExportSoldArticles">
+   <property name="text">
+    <string>Verkaufte Artikel exportieren</string>
    </property>
   </action>
  </widget>

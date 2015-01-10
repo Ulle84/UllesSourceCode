@@ -11,6 +11,7 @@
 #include <QDir>
 #include <QByteArray>
 #include <QTextDocument>
+#include <QFileDialog>
 
 #include "ArticleManager.h"
 #include "Settings.h"
@@ -21,7 +22,8 @@ Evaluation::Evaluation(ArticleManager* articleManager, QWidget *parent) :
   m_articleManager(articleManager)
 {
   ui->setupUi(this);
-  //ui->pushButtonPrintEvaluation->setVisible(false); // TODO wieder aktivieren
+  ui->webViewOverview->setVisible(false);
+  ui->webViewSoldArticles->setVisible(false);
 }
 
 Evaluation::~Evaluation()
@@ -51,17 +53,17 @@ void Evaluation::doEvaluation()
   ui->labelCountOfAllArticles->setText(m_countOfAllArticlesString);
   ui->labelPercentageOfSoldArticles->setText(m_percentageOfSoldArticlesString);
 
-  updateWebView();
+  updateWebViews();
 }
 
-void Evaluation::setPrintButtonVisible(bool visible)
+void Evaluation::saveOverview()
 {
-  ui->pushButtonPrintEvaluation->setVisible(visible);
-}
+  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("Gesamtauswertung")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
 
-void Evaluation::printEvaluation()
-{
-  QString outputFile = "Auswertung.pdf";
+  if (outputFile.isEmpty())
+  {
+    return;
+  }
 
   QPrinter printer(QPrinter::HighResolution); //HighResolution
   printer.setOutputFormat(QPrinter::PdfFormat);
@@ -71,53 +73,82 @@ void Evaluation::printEvaluation()
   printer.setColorMode(QPrinter::GrayScale);
   printer.setOutputFileName(outputFile);
 
+  ui->webViewOverview->page()->mainFrame()->print(&printer);
 
-  ui->webView->page()->mainFrame()->print(&printer);
-
-  /*QTextDocument *document = new QTextDocument();
-  document->setHtml(createHtmlCode());
-  document->print(&printer);
-
-  printer.newPage();
-  printer.newPage();
-  document->print(&printer);
-
-  delete document;*/
-
-  // show pdf with external viewer
-  QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
+  if (ui->checkBoxOpenOverview->isChecked())
+  {
+    // show pdf with external viewer
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
+  }
 }
 
-void Evaluation::on_pushButtonPrintEvaluation_clicked()
+void Evaluation::saveSoldArticles()
 {
-  printEvaluation();
+  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("Verkäuferübersicht")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
+
+  if (outputFile.isEmpty())
+  {
+    return;
+  }
+
+  QPrinter printer(QPrinter::HighResolution); //HighResolution
+  printer.setOutputFormat(QPrinter::PdfFormat);
+  printer.setPageSize(QPrinter::A4);
+  int margin = 5;
+  printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
+  printer.setColorMode(QPrinter::GrayScale);
+  printer.setOutputFileName(outputFile);
+
+  ui->webViewSoldArticles->page()->mainFrame()->print(&printer);
+
+  if (ui->checkBoxOpenSoldArticles->isChecked())
+  {
+    // show pdf with external viewer
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
+  }
 }
 
-void Evaluation::on_webView_loadFinished(bool loadFinished)
+void Evaluation::on_pushButtonSaveOverview_clicked()
+{
+  saveOverview();
+}
+
+void Evaluation::on_pushButtonSaveSoldArticles_clicked()
+{
+  saveSoldArticles();
+}
+
+void Evaluation::on_webViewOverview_loadFinished(bool loadFinished)
 {
   if (!loadFinished)
   {
     return;
   }
-  ui->pushButtonPrintEvaluation->setEnabled(true);
+  ui->pushButtonSaveOverview->setEnabled(true);
 }
 
-void Evaluation::updateWebView()
+void Evaluation::on_webViewSoldArticles_loadFinished(bool loadFinished)
 {
-  ui->webView->setContent(createHtmlCode());
+  if (!loadFinished)
+  {
+    return;
+  }
+  ui->pushButtonSaveSoldArticles->setEnabled(true);
 }
 
-QByteArray Evaluation::createHtmlCode()
+void Evaluation::updateWebViews()
+{
+  ui->webViewOverview->setContent(createHtmlCodeOverview());
+  ui->webViewSoldArticles->setContent(createHtmlCodeSoldArticles());
+}
+
+QByteArray Evaluation::createHtmlCodeOverview()
 {
   QByteArray html;
   html.append("<!DOCTYPE html>");
   html.append("<html><head>");
   html.append("<meta charset=\"utf-8\">");
-  //html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"global.css\" media=\"all\"/>");
-  html.append("<style>");
-  //html.append("h1{background-color: red}");
-  html.append("</style>");
-  html.append("<title>test</title></head><body>");
+  html.append("<title></title></head><body>");
   html.append("<h1>Zusammenfassung</h1>");
   html.append("<table>");
   html.append("<tr>");
@@ -148,14 +179,7 @@ QByteArray Evaluation::createHtmlCode()
   html.append(QString("<td>%1</td>").arg(ui->labelPercentageOfSoldArticlesDisplay->text()));
   html.append(QString("<td>%1</td>").arg(m_percentageOfSoldArticlesString));
   html.append("</tr>");
-  /*
-    html.append("<tr>");
-    html.append(QString("<td>%1</td>").arg());
-    html.append(QString("<td>%1</td>").arg());
-    html.append("</tr>");
-    */
   html.append("</table>");
-  html.append("<div style=\"page-break-after: always; border: 1px solid;\">end of text</div>");
   html.append("<table>");
   html.append("<tr>");
   html.append("<th>Verkäufernummer</th>");
@@ -175,12 +199,31 @@ QByteArray Evaluation::createHtmlCode()
     html.append("</tr>");
   }
 
-  html.append("</table>");
+  html.append("</body></html>");
 
-  for (auto it = matrix.begin(); it != matrix.end(); ++it)
+  return html;
+}
+
+QByteArray Evaluation::createHtmlCodeSoldArticles()
+{
+  QByteArray html;
+  html.append("<!DOCTYPE html>");
+  html.append("<html><head>");
+  html.append("<meta charset=\"utf-8\">");
+  html.append("<style>");
+  html.append("body, h1, html{margin: 0px; padding: 0px;}");
+  html.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
+  html.append("</style>");
+  html.append("<title></title></head><body>");
+
+  std::map<int, double> matrix = m_articleManager->getSellerMatrix();
+  double payOutFactor = m_articleManager->getPayOutFactor();
+
+  for (auto it = matrix.begin(); it != matrix.end(); ++it) //TODO iterate over all sellers! -> needs acces to settings
   {
     std::map<int, double> articles = m_articleManager->getArticleMatrix(it->first);
 
+    html.append("<div class=\"page\">");
     html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
     html.append("<table>");
     html.append("<tr>");
@@ -209,9 +252,11 @@ QByteArray Evaluation::createHtmlCode()
     }
 
     html.append("</table>");
+    html.append("</div>");
   }
 
   html.append("</body></html>");
 
   return html;
 }
+

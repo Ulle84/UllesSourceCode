@@ -46,6 +46,16 @@ Article* ArticleManager::getArticle(int sellerNumber, int articleNumber)
     return 0;
 }
 
+void ArticleManager::setFileName(QString fileName)
+{
+  m_fileName = fileName;
+}
+
+QString ArticleManager::getFileName()
+{
+  return m_fileName;
+}
+
 bool ArticleManager::fromXml()
 {
     QFile file(m_fileName);

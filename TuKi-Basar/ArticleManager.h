@@ -19,6 +19,9 @@ public:
   void clear();
   Article* getArticle(int sellerNumber, int articleNumber);
 
+  void setFileName(QString fileName);
+  QString getFileName();
+
   bool fromXml();
   bool toXml();
 

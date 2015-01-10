@@ -19,16 +19,19 @@ public:
   ~Evaluation();
 
   void doEvaluation();
-  void setPrintButtonVisible(bool visible);
-  void printEvaluation();
+  void saveOverview();
+  void saveSoldArticles();
 
 private slots:
-  void on_pushButtonPrintEvaluation_clicked();
-  void on_webView_loadFinished(bool loadFinished);
+  void on_pushButtonSaveOverview_clicked();
+  void on_pushButtonSaveSoldArticles_clicked();
+  void on_webViewOverview_loadFinished(bool loadFinished);
+  void on_webViewSoldArticles_loadFinished(bool loadFinished);
 
 private:
-  void updateWebView();
-  QByteArray createHtmlCode();
+  void updateWebViews();
+  QByteArray createHtmlCodeOverview();
+  QByteArray createHtmlCodeSoldArticles();
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;

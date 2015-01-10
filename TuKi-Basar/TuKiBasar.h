@@ -29,6 +29,7 @@ private slots:
   void on_pushButtonNextCustomer_clicked();
   void on_actionCompleteEvaluation_triggered();
   void on_pushButtonCorrectPrize_clicked();
+  void on_actionExportSoldArticles_triggered();
 
 private:
   void closeEvent(QCloseEvent *event);

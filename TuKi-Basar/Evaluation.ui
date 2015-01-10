@@ -6,130 +6,194 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
-    <height>343</height>
+    <width>535</width>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Auswertung</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="1">
-    <widget class="QLabel" name="labelCountOfSoldArticles">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelVolumeOfSaleDisplay">
+         <property name="text">
+          <string>Umsatz</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="labelVolumeOfSale">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelDecuctionDisplay">
+         <property name="text">
+          <string>Einbehalt</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="labelDeduction">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelCountOfSalesDisplay">
+         <property name="text">
+          <string>Anzahl der Verkäufe</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="labelCountOfSales">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelCountOfSoldArticlesDisplay">
+         <property name="text">
+          <string>Anzahl der verkauften Artikel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="labelCountOfSoldArticles">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelArticlesPerSaleDisplay">
+         <property name="text">
+          <string>Artikel pro Verkauf</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="labelArticlesPerSale">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="labelCountOfAllArticlesDisplay">
+         <property name="text">
+          <string>Gesamtanzahl der Artikel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="labelCountOfAllArticles">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="labelPercentageOfSoldArticlesDisplay">
+         <property name="text">
+          <string>Verkaufte Artikel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="labelPercentageOfSoldArticles">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="labelVolumeOfSaleDisplay">
-     <property name="text">
-      <string>Umsatz</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="labelDeduction">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLabel" name="labelCountOfAllArticles">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="labelArticlesPerSale">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="labelCountOfSoldArticlesDisplay">
-     <property name="text">
-      <string>Anzahl der verkauften Artikel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="labelDecuctionDisplay">
-     <property name="text">
-      <string>Einbehalt</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="labelArticlesPerSaleDisplay">
-     <property name="text">
-      <string>Artikel pro Verkauf</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="labelCountOfSales">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="labelCountOfAllArticlesDisplay">
-     <property name="text">
-      <string>Gesamtanzahl der Artikel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="labelPercentageOfSoldArticlesDisplay">
-     <property name="text">
-      <string>Verkaufte Artikel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QLabel" name="labelPercentageOfSoldArticles">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="labelVolumeOfSale">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0" colspan="2">
-    <widget class="QPushButton" name="pushButtonPrintEvaluation">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Auswertung drucken</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="labelCountOfSalesDisplay">
-     <property name="text">
-      <string>Anzahl der Verkäufe</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0" colspan="2">
-    <widget class="QWebView" name="webView">
+   <item>
+    <widget class="QWebView" name="webViewOverview">
      <property name="url">
       <url>
        <string>about:blank</string>
       </url>
      </property>
     </widget>
+   </item>
+   <item>
+    <widget class="QWebView" name="webViewSoldArticles">
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="pdfSection">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButtonSaveOverview">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Gesamt-Übersicht als PDF speichern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="checkBoxOpenOverview">
+       <property name="text">
+        <string>PDF nach Speichern öffnen</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButtonSaveSoldArticles">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Verkäufer-Übersicht als PDF speichern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="checkBoxOpenSoldArticles">
+       <property name="text">
+        <string>PDF nach Speichern öffnen</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

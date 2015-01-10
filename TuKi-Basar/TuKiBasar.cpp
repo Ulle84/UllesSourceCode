@@ -5,14 +5,21 @@
  * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
  * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
  * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren.
- * Ausdruck für Verkäufer erstellen -> void Evaluation::printEvaluation()
  */
 
 
 /* Printing
- * print webview -> page break not possible
- * print QTextDocument -> styles are not fully taken, encoding does not fit
+ * print webview -> single document -> page break not possible -> workaround: position elements exactly
+ * print webview -> multiple documents -> combine with external tool like ghostscript or Pdftk
+ *   -> https://www.pdflabs.com/tools/pdftk-server/#download
+ *   -> pdftk *.pdf cat output combined.pdf
+ * print QTextDocument -> styles are not fully taken, encoding does not fit, page number is shown
  * do printing by myself -> don't think, that this is a good idea!
+ * generate html, show in (portable) firefox, print with freePdf
+ *
+ * split into two jobs?
+ *
+ * --> DONE!
  */
 
 
@@ -399,7 +406,6 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
 
   Evaluation* totalEvaluation = new Evaluation(totalArticleManager);
   totalEvaluation->doEvaluation();
-  totalEvaluation->setPrintButtonVisible(true);
   totalEvaluation->exec();
 
   delete totalEvaluation;
@@ -435,4 +441,21 @@ void TuKiBasar::closeEvent(QCloseEvent *event)
   askUserToFinishCurrentSale();
 
   event->accept();
+}
+
+void TuKiBasar::on_actionExportSoldArticles_triggered()
+{
+  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1_PC%2.xml").arg(tr("VerkaufteArtikel")).arg(m_settings->getPc()), QString("XML-%1 (*.xml)").arg(tr("Datei")));
+
+  if (outputFile.isEmpty())
+  {
+    return;
+  }
+
+  QString toRestore = m_articleManager->getFileName();
+
+  m_articleManager->setFileName(outputFile);
+  m_articleManager->toXml();
+
+  m_articleManager->setFileName(toRestore);
 }
