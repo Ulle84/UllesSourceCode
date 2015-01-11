@@ -38,7 +38,8 @@ public:
 
   void calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale, int* countOfAllArticles, double* percentageOfSoldArticles);
   std::map<int, double> getSellerMatrix();
-  std::map<int, double> getArticleMatrix(int sellerNumber);
+  std::map<int, double> getSoldArticleMatrix(int sellerNumber);
+  std::map<int, double> getUnsoldArticleMatrix(int sellerNumber);
   void sync(ArticleManager* other);
 
   double getPayOutFactor();

@@ -21,17 +21,21 @@ public:
   void doEvaluation();
   void saveOverview();
   void saveSoldArticles();
+  void saveUnsoldArticles();
 
 private slots:
   void on_pushButtonSaveOverview_clicked();
   void on_pushButtonSaveSoldArticles_clicked();
+  void on_pushButtonSaveUnsoldArticles_clicked();
   void on_webViewOverview_loadFinished(bool loadFinished);
   void on_webViewSoldArticles_loadFinished(bool loadFinished);
+  void on_webViewUnsoldArticles_loadFinished(bool loadFinished);
 
 private:
   void updateWebViews();
   QByteArray createHtmlCodeOverview();
   QByteArray createHtmlCodeSoldArticles();
+  QByteArray createHtmlCodeUnsoldArticles();
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
-    <height>304</height>
+    <width>538</width>
+    <height>328</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -152,6 +152,15 @@
     </widget>
    </item>
    <item>
+    <widget class="QWebView" name="webViewUnsoldArticles">
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="pdfSection">
      <item row="0" column="0">
       <widget class="QPushButton" name="pushButtonSaveOverview">
@@ -160,6 +169,16 @@
        </property>
        <property name="text">
         <string>Gesamt-Übersicht als PDF speichern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="checkBoxOpenSoldArticles">
+       <property name="text">
+        <string>PDF nach Speichern öffnen</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -179,12 +198,22 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Verkäufer-Übersicht als PDF speichern</string>
+        <string>Verkaufte Artikel als PDF speichern</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QCheckBox" name="checkBoxOpenSoldArticles">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButtonSaveUnsoldArticles">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Nicht verkaufte Artikel als PDF speichern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="checkBoxOpenUnsoldArticles">
        <property name="text">
         <string>PDF nach Speichern öffnen</string>
        </property>

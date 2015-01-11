@@ -401,13 +401,35 @@ std::map<int, double> ArticleManager::getSellerMatrix()
   return matrix;
 }
 
-std::map<int, double> ArticleManager::getArticleMatrix(int sellerNumber)
+std::map<int, double> ArticleManager::getSoldArticleMatrix(int sellerNumber)
 {
   std::map<int, double> matrix;
 
   for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
   {
     if ((*it)->m_soldOnPc == 0)
+    {
+      continue;
+    }
+
+    if ((*it)->m_sellerNumber != sellerNumber)
+    {
+      continue;
+    }
+
+    matrix[(*it)->m_articleNumber] = (*it)->m_prize;
+  }
+
+  return matrix;
+}
+
+std::map<int, double> ArticleManager::getUnsoldArticleMatrix(int sellerNumber)
+{
+  std::map<int, double> matrix;
+
+  for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+  {
+    if ((*it)->m_soldOnPc != 0)
     {
       continue;
     }

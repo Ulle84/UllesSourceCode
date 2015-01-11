@@ -25,6 +25,7 @@ Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, QWidg
   ui->setupUi(this);
   ui->webViewOverview->setVisible(false);
   ui->webViewSoldArticles->setVisible(false);
+  ui->webViewUnsoldArticles->setVisible(false);
 }
 
 Evaluation::~Evaluation()
@@ -85,7 +86,7 @@ void Evaluation::saveOverview()
 
 void Evaluation::saveSoldArticles()
 {
-  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("Verkäuferübersicht")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
+  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("VerkaufteArtikel")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
 
   if (outputFile.isEmpty())
   {
@@ -109,6 +110,32 @@ void Evaluation::saveSoldArticles()
   }
 }
 
+void Evaluation::saveUnsoldArticles()
+{
+  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("UnverkaufteArtikel")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
+
+  if (outputFile.isEmpty())
+  {
+    return;
+  }
+
+  QPrinter printer(QPrinter::HighResolution); //HighResolution
+  printer.setOutputFormat(QPrinter::PdfFormat);
+  printer.setPageSize(QPrinter::A4);
+  int margin = 5;
+  printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
+  printer.setColorMode(QPrinter::GrayScale);
+  printer.setOutputFileName(outputFile);
+
+  ui->webViewUnsoldArticles->page()->mainFrame()->print(&printer);
+
+  if (ui->checkBoxOpenUnsoldArticles->isChecked())
+  {
+    // show pdf with external viewer
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
+  }
+}
+
 void Evaluation::on_pushButtonSaveOverview_clicked()
 {
   saveOverview();
@@ -117,6 +144,11 @@ void Evaluation::on_pushButtonSaveOverview_clicked()
 void Evaluation::on_pushButtonSaveSoldArticles_clicked()
 {
   saveSoldArticles();
+}
+
+void Evaluation::on_pushButtonSaveUnsoldArticles_clicked()
+{
+  saveUnsoldArticles();
 }
 
 void Evaluation::on_webViewOverview_loadFinished(bool loadFinished)
@@ -141,6 +173,7 @@ void Evaluation::updateWebViews()
 {
   ui->webViewOverview->setContent(createHtmlCodeOverview());
   ui->webViewSoldArticles->setContent(createHtmlCodeSoldArticles());
+  ui->webViewUnsoldArticles->setContent(createHtmlCodeUnsoldArticles());
 }
 
 QByteArray Evaluation::createHtmlCodeOverview()
@@ -222,7 +255,7 @@ QByteArray Evaluation::createHtmlCodeSoldArticles()
 
   for (auto it = matrix.begin(); it != matrix.end(); ++it)
   {
-    std::map<int, double> articles = m_articleManager->getArticleMatrix(it->first);
+    std::map<int, double> articles = m_articleManager->getSoldArticleMatrix(it->first);
 
     html.append("<div class=\"page\">");
     html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
@@ -261,3 +294,54 @@ QByteArray Evaluation::createHtmlCodeSoldArticles()
   return html;
 }
 
+QByteArray Evaluation::createHtmlCodeUnsoldArticles()
+{
+  QByteArray html;
+  html.append("<!DOCTYPE html>");
+  html.append("<html><head>");
+  html.append("<meta charset=\"utf-8\">");
+  html.append("<style>");
+  html.append("body, h1, html{margin: 0px; padding: 0px;}");
+  html.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
+  html.append("</style>");
+  html.append("<title></title></head><body>");
+
+  std::map<int, double> matrix = m_articleManager->getSellerMatrix();
+  double payOutFactor = m_articleManager->getPayOutFactor();
+
+  for (auto it = matrix.begin(); it != matrix.end(); ++it)
+  {
+    std::map<int, double> unsoldArticles = m_articleManager->getUnsoldArticleMatrix(it->first);
+
+    html.append("<div class=\"page\">");
+    html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
+
+    html.append("<h2>Liste der nicht verkauften Artikel</h2>");
+    html.append("<table>");
+
+    for (auto itA = unsoldArticles.begin(); itA != unsoldArticles.end(); ++itA)
+    {
+      html.append("<tr>");
+      html.append(QString("<td>%1</td>").arg(itA->first));
+      html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
+      html.append("</tr>");
+    }
+
+    html.append("</table>");
+    html.append("</div>");
+  }
+
+  html.append("</body></html>");
+
+  return html;
+}
+
+
+void Evaluation::on_webViewUnsoldArticles_loadFinished(bool loadFinished)
+{
+  if (!loadFinished)
+  {
+    return;
+  }
+  ui->pushButtonSaveUnsoldArticles->setEnabled(true);
+}

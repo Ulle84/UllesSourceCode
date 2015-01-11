@@ -6,6 +6,11 @@
  * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
  * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren. -> alles nochmal sauber als UTF-8 erstellen, am besten unter Windwos (Zielplattform)
  * check file save select on Windows - FileName should be predefined
+ *
+ * Beschreibung und Größe auch in Liste der verkauften Artikel
+ * Umsatzliste: Vorname, Nachname, Telefonnumer
+ * Ansicht der letzten Verkäufe (evt. editierbar)
+ * was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
  */
 
 
@@ -178,12 +183,18 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
       double prize = fileContent.value(headerOffset + linesPerArticle * i + 1).replace(",", ".").toDouble(&conversionPrize);
       if (!conversionPrize)
       {
-        continue;
+        //continue;
+        prize = 0.0;
       }
 
       int articleNumber = fileContent.at(headerOffset + linesPerArticle * i).toInt();
       QString size = fileContent.at(headerOffset + linesPerArticle * i + 2);
       QString description = fileContent.at(headerOffset + linesPerArticle * i + 3);
+
+      if (prize < 0.01 && description.isEmpty())
+      {
+        continue;
+      }
 
       Article* article = new Article(articleNumber, sellerNumber, 0, prize, size, description, "");
       m_articleManager->addArticle(article); //TODO check that no article is added twice
@@ -287,6 +298,14 @@ void TuKiBasar::on_lineEditInput_returnPressed()
       mb.exec();
       ui->lineEditInput->selectAll();
       return;
+    }
+
+    if (article->m_prize < 0.01)
+    {
+      QMessageBox mb;
+      mb.setText(tr("Für den eingegebene Artikel ist im System kein Preis hinterlegt.\nBitte Preis manuell eingeben!"));
+      mb.exec();
+      prizeCorrectionRequired = true;
     }
 
     m_articleManager->addArticleToCurrentSale(article);
