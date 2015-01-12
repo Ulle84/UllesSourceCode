@@ -1,12 +1,10 @@
-/* TODO
+﻿/* TODO
 ------------------------------
  * write some statistics to status bar?
- * Timea fragen, wie bisher das "Fehlerhandling" war. Was soll passieren, wenn der Artikel schon mal eingegeben wurde? Wie könnte man Fehler korrigieren?
  * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
- * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
- * Sonderzeichen werden teilweise falsch dargestllt - Encoding von den Files kontrollieren und main verifzieren. -> alles nochmal sauber als UTF-8 erstellen, am besten unter Windwos (Zielplattform)
- * check file save select on Windows - FileName should be predefined
+ * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren? *
  *
+ * Statistics -> Anzahl der verkauften/angebotenen (?) Artikel in Bereiche (0-9, 10-19, 20-29 etc.) -> implementierung erledigt -> verifizieren
  * Beschreibung und Größe auch in Liste der verkauften Artikel
  * Umsatzliste: Vorname, Nachname, Telefonnumer
  * Ansicht der letzten Verkäufe (evt. editierbar)

@@ -18,16 +18,21 @@ SOURCES += main.cpp\
     Settings.cpp \
     Article.cpp \
     ArticleManager.cpp \
-    PrizeCorrection.cpp
+    PrizeCorrection.cpp \
+    EvaluationView.cpp \
+    Statistics.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
     Settings.h \
     Article.h \
     ArticleManager.h \
-    PrizeCorrection.h
+    PrizeCorrection.h \
+    EvaluationView.h \
+    Statistics.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \
     Settings.ui \
-    PrizeCorrection.ui
+    PrizeCorrection.ui \
+    EvaluationView.ui

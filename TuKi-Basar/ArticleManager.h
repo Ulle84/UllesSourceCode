@@ -1,4 +1,4 @@
-#ifndef ARTICLEMANAGER_H
+﻿#ifndef ARTICLEMANAGER_H
 #define ARTICLEMANAGER_H
 
 #include <map>
@@ -8,6 +8,7 @@
 #include "Article.h"
 
 class Settings;
+class Statistics;
 
 class ArticleManager
 {
@@ -36,10 +37,12 @@ public:
   QString currentSaleToHtml();
   QString prizeToString(double prize);
 
-  void calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale, int* countOfAllArticles, double* percentageOfSoldArticles);
-  std::map<int, double> getSellerMatrix();
-  std::map<int, double> getSoldArticleMatrix(int sellerNumber);
-  std::map<int, double> getUnsoldArticleMatrix(int sellerNumber);
+  void calculateStatistics(Statistics* statistics);
+  std::map<int, double> getSalesPerSeller();
+  std::map<int, int> getSoldArticlesPerSeller();
+  std::map<QString, int> getSoldArticlesInRanges();
+  std::map<int, double> getSoldArticles(int sellerNumber);
+  std::map<int, double> getUnsoldArticles(int sellerNumber);
   void sync(ArticleManager* other);
 
   double getPayOutFactor();

@@ -1,4 +1,4 @@
-#include "Evaluation.h"
+﻿#include "Evaluation.h"
 #include "ui_Evaluation.h"
 
 #include <map>
@@ -9,12 +9,14 @@
 #include <QUrl>
 #include <QFile>
 #include <QDir>
-#include <QByteArray>
+#include <QString>
 #include <QTextDocument>
 #include <QFileDialog>
 
 #include "ArticleManager.h"
 #include "Settings.h"
+#include "Statistics.h"
+#include "EvaluationView.h"
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, QWidget *parent) :
   QDialog(parent),
@@ -23,162 +25,40 @@ Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, QWidg
   m_settings(settings)
 {
   ui->setupUi(this);
-  ui->webViewOverview->setVisible(false);
-  ui->webViewSoldArticles->setVisible(false);
-  ui->webViewUnsoldArticles->setVisible(false);
+
+  m_statistics = new Statistics();
+
+  m_overview = new EvaluationView(tr("Gesamtübersicht"), this);
+  m_soldArticles = new EvaluationView(tr("Verkaufte Artikel"), this);
+  m_unsoldArticles = new EvaluationView(tr("Nicht verkaufte Artikel"), this);
+
+  ui->tabWidget->addTab(m_overview, m_overview->getName());
+  ui->tabWidget->addTab(m_soldArticles, m_soldArticles->getName());
+  ui->tabWidget->addTab(m_unsoldArticles, m_unsoldArticles->getName());
 }
 
 Evaluation::~Evaluation()
 {
+  delete m_statistics;
   delete ui;
 }
 
 void Evaluation::doEvaluation()
 {
-  m_articleManager->calculateStatistics(&m_volumeOfSale, &m_deduction, &m_deductionPercentage, &m_countOfSales, &m_countOfSoldArticles, &m_articlesPerSale, &m_countOfAllArticles, &m_percentageOfSoldArticles);
-
-  m_volumeOfSaleString = QString("%1 Euro").arg(QString::number(m_volumeOfSale, 'f', 2).replace('.', ','));
-  m_deductionString = QString("%1 Euro").arg(QString::number(m_deduction, 'f', 2).replace('.', ','));
-  m_deductionDisplayString = tr("Einbehalt (%1 Prozent des Umsatzes)").arg(m_deductionPercentage);
-  m_countOfSalesString = QString("%1").arg(m_countOfSales);
-  m_countOfSoldArticlesString = QString("%1").arg(m_countOfSoldArticles);
-  m_articlesPerSaleString = QString::number(m_articlesPerSale, 'f', 1).replace('.', ',');
-  m_countOfAllArticlesString = QString("%1").arg(m_countOfAllArticles);
-  m_percentageOfSoldArticlesString = QString("%1 Prozent").arg(QString::number(m_percentageOfSoldArticles, 'f', 1).replace('.', ','));
-
-  ui->labelVolumeOfSale->setText(m_volumeOfSaleString);
-  ui->labelDeduction->setText(m_deductionString);
-  ui->labelDecuctionDisplay->setText(m_deductionDisplayString);
-  ui->labelCountOfSales->setText(m_countOfSalesString);
-  ui->labelCountOfSoldArticles->setText(m_countOfSoldArticlesString);
-  ui->labelArticlesPerSale->setText(m_articlesPerSaleString);
-  ui->labelCountOfAllArticles->setText(m_countOfAllArticlesString);
-  ui->labelPercentageOfSoldArticles->setText(m_percentageOfSoldArticlesString);
-
+  m_articleManager->calculateStatistics(m_statistics);
   updateWebViews();
-}
-
-void Evaluation::saveOverview()
-{
-  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("Gesamtauswertung")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
-
-  if (outputFile.isEmpty())
-  {
-    return;
-  }
-
-  QPrinter printer(QPrinter::HighResolution); //HighResolution
-  printer.setOutputFormat(QPrinter::PdfFormat);
-  printer.setPageSize(QPrinter::A4);
-  int margin = 5;
-  printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
-  printer.setColorMode(QPrinter::GrayScale);
-  printer.setOutputFileName(outputFile);
-
-  ui->webViewOverview->page()->mainFrame()->print(&printer);
-
-  if (ui->checkBoxOpenOverview->isChecked())
-  {
-    // show pdf with external viewer
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
-  }
-}
-
-void Evaluation::saveSoldArticles()
-{
-  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("VerkaufteArtikel")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
-
-  if (outputFile.isEmpty())
-  {
-    return;
-  }
-
-  QPrinter printer(QPrinter::HighResolution); //HighResolution
-  printer.setOutputFormat(QPrinter::PdfFormat);
-  printer.setPageSize(QPrinter::A4);
-  int margin = 5;
-  printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
-  printer.setColorMode(QPrinter::GrayScale);
-  printer.setOutputFileName(outputFile);
-
-  ui->webViewSoldArticles->page()->mainFrame()->print(&printer);
-
-  if (ui->checkBoxOpenSoldArticles->isChecked())
-  {
-    // show pdf with external viewer
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
-  }
-}
-
-void Evaluation::saveUnsoldArticles()
-{
-  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(tr("UnverkaufteArtikel")), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
-
-  if (outputFile.isEmpty())
-  {
-    return;
-  }
-
-  QPrinter printer(QPrinter::HighResolution); //HighResolution
-  printer.setOutputFormat(QPrinter::PdfFormat);
-  printer.setPageSize(QPrinter::A4);
-  int margin = 5;
-  printer.setPageMargins(margin, margin, margin, margin, QPrinter::Millimeter);
-  printer.setColorMode(QPrinter::GrayScale);
-  printer.setOutputFileName(outputFile);
-
-  ui->webViewUnsoldArticles->page()->mainFrame()->print(&printer);
-
-  if (ui->checkBoxOpenUnsoldArticles->isChecked())
-  {
-    // show pdf with external viewer
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir(outputFile).absolutePath()));
-  }
-}
-
-void Evaluation::on_pushButtonSaveOverview_clicked()
-{
-  saveOverview();
-}
-
-void Evaluation::on_pushButtonSaveSoldArticles_clicked()
-{
-  saveSoldArticles();
-}
-
-void Evaluation::on_pushButtonSaveUnsoldArticles_clicked()
-{
-  saveUnsoldArticles();
-}
-
-void Evaluation::on_webViewOverview_loadFinished(bool loadFinished)
-{
-  if (!loadFinished)
-  {
-    return;
-  }
-  ui->pushButtonSaveOverview->setEnabled(true);
-}
-
-void Evaluation::on_webViewSoldArticles_loadFinished(bool loadFinished)
-{
-  if (!loadFinished)
-  {
-    return;
-  }
-  ui->pushButtonSaveSoldArticles->setEnabled(true);
 }
 
 void Evaluation::updateWebViews()
 {
-  ui->webViewOverview->setContent(createHtmlCodeOverview());
-  ui->webViewSoldArticles->setContent(createHtmlCodeSoldArticles());
-  ui->webViewUnsoldArticles->setContent(createHtmlCodeUnsoldArticles());
+  m_overview->setHtmlContent(createHtmlCodeOverview());
+  m_soldArticles->setHtmlContent(createHtmlCodeSoldArticles());
+  m_unsoldArticles->setHtmlContent(createHtmlCodeUnsoldArticles());
 }
 
-QByteArray Evaluation::createHtmlCodeOverview()
+QString Evaluation::createHtmlCodeOverview()
 {
-  QByteArray html;
+  QString html;
   html.append("<!DOCTYPE html>");
   html.append("<html><head>");
   html.append("<meta charset=\"utf-8\">");
@@ -186,34 +66,47 @@ QByteArray Evaluation::createHtmlCodeOverview()
   html.append("<h1>Zusammenfassung</h1>");
   html.append("<table>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(ui->labelVolumeOfSaleDisplay->text()));
-  html.append(QString("<td>%1</td>").arg(m_volumeOfSaleString));
+  html.append(QString("<td>%1</td>").arg(tr("Umsatz")));
+  html.append(QString("<td>%1</td>").arg(QString("%1 Euro").arg(QString::number(m_statistics->m_volumeOfSale, 'f', 2).replace('.', ','))));
   html.append("</tr>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(m_deductionDisplayString));
-  html.append(QString("<td>%1</td>").arg(m_deductionString));
+  html.append(QString("<td>%1</td>").arg(tr("Einbehalt (%1 Prozent des Umsatzes)").arg(m_statistics->m_deductionPercentage)));
+  html.append(QString("<td>%1</td>").arg(QString("%1 Euro").arg(QString::number(m_statistics->m_deduction, 'f', 2).replace('.', ','))));
   html.append("</tr>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(ui->labelCountOfSalesDisplay->text()));
-  html.append(QString("<td>%1</td>").arg(m_countOfSalesString));
+  html.append(QString("<td>%1</td>").arg(tr("Anzahl der Verkäufe")));
+  html.append(QString("<td>%1</td>").arg(QString("%1").arg(m_statistics->m_countOfSales)));
   html.append("</tr>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(ui->labelCountOfSoldArticlesDisplay->text()));
-  html.append(QString("<td>%1</td>").arg(m_countOfSoldArticlesString));
+  html.append(QString("<td>%1</td>").arg(tr("Anzahl der verkauften Artikel")));
+  html.append(QString("<td>%1</td>").arg(QString("%1").arg(m_statistics->m_countOfSoldArticles)));
   html.append("</tr>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(ui->labelArticlesPerSaleDisplay->text()));
-  html.append(QString("<td>%1</td>").arg(m_articlesPerSaleString));
+  html.append(QString("<td>%1</td>").arg(tr("Artikel pro Verkauf")));
+  html.append(QString("<td>%1</td>").arg(QString::number(m_statistics->m_articlesPerSale, 'f', 1).replace('.', ',')));
   html.append("</tr>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(ui->labelCountOfAllArticlesDisplay->text()));
-  html.append(QString("<td>%1</td>").arg(m_countOfAllArticlesString));
+  html.append(QString("<td>%1</td>").arg(tr("Gesamtanzahl der Artikel")));
+  html.append(QString("<td>%1</td>").arg(QString("%1").arg(m_statistics->m_countOfAllArticles)));
   html.append("</tr>");
   html.append("<tr>");
-  html.append(QString("<td>%1</td>").arg(ui->labelPercentageOfSoldArticlesDisplay->text()));
-  html.append(QString("<td>%1</td>").arg(m_percentageOfSoldArticlesString));
+  html.append(QString("<td>%1</td>").arg(tr("Verkaufte Artikel")));
+  html.append(QString("<td>%1</td>").arg(QString("%1 Prozent").arg(QString::number(m_statistics->m_percentageOfSoldArticles, 'f', 1).replace('.', ','))));
   html.append("</tr>");
   html.append("</table>");
+
+  std::map<QString, int> soldArticlesInRanges = m_articleManager->getSoldArticlesInRanges();
+
+  html.append("<table>");
+  for (auto it = soldArticlesInRanges.begin(); it != soldArticlesInRanges.end(); ++it)
+  {
+    html.append("<tr>");
+    html.append(QString("<td>%1</td>").arg(it->first));
+    html.append(QString("<td>%1</td>").arg(it->second));
+    html.append("</tr>");
+  }
+  html.append("</table>");
+
   html.append("<table>");
   html.append("<tr>");
   html.append("<th>Verkäufernummer</th>");
@@ -221,7 +114,7 @@ QByteArray Evaluation::createHtmlCodeOverview()
   html.append("<th>Auszuzahlen</th>");
   html.append("</tr>");
 
-  std::map<int, double> matrix = m_articleManager->getSellerMatrix();
+  std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
   double payOutFactor = m_articleManager->getPayOutFactor();
 
   for (auto it = matrix.begin(); it != matrix.end(); ++it)
@@ -238,9 +131,9 @@ QByteArray Evaluation::createHtmlCodeOverview()
   return html;
 }
 
-QByteArray Evaluation::createHtmlCodeSoldArticles()
+QString Evaluation::createHtmlCodeSoldArticles()
 {
-  QByteArray html;
+  QString html;
   html.append("<!DOCTYPE html>");
   html.append("<html><head>");
   html.append("<meta charset=\"utf-8\">");
@@ -250,12 +143,12 @@ QByteArray Evaluation::createHtmlCodeSoldArticles()
   html.append("</style>");
   html.append("<title></title></head><body>");
 
-  std::map<int, double> matrix = m_articleManager->getSellerMatrix();
+  std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
   double payOutFactor = m_articleManager->getPayOutFactor();
 
   for (auto it = matrix.begin(); it != matrix.end(); ++it)
   {
-    std::map<int, double> articles = m_articleManager->getSoldArticleMatrix(it->first);
+    std::map<int, double> articles = m_articleManager->getSoldArticles(it->first);
 
     html.append("<div class=\"page\">");
     html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
@@ -294,9 +187,9 @@ QByteArray Evaluation::createHtmlCodeSoldArticles()
   return html;
 }
 
-QByteArray Evaluation::createHtmlCodeUnsoldArticles()
+QString Evaluation::createHtmlCodeUnsoldArticles()
 {
-  QByteArray html;
+  QString html;
   html.append("<!DOCTYPE html>");
   html.append("<html><head>");
   html.append("<meta charset=\"utf-8\">");
@@ -306,12 +199,11 @@ QByteArray Evaluation::createHtmlCodeUnsoldArticles()
   html.append("</style>");
   html.append("<title></title></head><body>");
 
-  std::map<int, double> matrix = m_articleManager->getSellerMatrix();
-  double payOutFactor = m_articleManager->getPayOutFactor();
+  std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
 
   for (auto it = matrix.begin(); it != matrix.end(); ++it)
   {
-    std::map<int, double> unsoldArticles = m_articleManager->getUnsoldArticleMatrix(it->first);
+    std::map<int, double> unsoldArticles = m_articleManager->getUnsoldArticles(it->first);
 
     html.append("<div class=\"page\">");
     html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
@@ -334,14 +226,4 @@ QByteArray Evaluation::createHtmlCodeUnsoldArticles()
   html.append("</body></html>");
 
   return html;
-}
-
-
-void Evaluation::on_webViewUnsoldArticles_loadFinished(bool loadFinished)
-{
-  if (!loadFinished)
-  {
-    return;
-  }
-  ui->pushButtonSaveUnsoldArticles->setEnabled(true);
 }

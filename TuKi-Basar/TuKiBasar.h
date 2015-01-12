@@ -1,4 +1,4 @@
-#ifndef TUKIBASAR_H
+﻿#ifndef TUKIBASAR_H
 #define TUKIBASAR_H
 
 #include <QMainWindow>

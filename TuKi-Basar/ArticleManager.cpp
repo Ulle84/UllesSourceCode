@@ -1,4 +1,6 @@
-#include "ArticleManager.h"
+﻿#include "ArticleManager.h"
+
+#include <map>
 
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
@@ -8,6 +10,7 @@
 #include <QStringList>
 
 #include "Settings.h"
+#include "Statistics.h"
 
 ArticleManager::ArticleManager(Settings* settings, QString fileName)
   : m_settings(settings),
@@ -324,12 +327,12 @@ QString ArticleManager::prizeToString(double prize)
   return string;
 }
 
-void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction, double* deductionPercentage, int* countOfSales, int* countOfSoldArticles, double* articlesPerSale, int* countOfAllArticles, double* percentageOfSoldArticles)
+void ArticleManager::calculateStatistics(Statistics* statistics)
 {
-  *volumeOfSale = 0.0;
-  *countOfSoldArticles = 0;
+  statistics->m_volumeOfSale = 0.0;
+  statistics->m_countOfSoldArticles = 0;
 
-  *deductionPercentage = m_settings->getDeductionPercentage();
+  statistics->m_deductionPercentage = m_settings->getDeductionPercentage();
 
 
   QStringList transactions;
@@ -341,8 +344,8 @@ void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction
     {
       QString transaction = QString("%1 %2").arg((*it)->m_soldOnPc).arg((*it)->m_soldTime);
 
-      *volumeOfSale += (*it)->m_prize;
-      (*countOfSoldArticles)++;
+      statistics->m_volumeOfSale += (*it)->m_prize;
+      (statistics->m_countOfSoldArticles)++;
       if (!transactions.contains(transaction))
       {
         transactions.append(transaction);
@@ -350,36 +353,36 @@ void ArticleManager::calculateStatistics(double* volumeOfSale, double* deduction
     }
   }
 
-  *countOfSales = transactions.length();
-  if (*countOfSales == 0)
+  statistics->m_countOfSales = transactions.length();
+  if (statistics->m_countOfSales == 0)
   {
-    *articlesPerSale = 0;
+    statistics->m_articlesPerSale = 0;
   }
   else
   {
-    *articlesPerSale = *countOfSoldArticles * 1.0 / *countOfSales;
+    statistics->m_articlesPerSale = statistics->m_countOfSoldArticles * 1.0 / statistics->m_countOfSales;
   }
-  *deduction = *volumeOfSale * m_settings->getDeductionPercentage() / 100.0;
+  statistics->m_deduction = statistics->m_volumeOfSale * m_settings->getDeductionPercentage() / 100.0;
 
-  *countOfAllArticles = m_articles.length();
+  statistics->m_countOfAllArticles = m_articles.length();
 
-  if (*countOfAllArticles == 0)
+  if (statistics->m_countOfAllArticles == 0)
   {
-    *percentageOfSoldArticles = 0.0;
+    statistics->m_percentageOfSoldArticles = 0.0;
   }
   else
   {
-    *percentageOfSoldArticles = *countOfSoldArticles * 100.0 / *countOfAllArticles;
+    statistics->m_percentageOfSoldArticles = statistics->m_countOfSoldArticles * 100.0 / statistics->m_countOfAllArticles;
   }
 }
 
-std::map<int, double> ArticleManager::getSellerMatrix()
+std::map<int, double> ArticleManager::getSalesPerSeller()
 {
-  std::map<int, double> matrix;
+  std::map<int, double> map;
 
   for (int i = m_settings->getSellerMin(); i <= m_settings->getSellerMax(); i++)
   {
-    matrix[i] = 0.0;
+    map[i] = 0.0;
   }
 
   for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
@@ -389,21 +392,21 @@ std::map<int, double> ArticleManager::getSellerMatrix()
       continue;
     }
 
-    if (matrix.find((*it)->m_sellerNumber) == matrix.end())
+    if (map.find((*it)->m_sellerNumber) == map.end())
     {
       // this should not happen, since we check the seller number at input
-      matrix[(*it)->m_sellerNumber] = 0.0;
+      map[(*it)->m_sellerNumber] = 0.0;
     }
 
-    matrix[(*it)->m_sellerNumber] += (*it)->m_prize;
+    map[(*it)->m_sellerNumber] += (*it)->m_prize;
   }
 
-  return matrix;
+  return map;
 }
 
-std::map<int, double> ArticleManager::getSoldArticleMatrix(int sellerNumber)
+std::map<int, double> ArticleManager::getSoldArticles(int sellerNumber)
 {
-  std::map<int, double> matrix;
+  std::map<int, double> map;
 
   for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
   {
@@ -417,15 +420,15 @@ std::map<int, double> ArticleManager::getSoldArticleMatrix(int sellerNumber)
       continue;
     }
 
-    matrix[(*it)->m_articleNumber] = (*it)->m_prize;
+    map[(*it)->m_articleNumber] = (*it)->m_prize;
   }
 
-  return matrix;
+  return map;
 }
 
-std::map<int, double> ArticleManager::getUnsoldArticleMatrix(int sellerNumber)
+std::map<int, double> ArticleManager::getUnsoldArticles(int sellerNumber)
 {
-  std::map<int, double> matrix;
+  std::map<int, double> map;
 
   for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
   {
@@ -439,10 +442,62 @@ std::map<int, double> ArticleManager::getUnsoldArticleMatrix(int sellerNumber)
       continue;
     }
 
-    matrix[(*it)->m_articleNumber] = (*it)->m_prize;
+    map[(*it)->m_articleNumber] = (*it)->m_prize;
   }
 
-  return matrix;
+  return map;
+}
+
+std::map<int, int> ArticleManager::getSoldArticlesPerSeller()
+{
+  std::map<int, int> map;
+
+  for (int i = m_settings->getSellerMin(); i <= m_settings->getSellerMax(); i++)
+  {
+    map[i] = 0;
+  }
+
+  for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+  {
+    if ((*it)->m_soldOnPc == 0)
+    {
+      continue;
+    }
+
+    if (map.find((*it)->m_sellerNumber) == map.end())
+    {
+      // this should not happen, since we check the seller number at input
+      map[(*it)->m_sellerNumber] = 0;
+    }
+
+    map[(*it)->m_sellerNumber]++;
+  }
+
+  return map;
+}
+
+std::map<QString, int> ArticleManager::getSoldArticlesInRanges()
+{
+  //TODO think about performance
+
+  std::map<QString, int> output;
+
+  int maxCountOfArticles = m_settings->getArticleMax() - m_settings->getArticleMin() + 1;
+
+  for (int i = 0; i <= maxCountOfArticles; i += 10)
+  {
+    output[QString("%1 - %2").arg(i).arg(i+9)] = 0;
+  }
+
+  std::map<int, int> soldArticlesPerSeller = getSoldArticlesPerSeller();
+
+  for (auto it = soldArticlesPerSeller.begin(); it != soldArticlesPerSeller.end(); ++it)
+  {
+    int value = it->second / 10;
+    output[QString("%1 - %2").arg(value).arg(value+9)]++;
+  }
+
+  return output;
 }
 
 void ArticleManager::sync(ArticleManager *other)

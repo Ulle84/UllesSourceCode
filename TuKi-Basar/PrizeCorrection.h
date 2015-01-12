@@ -1,4 +1,4 @@
-#ifndef PRIZECORRECTION_H
+﻿#ifndef PRIZECORRECTION_H
 #define PRIZECORRECTION_H
 
 #include <QDialog>

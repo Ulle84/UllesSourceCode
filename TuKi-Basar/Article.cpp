@@ -1,4 +1,4 @@
-#include "Article.h"
+﻿#include "Article.h"
 
 Article::Article(unsigned int articleNumber, unsigned int sellerNumber, unsigned int soldOnPc, double prize, QString size, QString description, QString soldTime)
   : m_articleNumber(articleNumber),

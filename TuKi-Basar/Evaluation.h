@@ -1,10 +1,12 @@
-#ifndef EVALUATION_H
+﻿#ifndef EVALUATION_H
 #define EVALUATION_H
 
 #include <QDialog>
 
 class ArticleManager;
 class Settings;
+class EvaluationView;
+class Statistics;
 
 namespace Ui {
 class Evaluation;
@@ -19,45 +21,21 @@ public:
   ~Evaluation();
 
   void doEvaluation();
-  void saveOverview();
-  void saveSoldArticles();
-  void saveUnsoldArticles();
-
-private slots:
-  void on_pushButtonSaveOverview_clicked();
-  void on_pushButtonSaveSoldArticles_clicked();
-  void on_pushButtonSaveUnsoldArticles_clicked();
-  void on_webViewOverview_loadFinished(bool loadFinished);
-  void on_webViewSoldArticles_loadFinished(bool loadFinished);
-  void on_webViewUnsoldArticles_loadFinished(bool loadFinished);
 
 private:
   void updateWebViews();
-  QByteArray createHtmlCodeOverview();
-  QByteArray createHtmlCodeSoldArticles();
-  QByteArray createHtmlCodeUnsoldArticles();
+  QString createHtmlCodeOverview();
+  QString createHtmlCodeSoldArticles();
+  QString createHtmlCodeUnsoldArticles();
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;
   Settings* m_settings;
+  EvaluationView* m_overview;
+  EvaluationView* m_soldArticles;
+  EvaluationView* m_unsoldArticles;
 
-  double m_volumeOfSale;
-  double m_deduction;
-  double m_deductionPercentage;
-  int m_countOfSales;
-  int m_countOfSoldArticles;
-  double m_articlesPerSale;
-  int m_countOfAllArticles;
-  double m_percentageOfSoldArticles;
-
-  QString m_volumeOfSaleString;
-  QString m_deductionString;
-  QString m_deductionDisplayString;
-  QString m_countOfSalesString;
-  QString m_countOfSoldArticlesString;
-  QString m_articlesPerSaleString;
-  QString m_countOfAllArticlesString;
-  QString m_percentageOfSoldArticlesString;
+  Statistics* m_statistics;
 };
 
 #endif // EVALUATION_H

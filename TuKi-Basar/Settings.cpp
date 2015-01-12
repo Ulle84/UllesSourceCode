@@ -1,4 +1,4 @@
-#include "Settings.h"
+﻿#include "Settings.h"
 #include "ui_Settings.h"
 
 #include <QMessageBox>
