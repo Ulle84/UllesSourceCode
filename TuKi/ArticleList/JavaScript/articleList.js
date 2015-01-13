@@ -6,6 +6,10 @@ function save(sellerNumber) {
 
     var content = "Article List\nVersion 1.0\n" + sellerNumber + "\n";
 
+    content += window.document.getElementById("firstname").value + "\n";
+    content += window.document.getElementById("lastname").value + "\n";
+    content += window.document.getElementById("phone").value + "\n";
+
     var data = window.document.getElementsByClassName("data");
 
     for (var i = 0; i < data.length; i++) {

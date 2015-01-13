@@ -44,9 +44,62 @@ if ($sellerNumber == 0) {
     exit;
 }
 
-echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
+echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>';
 
+$minArticleNumber = 100;
+$maxArticleNumber = 199;
+
+
+$fileName = "../Data/articleList_" . $sellerNumber . ".txt";
+$articleDescription = array();
+$size = array();
+$price = array();
+$articleNumber = array();
+if (file_exists($fileName)) {
+    $file = fopen($fileName, "r");
+
+    $fileDescription = rtrim(fgets($file));
+    $versionNumber = rtrim(fgets($file));
+    $sellerNumberFile = rtrim(fgets($file));
+    $firstName = rtrim(fgets($file));
+    $lastName = rtrim(fgets($file));
+    $phone = rtrim(fgets($file));
+
+    //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
+    for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
+        $articleNumber[$i] = rtrim(fgets($file));
+        $price[$i] = rtrim(fgets($file));
+        $size[$i] = rtrim(fgets($file));
+        $articleDescription[$i] = rtrim(fgets($file));
+    }
+    fclose($file);
+} else {
+    for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
+        $price[$i] = "";
+        $size[$i] = "";
+        $articleDescription[$i] = "";
+    }
+}
+
+echo '<table>';
+echo '<tr>';
+echo '<td>Vorname</td>';
+echo '<td><input id="firstname" onblur="save(' . $sellerNumber . ')" onchange="save(' . $sellerNumber . ')" value="' . htmlspecialchars($firstName) . '" type="text" size="30"/></td>';
+echo '</tr>';
+
+echo '<tr>';
+echo '<td>Nachname</td>';
+echo '<td><input id="lastname" onblur="save(' . $sellerNumber . ')" onchange="save(' . $sellerNumber . ')" value="' . htmlspecialchars($lastName) . '" type="text" size="30"/></td>';
+echo '</tr>';
+
+echo '<tr>';
+echo '<td>Telefonnummer (für Rückfragen)</td>';
+echo '<td><input id="phone" onblur="save(' . $sellerNumber . ')" onchange="save(' . $sellerNumber . ')" value="' . htmlspecialchars($phone) . '" type="text" size="30"/></td>';
+echo '</tr>';
+echo '</table>';
 ?>
+
+<br />
 
 <table>
     <tr>
@@ -57,38 +110,7 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
     </tr>
 
     <?php
-    $minArticleNumber = 100;
-    $maxArticleNumber = 199;
 
-
-    $fileName = "../Data/articleList_" . $sellerNumber . ".txt";
-    $articleDescription = array();
-    $size = array();
-    $price = array();
-    $articleNumber = array();
-    if (file_exists($fileName)) {
-
-        $file = fopen($fileName, "r");
-
-        $fileDescription = rtrim(fgets($file));
-        $versionNumber = rtrim(fgets($file));
-        $sellerNumberFile = rtrim(fgets($file));
-
-        //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
-        for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-            $articleNumber[$i] = rtrim(fgets($file));
-            $price[$i] = rtrim(fgets($file));
-            $size[$i] = rtrim(fgets($file));
-            $articleDescription[$i] = rtrim(fgets($file));
-        }
-        fclose($file);
-    } else {
-        for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-            $price[$i] = "";
-            $size[$i] = "";
-            $articleDescription[$i] = "";
-        }
-    }
 
 
     for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
@@ -106,8 +128,7 @@ echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>'
 
 
     echo '<br/>';
-    //echo '<input type="button" value="Tabelle auf Server speichern" onclick="save(' . $sellerNumber . ')"/>';
-
+    echo '<input type="button" value="Tabelle Speichern" onclick="save(' . $sellerNumber . ')"/>';
     echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="print(\'' . $id . '\')"/> <br/>';
 
     ?>
