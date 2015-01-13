@@ -62,6 +62,8 @@ void MainWindow::on_webView_loadFinished(bool loadFinished)
 
 void MainWindow::on_pushButtonStart_clicked()
 {
+  QString fontFamily = "Calibri, Helvetica, Times New Roman, Verdana";
+
   if (ui->spinBoxProductMax->value() < ui->spinBoxProductMin->value())
   {
    QMessageBox messageBox;
@@ -102,7 +104,7 @@ void MainWindow::on_pushButtonStart_clicked()
   int numSellers  = ui->spinBoxSellerMax->value()  - ui->spinBoxProductMin->value() + 1;
   int numProducts = ui->spinBoxProductMax->value() - ui->spinBoxProductMin->value() + 1;
   int numberOfCodes = numSellers * numProducts;
-  const int fontSize = 24;
+  const int fontSize = 20;
 
   const int svgWidth = 208; //TODO calculate
   const int svgHeight = 100;
@@ -135,6 +137,11 @@ void MainWindow::on_pushButtonStart_clicked()
       QDomNodeList rects = svg.elementsByTagName("rect");
       for (unsigned int k = 0; k < rects.length(); k++)
       {
+        double x = rects.at(k).toElement().attribute("x").toDouble();
+
+        rects.at(k).toElement().setAttribute("y", 67);
+        rects.at(k).toElement().setAttribute("x", QString::number(x + 47.5));
+
         if (k == 0)
         {
           rects.at(k).toElement().setAttribute("width", svgWidth);
@@ -148,24 +155,26 @@ void MainWindow::on_pushButtonStart_clicked()
 
       // number seller
       QDomElement textSeller = domDocument.createElement("text");
-      QDomText textSellerContent = domDocument.createTextNode(QString("V: %1").arg(ConversionHelper::numberToString(i)));
-      textSeller.setAttribute("x", 60);
-      textSeller.setAttribute("y", 50);
+      QDomText textSellerContent = domDocument.createTextNode(QString("%1").arg(ConversionHelper::numberToString(i)));
+      textSeller.setAttribute("x", 76);
+      textSeller.setAttribute("y", 18);
       textSeller.setAttribute("text-anchor", "middle");
-      textSeller.setAttribute("font-family", "Helvetica");
+      textSeller.setAttribute("font-family", fontFamily);
       textSeller.setAttribute("font-size", fontSize);
+      textSeller.setAttribute("font-weight", "bold");
       textSeller.setAttribute("fill", "#000000");
       textSeller.appendChild(textSellerContent);
       addHere.appendChild(textSeller);
 
       // number product
       QDomElement textProduct = domDocument.createElement("text");
-      QDomText textProductContent = domDocument.createTextNode(QString("A: %1").arg(ConversionHelper::numberToString(j)));
-      textProduct.setAttribute("x", 150);
-      textProduct.setAttribute("y", 50);
+      QDomText textProductContent = domDocument.createTextNode(QString("%1").arg(ConversionHelper::numberToString(j)));
+      textProduct.setAttribute("x", 132);
+      textProduct.setAttribute("y", 18);
       textProduct.setAttribute("text-anchor", "middle");
-      textProduct.setAttribute("font-family", "Helvetica");
+      textProduct.setAttribute("font-family", fontFamily);
       textProduct.setAttribute("font-size", fontSize);
+      textProduct.setAttribute("font-weight", "bold");
       textProduct.setAttribute("fill", "#000000");
       textProduct.appendChild(textProductContent);
       addHere.appendChild(textProduct);
@@ -184,14 +193,14 @@ void MainWindow::on_pushButtonStart_clicked()
       textPreis.setAttribute("x", 30);
       textPreis.setAttribute("y", 84);
       textPreis.setAttribute("text-anchor", "middle");
-      textPreis.setAttribute("font-family", "Helvetica");
+      textPreis.setAttribute("font-family", fontFamily);
       textPreis.setAttribute("font-size", fontSize);
       textPreis.setAttribute("fill", "#000000");
       textPreis.appendChild(textContentPreis);
       addHere.appendChild(textPreis);*/
 
       // seperator between article and size
-      int topPrize = 52;
+      int topPrize = 21;
       QDomElement seperator2 = domDocument.createElement("rect");
       seperator2.setAttribute("height", 1);
       seperator2.setAttribute("width", svgWidth);
@@ -201,11 +210,11 @@ void MainWindow::on_pushButtonStart_clicked()
 
       // size
       QDomElement textSize = domDocument.createElement("text");
-      QDomText textContentSize = domDocument.createTextNode("Groesse ");
-      textSize.setAttribute("x", 10);
-      textSize.setAttribute("y", 73);
+      QDomText textContentSize = domDocument.createTextNode("Größe:");
+      textSize.setAttribute("x", 33);
+      textSize.setAttribute("y", topPrize + 18);
       textSize.setAttribute("text-anchor", "left");
-      textSize.setAttribute("font-family", "Helvetica");
+      textSize.setAttribute("font-family", fontFamily);
       textSize.setAttribute("font-size", fontSize);
       textSize.setAttribute("fill", "#000000");
       textSize.appendChild(textContentSize);
@@ -216,28 +225,36 @@ void MainWindow::on_pushButtonStart_clicked()
       seperator3.setAttribute("height", 1);
       seperator3.setAttribute("width", svgWidth);
       seperator3.setAttribute("x", 0);
-      seperator3.setAttribute("y", 77);
+      seperator3.setAttribute("y", topPrize + 21);
       svg.appendChild(seperator3);
 
       // price
       QDomElement textPreis = domDocument.createElement("text");
-      QDomText textContentPreis = domDocument.createTextNode("Preis ");
-      textPreis.setAttribute("x", 10);
-      textPreis.setAttribute("y", 98);
+      QDomText textContentPreis = domDocument.createTextNode("Preis:");
+      textPreis.setAttribute("x", 44);
+      textPreis.setAttribute("y", topPrize + 38);
       textPreis.setAttribute("text-anchor", "left");
-      textPreis.setAttribute("font-family", "Helvetica");
+      textPreis.setAttribute("font-family", fontFamily);
       textPreis.setAttribute("font-size", fontSize);
       textPreis.setAttribute("fill", "#000000");
       textPreis.appendChild(textContentPreis);
       svg.appendChild(textPreis);
 
-      // vertical seperator
+      // seperator between prize and code
       QDomElement seperator4 = domDocument.createElement("rect");
-      seperator4.setAttribute("height", svgHeight - topPrize);
-      seperator4.setAttribute("width", 1);
-      seperator4.setAttribute("x", 128);
-      seperator4.setAttribute("y", topPrize);
+      seperator4.setAttribute("height", 1);
+      seperator4.setAttribute("width", svgWidth);
+      seperator4.setAttribute("x", 0);
+      seperator4.setAttribute("y", topPrize + 41);
       svg.appendChild(seperator4);
+
+      // vertical seperator
+      QDomElement seperator5 = domDocument.createElement("rect");
+      seperator5.setAttribute("height", svgHeight - 37);
+      seperator5.setAttribute("width", 1);
+      seperator5.setAttribute("x", svgWidth / 2);
+      seperator5.setAttribute("y", 0);
+      svg.appendChild(seperator5);
 
       QStringList style;
       style.append(QString("position: absolute"));
@@ -270,10 +287,10 @@ void MainWindow::on_pushButtonStart_clicked()
 
       if (offcut != 0)
       {
-        for (int j = 0; j < fill; j++)
-        {
-          //TODO refactor double code!
+        index += fill;
 
+        /*for (int j = 0; j < fill; j++)
+        {
           QDomDocument domDocument;
           QDomElement svg = domDocument.createElement("svg");
           svg.setAttribute("width", svgWidth);
@@ -284,11 +301,11 @@ void MainWindow::on_pushButtonStart_clicked()
 
           // seller
           QDomElement textSeller = domDocument.createElement("text");
-          QDomText textContentSeller = domDocument.createTextNode(QString("Verkaeufer %1").arg(ConversionHelper::numberToString(i)));
+          QDomText textContentSeller = domDocument.createTextNode(QString("Verkäufer %1").arg(ConversionHelper::numberToString(i)));
           textSeller.setAttribute("x", 10);
           textSeller.setAttribute("y", 23);
           textSeller.setAttribute("text-anchor", "left");
-          textSeller.setAttribute("font-family", "Helvetica");
+          textSeller.setAttribute("font-family", fontFamily);
           textSeller.setAttribute("font-size", fontSize);
           textSeller.setAttribute("fill", "#000000");
           textSeller.appendChild(textContentSeller);
@@ -308,7 +325,7 @@ void MainWindow::on_pushButtonStart_clicked()
           textArticle.setAttribute("x", 10);
           textArticle.setAttribute("y", 48);
           textArticle.setAttribute("text-anchor", "left");
-          textArticle.setAttribute("font-family", "Helvetica");
+          textArticle.setAttribute("font-family", fontFamily);
           textArticle.setAttribute("font-size", fontSize);
           textArticle.setAttribute("fill", "#000000");
           textArticle.appendChild(textContentArticle);
@@ -324,11 +341,11 @@ void MainWindow::on_pushButtonStart_clicked()
 
           // size
           QDomElement textSize = domDocument.createElement("text");
-          QDomText textContentSize = domDocument.createTextNode("Groesse ");
+          QDomText textContentSize = domDocument.createTextNode("Größe ");
           textSize.setAttribute("x", 10);
           textSize.setAttribute("y", 73);
           textSize.setAttribute("text-anchor", "left");
-          textSize.setAttribute("font-family", "Helvetica");
+          textSize.setAttribute("font-family", fontFamily);
           textSize.setAttribute("font-size", fontSize);
           textSize.setAttribute("fill", "#000000");
           textSize.appendChild(textContentSize);
@@ -348,7 +365,7 @@ void MainWindow::on_pushButtonStart_clicked()
           textPreis.setAttribute("x", 10);
           textPreis.setAttribute("y", 98);
           textPreis.setAttribute("text-anchor", "left");
-          textPreis.setAttribute("font-family", "Helvetica");
+          textPreis.setAttribute("font-family", fontFamily);
           textPreis.setAttribute("font-size", fontSize);
           textPreis.setAttribute("fill", "#000000");
           textPreis.appendChild(textContentPreis);
@@ -366,7 +383,7 @@ void MainWindow::on_pushButtonStart_clicked()
           style.append(QString("position: absolute"));
           style.append(QString("top:      %1px").arg(ConversionHelper::doubleToInt(globalMarginTop + (2 * globalMarginTop * (index / (lines * columns))) + marginTop + (index / columns) * height)));
           style.append(QString("left:     %1px").arg(ConversionHelper::doubleToInt(globalMarginLeft + marginLeft + (index % columns) * width)));
-          style.append(QString("border:   1px solid black")); //TODO remove after testing
+          //style.append(QString("border:   1px solid black")); //TODO remove after testing
           style.append(QString("height:   %1px").arg(height - marginTop  - marginBottom));
           style.append(QString("width:    %1px").arg(width  - marginLeft - marginRight));
 
@@ -380,7 +397,7 @@ void MainWindow::on_pushButtonStart_clicked()
           html.append("</div>");
 
           index++;
-        }
+        }*/
       }
     }
   }
