@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -148,7 +148,7 @@
      <x>0</x>
      <y>0</y>
      <width>720</width>
-     <height>21</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
@@ -159,7 +159,7 @@
   <customwidget>
    <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>QtWebKit/QWebView</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,4 +1,4 @@
-#ifndef BARCODEGENERATOR_H
+﻿#ifndef BARCODEGENERATOR_H
 #define BARCODEGENERATOR_H
 
 #include <QString>

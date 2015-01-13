@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -21,7 +21,11 @@ private slots:
   void on_pushButtonStart_clicked();
 
 private:
+  bool toXml();
+  bool fromXml();
+
   Ui::MainWindow* ui;
+  QString m_fileName;
 };
 
 #endif // MAINWINDOW_H

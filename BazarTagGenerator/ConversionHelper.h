@@ -1,4 +1,4 @@
-#ifndef CONVERSIONHELPER_H
+﻿#ifndef CONVERSIONHELPER_H
 #define CONVERSIONHELPER_H
 
 #include <QString>

@@ -1,4 +1,4 @@
-#include <QDebug>
+﻿#include <QDebug>
 #include <QDateTime>
 #include <QPrinter>
 #include <QWebFrame>
@@ -11,6 +11,8 @@
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -20,14 +22,18 @@
 
 MainWindow::MainWindow(QWidget* parent) :
   QMainWindow(parent),
-  ui(new Ui::MainWindow)
+  ui(new Ui::MainWindow),
+  m_fileName("Settings.xml")
 {
   ui->setupUi(this);
   ui->progressBar->setValue(0);
+
+  fromXml();
 }
 
 MainWindow::~MainWindow()
 {
+  toXml();
   delete ui;
 }
 
@@ -384,4 +390,86 @@ void MainWindow::on_pushButtonStart_clicked()
 
   ui->webView->setContent(html);
   ui->pushButtonStart->setEnabled(true);
+}
+
+bool MainWindow::toXml()
+{
+  QFile file(m_fileName);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+      return false;
+    }
+
+    QXmlStreamWriter xml(&file);
+    xml.setAutoFormatting(true);
+    xml.setAutoFormattingIndent(2);
+    xml.writeStartDocument();
+
+    xml.writeStartElement("Settings");
+
+    xml.writeTextElement("SellerMin", QString("%1").arg(ui->spinBoxSellerMin->value()));
+    xml.writeTextElement("SellerMax", QString("%1").arg(ui->spinBoxSellerMax->value()));
+    xml.writeTextElement("ProductMin", QString("%1").arg(ui->spinBoxProductMin->value()));
+    xml.writeTextElement("ProductMax", QString("%1").arg(ui->spinBoxProductMax->value()));
+    xml.writeTextElement("FillPages", QString("%1").arg(ui->checkBoxFillPages->isChecked() ? "true" : "false"));
+
+    xml.writeEndElement(); // Settings
+    xml.writeEndDocument();
+
+    file.close();
+
+    return true;
+}
+
+bool MainWindow::fromXml()
+{
+  QFile file(m_fileName);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+      return false;
+    }
+
+    QXmlStreamReader xml(&file);
+
+    if (!xml.readNextStartElement())
+    {
+      return false;
+    }
+
+    if (xml.name() != "Settings")
+    {
+      return false;
+    }
+
+    while (xml.readNextStartElement())
+    {
+      if (xml.name() == "SellerMin")
+      {
+        ui->spinBoxSellerMin->setValue(xml.readElementText().toInt());
+      }
+      else if (xml.name() == "SellerMax")
+      {
+        ui->spinBoxSellerMax->setValue(xml.readElementText().toInt());
+      }
+      else if (xml.name() == "ProductMin")
+      {
+        ui->spinBoxProductMin->setValue(xml.readElementText().toInt());
+      }
+      else if (xml.name() == "ProductMax")
+      {
+        ui->spinBoxProductMax->setValue(xml.readElementText().toInt());
+      }
+      else if (xml.name() == "FillPages")
+      {
+        ui->checkBoxFillPages->setChecked(xml.readElementText() == "true");
+      }
+      else
+      {
+        xml.skipCurrentElement();
+      }
+    }
+
+    return true;
 }
