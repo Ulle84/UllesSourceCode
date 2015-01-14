@@ -6,12 +6,12 @@
     <link rel="stylesheet" type="text/css" href="CSS/global.css" media="all"/>
 </head>
 <body>
-<a href="PHP/articleList.php">Artikel Liste erstellen</a><br />
-<a href="PHP/articleList.php?id=8525ec55e7bbcd3f75d7896b8f8a8937">Artikel Liste 100 erstellen</a><br />
-<a href="PHP/articleList.php?id=dd2fe1a78ce9951be0fdab0a4fcf65e4">Artikel Liste 101 erstellen</a><br />
-<a href="PHP/articleList.php?id=5674c311f6b0d617bb2df32717875e4c">Artikel Liste 102 erstellen</a><br />
-<a href="PHP/printArticleList.php">Artikel Liste drucken</a><br />
-<a href="PHP/printAll.php">Alle Artikellisten drucken</a><br />
+<a href="PHP/articleListView.php">Artikel Liste erstellen</a><br />
+<a href="PHP/articleListView.php?seller=100&id=6150d8934a121391ac6a7e04d190b0ca">Artikel Liste 100 erstellen</a><br />
+<a href="PHP/articleListView.php?seller=101&id=3163ea32dba85ee127bcd8e5a5a65365">Artikel Liste 101 erstellen</a><br />
+<a href="PHP/articleListView.php?seller=102&id=52de83d17e4aeb278995be119e33aa2b">Artikel Liste 102 erstellen</a><br />
+<a href="PHP/articleListPrintView.php.php">Artikel Liste drucken</a><br />
+<a href="PHP/articleListPrintAllView.php.php">Alle Artikellisten drucken</a><br />
 <a href="PHP/uniqueIdListCreator.php">Unique IDs (für 0 - 999) erstellen</a><br />
 
 </body>
