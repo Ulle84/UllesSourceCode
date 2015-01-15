@@ -6,10 +6,27 @@
     <link rel="stylesheet" type="text/css" href="../CSS/global.css" media="all"/>
 </head>
 <body>
-<div class="code">
+
+<?php
+
+require_once 'UniqueIdList.php';
+
+$uniqueIdList = new UniqueIdList();
+$uniqueIdList->createNewList(0, 999);
+$uniqueIdList->printList();
+
+
+?>
+
+
+<!--<div class="code">
+
+
+
+
     <?php
 
-    $startNumberOfUniqueIds = 0;
+    /*$startNumberOfUniqueIds = 0;
     $endNumberOfUniqueIds = 999;
 
     $uniqueIds = array();
@@ -28,11 +45,9 @@
     for ($i = $startNumberOfUniqueIds; $i <= $endNumberOfUniqueIds; $i++) {
         fwrite($fh, $uniqueIds[$i] . " = " . $i . "\n");
     }
-    fclose($fh);
-
-
+    fclose($fh);*/
 
     ?>
-</div>
+</div>-->
 </body>
 </html>

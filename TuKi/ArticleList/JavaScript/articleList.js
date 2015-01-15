@@ -1,10 +1,10 @@
-var sellerNumberStatic = 0;
+var sellerNumber = 0;
 
-function init (sellerNumber) {
-    sellerNumberStatic = sellerNumber;
+function init (sellerNumberValue) {
+    sellerNumber = sellerNumberValue;
 }
 
-function save(sellerNumber, checkInput, confirmation) {
+function save(checkInput, confirmation) {
     /*var httpResponse = document.getElementById("httpResponse");
     httpResponse.textContent = "";
 
