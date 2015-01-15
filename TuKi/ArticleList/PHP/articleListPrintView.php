@@ -51,6 +51,9 @@ if (file_exists($fileName)) {
     $fileDescription = rtrim(fgets($file));
     $versionNumber = rtrim(fgets($file));
     $sellerNumberFile = rtrim(fgets($file));
+    $firstName = rtrim(fgets($file));
+    $lastName = rtrim(fgets($file));
+    $phone = rtrim(fgets($file));
 
     //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
     for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
@@ -79,7 +82,7 @@ $rowCount = 0;
 for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
     if ($rowCount % 41 == 0 && $i < $maxArticleNumber) {
         // Header
-        $pdf->Cell(200, 10, utf8_decode('Verkäufer Nummer: ') . $sellerNumber);
+        $pdf->Cell(200, 10, utf8_decode('Verkäufer Nummer: ') . $sellerNumber . ' - ' . $firstName . ' ' . $lastName . ' - ' . $phone);
         $pdf->Ln();
         $pdf->SetFont('', 'B');
         for ($j = 0; $j < count($header); $j++) {

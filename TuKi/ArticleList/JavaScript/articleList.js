@@ -1,10 +1,25 @@
-function save(sellerNumber) {
+var sellerNumberStatic = 0;
+
+function init (sellerNumber) {
+    sellerNumberStatic = sellerNumber;
+}
+
+function save(sellerNumber, checkInput, confirmation) {
     /*var httpResponse = document.getElementById("httpResponse");
     httpResponse.textContent = "";
 
     document.getElementById("httpResponse").innerHTML = "";*/
 
+    var inputChecked = true;
+    if (checkInput) {
+        inputChecked = checkAllInputs();
+    }
+
     var content = "Article List\nVersion 1.0\n" + sellerNumber + "\n";
+
+    content += window.document.getElementById("firstname").value + "\n";
+    content += window.document.getElementById("lastname").value + "\n";
+    content += window.document.getElementById("phone").value + "\n";
 
     var data = window.document.getElementsByClassName("data");
 
@@ -21,11 +36,13 @@ function save(sellerNumber) {
 
     var xmlhttp = new XMLHttpRequest();
 
-    /*xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            httpResponse.textContent = xmlhttp.responseText;
+    if (confirmation && inputChecked) {
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                alert(xmlhttp.responseText);
+            }
         }
-    }*/
+    }
 
     xmlhttp.open("POST", "../PHP/articleListSaver.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -33,10 +50,40 @@ function save(sellerNumber) {
 }
 
 function print(id) {
-    //if (confirm("Haben Sie die Artikelliste gespeichert?")) {
-        //window.location.href = "../PHP/printArticleList.php";
+    if (checkAllInputs()) {
         window.open("../PHP/printArticleList.php?id=" + id);
-    //}
+    }
+}
+
+function checkAllInputs() {
+    var data = window.document.getElementsByClassName("data");
+
+    var missingPrices = 0;
+    for (var i = 0; i < data.length; i++) {
+        var dataContent = data[i].getElementsByTagName("td");
+
+        if (dataContent[1].firstChild.value == "")
+        {
+            if (dataContent[3].firstChild.value != "")
+            {
+                missingPrices++;
+            }
+        }
+    }
+
+    if (missingPrices > 0) {
+        if (missingPrices == 1) {
+            alert("Bei einem Artikel ist eine Artikelbeschreibung, aber kein Preis angegeben.\nBitte tragen Sie einen Preis ein!");
+            return false;
+        }
+        else {
+            alert("Bei " + missingPrices + " Artikeln sind Artikelbeschreibungen, aber keine Preise angegeben.\nBitte tragen Sie die Preise ein!");
+            return false;
+        }
+    }
+    else {
+        return true;
+    }
 }
 
 function checkContent(element) {

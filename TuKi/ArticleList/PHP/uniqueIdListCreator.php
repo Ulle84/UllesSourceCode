@@ -9,8 +9,8 @@
 <div class="code">
     <?php
 
-    $startNumberOfUniqueIds = 100;
-    $endNumberOfUniqueIds = 199;
+    $startNumberOfUniqueIds = 0;
+    $endNumberOfUniqueIds = 999;
 
     $uniqueIds = array();
 

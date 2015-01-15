@@ -41,7 +41,7 @@ table {
 }
 
 th, td {
-    text-align: center;
+    text-align: left;
     min-width: 30px;
     padding: 5px 5px 5px 5px;
     vertical-align: middle;
