@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClassGenerator", "ClassGenerator.vcxproj", "{C25B05BC-47E4-30AB-931B-28C1DE39D86E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C25B05BC-47E4-30AB-931B-28C1DE39D86E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C25B05BC-47E4-30AB-931B-28C1DE39D86E}.Debug|Win32.Build.0 = Debug|Win32
+		{C25B05BC-47E4-30AB-931B-28C1DE39D86E}.Release|Win32.ActiveCfg = Release|Win32
+		{C25B05BC-47E4-30AB-931B-28C1DE39D86E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
