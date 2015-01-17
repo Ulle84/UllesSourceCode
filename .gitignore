@@ -7,3 +7,7 @@ TuKi/ArticleList/.idea/workspace.xml
 build-TuKi-Basar-Qt_4_8_6-Debug/*
 
 *.autosave
+
+TuKi/ArticleList/Data/mailAddresses.txt
+
+TuKi/ArticleList/Data/mailAddressesBackup.txt

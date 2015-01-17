@@ -12,6 +12,7 @@
 <a href="articleListPrintAll.php">Alle Artikellisten drucken</a><br />
 <a href="uniqueIdListCreator.php">Neue Zugangscodes für Verkäufer erstellen (ACHTUNG! Diese Funktion macht die alten Zugangscodes ungültig!)</a><br />
 <a href="uniqueIdListView.php">Zugangscodes für Verkäufer ansehen</a><br />
+<a href="notifySellers.php">Zugangscodes an Verkäufer senden</a><br />
 </body>
 </html>
 

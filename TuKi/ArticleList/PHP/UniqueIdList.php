@@ -45,6 +45,11 @@ class UniqueIdList
         return $this->uniqueIds[$sellerNumber] == $id;
     }
 
+    public function getId($sellerNumber)
+    {
+        return $this->uniqueIds[$sellerNumber];
+    }
+
     public function writeToFile($fileName)
     {
         $fh = fopen($fileName, "w");

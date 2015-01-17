@@ -72,7 +72,8 @@ function checkAllInputs() {
 
     var data = window.document.getElementsByClassName("data");
 
-    var missingPrices = 0;
+    var missingPrices = new Array();
+
     for (var i = 0; i < data.length; i++) {
         var dataContent = data[i].getElementsByTagName("td");
 
@@ -80,18 +81,18 @@ function checkAllInputs() {
         {
             if (dataContent[3].firstChild.value != "")
             {
-                missingPrices++;
+                missingPrices.push(dataContent[0].textContent);
             }
         }
     }
 
-    if (missingPrices > 0) {
-        if (missingPrices == 1) {
-            alert("Bei einem Artikel ist eine Artikelbeschreibung, aber kein Preis angegeben.\nBitte tragen Sie einen Preis ein!");
+    if (missingPrices.length > 0) {
+        if (missingPrices.length == 1) {
+            alert("Beim Artikel " + missingPrices[0] + " ist eine Artikelbeschreibung, aber kein Preis angegeben.\nBitte tragen Sie einen Preis ein!");
             return false;
         }
         else {
-            alert("Bei " + missingPrices + " Artikeln sind Artikelbeschreibungen, aber keine Preise angegeben.\nBitte tragen Sie die Preise ein!");
+            alert("Bei den Artikeln " + missingPrices.join(", ") + " sind Artikelbeschreibungen, aber keine Preise angegeben.\nBitte tragen Sie die Preise ein!");
             return false;
         }
     }
