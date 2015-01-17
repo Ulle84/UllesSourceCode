@@ -98,3 +98,10 @@ tr:last-child > td {
 .wrapLongText {
     max-width: 600px;
 }
+
+#navigation {
+    text-align: right;
+    padding-bottom: 10px;
+    border-bottom: 1px solid slategray;
+    margin-bottom: 10px;
+}

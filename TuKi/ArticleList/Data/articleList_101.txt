@@ -3,7 +3,7 @@ Version 1.0
 101
 Vorname
 Nachname
-0176...
+Telefon
 100
 
 

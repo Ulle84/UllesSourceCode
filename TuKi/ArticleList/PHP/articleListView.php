@@ -1,145 +1,44 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<html>
-<head>
-    <title>TuKi Artikelliste</title>
-
-    <link rel="stylesheet" type="text/css" href="../CSS/global.css" media="all"/>
-    <script language="JavaScript" src="../JavaScript/articleList.js"></script>
-</head>
-
-
 <?php
 
-function printButtons() {
+require_once 'UniqueIdList.php';
+require_once 'ArticleList.php';
+require_once 'Settings.php';
 
+if (isset($_GET['seller'])) {
+    $sellerNumber = $_GET['seller'];
+} else {
+    echo "Keine Verkäufernummer angegeben!";
+    exit;
 }
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
-    echo "Keine ID angebeben!";
+    echo "Keine ID angegeben!";
     exit;
 }
 
-
-$fileName = "../Data/uniqueIds.txt";
-$sellerNumber = 0;
-$data = array();
-if (file_exists($fileName)) {
-    $lines = file($fileName);
-
-    foreach ($lines as $line) {
-        $data = explode(' = ', trim($line));
-        if ($data[0] == $id) {
-            $sellerNumber = $data[1];
-            break;
-        }
-    }
-
-
+if (isset($_GET['mode'])) {
+    $mode = $_GET['mode'];
 } else {
-    echo "<body>";
-    echo "Keine Liste mit IDs gefunden!";
-    echo "</body>";
-    echo "</html>";
+    $mode = 'view';
+}
+
+$uniqueIdList = new UniqueIdList();
+$uniqueIdList->readFromFile("../Data/uniqueIds.txt");
+if (!$uniqueIdList->checkId($sellerNumber, $id)) {
+    echo "Kein Zugang!";
     exit;
 }
 
-if ($sellerNumber == 0) {
-    echo "<body>";
-    echo "ID ist ungültig!";
-    echo "</body>";
-    echo "</html>";
-    exit;
+$settings = new Settings();
+$articleList = new ArticleList($sellerNumber, $id, $settings->minArticleNumber, $settings->maxArticleNumber);
+
+if ($mode == 'edit') {
+    $articleList->writeHtml();
 }
-
-echo '<body onload="init(' . $sellerNumber . ')">';
-echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>';
-
-$minArticleNumber = 100;
-$maxArticleNumber = 199;
-
-
-$fileName = "../Data/articleList_" . $sellerNumber . ".txt";
-$articleDescription = array();
-$size = array();
-$price = array();
-$articleNumber = array();
-if (file_exists($fileName)) {
-    $file = fopen($fileName, "r");
-
-    $fileDescription = rtrim(fgets($file));
-    $versionNumber = rtrim(fgets($file));
-    $sellerNumberFile = rtrim(fgets($file));
-    $firstName = rtrim(fgets($file));
-    $lastName = rtrim(fgets($file));
-    $phone = rtrim(fgets($file));
-
-    //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
-    for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-        $articleNumber[$i] = rtrim(fgets($file));
-        $price[$i] = rtrim(fgets($file));
-        $size[$i] = rtrim(fgets($file));
-        $articleDescription[$i] = rtrim(fgets($file));
-    }
-    fclose($file);
-} else {
-    for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-        $price[$i] = "";
-        $size[$i] = "";
-        $articleDescription[$i] = "";
-    }
+else {
+    $articleList->writePdf();
 }
-
-echo '<table>';
-echo '<tr>';
-echo '<td>Vorname</td>';
-echo '<td><input id="firstname" onblur="save(' . $sellerNumber . ')" onchange="save(' . $sellerNumber . ')" value="' . htmlspecialchars($firstName) . '" type="text" size="30"/></td>';
-echo '</tr>';
-
-echo '<tr>';
-echo '<td>Nachname</td>';
-echo '<td><input id="lastname" onblur="save(' . $sellerNumber . ')" onchange="save(' . $sellerNumber . ')" value="' . htmlspecialchars($lastName) . '" type="text" size="30"/></td>';
-echo '</tr>';
-
-echo '<tr>';
-echo '<td>Telefonnummer (für Rückfragen)</td>';
-echo '<td><input id="phone" onblur="save(' . $sellerNumber . ')" onchange="save(' . $sellerNumber . ')" value="' . htmlspecialchars($phone) . '" type="text" size="30"/></td>';
-echo '</tr>';
-echo '</table>';
-
-echo '<br />';
-
-echo '<table>';
-echo '<tr>';
-echo '<th>Artikelnummer</th>';
-echo '<th>Preis</th>';
-echo '<th>Größe</th>';
-echo '<th>Artikelbeschreibung</th>';
-echo '</tr>';
-
-for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-    echo '<tr class="data">';
-
-    echo '<td>' . $i . '</td>';
-    echo '<td><input onblur="checkPrice(this); save(' . $sellerNumber . ')" onchange="checkPrice(this); save(' . $sellerNumber . ')" class="right" value="' . htmlspecialchars($price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
-    echo '<td><input onblur="checkContent(this); save(' . $sellerNumber . ')" onchange="checkContent(this); save(' . $sellerNumber . ')" value="' . htmlspecialchars($size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
-    echo '<td><input onblur="checkContent(this); save(' . $sellerNumber . ')" onchange="checkContent(this); save(' . $sellerNumber . ')" value="' . htmlspecialchars($articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
-
-    echo '</tr>';
-}
-
-echo '</table>';
-
-
-echo '<br/>';
-echo '<input type="button" value="Tabelle Speichern" onclick="save(' . $sellerNumber . ', true, true)"/>';
-echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="print(\'' . $id . '\')"/> <br/>';
-
-echo '</body>';
 
 ?>
-
-</html>
-

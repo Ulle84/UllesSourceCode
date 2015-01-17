@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TuKiBazarSettings>
+  <Pc>1</Pc>
+  <SellerMin>101</SellerMin>
+  <SellerMax>110</SellerMax>
+  <ProductMin>101</ProductMin>
+  <ProductMax>110</ProductMax>
+  <DeductionPercentage>10</DeductionPercentage>
+</TuKiBazarSettings>

@@ -5,10 +5,6 @@ function init (sellerNumberValue) {
 }
 
 function save(checkInput, confirmation) {
-    /*var httpResponse = document.getElementById("httpResponse");
-    httpResponse.textContent = "";
-
-    document.getElementById("httpResponse").innerHTML = "";*/
 
     var inputChecked = true;
     if (checkInput) {
@@ -37,9 +33,12 @@ function save(checkInput, confirmation) {
     var xmlhttp = new XMLHttpRequest();
 
     if (confirmation && inputChecked) {
+        var saveButton = window.document.getElementById("saveButton");
+        saveButton.disabled = true;
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 alert(xmlhttp.responseText);
+                saveButton.disabled = false;
             }
         }
     }
@@ -49,13 +48,28 @@ function save(checkInput, confirmation) {
     xmlhttp.send("sellerNumber=" + sellerNumber + "&content=" + content);
 }
 
-function print(id) {
+function showPdf(id) {
     if (checkAllInputs()) {
-        window.open("../PHP/printArticleList.php?id=" + id);
+        window.open("../PHP/articleListView.php?seller=" + sellerNumber + "&id=" + id + "&mode=print");
     }
 }
 
 function checkAllInputs() {
+    if (window.document.getElementById("firstname").value == "") {
+        alert("Bitte Vornamen eingeben!");
+        return false;
+    }
+
+    if (window.document.getElementById("lastname").value == "") {
+        alert("Bitte Nachnamen eingeben!");
+        return false;
+    }
+
+    if (window.document.getElementById("phone").value  == "") {
+        alert("Bitte Telefonnummer eingeben!");
+        return false;
+    }
+
     var data = window.document.getElementsByClassName("data");
 
     var missingPrices = 0;
@@ -81,13 +95,11 @@ function checkAllInputs() {
             return false;
         }
     }
-    else {
-        return true;
-    }
+
+    return true;
 }
 
 function checkContent(element) {
-    // string.replace(new RegExp("\"", 'g'), "&quot;");
     if (element.value.contains("&")) {
         element.value = element.value.replace(new RegExp("&", 'g'), "");
         alert("Das Zeichen '&' ist ein unerlaubtes Sonderzeichen und wurde entfernt!");

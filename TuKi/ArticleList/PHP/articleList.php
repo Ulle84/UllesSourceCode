@@ -1,13 +1,14 @@
 <?php
 
-class ArticleList {
+require_once '../ExternalResources/FreePDF_v1_7/fpdf.php';
+
+class ArticleList
+{
     private $sellerNumber;
-    private $data = array(); // needed?
     private $fileName;
     private $articleDescription = array();
     private $size = array();
     private $price = array();
-    private $articleNumber = array();
     private $fileDescription;
     private $versionNumber;
     private $sellerNumberFile;
@@ -15,19 +16,90 @@ class ArticleList {
     private $lastName;
     private $phone;
     private $id;
+    private $minArticleNumber;
+    private $maxArticleNumber;
+    private $dataValid = true;
 
-    function __construct($sellerNumber, $id)
+    function __construct($sellerNumber, $id, $minArticleNumber, $maxArticleNumber)
     {
         $this->sellerNumber = $sellerNumber;
         $this->id = $id;
-
-        //TODO check ID
-
+        $this->minArticleNumber = $minArticleNumber;
+        $this->maxArticleNumber = $maxArticleNumber;
         $this->readFromFile();
     }
 
-    public function writeHtml() {
+    public function appendToPdf($pdf)
+    {
+        if ($this->firstName == "" || $this->lastName == "" || $this->phone == "")
+        {
+            return;
+        }
+
+        // Column headings
+        $header = array('Nr.', 'Preis', 'Gr.', 'Artikelbeschreibung');
+        $w = array(12, 15, 15, 146);
+
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->AddPage();
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetTextColor(0);
+        $pdf->SetDrawColor(0, 0, 0);
+        $pdf->SetLineWidth(.3);
+
+        // Data
+        $rowCount = 0;
+        for ($i = $this->minArticleNumber; $i <= $this->maxArticleNumber; $i++) {
+            if ($rowCount % 41 == 0 && $i < $this->maxArticleNumber) {
+                // Header
+                $pdf->Cell(200, 10, utf8_decode('Verkäufer Nummer: ') . $this->sellerNumber . '   Name: ' . $this->firstName . ' ' . $this->lastName . '   Telefon: ' . $this->phone);
+                $pdf->Ln();
+                $pdf->SetFont('', 'B');
+                for ($j = 0; $j < count($header); $j++) {
+                    $pdf->Cell($w[$j], 7, utf8_decode($header[$j]), 1, 0, 'C', true);
+                }
+                $pdf->SetFont('');
+                $pdf->Ln();
+            }
+            $pdf->Cell($w[0], 6, utf8_decode($i), 1, 0, 'L', false);
+            $pdf->Cell($w[1], 6, utf8_decode($this->price[$i]), 1, 0, 'R', false);
+            $pdf->Cell($w[2], 6, utf8_decode($this->size[$i]), 1, 0, 'L', false);
+            $pdf->Cell($w[3], 6, utf8_decode($this->articleDescription[$i]), 1, 0, 'L', false);
+
+            $pdf->Ln();
+            $rowCount++;
+        }
+    }
+
+    public function writePdf()
+    {
+        $pdf = new FPDF();
+
+        $this->appendToPdf($pdf);
+
+        $pdf->Output();
+    }
+
+    public function writeHtml()
+    {
+        echo '<!DOCTYPE html>';
+        echo '<meta charset="utf-8">';
+        echo '<html>';
+        echo '<head>';
+        echo '<title>TuKi Artikelliste</title>';
+        echo '<link rel="stylesheet" type="text/css" href="../CSS/global.css" media="all"/>';
+        echo '<script language="JavaScript" src="../JavaScript/articleList.js"></script>';
+        echo '</head>';
+
         echo '<body onload="init(' . $this->sellerNumber . ')">';
+
+        if (!$this->dataValid) {
+            echo "Daten inkonsistent! Bitte Tuki-Team informieren!";
+            echo "</body>";
+            return;
+        }
+
         echo '<h1>Artikelliste für Verkäufer Nr. ' . $this->sellerNumber . '</h1>';
 
         echo '<table>';
@@ -70,13 +142,15 @@ class ArticleList {
         echo '</table>';
         echo '<br />';
 
-        echo '<input type="button" value="Tabelle Speichern" onclick="save(true, true)"/>';
-        echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="print(\'' . $this->id . '\')"/> <br/>';
+        echo '<input type="button" id="saveButton" value="Tabelle Speichern" onclick="save(true, true)"/>';
+        echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="showPdf(\'' . $this->id . '\')"/> <br/>';
 
         echo '</body>';
+        echo '</html>';
     }
 
-    private function readFromFile() {
+    private function readFromFile()
+    {
         $this->fileName = "../Data/articleList_" . $this->sellerNumber . ".txt";
 
         if (file_exists($this->fileName)) {
@@ -104,15 +178,20 @@ class ArticleList {
             */
 
             //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
-            for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-                $this->articleNumber[$i] = rtrim(fgets($file));
+            for ($i = $this->minArticleNumber; $i <= $this->maxArticleNumber; $i++) {
+                $articleNumber = rtrim(fgets($file));
+
+                if ($articleNumber != $i) {
+                    $this->dataValid = false;
+                }
+
                 $this->price[$i] = rtrim(fgets($file));
                 $this->size[$i] = rtrim(fgets($file));
                 $this->articleDescription[$i] = rtrim(fgets($file));
             }
             fclose($file);
         } else {
-            for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
+            for ($i = $this->minArticleNumber; $i <= $this->maxArticleNumber; $i++) {
                 $this->price[$i] = "";
                 $this->size[$i] = "";
                 $this->articleDescription[$i] = "";
@@ -120,93 +199,3 @@ class ArticleList {
         }
     }
 }
-
-?>
-
-
-<?php
-
-
-
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-} else {
-    echo "Keine ID angebeben!";
-    exit;
-}
-
-
-$fileName = "../Data/uniqueIds.txt";
-$sellerNumber = 0;
-$data = array();
-if (file_exists($fileName)) {
-    $lines = file($fileName);
-
-    foreach ($lines as $line) {
-        $data = explode(' = ', trim($line));
-        if ($data[0] == $id) {
-            $sellerNumber = $data[1];
-            break;
-        }
-    }
-
-
-} else {
-    echo "<body>";
-    echo "Keine Liste mit IDs gefunden!";
-    echo "</body>";
-    echo "</html>";
-    exit;
-}
-
-if ($sellerNumber == 0) {
-    echo "<body>";
-    echo "ID ist ungültig!";
-    echo "</body>";
-    echo "</html>";
-    exit;
-}
-
-echo '<body onload="init()">';
-echo '<h1>Artikelliste für Verkäufer Nr. ' . $sellerNumber . '</h1>';
-
-$minArticleNumber = 100;
-$maxArticleNumber = 199;
-
-
-$fileName = "../Data/articleList_" . $sellerNumber . ".txt";
-$articleDescription = array();
-$size = array();
-$price = array();
-$articleNumber = array();
-if (file_exists($fileName)) {
-    $file = fopen($fileName, "r");
-
-    $fileDescription = rtrim(fgets($file));
-    $versionNumber = rtrim(fgets($file));
-    $sellerNumberFile = rtrim(fgets($file));
-    $firstName = rtrim(fgets($file));
-    $lastName = rtrim(fgets($file));
-    $phone = rtrim(fgets($file));
-
-    //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
-    for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-        $articleNumber[$i] = rtrim(fgets($file));
-        $price[$i] = rtrim(fgets($file));
-        $size[$i] = rtrim(fgets($file));
-        $articleDescription[$i] = rtrim(fgets($file));
-    }
-    fclose($file);
-} else {
-    for ($i = $minArticleNumber; $i <= $maxArticleNumber; $i++) {
-        $price[$i] = "";
-        $size[$i] = "";
-        $articleDescription[$i] = "";
-    }
-}
-
-
-?>
-
-</html>
-

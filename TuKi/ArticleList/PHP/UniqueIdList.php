@@ -14,24 +14,20 @@ class UniqueIdList
                 $this->uniqueIds[$i] = $id;
             }
         } while (count($this->uniqueIds) !== count(array_unique($this->uniqueIds)));
-
-        $this->writeFile("../Data/uniqueIds_classTest.txt");
-
     }
 
     public function printList()
     {
         echo '<div class="code">';
 
-        foreach ($this->uniqueIds as $sellerNumber => $id)
-        {
+        foreach ($this->uniqueIds as $sellerNumber => $id) {
             echo $id . " = " . $sellerNumber . '<br />';
         }
 
         echo '</div>';
     }
 
-    public function readFile($fileName)
+    public function readFromFile($fileName)
     {
         if (file_exists($fileName)) {
             $lines = file($fileName);
@@ -43,14 +39,15 @@ class UniqueIdList
         }
     }
 
-    private function writeFile($fileName)
+    public function checkId($sellerNumber, $id)
+    {
+        return $this->uniqueIds[$sellerNumber] == $id;
+    }
+
+    public function writeToFile($fileName)
     {
         $fh = fopen($fileName, "w");
-        /*for ($i = $this->startNumber; $i <= $this->endNumber; $i++) {
-            fwrite($fh, $this->uniqueIds[$i] . " = " . $i . "\n");
-        }*/
-        foreach ($this->uniqueIds as $sellerNumber => $id)
-        {
+        foreach ($this->uniqueIds as $sellerNumber => $id) {
             fwrite($fh, $id . " = " . $sellerNumber . "\n");
         }
         fclose($fh);
