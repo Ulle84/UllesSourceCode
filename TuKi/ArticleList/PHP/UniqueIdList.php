@@ -18,6 +18,7 @@ class UniqueIdList
 
     public function printList()
     {
+        echo '<h1>Liste der Zugangscodes für die Verkäufer</h1>';
         echo '<div class="code">';
 
         foreach ($this->uniqueIds as $sellerNumber => $id) {

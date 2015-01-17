@@ -23,6 +23,9 @@ $uniqueIdList = new UniqueIdList();
 $uniqueIdList->createNewList($settings->minSellerNumber, $settings->maxSellerNumber);
 
 $uniqueIdList->writeToFile("../Data/uniqueIds.txt");
+
+echo 'Neue Liste wurde erfolgreich erstellt! <br />';
+
 $uniqueIdList->printList();
 
 ?>
