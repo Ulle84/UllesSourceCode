@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>899</width>
-    <height>194</height>
+    <width>737</width>
+    <height>176</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,9 +29,68 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QCheckBox" name="checkBoxInherit">
+       <property name="text">
+        <string>inherits</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="widgetInheritanceProperties" native="true">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QComboBox" name="comboBoxType">
+          <item>
+           <property name="text">
+            <string>public</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>protected</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>private</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>from</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditBaseClassName"/>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxBaseClassName">
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkBoxDisableCopy">
      <property name="text">
-      <string>disable copy and assignment operator</string>
+      <string>disable copy constructor, move constructor and assignment operator</string>
      </property>
     </widget>
    </item>

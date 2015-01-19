@@ -20,6 +20,7 @@ private slots:
     void on_pushButtonSelectFolder_clicked();
     void on_pushButtonStart_clicked();
     void on_pushButtonClearHistory_clicked();
+    void on_checkBoxInherit_toggled(bool checked);
 
 private:
   void updateComboBoxFolders();

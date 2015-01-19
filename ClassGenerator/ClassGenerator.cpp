@@ -1,6 +1,7 @@
 /*
  * TODO
- * inherit from inheritage type (private, public, protected)
+ * move semantics (pImpl etc.)
+ * inherit from inheritage type (private, public, protected) -> include base class?
  * use Q_OBJECT Macro
  * make constructor private
  * arguments of constructor
@@ -201,7 +202,15 @@ QStringList ClassGenerator::generateCodeHeader()
   code.append(QString("#define %1_H").arg(m_className.toUpper()));
   code.append(QString(""));
 
-  code.append(QString("class %1").arg(m_className));
+  if (ui->checkBoxInherit->isChecked())
+  {
+    code.append(QString("class %1 : %2 %3").arg(m_className).arg(ui->comboBoxType->currentText()).arg(ui->lineEditBaseClassName->text()));
+  }
+  else
+  {
+    code.append(QString("class %1").arg(m_className));
+  }
+
   code.append(QString("{"));
   code.append(QString("public:"));
   code.append(QString("  %1();").arg(m_className));
@@ -209,6 +218,7 @@ QStringList ClassGenerator::generateCodeHeader()
   if (ui->checkBoxUsePimpl->isChecked() && !ui->checkBoxDisableCopy->isChecked())
   {
     code.append(QString("  %1(const %1& rhs);").arg(m_className));
+    code.append(QString("  %1(%1&& rhs);").arg(m_className));
     code.append(QString("  %1& operator=(const %1& rhs);").arg(m_className));
   }
 
@@ -223,6 +233,7 @@ QStringList ClassGenerator::generateCodeHeader()
   if (ui->checkBoxDisableCopy->isChecked())
   {
     code.append(QString("  %1(const %1& rhs);").arg(m_className));
+    code.append(QString("  %1(%1&& rhs);").arg(m_className));
     code.append(QString("  %1& operator=(const %1& rhs);").arg(m_className));
   }
 
@@ -258,6 +269,8 @@ QStringList ClassGenerator::generateCodeClass()
   if (ui->checkBoxUsePimpl->isChecked())
   {
     code.append(QString("#include \"%1Impl.h\"").arg(m_className));
+    code.append(QString(""));
+    code.append(QString("#include <utility>"));
   }
   code.append(QString(""));
 
@@ -280,6 +293,14 @@ QStringList ClassGenerator::generateCodeClass()
     code.append(QString("}"));
     code.append(QString(""));
 
+    // move constructor
+    code.append(QString("%1::%1(%1&& rhs)").arg(m_className));
+    code.append(QString("  : m_pImpl(nullptr)"));
+    code.append(QString("{"));
+    code.append(QString("  std::swap(m_pImpl, rhs.m_pImpl);"));
+    code.append(QString("}"));
+    code.append(QString(""));
+
     // assignment operator
     code.append(QString("%1& %1::operator=(const %1& rhs)").arg(m_className));
     code.append(QString("{"));
@@ -297,7 +318,7 @@ QStringList ClassGenerator::generateCodeClass()
   code.append(QString("{"));
   if (ui->checkBoxUsePimpl->isChecked())
   {
-    code.append(QString("  delete m_pImpl;").arg(m_className));
+    code.append(QString("  delete m_pImpl;"));
   }
   code.append(QString("}"));
 
@@ -331,4 +352,9 @@ void ClassGenerator::on_pushButtonClearHistory_clicked()
 {
   m_directories.clear();
   updateComboBoxFolders();
+}
+
+void ClassGenerator::on_checkBoxInherit_toggled(bool checked)
+{
+    ui->widgetInheritanceProperties->setEnabled(checked);
 }
