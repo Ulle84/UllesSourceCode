@@ -98,9 +98,29 @@ QString Evaluation::createHtmlCodeOverview()
   html.append("</tr>");
   html.append("</table>");
 
-  std::map<QString, int> soldArticlesInRanges = m_articleManager->getSoldArticlesInRanges();
-
+  std::map<QString, int> offeredArticlesInRanges = m_articleManager->getOfferedArticlesInRanges();
+  html.append("<h2>Anzahl der angebotenen Artikel</h2>");
   html.append("<table>");
+  html.append("<tr>");
+  html.append("<td>Angebotene Artikel</td>");
+  html.append("<td>Anzahl Verkäufer</td>");
+  html.append("</tr>");
+  for (auto it = offeredArticlesInRanges.begin(); it != offeredArticlesInRanges.end(); ++it)
+  {
+    html.append("<tr>");
+    html.append(QString("<td>%1</td>").arg(it->first));
+    html.append(QString("<td>%1</td>").arg(it->second));
+    html.append("</tr>");
+  }
+  html.append("</table>");
+
+  std::map<QString, int> soldArticlesInRanges = m_articleManager->getSoldArticlesInRanges();
+  html.append("<h2>Anzahl der verkauften Artikel</h2>");
+  html.append("<table>");
+  html.append("<tr>");
+  html.append("<td>Verkauft Artikel</td>");
+  html.append("<td>Anzahl Verkäufer</td>");
+  html.append("</tr>");
   for (auto it = soldArticlesInRanges.begin(); it != soldArticlesInRanges.end(); ++it)
   {
     html.append("<tr>");

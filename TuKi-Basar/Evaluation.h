@@ -36,7 +36,6 @@ private:
   EvaluationView* m_overview;
   EvaluationView* m_soldArticles;
   EvaluationView* m_unsoldArticles;
-
   Statistics* m_statistics;
 };
 

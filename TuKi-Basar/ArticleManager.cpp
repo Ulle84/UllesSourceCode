@@ -476,6 +476,29 @@ std::map<int, int> ArticleManager::getSoldArticlesPerSeller()
   return map;
 }
 
+std::map<int, int> ArticleManager::getOfferedArticlesPerSeller()
+{
+  std::map<int, int> map;
+
+  for (int i = m_settings->getSellerMin(); i <= m_settings->getSellerMax(); i++)
+  {
+    map[i] = 0;
+  }
+
+  for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+  {
+    if (map.find((*it)->m_sellerNumber) == map.end())
+    {
+      // this should not happen, since we check the seller number at input
+      map[(*it)->m_sellerNumber] = 0;
+    }
+
+    map[(*it)->m_sellerNumber]++;
+  }
+
+  return map;
+}
+
 std::map<QString, int> ArticleManager::getSoldArticlesInRanges()
 {
   //TODO think about performance
@@ -492,6 +515,30 @@ std::map<QString, int> ArticleManager::getSoldArticlesInRanges()
   std::map<int, int> soldArticlesPerSeller = getSoldArticlesPerSeller();
 
   for (auto it = soldArticlesPerSeller.begin(); it != soldArticlesPerSeller.end(); ++it)
+  {
+    int value = it->second / 10;
+    output[QString("%1 - %2").arg(value).arg(value+9)]++;
+  }
+
+  return output;
+}
+
+std::map<QString, int> ArticleManager::getOfferedArticlesInRanges()
+{
+  //TODO think about performance
+
+  std::map<QString, int> output;
+
+  int maxCountOfArticles = m_settings->getArticleMax() - m_settings->getArticleMin() + 1;
+
+  for (int i = 0; i <= maxCountOfArticles; i += 10)
+  {
+    output[QString("%1 - %2").arg(i).arg(i+9)] = 0;
+  }
+
+  std::map<int, int> offeredArticlesPerSeller = getOfferedArticlesPerSeller();
+
+  for (auto it = offeredArticlesPerSeller.begin(); it != offeredArticlesPerSeller.end(); ++it)
   {
     int value = it->second / 10;
     output[QString("%1 - %2").arg(value).arg(value+9)]++;
