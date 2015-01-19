@@ -143,7 +143,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="test\PimplTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ClassGenerator.h">
@@ -172,7 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ClassGenerator.h" />
-    <ClInclude Include="Test.h" />
+    <ClInclude Include="test\PimplTest.h" />
+    <ClInclude Include="test\PimplTestImpl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

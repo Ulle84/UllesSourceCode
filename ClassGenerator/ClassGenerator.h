@@ -19,12 +19,14 @@ public:
 private slots:
     void on_pushButtonSelectFolder_clicked();
     void on_pushButtonStart_clicked();
+    void on_pushButtonClearHistory_clicked();
 
 private:
   void updateComboBoxFolders();
   bool saveCode(const QString& fileName, const QStringList& content);
   QStringList generateCodeHeader();
   QStringList generateCodeClass();
+  QStringList generateCodePimpl();
 
   Ui::ClassGenerator *ui;
   QStringList m_directories;
