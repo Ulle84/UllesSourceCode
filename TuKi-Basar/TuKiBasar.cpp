@@ -30,6 +30,8 @@
 #include "Evaluation.h"
 #include "Settings.h"
 #include "PrizeCorrection.h"
+#include "Seller.h"
+#include "SellerManager.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
   QMainWindow(parent),
@@ -41,8 +43,10 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
   ui->lineEditInput->setValidator(new QRegExpValidator (rx, this));
 
   m_settings = new Settings();
+  m_sellerManager = new SellerManager();
   m_articleManager = new ArticleManager(m_settings, "Articles.xml");
-  m_evaluation = new Evaluation(m_articleManager, m_settings);
+  m_evaluation = new Evaluation(m_articleManager, m_settings, m_sellerManager);
+
 
 
   // font depends on operating system
@@ -59,12 +63,9 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 TuKiBasar::~TuKiBasar()
 {
   delete m_evaluation;
-
-  m_articleManager->toXml();
   delete m_articleManager;
-
+  delete m_sellerManager;
   delete m_settings;
-
   delete ui;
 }
 
@@ -89,6 +90,7 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
                                 QMessageBox::Yes|QMessageBox::No);
   if (reply == QMessageBox::Yes) {
     m_articleManager->clear();
+    m_sellerManager->clear();
   }
 
   QString dirName = QFileDialog::getExistingDirectory(this, tr("Bitte Ordner mit den Artikellisten wählen...")); //TODO set folder of last selection?
@@ -109,7 +111,7 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
   unsigned int sellerCounter = 0;
   unsigned int articleCounter = 0;
 
-  const int headerOffset = 3;
+  const int headerOffset = 6;
   const int linesPerArticle = 4;
 
   for (int i = 0; i < fileNames.length(); i++)
@@ -158,6 +160,9 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
       file.close();
       continue;
     }
+
+    Seller* seller = new Seller(sellerNumber, fileContent.at(3), fileContent.at(4), fileContent.at(5));
+    m_sellerManager->addSeller(seller);
 
     int numberOfArticles = (fileContent.length() - headerOffset) / linesPerArticle;
 
@@ -408,7 +413,7 @@ void TuKiBasar::on_actionCompleteEvaluation_triggered()
     delete articleManagerToSync;
   }
 
-  Evaluation* totalEvaluation = new Evaluation(totalArticleManager, m_settings);
+  Evaluation* totalEvaluation = new Evaluation(totalArticleManager, m_settings, m_sellerManager);
   totalEvaluation->doEvaluation();
   totalEvaluation->exec();
 

@@ -17,12 +17,15 @@
 #include "Settings.h"
 #include "Statistics.h"
 #include "EvaluationView.h"
+#include "Seller.h"
+#include "SellerManager.h"
 
-Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, QWidget *parent) :
+Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
   QDialog(parent),
   ui(new Ui::Evaluation),
   m_articleManager(articleManager),
-  m_settings(settings)
+  m_settings(settings),
+  m_sellerManager(sellerManager)
 {
   ui->setupUi(this);
 
@@ -150,8 +153,18 @@ QString Evaluation::createHtmlCodeSoldArticles()
   {
     std::map<int, double> articles = m_articleManager->getSoldArticles(it->first);
 
+    Seller* seller = m_sellerManager->getSeller(it->first);
+
     html.append("<div class=\"page\">");
-    html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
+    if (seller != 0)
+    {
+      html.append(QString("<h1>Verkäufernummer: %1   Name: %2 %3   Telefon: %4</h1>").arg(it->first).arg(seller->m_firstName).arg(seller->m_lastName).arg(seller->m_phone));
+    }
+    else
+    {
+      html.append(QString("<h1>Verkäufernummer: %1").arg(it->first));
+    }
+
     html.append("<table>");
     html.append("<tr>");
     html.append(QString("<td>Umsatz</td>"));

@@ -1,67 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TuKiBazarArticles>
   <Article>
-    <Seller>100</Seller>
-    <Number>100</Number>
-    <Prize>100</Prize>
-    <Size>100</Size>
-    <Description>100</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
-  </Article>
-  <Article>
-    <Seller>100</Seller>
-    <Number>101</Number>
-    <Prize>101</Prize>
-    <Size>101</Size>
-    <Description>101</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
-  </Article>
-  <Article>
-    <Seller>100</Seller>
-    <Number>102</Number>
-    <Prize>102</Prize>
-    <Size>102</Size>
-    <Description>102</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
-  </Article>
-  <Article>
-    <Seller>100</Seller>
-    <Number>103</Number>
-    <Prize>103</Prize>
-    <Size>103</Size>
-    <Description>103</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
-  </Article>
-  <Article>
-    <Seller>100</Seller>
-    <Number>104</Number>
-    <Prize>104</Prize>
-    <Size>104</Size>
-    <Description>104</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
-  </Article>
-  <Article>
-    <Seller>101</Seller>
-    <Number>100</Number>
-    <Prize>0</Prize>
-    <Size>0</Size>
-    <Description>null</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
-  </Article>
-  <Article>
     <Seller>101</Seller>
     <Number>101</Number>
     <Prize>1.01</Prize>
     <Size>1</Size>
     <Description>eins</Description>
-    <SoldOnPc>1</SoldOnPc>
-    <SoldTime>2015-01-17 12:04:48</SoldTime>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
   </Article>
   <Article>
     <Seller>101</Seller>
@@ -70,7 +16,7 @@
     <Size>2</Size>
     <Description>zwei</Description>
     <SoldOnPc>0</SoldOnPc>
-    <SoldTime>2015-01-08 08:31:12</SoldTime>
+    <SoldTime></SoldTime>
   </Article>
   <Article>
     <Seller>101</Seller>
@@ -78,8 +24,8 @@
     <Prize>3.03</Prize>
     <Size>3</Size>
     <Description>drei</Description>
-    <SoldOnPc>1</SoldOnPc>
-    <SoldTime>2015-01-17 12:04:48</SoldTime>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
   </Article>
   <Article>
     <Seller>101</Seller>
@@ -88,12 +34,12 @@
     <Size>4</Size>
     <Description>vier</Description>
     <SoldOnPc>0</SoldOnPc>
-    <SoldTime>2015-01-08 10:37:02</SoldTime>
+    <SoldTime></SoldTime>
   </Article>
   <Article>
     <Seller>101</Seller>
     <Number>105</Number>
-    <Prize>10</Prize>
+    <Prize>5.05</Prize>
     <Size>5</Size>
     <Description>fÃ¼nf</Description>
     <SoldOnPc>0</SoldOnPc>
@@ -109,20 +55,191 @@
     <SoldTime></SoldTime>
   </Article>
   <Article>
-    <Seller>102</Seller>
-    <Number>100</Number>
-    <Prize>999.99</Prize>
-    <Size>123</Size>
-    <Description>Ã¶Ã¼uÃŸ das ist eine ganz lange Artikelbeschreibung!!</Description>
+    <Seller>101</Seller>
+    <Number>107</Number>
+    <Prize>7.07</Prize>
+    <Size>7</Size>
+    <Description>sieben</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>108</Number>
+    <Prize>8.08</Prize>
+    <Size>8</Size>
+    <Description>acht</Description>
     <SoldOnPc>0</SoldOnPc>
     <SoldTime></SoldTime>
   </Article>
   <Article>
     <Seller>101</Seller>
     <Number>109</Number>
+    <Prize>9.09</Prize>
+    <Size>9</Size>
+    <Description>neun</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>110</Number>
+    <Prize>10.1</Prize>
+    <Size>10</Size>
+    <Description>zehn</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>111</Number>
     <Prize>0</Prize>
     <Size></Size>
-    <Description></Description>
+    <Description>horst</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>112</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>test</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>113</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>test</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>114</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>test</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>115</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>test</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>198</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>HORST</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>101</Seller>
+    <Number>199</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>HORST</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>101</Number>
+    <Prize>10.1</Prize>
+    <Size>10</Size>
+    <Description>zehn</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>102</Number>
+    <Prize>20.2</Prize>
+    <Size>20</Size>
+    <Description>zwanzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>103</Number>
+    <Prize>30.3</Prize>
+    <Size>30</Size>
+    <Description>dreiÃŸig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>104</Number>
+    <Prize>40.4</Prize>
+    <Size>40</Size>
+    <Description>vierzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>105</Number>
+    <Prize>50.05</Prize>
+    <Size>50</Size>
+    <Description>fÃ¼nfzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>106</Number>
+    <Prize>60.6</Prize>
+    <Size>60</Size>
+    <Description>sechzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>107</Number>
+    <Prize>70.7</Prize>
+    <Size>70</Size>
+    <Description>siebzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>108</Number>
+    <Prize>80.8</Prize>
+    <Size>80</Size>
+    <Description>achtzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>109</Number>
+    <Prize>90.9</Prize>
+    <Size>90</Size>
+    <Description>neunzig</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>102</Seller>
+    <Number>110</Number>
+    <Prize>111.11</Prize>
+    <Size>100</Size>
+    <Description>hundert</Description>
     <SoldOnPc>0</SoldOnPc>
     <SoldTime></SoldTime>
   </Article>

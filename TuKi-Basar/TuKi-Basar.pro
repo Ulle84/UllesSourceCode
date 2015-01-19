@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     ArticleManager.cpp \
     PrizeCorrection.cpp \
     EvaluationView.cpp \
-    Statistics.cpp
+    Statistics.cpp \
+    Seller.cpp \
+    SellerManager.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -29,7 +31,9 @@ HEADERS  += TuKiBasar.h \
     ArticleManager.h \
     PrizeCorrection.h \
     EvaluationView.h \
-    Statistics.h
+    Statistics.h \
+    Seller.h \
+    SellerManager.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \

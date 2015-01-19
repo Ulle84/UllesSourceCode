@@ -7,6 +7,7 @@ class Article;
 class ArticleManager;
 class Evaluation;
 class Settings;
+class SellerManager;
 
 namespace Ui {
 class TuKiBasar;
@@ -43,6 +44,7 @@ private:
   Settings* m_settings;
   Evaluation* m_evaluation;
   ArticleManager* m_articleManager;
+  SellerManager* m_sellerManager;
 };
 
 #endif // TUKIBASAR_H
