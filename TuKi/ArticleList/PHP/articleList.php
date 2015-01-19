@@ -31,8 +31,7 @@ class ArticleList
 
     public function appendToPdf($pdf)
     {
-        if ($this->firstName == "" || $this->lastName == "" || $this->phone == "")
-        {
+        if ($this->firstName == "" || $this->lastName == "" || $this->phone == "") {
             return;
         }
 
@@ -81,7 +80,7 @@ class ArticleList
         $pdf->Output();
     }
 
-    public function writeHtml()
+    public function writeHtml($readOnly)
     {
         echo '<!DOCTYPE html>';
         echo '<meta charset="utf-8">';
@@ -102,20 +101,36 @@ class ArticleList
 
         echo '<h1>Artikelliste für Verkäufer Nr. ' . $this->sellerNumber . '</h1>';
 
+        if ($readOnly) {
+            echo '<div>Die Frist für die Eingabe von Daten ist abgelaufen!<br />Die eingegebenen Daten können nicht mehr editiert werden!<br /></div>';
+        }
+
         echo '<table>';
         echo '<tr>';
         echo '<td>Vorname</td>';
-        echo '<td><input id="firstname" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->firstName) . '" type="text" size="30"/></td>';
+        if ($readOnly) {
+            echo '<td>' . htmlspecialchars($this->firstName) . '</td>';
+        } else {
+            echo '<td><input id="firstname" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->firstName) . '" type="text" size="30"/></td>';
+        }
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>Nachname</td>';
-        echo '<td><input id="lastname" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->lastName) . '" type="text" size="30"/></td>';
+        if ($readOnly) {
+            echo '<td>' . htmlspecialchars($this->lastName) . '</td>';
+        } else {
+            echo '<td><input id="lastname" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->lastName) . '" type="text" size="30"/></td>';
+        }
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>Telefonnummer (für Rückfragen)</td>';
-        echo '<td><input id="phone" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->phone) . '" type="text" size="30"/></td>';
+        if ($readOnly) {
+            echo '<td>' . htmlspecialchars($this->phone) . '</td>';
+        } else {
+            echo '<td><input id="phone" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->phone) . '" type="text" size="30"/></td>';
+        }
         echo '</tr>';
         echo '</table>';
         echo '<br />';
@@ -132,9 +147,16 @@ class ArticleList
             echo '<tr class="data">';
 
             echo '<td>' . $i . '</td>';
-            echo '<td><input onblur="checkPrice(this); save()" onchange="checkPrice(this); save()" class="right" value="' . htmlspecialchars($this->price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
-            echo '<td><input onblur="checkContent(this); save()" onchange="checkContent(this); save()" value="' . htmlspecialchars($this->size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
-            echo '<td><input onblur="checkContent(this); save()" onchange="checkContent(this); save()" value="' . htmlspecialchars($this->articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
+            if ($readOnly) {
+                echo '<td>' . htmlspecialchars($this->price[$i]) . '</td>';
+                echo '<td>' . htmlspecialchars($this->size[$i]) . '</td>';
+                echo '<td>' . htmlspecialchars($this->articleDescription[$i]) . '</td>';
+            } else {
+                echo '<td><input onblur="checkPrice(this); save()" onchange="checkPrice(this); save()" class="right" value="' . htmlspecialchars($this->price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
+                echo '<td><input onblur="checkContent(this); save()" onchange="checkContent(this); save()" value="' . htmlspecialchars($this->size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
+                echo '<td><input onblur="checkContent(this); save()" onchange="checkContent(this); save()" value="' . htmlspecialchars($this->articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
+            }
+
 
             echo '</tr>';
         }
@@ -142,7 +164,10 @@ class ArticleList
         echo '</table>';
         echo '<br />';
 
-        echo '<input type="button" id="saveButton" value="Tabelle Speichern" onclick="save(true, true)"/>';
+        if (!$readOnly) {
+            echo '<input type="button" id="saveButton" value="Tabelle Speichern" onclick="save(true, true)"/>';
+        }
+
         echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="showPdf(\'' . $this->id . '\')"/> <br/>';
 
         echo '</body>';
@@ -163,22 +188,7 @@ class ArticleList
             $this->lastName = rtrim(fgets($file));
             $this->phone = rtrim(fgets($file));
 
-            /* ToDo modify this code!
-            while (!feof($file)) {
-                $name = rtrim(fgets($file));
-                $dates = rtrim(fgets($file));
-                $notes = rtrim(fgets($file));
-
-                if ($name != "") {
-                    $this->assistanceInput[$name] = explode(";", $dates);
-                    $this->assistanceNotes[$name] = $notes;
-                    $this->dataExist = true;
-                }
-            }
-            */
-
-            //TODO do not read from min to max, read the whole file and determine the articleNumber by file content
-            for ($i = $this->minArticleNumber; $i <= $this->maxArticleNumber; $i++) {
+           for ($i = $this->minArticleNumber; $i <= $this->maxArticleNumber; $i++) {
                 $articleNumber = rtrim(fgets($file));
 
                 if ($articleNumber != $i) {

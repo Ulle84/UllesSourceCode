@@ -35,7 +35,19 @@ $settings = new Settings();
 $articleList = new ArticleList($sellerNumber, $id, $settings->minArticleNumber, $settings->maxArticleNumber);
 
 if ($mode == 'edit') {
-    $articleList->writeHtml();
+    $exploded = explode('.', $settings->deadline);
+
+    $now = new DateTime();
+    $deadline = new DateTime($exploded[2] . '-' . $exploded[1] . '-' . $exploded[0]);
+    $interval = $now->diff($deadline);
+
+    if ($interval->format('%R%a') < 0) {
+        $readOnly = true;
+    }
+    else {
+        $readOnly = false;
+    }
+    $articleList->writeHtml($readOnly);
 }
 else {
     $articleList->writePdf();

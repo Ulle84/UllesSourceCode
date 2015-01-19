@@ -1,5 +1,6 @@
 ﻿/* TODO
 ------------------------------
+ * implement new file format of Article List -> Store Seller-Information
  * write some statistics to status bar?
  * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
  * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren? *
@@ -9,21 +10,6 @@
  * Umsatzliste: Vorname, Nachname, Telefonnumer
  * Ansicht der letzten Verkäufe (evt. editierbar)
  * was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
- */
-
-
-/* Printing
- * print webview -> single document -> page break not possible -> workaround: position elements exactly
- * print webview -> multiple documents -> combine with external tool like ghostscript or Pdftk
- *   -> https://www.pdflabs.com/tools/pdftk-server/#download
- *   -> pdftk *.pdf cat output combined.pdf
- * print QTextDocument -> styles are not fully taken, encoding does not fit, page number is shown
- * do printing by myself -> don't think, that this is a good idea!
- * generate html, show in (portable) firefox, print with freePdf
- *
- * split into two jobs?
- *
- * --> DONE!
  */
 
 

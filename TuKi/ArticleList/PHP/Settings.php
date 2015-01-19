@@ -8,6 +8,7 @@ class Settings
     public $maxSellerNumber;
     public $minArticleNumber;
     public $maxArticleNumber;
+    public $deadline;
 
     function __construct()
     {
@@ -25,6 +26,7 @@ class Settings
             $this->maxSellerNumber = rtrim(fgets($file));
             $this->minArticleNumber = rtrim(fgets($file));
             $this->maxArticleNumber = rtrim(fgets($file));
+            $this->deadline = rtrim(fgets($file));
             fclose($file);
         }
     }

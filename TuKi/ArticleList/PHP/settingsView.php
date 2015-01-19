@@ -29,6 +29,9 @@ echo '<tr>';
 echo '<td>Artikelnummern von</td><td><input onchange="saveSettings()" id="minArticleNumber" type="text" size="3" maxlength="3" value="' . $settings->minArticleNumber . '"/></td>';
 echo '<td>bis</td><td><input onchange="saveSettings()" id="maxArticleNumber" type="text" size="3" maxlength="3" value="' . $settings->maxArticleNumber . '"/></td>';
 echo '</tr>';
+echo '<tr>';
+echo '<td>Frist für Eingabe:</td><td colspan="3"><input onchange="saveSettings()" id="deadline" type="text" size="10" maxlength="10" value="' . $settings->deadline . '"/></td>';
+echo '</tr>';
 
 
 echo '</table>';

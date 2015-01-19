@@ -3,6 +3,7 @@ function saveSettings() {
     content += "\n" + window.document.getElementById("maxSellerNumber").value;
     content += "\n" + window.document.getElementById("minArticleNumber").value;
     content += "\n" + window.document.getElementById("maxArticleNumber").value;
+    content += "\n" + window.document.getElementById("deadline").value;
 
     var xmlhttp = new XMLHttpRequest();
 
