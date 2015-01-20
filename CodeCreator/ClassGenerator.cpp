@@ -1,28 +1,21 @@
-/*
- * TODO
- * Class
- *   use Q_OBJECT Macro
- *   namespace
- *   export dll
- *   members + options getter/setter
- * Type-Switcher (class, interface, singleton, ...)
- * Interface
- * Singleton
- */
-
 #include "ClassGenerator.h"
 #include "ui_ClassGenerator.h"
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtCore/QXmlStreamWriter>
-#include <QtCore/QXmlStreamReader>
-#include <QtCore/QFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QFile>
 
-ClassGenerator::ClassGenerator(QWidget* parent) :
+#include "CodeSaver.h"
+#include "CodeGenerator.h"
+
+ClassGenerator::ClassGenerator(CodeSaver* codeSaver, CodeGenerator* codeGenerator, QWidget* parent) :
   QWidget(parent),
   ui(new Ui::ClassGenerator),
-  m_fileName("Settings.xml")
+  m_fileName("Settings.xml"),
+  m_codeSaver(codeSaver),
+  m_codeGenerator(codeGenerator)
 {
   ui->setupUi(this);
   fromXml();
@@ -61,15 +54,15 @@ void ClassGenerator::on_pushButtonStart_clicked()
   }
 
   QString fileNameHeader = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".h";
-  bool headerCreated = saveCode(fileNameHeader, generateCodeHeader());
+  bool headerCreated = m_codeSaver->saveCode(fileNameHeader, generateCodeHeader());
 
   QString fileNameClass = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".cpp";
-  bool classCreated = saveCode(fileNameClass, generateCodeClass());
+  bool classCreated = m_codeSaver->saveCode(fileNameClass, generateCodeClass());
 
   if (ui->checkBoxUsePimpl->isChecked())
   {
     QString fileNamePimpl = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + "Impl.h";
-    bool pimplCreated = saveCode(fileNamePimpl, generateCodePimpl());
+    bool pimplCreated = m_codeSaver->saveCode(fileNamePimpl, generateCodePimpl());
   }
 
   if (headerCreated)
@@ -233,22 +226,6 @@ void ClassGenerator::updateComboBoxFolders()
   ui->comboBoxFolder->insertItems(0, m_directories);
 }
 
-bool ClassGenerator::saveCode(const QString& fileName, const QStringList& content)
-{
-  QFile file(fileName);
-
-  if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-  {
-    return false;
-  }
-
-  qint64 bytesWritten = file.write(content.join("\n").toStdString().c_str());
-
-  file.close();
-
-  return bytesWritten == -1 ? false : true;
-}
-
 QStringList ClassGenerator::generateCodeHeader()
 {
   QStringList code;
@@ -261,7 +238,7 @@ QStringList ClassGenerator::generateCodeHeader()
     QString baseClassName = ui->comboBoxBaseClassName->currentText();
     code.append(QString("#include \"%1.h\"").arg(baseClassName));
     code.append(QString(""));
-    code.append(QString("class %1 : %2 %3").arg(m_className).arg(baseClassName));
+    code.append(QString("class %1 : %2 %3").arg(m_className).arg(ui->comboBoxType->currentText()).arg(baseClassName));
   }
   else
   {

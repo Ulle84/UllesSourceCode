@@ -11,3 +11,5 @@ build-TuKi-Basar-Qt_4_8_6-Debug/*
 TuKi/ArticleList/Data/mailAddresses.txt
 
 TuKi/ArticleList/Data/mailAddressesBackup.txt
+
+build-CodeCreator-Desktop_Qt_5_2_0_clang_64bit-Debug/*

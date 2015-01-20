@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QtCore/QStringList>
 
+class CodeSaver;
+class CodeGenerator;
+
 namespace Ui
 {
 class ClassGenerator;
@@ -14,7 +17,7 @@ class ClassGenerator : public QWidget
   Q_OBJECT
 
 public:
-  explicit ClassGenerator(QWidget* parent = 0);
+  explicit ClassGenerator(CodeSaver* codeSaver, CodeGenerator* codeGenerator, QWidget* parent = 0);
   ~ClassGenerator();
 
 private slots:
@@ -25,7 +28,6 @@ private slots:
 
 private:
   void updateComboBoxFolders();
-  bool saveCode(const QString& fileName, const QStringList& content);
   QStringList generateCodeHeader();
   QStringList generateCodeClass();
   QStringList generateCodePimpl();
@@ -34,6 +36,9 @@ private:
   QStringList m_directories;
   QString m_fileName;
   QString m_className;
+
+  CodeSaver* m_codeSaver;
+  CodeGenerator* m_codeGenerator;
 
   bool fromXml();
   bool toXml();

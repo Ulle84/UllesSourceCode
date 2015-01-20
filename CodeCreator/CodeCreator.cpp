@@ -1,5 +1,21 @@
+/*
+ * TODO
+ * CodeGenerator
+ * CodeSaver
+ * Class
+ *   use Q_OBJECT Macro
+ *   namespace
+ *   export dll
+ *   members + options getter/setter
+ * Interface
+ * Singleton
+ */
+
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
+
+#include "CodeSaver.h"
+#include "CodeGenerator.h"
 
 #include "ClassGenerator.h"
 #include "InterfaceGenerator.h"
@@ -7,23 +23,26 @@
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::CodeCreator),
-  m_currentGenerator(nullptr)
+  ui(new Ui::CodeCreator)
 {
   ui->setupUi(this);
+  m_codeGenerator = new CodeGenerator();
+  m_codeSaver = new CodeSaver();
   initGenerators();
 }
 
 CodeCreator::~CodeCreator()
 {
+  delete m_codeSaver;
+  delete m_codeGenerator;
   delete ui;
 }
 
 void CodeCreator::initGenerators()
 {
-  m_generators["Class"] = new ClassGenerator(this);
-  m_generators["Interface"] = new InterfaceGenerator(this);
-  m_generators["Singleton"] = new SingletonGenerator(this);
+  m_generators["Class"] = new ClassGenerator(m_codeSaver, m_codeGenerator, this);
+  m_generators["Interface"] = new InterfaceGenerator(m_codeSaver, m_codeGenerator, this);
+  m_generators["Singleton"] = new SingletonGenerator(m_codeSaver, m_codeGenerator, this);
 
   for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
   {

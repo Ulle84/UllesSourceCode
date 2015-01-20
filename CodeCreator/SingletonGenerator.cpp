@@ -1,9 +1,14 @@
 #include "SingletonGenerator.h"
 #include "ui_SingletonGenerator.h"
 
-SingletonGenerator::SingletonGenerator(QWidget *parent) :
+#include "CodeSaver.h"
+#include "CodeGenerator.h"
+
+SingletonGenerator::SingletonGenerator(CodeSaver* codeSaver, CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::SingletonGenerator)
+  ui(new Ui::SingletonGenerator),
+  m_codeSaver(codeSaver),
+  m_codeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 }

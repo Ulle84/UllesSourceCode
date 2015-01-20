@@ -16,12 +16,18 @@ SOURCES += main.cpp\
         CodeCreator.cpp \
     ClassGenerator.cpp \
     InterfaceGenerator.cpp \
-    SingletonGenerator.cpp
+    SingletonGenerator.cpp \
+    CodeSaver.cpp \
+    CodeGenerator.cpp \
+    HeaderOptions.cpp
 
 HEADERS  += CodeCreator.h \
     ClassGenerator.h \
     InterfaceGenerator.h \
-    SingletonGenerator.h
+    SingletonGenerator.h \
+    CodeSaver.h \
+    CodeGenerator.h \
+    HeaderOptions.h
 
 FORMS    += CodeCreator.ui \
     ClassGenerator.ui \
