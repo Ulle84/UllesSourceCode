@@ -2,6 +2,8 @@
 #include "ui_CodeCreator.h"
 
 #include "ClassGenerator.h"
+#include "InterfaceGenerator.h"
+#include "SingletonGenerator.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
@@ -20,6 +22,8 @@ CodeCreator::~CodeCreator()
 void CodeCreator::initGenerators()
 {
   m_generators["Class"] = new ClassGenerator(this);
+  m_generators["Interface"] = new InterfaceGenerator(this);
+  m_generators["Singleton"] = new SingletonGenerator(this);
 
   for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
   {

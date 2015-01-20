@@ -14,10 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         CodeCreator.cpp \
-    ClassGenerator.cpp
+    ClassGenerator.cpp \
+    InterfaceGenerator.cpp \
+    SingletonGenerator.cpp
 
 HEADERS  += CodeCreator.h \
-    ClassGenerator.h
+    ClassGenerator.h \
+    InterfaceGenerator.h \
+    SingletonGenerator.h
 
 FORMS    += CodeCreator.ui \
-    ClassGenerator.ui
+    ClassGenerator.ui \
+    InterfaceGenerator.ui \
+    SingletonGenerator.ui
