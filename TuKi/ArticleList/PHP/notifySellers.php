@@ -28,16 +28,23 @@ $uniqueIdList->readFromFile("../Data/uniqueIds.txt");
 foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     $id = $uniqueIdList->getId($sellerNumber);
     //$link = '<a href="http://' . $hostname . ($path == '/' ? '' : $path) . '/articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit">Liste für Verkäufer ' . $sellerNumber . '</a>';
-    $link = '<a href="http://tv-hechtsheim.de/tv_tuki/PHP/articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit">Liste für Verkäufer ' . $sellerNumber . '</a>';
+    $url = 'http://tv-hechtsheim.de/tv_tuki/PHP/articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit';
+    $link = '<a href="' . $url . '">Liste für Verkäufer ' . $sellerNumber . '</a>';
 
     //echo $link . '<br />';
 
 
-    $message = 'Hallo,<br /><br />';
-    $message .= 'ab sofort kann die Artikelliste für den Tuki-Basar online ausgefüllt werden: <br/>';
-    $message .= $link;
-    $message .= '<br/><br/>Bitte tragen Sie bis zum 05.03.2015 ihre Artikel ein<br /><br />';
-    $message .= 'Vielen Dank!<br />Ihr Tuki-Basar Team';
+    $body = 'Hallo,<br /><br />';
+    $body .= 'ab sofort kann die Artikelliste für den Tuki-Basar online ausgefüllt werden: <br/>';
+    $body .= $link;
+    $body .= '<br/><br/>Bitte tragen Sie bis zum 05.03.2015 ihre Artikel ein<br /><br />';
+    $body .= 'Vielen Dank!<br />Ihr Tuki-Basar Team';
+
+    $altBody = 'Hallo,\n\n';
+    $altBody .= 'ab sofort kann die Artikelliste für den Tuki-Basar online ausgefüllt werden:\n';
+    $altBody .= $url;
+    $altBody .= '\n\nBitte tragen Sie bis zum 05.03.2015 ihre Artikel ein!\n\n';
+    $altBody .= 'Vielen Dank!\nIhr Tuki-Basar Team';
 
     $mail = new PHPMailer;
 
@@ -52,12 +59,12 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
 
     $mail->From = 'tuki@tv-hechtsheim.de';
 
-    $mail->FromName = 'Tuki-Basar Team';
+    $mail->FromName = 'TuKi-Basar Team';
 
     $mail->addAddress($mailAddress);
 
     // also notify developer
-    $mail->addBCC('u.belitz@gmx.de', 'Ulrich Belitz');
+    //$mail->addBCC('u.belitz@gmx.de', 'Ulrich Belitz');
 
     //$mail->addAddress('ellen@example.com');               // Name is optional
     //$mail->addReplyTo('info@example.com', 'Information');
@@ -71,8 +78,9 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
     $mail->isHTML(true); // Set email format to HTML
 
-    $mail->Subject = 'Tuki-Artikelliste online verfügbar';
-    $mail->Body = $message;
+    $mail->Subject = 'Ihre TuKi-Basar Artikelliste';
+    $mail->Body = $body;
+    $mail->AltBody = $altBody;
 
 
     //$mail->SMTPDebug = 1;
@@ -80,7 +88,6 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     if (!$mail->send()) {
         echo 'Nachricht an ' . $sellerNumber . ' konnte nicht gesendet werden. ';
         echo 'Fehlermeldung: ' . $mail->ErrorInfo . '<br />';
-        exit;
     }
 
     echo 'Nachricht an ' . $sellerNumber . ' wurde gesendet.<br/>';
