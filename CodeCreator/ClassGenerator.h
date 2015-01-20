@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QtCore/QStringList>
 
-namespace Ui {
+namespace Ui
+{
 class ClassGenerator;
 }
 
@@ -13,14 +14,14 @@ class ClassGenerator : public QWidget
   Q_OBJECT
 
 public:
-  explicit ClassGenerator(QWidget *parent = 0);
+  explicit ClassGenerator(QWidget* parent = 0);
   ~ClassGenerator();
 
 private slots:
-    void on_pushButtonSelectFolder_clicked();
-    void on_pushButtonStart_clicked();
-    void on_pushButtonClearHistory_clicked();
-    void on_checkBoxInherit_toggled(bool checked);
+  void on_pushButtonSelectFolder_clicked();
+  void on_pushButtonStart_clicked();
+  void on_pushButtonClearHistory_clicked();
+  void on_checkBoxInherit_toggled(bool checked);
 
 private:
   void updateComboBoxFolders();
@@ -29,7 +30,7 @@ private:
   QStringList generateCodeClass();
   QStringList generateCodePimpl();
 
-  Ui::ClassGenerator *ui;
+  Ui::ClassGenerator* ui;
   QStringList m_directories;
   QString m_fileName;
   QString m_className;

@@ -1,11 +1,13 @@
 /*
  * TODO
- * move semantics (pImpl etc.)
- * inherit from inheritage type (private, public, protected) -> include base class?
- * use Q_OBJECT Macro
- * make constructor private
- * arguments of constructor
- * namespace
+ * Class
+ *   use Q_OBJECT Macro
+ *   namespace
+ *   export dll
+ *   members + options getter/setter
+ * Type-Switcher (class, interface, singleton, ...)
+ * Interface
+ * Singleton
  */
 
 #include "ClassGenerator.h"
@@ -17,7 +19,7 @@
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QFile>
 
-ClassGenerator::ClassGenerator(QWidget *parent) :
+ClassGenerator::ClassGenerator(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::ClassGenerator),
   m_fileName("Settings.xml")
@@ -98,11 +100,27 @@ bool ClassGenerator::toXml()
   xml.writeTextElement("DisableCopy", ui->checkBoxDisableCopy->isChecked() ? "true" : "false");
   xml.writeTextElement("UsePimpl", ui->checkBoxUsePimpl->isChecked() ? "true" : "false");
 
+  xml.writeStartElement("Inheritance");
+  xml.writeTextElement("Inherit", ui->checkBoxInherit->isChecked() ? "true" : "false");
+  xml.writeTextElement("Type", ui->comboBoxType->currentText());
+  xml.writeStartElement("BaseClassNames");
+
+  for (int i = 0; i < ui->comboBoxBaseClassName->count(); i++)
+  {
+    xml.writeTextElement("BaseClassName", ui->comboBoxBaseClassName->itemText(i));
+  }
+
+  xml.writeEndElement(); //BaseClassNames
+  xml.writeTextElement("SelectedBaseClassName", ui->comboBoxBaseClassName->currentText());
+  xml.writeEndElement(); // Inheritance
+
   xml.writeStartElement("RecentFolders");
+
   for (auto it = m_directories.begin(); it != m_directories.end(); ++it)
   {
     xml.writeTextElement("Folder", *it);
   }
+
   xml.writeEndElement(); // RecentFolders
 
   xml.writeEndElement(); // Settings
@@ -138,7 +156,43 @@ bool ClassGenerator::fromXml()
   {
     if (xml.name() == "ClassName")
     {
-     ui->lineEditClassName->setText(xml.readElementText());
+      ui->lineEditClassName->setText(xml.readElementText());
+    }
+    else if (xml.name() == "Inheritance")
+    {
+      while (xml.readNextStartElement())
+      {
+        if (xml.name() == "Inherit")
+        {
+          ui->checkBoxInherit->setChecked(xml.readElementText() == "true");
+        }
+        else if (xml.name() == "Type")
+        {
+          ui->comboBoxType->setCurrentIndex(ui->comboBoxType->findText(xml.readElementText()));
+        }
+        else if (xml.name() == "BaseClassNames")
+        {
+          while (xml.readNextStartElement())
+          {
+            if (xml.name() == "BaseClassName")
+            {
+              ui->comboBoxBaseClassName->addItem(xml.readElementText());
+            }
+            else
+            {
+              xml.skipCurrentElement();
+            }
+          }
+        }
+        else if (xml.name() == "SelectedBaseClassName")
+        {
+          ui->comboBoxBaseClassName->setCurrentIndex(ui->comboBoxBaseClassName->findText(xml.readElementText()));
+        }
+        else
+        {
+          xml.skipCurrentElement();
+        }
+      }
     }
     else if (xml.name() == "DisableCopy")
     {
@@ -179,7 +233,7 @@ void ClassGenerator::updateComboBoxFolders()
   ui->comboBoxFolder->insertItems(0, m_directories);
 }
 
-bool ClassGenerator::saveCode(const QString &fileName, const QStringList &content)
+bool ClassGenerator::saveCode(const QString& fileName, const QStringList& content)
 {
   QFile file(fileName);
 
@@ -204,7 +258,10 @@ QStringList ClassGenerator::generateCodeHeader()
 
   if (ui->checkBoxInherit->isChecked())
   {
-    code.append(QString("class %1 : %2 %3").arg(m_className).arg(ui->comboBoxType->currentText()).arg(ui->lineEditBaseClassName->text()));
+    QString baseClassName = ui->comboBoxBaseClassName->currentText();
+    code.append(QString("#include \"%1.h\"").arg(baseClassName));
+    code.append(QString(""));
+    code.append(QString("class %1 : %2 %3").arg(m_className).arg(baseClassName));
   }
   else
   {
@@ -266,20 +323,24 @@ QStringList ClassGenerator::generateCodeClass()
 
   // includes
   code.append(QString("#include \"%1.h\"").arg(m_className));
+
   if (ui->checkBoxUsePimpl->isChecked())
   {
     code.append(QString("#include \"%1Impl.h\"").arg(m_className));
     code.append(QString(""));
     code.append(QString("#include <utility>"));
   }
+
   code.append(QString(""));
 
   // constructor
   code.append(QString("%1::%1()").arg(m_className));
+
   if (ui->checkBoxUsePimpl->isChecked())
   {
     code.append(QString("  : m_pImpl(new %1Impl())").arg(m_className));
   }
+
   code.append(QString("{"));
   code.append(QString("}"));
   code.append(QString(""));
@@ -316,10 +377,12 @@ QStringList ClassGenerator::generateCodeClass()
   // destructor
   code.append(QString("%1::~%1()").arg(m_className));
   code.append(QString("{"));
+
   if (ui->checkBoxUsePimpl->isChecked())
   {
     code.append(QString("  delete m_pImpl;"));
   }
+
   code.append(QString("}"));
 
   return code;
@@ -356,5 +419,5 @@ void ClassGenerator::on_pushButtonClearHistory_clicked()
 
 void ClassGenerator::on_checkBoxInherit_toggled(bool checked)
 {
-    ui->widgetInheritanceProperties->setEnabled(checked);
+  ui->widgetInheritanceProperties->setEnabled(checked);
 }

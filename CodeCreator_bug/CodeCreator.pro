@@ -8,13 +8,16 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ClassGenerator
+TARGET = CodeCreator
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        ClassGenerator.cpp
+        ClassGenerator.cpp \
+    CodeCreator.cpp
 
-HEADERS  += ClassGenerator.h
+HEADERS  += ClassGenerator.h \
+    CodeCreator.h
 
-FORMS    += ClassGenerator.ui
+FORMS    += ClassGenerator.ui \
+    CodeCreator.ui

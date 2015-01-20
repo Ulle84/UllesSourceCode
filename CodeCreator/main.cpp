@@ -1,10 +1,10 @@
 #include <QApplication>
-#include "ClassGenerator.h"
+#include "CodeCreator.h"
 
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  ClassGenerator w;
+  CodeCreator w;
   w.show();
   
   return a.exec();

@@ -73,10 +73,13 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEditBaseClassName"/>
-        </item>
-        <item>
          <widget class="QComboBox" name="comboBoxBaseClassName">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="editable">
            <bool>true</bool>
           </property>
