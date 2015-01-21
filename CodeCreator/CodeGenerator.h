@@ -3,14 +3,17 @@
 
 class QStringList;
 
+class HeaderOptions;
+class ClassOptions;
+
 class CodeGenerator
 {
 public:
   CodeGenerator();
 
-  QStringList generateCodeHeader();
-  QStringList generateCodeClass();
-  QStringList generateCodePimpl();
+  QStringList generateCodeHeader(const HeaderOptions& options);
+  QStringList generateCodeClass(const ClassOptions& options);
+  //QStringList generateCodePimpl();
 };
 
 #endif // CODEGENERATOR_H

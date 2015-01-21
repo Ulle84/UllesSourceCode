@@ -9,6 +9,7 @@
 
 #include "CodeSaver.h"
 #include "CodeGenerator.h"
+#include "HeaderOptions.h"
 
 ClassGenerator::ClassGenerator(CodeSaver* codeSaver, CodeGenerator* codeGenerator, QWidget* parent) :
   QWidget(parent),
@@ -228,7 +229,17 @@ void ClassGenerator::updateComboBoxFolders()
 
 QStringList ClassGenerator::generateCodeHeader()
 {
-  QStringList code;
+  HeaderOptions options;
+  options.m_useInheritance = ui->checkBoxInherit->isChecked();
+  options.m_usePimpl = ui->checkBoxUsePimpl->isChecked();
+  options.m_disableCopy = ui->checkBoxDisableCopy->isChecked();
+  options.m_className = ui->lineEditClassName->text();
+  options.m_inheritanceType = ui->comboBoxType->currentText();
+  options.m_baseClassName = ui->comboBoxBaseClassName->currentText();
+
+  m_codeGenerator->generateCodeHeader(options);
+
+  /*QStringList code;
   code.append(QString("#ifndef %1_H").arg(m_className.toUpper()));
   code.append(QString("#define %1_H").arg(m_className.toUpper()));
   code.append(QString(""));
@@ -291,7 +302,7 @@ QStringList ClassGenerator::generateCodeHeader()
 
   code.append(QString("#endif // %1_H").arg(m_className.toUpper()));
 
-  return code;
+  return code;*/
 }
 
 QStringList ClassGenerator::generateCodeClass()
