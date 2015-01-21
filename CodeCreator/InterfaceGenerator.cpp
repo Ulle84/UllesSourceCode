@@ -1,13 +1,12 @@
 #include "InterfaceGenerator.h"
 #include "ui_InterfaceGenerator.h"
 
-#include "CodeSaver.h"
 #include "CodeGenerator.h"
+#include "Options.h"
 
-InterfaceGenerator::InterfaceGenerator(CodeSaver* codeSaver, CodeGenerator* codeGenerator, QWidget *parent) :
+InterfaceGenerator::InterfaceGenerator(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::InterfaceGenerator),
-  m_codeSaver(codeSaver),
   m_codeGenerator(codeGenerator)
 {
   ui->setupUi(this);
@@ -16,4 +15,10 @@ InterfaceGenerator::InterfaceGenerator(CodeSaver* codeSaver, CodeGenerator* code
 InterfaceGenerator::~InterfaceGenerator()
 {
   delete ui;
+}
+
+void InterfaceGenerator::on_pushButtonStart_clicked()
+{
+  Options options;
+  options.m_type = Options::Interface;
 }

@@ -14,7 +14,6 @@
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
 
-#include "CodeSaver.h"
 #include "CodeGenerator.h"
 
 #include "ClassGenerator.h"
@@ -27,22 +26,20 @@ CodeCreator::CodeCreator(QWidget *parent) :
 {
   ui->setupUi(this);
   m_codeGenerator = new CodeGenerator();
-  m_codeSaver = new CodeSaver();
   initGenerators();
 }
 
 CodeCreator::~CodeCreator()
 {
-  delete m_codeSaver;
   delete m_codeGenerator;
   delete ui;
 }
 
 void CodeCreator::initGenerators()
 {
-  m_generators["Class"] = new ClassGenerator(m_codeSaver, m_codeGenerator, this);
-  m_generators["Interface"] = new InterfaceGenerator(m_codeSaver, m_codeGenerator, this);
-  m_generators["Singleton"] = new SingletonGenerator(m_codeSaver, m_codeGenerator, this);
+  m_generators["Class"] = new ClassGenerator(m_codeGenerator, this);
+  m_generators["Interface"] = new InterfaceGenerator(m_codeGenerator, this);
+  m_generators["Singleton"] = new SingletonGenerator(m_codeGenerator, this);
 
   for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
   {

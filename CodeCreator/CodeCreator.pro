@@ -19,8 +19,7 @@ SOURCES += main.cpp\
     SingletonGenerator.cpp \
     CodeSaver.cpp \
     CodeGenerator.cpp \
-    HeaderOptions.cpp \
-    ClassOptions.cpp
+    Options.cpp
 
 HEADERS  += CodeCreator.h \
     ClassGenerator.h \
@@ -28,8 +27,7 @@ HEADERS  += CodeCreator.h \
     SingletonGenerator.h \
     CodeSaver.h \
     CodeGenerator.h \
-    HeaderOptions.h \
-    ClassOptions.h
+    Options.h
 
 FORMS    += CodeCreator.ui \
     ClassGenerator.ui \

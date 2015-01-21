@@ -6,7 +6,6 @@
 #include <QWidget>
 #include <QString>
 
-class CodeSaver;
 class CodeGenerator;
 
 namespace Ui {
@@ -31,7 +30,6 @@ private:
   std::map<QString, QWidget*> m_generators;
   QWidget* m_currentGenerator;
 
-  CodeSaver* m_codeSaver;
   CodeGenerator* m_codeGenerator;
 };
 

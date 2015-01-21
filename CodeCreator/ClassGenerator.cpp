@@ -7,15 +7,13 @@
 #include <QXmlStreamReader>
 #include <QFile>
 
-#include "CodeSaver.h"
 #include "CodeGenerator.h"
-#include "HeaderOptions.h"
+#include "Options.h"
 
-ClassGenerator::ClassGenerator(CodeSaver* codeSaver, CodeGenerator* codeGenerator, QWidget* parent) :
+ClassGenerator::ClassGenerator(CodeGenerator* codeGenerator, QWidget* parent) :
   QWidget(parent),
   ui(new Ui::ClassGenerator),
   m_fileName("Settings.xml"),
-  m_codeSaver(codeSaver),
   m_codeGenerator(codeGenerator)
 {
   ui->setupUi(this);
@@ -44,9 +42,7 @@ void ClassGenerator::on_pushButtonSelectFolder_clicked()
 
 void ClassGenerator::on_pushButtonStart_clicked()
 {
-  m_className = ui->lineEditClassName->text();
-
-  if (m_className.isEmpty())
+  if (ui->lineEditClassName->text().isEmpty())
   {
     QMessageBox mb;
     mb.setText(tr("File name is empty!"));
@@ -54,7 +50,18 @@ void ClassGenerator::on_pushButtonStart_clicked()
     return;
   }
 
-  QString fileNameHeader = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".h";
+  Options options;
+  options.m_type = Options::Class;
+  options.m_useInheritance = ui->checkBoxInherit->isChecked();
+  options.m_usePimpl = ui->checkBoxUsePimpl->isChecked();
+  options.m_disableCopy = ui->checkBoxDisableCopy->isChecked();
+  options.m_className = ui->lineEditClassName->text();
+  options.m_inheritanceType = ui->comboBoxType->currentText();
+  options.m_baseClassName = ui->comboBoxBaseClassName->currentText();
+
+  m_codeGenerator->generateCode(options);
+
+  /*QString fileNameHeader = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".h";
   bool headerCreated = m_codeSaver->saveCode(fileNameHeader, generateCodeHeader());
 
   QString fileNameClass = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".cpp";
@@ -72,7 +79,7 @@ void ClassGenerator::on_pushButtonStart_clicked()
     mb.setText(tr("Files were successfully created!")); //TODO show list of created files?
     mb.exec();
     return;
-  }
+  }*/
 }
 
 bool ClassGenerator::toXml()
@@ -227,19 +234,24 @@ void ClassGenerator::updateComboBoxFolders()
   ui->comboBoxFolder->insertItems(0, m_directories);
 }
 
-QStringList ClassGenerator::generateCodeHeader()
+void ClassGenerator::on_pushButtonClearHistory_clicked()
 {
-  HeaderOptions options;
-  options.m_useInheritance = ui->checkBoxInherit->isChecked();
-  options.m_usePimpl = ui->checkBoxUsePimpl->isChecked();
-  options.m_disableCopy = ui->checkBoxDisableCopy->isChecked();
-  options.m_className = ui->lineEditClassName->text();
-  options.m_inheritanceType = ui->comboBoxType->currentText();
-  options.m_baseClassName = ui->comboBoxBaseClassName->currentText();
+  m_directories.clear();
+  updateComboBoxFolders();
+}
+
+void ClassGenerator::on_checkBoxInherit_toggled(bool checked)
+{
+  ui->widgetInheritanceProperties->setEnabled(checked);
+}
+
+/*QStringList ClassGenerator::generateCodeHeader()
+{
+
 
   m_codeGenerator->generateCodeHeader(options);
 
-  /*QStringList code;
+  QStringList code;
   code.append(QString("#ifndef %1_H").arg(m_className.toUpper()));
   code.append(QString("#define %1_H").arg(m_className.toUpper()));
   code.append(QString(""));
@@ -302,7 +314,7 @@ QStringList ClassGenerator::generateCodeHeader()
 
   code.append(QString("#endif // %1_H").arg(m_className.toUpper()));
 
-  return code;*/
+  return code;
 }
 
 QStringList ClassGenerator::generateCodeClass()
@@ -397,15 +409,4 @@ QStringList ClassGenerator::generateCodePimpl()
   code.append(QString("#endif // %1IMPL_H").arg(m_className.toUpper()));
 
   return code;
-}
-
-void ClassGenerator::on_pushButtonClearHistory_clicked()
-{
-  m_directories.clear();
-  updateComboBoxFolders();
-}
-
-void ClassGenerator::on_checkBoxInherit_toggled(bool checked)
-{
-  ui->widgetInheritanceProperties->setEnabled(checked);
-}
+}*/

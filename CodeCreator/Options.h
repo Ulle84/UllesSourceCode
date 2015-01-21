@@ -1,12 +1,21 @@
-#ifndef HEADEROPTIONS_H
-#define HEADEROPTIONS_H
+#ifndef OPTIONS_H
+#define OPTIONS_H
 
 #include <QString>
 
-class HeaderOptions
+class Options
 {
 public:
-  HeaderOptions();
+  Options();
+
+  enum Type
+  {
+    Class,
+    Interface,
+    Singleton
+  };
+
+  Options::Type m_type;
 
   bool m_useInheritance;
   bool m_usePimpl;
@@ -17,4 +26,4 @@ public:
   QString m_baseClassName;
 };
 
-#endif // HEADEROPTIONS_H
+#endif // OPTIONS_H

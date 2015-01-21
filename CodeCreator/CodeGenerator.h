@@ -1,19 +1,26 @@
 #ifndef CODEGENERATOR_H
 #define CODEGENERATOR_H
 
-class QStringList;
+#include "Options.h"
 
-class HeaderOptions;
-class ClassOptions;
+class QStringList;
+class CodeSaver;
 
 class CodeGenerator
 {
 public:
   CodeGenerator();
+  ~CodeGenerator();
 
-  QStringList generateCodeHeader(const HeaderOptions& options);
-  QStringList generateCodeClass(const ClassOptions& options);
+  void generateCode(const Options& options);
+
+private:
+  QStringList generateCodeHeader();
+  //QStringList generateCodeClass();
   //QStringList generateCodePimpl();
+
+  CodeSaver* m_codeSaver;
+  Options m_options;
 };
 
 #endif // CODEGENERATOR_H
