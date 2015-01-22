@@ -21,7 +21,6 @@ Generator::~Generator()
 
 void Generator::generate(const QString &folder)
 {
-  // take all files from source
   QDir dir("templates/CodeCreator/");
 
   QStringList filters;
@@ -30,7 +29,6 @@ void Generator::generate(const QString &folder)
 
   QStringList fileNames = dir.entryList();
 
-  // open them and read to QStringList
   for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
   {
     QString filePath = dir.filePath(*it);

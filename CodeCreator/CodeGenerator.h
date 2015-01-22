@@ -2,6 +2,7 @@
 #define CODEGENERATOR_H
 
 #include "Options.h"
+#include "OptionsTemplate.h"
 
 class QStringList;
 
@@ -13,6 +14,7 @@ public:
 
   void generateCode(const Options& options);
   bool saveCode(const QString& fileName, const QStringList& code);
+  void copyFromTemplate(const OptionsTemplate& options);
 
 private:
   void generateCodeHeader();

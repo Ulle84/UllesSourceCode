@@ -1,6 +1,8 @@
 #include <QStringList>
 #include <QFile>
 #include <QDir>
+#include <QTextStream>
+#include <QDir>
 
 #include "CodeGenerator.h"
 
@@ -54,6 +56,47 @@ bool CodeGenerator::saveCode(const QString &fileName, const QStringList &code)
   file.close();
 
   return bytesWritten < 1 ? false : true;
+}
+
+void CodeGenerator::copyFromTemplate(const OptionsTemplate &options)
+{
+  QDir dir(options.m_folderInput);
+
+  dir.setNameFilters(options.m_files);
+
+  QStringList fileNames = dir.entryList();
+
+  for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
+  {
+    QString filePath = dir.filePath(*it);
+
+    QFile input(filePath);
+
+    if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+      continue;
+    }
+
+    QStringList fileContent;
+    QTextStream in(&input);
+    while (!in.atEnd())
+    {
+      fileContent.append(in.readLine().replace(options.m_searchString, options.m_replaceString).replace(QString(options.m_searchString).toUpper(), options.m_replaceString.toUpper()));
+    }
+
+    QFile output(options.m_folderOutput + QDir::separator() + (*it).replace(options.m_searchString, options.m_replaceString));
+
+    if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+      continue;
+    }
+
+    QTextStream out(&output);
+    out << fileContent.join("\n");
+
+    output.close();
+    input.close();
+  }
 }
 
 void CodeGenerator::generateCodeHeader()

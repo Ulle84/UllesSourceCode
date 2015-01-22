@@ -1,6 +1,8 @@
 /*
  * TODO
  *
+ * OptionsTemplate.h -> map<replace, by> -> change function copyFromTemplate(...) of CdoeGenerator
+ *
  *rename ClassGenerator -> Generator
  *  ...
  * rename Header GeneratorIterface -> GeneratorInterface ->IGenerator?
