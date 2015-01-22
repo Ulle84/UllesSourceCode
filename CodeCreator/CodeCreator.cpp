@@ -1,5 +1,6 @@
 /*
  * TODO
+ * Absturz beim Beenden analysieren
  * CodeGenerator
  * CodeSaver
  * Class

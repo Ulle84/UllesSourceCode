@@ -45,7 +45,23 @@ void ClassGenerator::on_pushButtonStart_clicked()
   if (ui->lineEditClassName->text().isEmpty())
   {
     QMessageBox mb;
-    mb.setText(tr("File name is empty!"));
+    mb.setText(tr("Class name is empty!"));
+    mb.exec();
+    return;
+  }
+
+  if (ui->comboBoxFolder->currentText().isEmpty())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Folder name is empty!"));
+    mb.exec();
+    return;
+  }
+
+  if (ui->checkBoxInherit->isChecked() && ui->comboBoxBaseClassName->currentText().isEmpty())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Base class name is empty!"));
     mb.exec();
     return;
   }
@@ -58,28 +74,9 @@ void ClassGenerator::on_pushButtonStart_clicked()
   options.m_className = ui->lineEditClassName->text();
   options.m_inheritanceType = ui->comboBoxType->currentText();
   options.m_baseClassName = ui->comboBoxBaseClassName->currentText();
+  options.m_folder = ui->comboBoxFolder->currentText();
 
   m_codeGenerator->generateCode(options);
-
-  /*QString fileNameHeader = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".h";
-  bool headerCreated = m_codeSaver->saveCode(fileNameHeader, generateCodeHeader());
-
-  QString fileNameClass = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + ".cpp";
-  bool classCreated = m_codeSaver->saveCode(fileNameClass, generateCodeClass());
-
-  if (ui->checkBoxUsePimpl->isChecked())
-  {
-    QString fileNamePimpl = ui->comboBoxFolder->currentText() + QDir::separator() + m_className + "Impl.h";
-    bool pimplCreated = m_codeSaver->saveCode(fileNamePimpl, generateCodePimpl());
-  }
-
-  if (headerCreated)
-  {
-    QMessageBox mb;
-    mb.setText(tr("Files were successfully created!")); //TODO show list of created files?
-    mb.exec();
-    return;
-  }*/
 }
 
 bool ClassGenerator::toXml()

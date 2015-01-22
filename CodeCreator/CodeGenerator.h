@@ -4,7 +4,6 @@
 #include "Options.h"
 
 class QStringList;
-class CodeSaver;
 
 class CodeGenerator
 {
@@ -15,11 +14,12 @@ public:
   void generateCode(const Options& options);
 
 private:
-  QStringList generateCodeHeader();
-  //QStringList generateCodeClass();
-  //QStringList generateCodePimpl();
+  bool saveCode(const QString& fileName, const QStringList& code);
 
-  CodeSaver* m_codeSaver;
+  void generateCodeHeader();
+  void generateCodeClass();
+  void generateCodePimpl();
+
   Options m_options;
 };
 
