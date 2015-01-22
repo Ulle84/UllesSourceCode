@@ -14,21 +14,21 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         CodeCreator.cpp \
-    ClassGenerator.cpp \
     InterfaceGenerator.cpp \
     CodeGenerator.cpp \
     Options.cpp \
     Generator.cpp \
-    Observer.cpp
+    Observer.cpp \
+    ClassGenerator.cpp
 
 HEADERS  += CodeCreator.h \
-    ClassGenerator.h \
     InterfaceGenerator.h \
     CodeGenerator.h \
     Options.h \
     GeneratorIterface.h \
     Generator.h \
-    Observer.h
+    Observer.h \
+    ClassGenerator.h
 
 FORMS    += CodeCreator.ui \
     ClassGenerator.ui \

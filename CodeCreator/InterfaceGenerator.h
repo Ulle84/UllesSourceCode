@@ -24,6 +24,11 @@ public:
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);
 
+private slots:
+  void on_checkBoxPrefix_toggled(bool checked);
+
+  void on_checkBoxPostfix_toggled(bool checked);
+
 private:
   Ui::InterfaceGenerator *ui;
 

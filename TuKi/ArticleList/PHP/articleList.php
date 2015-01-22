@@ -18,7 +18,7 @@ class ArticleList
     private $id;
     private $minArticleNumber;
     private $maxArticleNumber;
-    private $dataValid = true;
+    //private $dataValid = true;
 
     function __construct($sellerNumber, $id, $minArticleNumber, $maxArticleNumber)
     {
@@ -93,11 +93,11 @@ class ArticleList
 
         echo '<body onload="init(' . $this->sellerNumber . ')">';
 
-        if (!$this->dataValid) {
+        /*if (!$this->dataValid) {
             echo "Daten inkonsistent! Bitte Tuki-Team informieren!";
             echo "</body>";
             return;
-        }
+        }*/
 
         echo '<h1>Artikelliste für Verkäufer Nr. ' . $this->sellerNumber . '</h1>';
 
@@ -152,9 +152,10 @@ class ArticleList
                 echo '<td>' . htmlspecialchars($this->size[$i]) . '</td>';
                 echo '<td>' . htmlspecialchars($this->articleDescription[$i]) . '</td>';
             } else {
+                //TODO wann wird onblur gesendet und wann onchange - muss man wirklicha auf beide Events hören???
                 echo '<td><input onblur="checkPrice(this); save()" onchange="checkPrice(this); save()" class="right" value="' . htmlspecialchars($this->price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
-                echo '<td><input onblur="checkContent(this); save()" onchange="checkContent(this); save()" value="' . htmlspecialchars($this->size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
-                echo '<td><input onblur="checkContent(this); save()" onchange="checkContent(this); save()" value="' . htmlspecialchars($this->articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
+                echo '<td><input onblur="save()" onchange="save()" value="' . htmlspecialchars($this->size[$i]) . '" type="text" size="4" maxlength="4" /></td>';
+                echo '<td><input onblur="save()" onchange="save()" value="' . htmlspecialchars($this->articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
             }
 
 
@@ -191,9 +192,9 @@ class ArticleList
            for ($i = $this->minArticleNumber; $i <= $this->maxArticleNumber; $i++) {
                 $articleNumber = rtrim(fgets($file));
 
-                if ($articleNumber != $i) {
+                /*if ($articleNumber != $i) {
                     $this->dataValid = false;
-                }
+                }*/
 
                 $this->price[$i] = rtrim(fgets($file));
                 $this->size[$i] = rtrim(fgets($file));

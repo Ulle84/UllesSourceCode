@@ -5,6 +5,8 @@
  *  ...
  * rename Header GeneratorIterface -> GeneratorInterface ->IGenerator?
  *
+ * interface generator with template?
+ *
  * Class
  *   use Q_OBJECT Macro
  *   namespace

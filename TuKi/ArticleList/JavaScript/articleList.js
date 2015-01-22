@@ -13,9 +13,9 @@ function save(checkInput, confirmation) {
 
     var content = "Article List\nVersion 1.0\n" + sellerNumber + "\n";
 
-    content += window.document.getElementById("firstname").value + "\n";
-    content += window.document.getElementById("lastname").value + "\n";
-    content += window.document.getElementById("phone").value + "\n";
+    content += window.document.getElementById("firstname").value.replace(new RegExp("&", 'g'), "%26") + "\n";
+    content += window.document.getElementById("lastname").value.replace(new RegExp("&", 'g'), "%26") + "\n";
+    content += window.document.getElementById("phone").value.replace(new RegExp("&", 'g'), "%26") + "\n";
 
     var data = window.document.getElementsByClassName("data");
 
@@ -25,7 +25,7 @@ function save(checkInput, confirmation) {
         content += dataContent[0].textContent + "\n";
 
         for (var j = 1; j < dataContent.length; j++) {
-            content += dataContent[j].firstChild.value;
+            content += dataContent[j].firstChild.value.replace(new RegExp("&", 'g'), "%26");
             content += "\n";
         }
     }
@@ -98,13 +98,6 @@ function checkAllInputs() {
     }
 
     return true;
-}
-
-function checkContent(element) {
-    if (element.value.contains("&")) {
-        element.value = element.value.replace(new RegExp("&", 'g'), "");
-        alert("Das Zeichen '&' ist ein unerlaubtes Sonderzeichen und wurde entfernt!");
-    }
 }
 
 function checkPrice(element) {
