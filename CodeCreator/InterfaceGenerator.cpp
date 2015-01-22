@@ -19,13 +19,12 @@ InterfaceGenerator::~InterfaceGenerator()
 
 void InterfaceGenerator::generate(const QString &folder)
 {
-  // TODO check parameters
-
   Options options;
   options.m_type = Options::Interface;
   options.m_folder = folder;
-
-  // TODO further options
+  options.m_name = ui->lineEditName->text();
+  options.m_interface = true;
+  options.m_functions = ui->plainTextEditFunctions->toPlainText();
 
   m_codeGenerator->generateCode(options);
 }

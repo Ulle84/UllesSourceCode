@@ -16,19 +16,22 @@ SOURCES += main.cpp\
         CodeCreator.cpp \
     ClassGenerator.cpp \
     InterfaceGenerator.cpp \
-    SingletonGenerator.cpp \
     CodeGenerator.cpp \
-    Options.cpp
+    Options.cpp \
+    Generator.cpp \
+    Observer.cpp
 
 HEADERS  += CodeCreator.h \
     ClassGenerator.h \
     InterfaceGenerator.h \
-    SingletonGenerator.h \
     CodeGenerator.h \
     Options.h \
-    GeneratorIterface.h
+    GeneratorIterface.h \
+    Generator.h \
+    Observer.h
 
 FORMS    += CodeCreator.ui \
     ClassGenerator.ui \
     InterfaceGenerator.ui \
-    SingletonGenerator.ui
+    Generator.ui \
+    Observer.ui

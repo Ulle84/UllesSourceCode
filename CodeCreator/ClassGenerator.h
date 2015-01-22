@@ -29,6 +29,8 @@ public:
 private slots:
   void on_checkBoxInherit_toggled(bool checked);
 
+  void on_checkBoxSingleton_toggled(bool checked);
+
 private:
   Ui::ClassGenerator* ui;
   QStringList m_directories;

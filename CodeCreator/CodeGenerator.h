@@ -12,10 +12,9 @@ public:
   ~CodeGenerator();
 
   void generateCode(const Options& options);
-
-private:
   bool saveCode(const QString& fileName, const QStringList& code);
 
+private:
   void generateCodeHeader();
   void generateCodeClass();
   void generateCodePimpl();

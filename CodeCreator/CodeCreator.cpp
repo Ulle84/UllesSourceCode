@@ -1,14 +1,15 @@
 /*
  * TODO
- * Kann name bei allen konstant sein?
- * Umstellung auf neues Layout -> GUI Element sind von ClassCreator in CodeCrator gewandert
- * XML-Inteface, das alle Generatoren implementieren
+ *
+ *rename ClassGenerator -> Generator
+ *  ...
+ * rename Header GeneratorIterface -> GeneratorInterface ->IGenerator?
+ *
  * Class
  *   use Q_OBJECT Macro
  *   namespace
  *   export dll
  *   members + options getter/setter
- * Interface
  * Singleton
  */
 
@@ -26,7 +27,8 @@
 
 #include "ClassGenerator.h"
 #include "InterfaceGenerator.h"
-#include "SingletonGenerator.h"
+#include "Generator.h"
+#include "Observer.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
@@ -51,7 +53,8 @@ void CodeCreator::initGenerators()
 {
   m_generators["Class"] = new ClassGenerator(m_codeGenerator, this);
   m_generators["Interface"] = new InterfaceGenerator(m_codeGenerator, this);
-  m_generators["Singleton"] = new SingletonGenerator(m_codeGenerator, this);
+  m_generators["Observer"] = new Observer(m_codeGenerator, this);
+  m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
 
   for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
   {
@@ -131,7 +134,11 @@ bool CodeCreator::readXml()
 
   while (xml.readNextStartElement())
   {
-    if (xml.name() == "RecentFolders")
+    if (xml.name() == "SelectedType")
+    {
+      ui->comboBoxType->setCurrentIndex(ui->comboBoxType->findText((xml.readElementText())));
+    }
+    else if (xml.name() == "RecentFolders")
     {
       while (xml.readNextStartElement())
       {
@@ -173,6 +180,8 @@ bool CodeCreator::writeXml()
   xml.writeStartDocument();
 
   xml.writeStartElement("Settings");
+
+  xml.writeTextElement("SelectedType", ui->comboBoxType->currentText());
 
   xml.writeStartElement("RecentFolders");
 
