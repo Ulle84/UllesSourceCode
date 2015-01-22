@@ -25,7 +25,8 @@ HEADERS  += CodeCreator.h \
     InterfaceGenerator.h \
     SingletonGenerator.h \
     CodeGenerator.h \
-    Options.h
+    Options.h \
+    GeneratorIterface.h
 
 FORMS    += CodeCreator.ui \
     ClassGenerator.ui \

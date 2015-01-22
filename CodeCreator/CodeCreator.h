@@ -22,13 +22,22 @@ public:
 
 private slots:
   void on_comboBoxType_currentIndexChanged(const QString &type);
+  void on_pushButtonSelectFolder_clicked();
+  void on_pushButtonStart_clicked();
+  void on_pushButtonClearHistory_clicked();
 
 private:
+  bool readXml();
+  bool writeXml();
+
+  void updateComboBoxFolders();
   void initGenerators();
 
   Ui::CodeCreator *ui;
   std::map<QString, QWidget*> m_generators;
   QWidget* m_currentGenerator;
+  QStringList m_directories;
+  QString m_fileName;
 
   CodeGenerator* m_codeGenerator;
 };

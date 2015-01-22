@@ -3,13 +3,15 @@
 
 #include <QWidget>
 
+#include "GeneratorIterface.h"
+
 class CodeGenerator;
 
 namespace Ui {
 class InterfaceGenerator;
 }
 
-class InterfaceGenerator : public QWidget
+class InterfaceGenerator : public QWidget, public GeneratorInterface
 {
   Q_OBJECT
 
@@ -17,8 +19,10 @@ public:
   explicit InterfaceGenerator(CodeGenerator* codeGenerator, QWidget *parent = 0);
   ~InterfaceGenerator();
 
-private slots:
-  void on_pushButtonStart_clicked();
+  // GeneratorInterface
+  void generate(const QString& folder);
+  void readXml(QXmlStreamReader& xml);
+  void writeXml(QXmlStreamWriter& xml);
 
 private:
   Ui::InterfaceGenerator *ui;

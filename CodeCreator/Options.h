@@ -22,7 +22,7 @@ public:
   bool m_disableCopy;
   bool m_singleton;
 
-  QString m_className;
+  QString m_name;
   QString m_inheritanceType;
   QString m_baseClassName;
   QString m_folder;
