@@ -6,6 +6,7 @@
 #include <QString>
 
 class CodeGenerator;
+class Options;
 
 namespace Ui {
 class CodeCreator;
@@ -18,6 +19,8 @@ class CodeCreator : public QWidget
 public:
   explicit CodeCreator(QWidget *parent = 0);
   ~CodeCreator();
+
+  static void copyFromTemplate(const Options& options);
 
 private slots:
   void on_comboBoxType_currentIndexChanged(const QString &type);

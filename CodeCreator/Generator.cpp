@@ -4,7 +4,7 @@
 #include <QTextStream>
 
 #include "CodeGenerator.h"
-#include "OptionsTemplate.h"
+#include "Options.h"
 #include "Generator.h"
 #include "ui_Generator.h"
 
@@ -23,7 +23,7 @@ Generator::~Generator()
 
 void Generator::generate(const QString &folder)
 {
-  OptionsTemplate options;
+  Options options;
   options.folderOutput = folder;
   options.folderInput = "templates/CodeCreator/";
 

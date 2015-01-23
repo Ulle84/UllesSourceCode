@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     CodeGenerator.cpp \
     Generator.cpp \
     Observer.cpp \
-    ClassGenerator.cpp \
     Interface.cpp \
     Singleton.cpp \
     Class.cpp
@@ -27,15 +26,12 @@ HEADERS  += CodeCreator.h \
     Generator.h \
     Observer.h \
     IGenerator.h \
-    ClassGenerator.h \
-    Options.h \
-    OptionsTemplate.h \
     Interface.h \
     Singleton.h \
-    Class.h
+    Class.h \
+    Options.h
 
 FORMS    += CodeCreator.ui \
-    ClassGenerator.ui \
     Generator.ui \
     Observer.ui \
     Interface.ui \

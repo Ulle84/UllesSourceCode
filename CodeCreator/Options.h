@@ -1,39 +1,18 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
+#include <QMap>
 #include <QString>
 #include <QStringList>
 
 class Options
 {
 public:
-  Options();
+  QStringList files;
+  QString folderInput;
+  QString folderOutput;
 
-  enum Type
-  {
-    Class,
-    Interface,
-    Singleton
-  };
-
-  Options::Type type;
-
-  bool useInheritance;
-  bool usePimpl;
-  bool disableCopy;
-
-  QString name;
-  QString inheritanceType;
-  QString baseClassName;
-  QString folder;
-  QString functions;
+  QMap<QString, QString> searchAndReplace;
 };
-
-inline Options::Options()
-  : useInheritance(false),
-    usePimpl(false),
-    disableCopy(false)
-{
-}
 
 #endif // OPTIONS_H

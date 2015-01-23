@@ -1,7 +1,7 @@
 #include "Interface.h"
 #include "ui_Interface.h"
 
-#include "OptionsTemplate.h"
+#include "Options.h"
 #include "CodeGenerator.h"
 
 Interface::Interface(CodeGenerator* codeGenerator, QWidget *parent) :
@@ -42,7 +42,7 @@ void Interface::generate(const QString &folder)
     }
   }
 
-  OptionsTemplate options;
+  Options options;
   options.folderOutput = folder;
   options.folderInput = "templates/Interface/";
   options.searchAndReplace["Interface"] = ui->lineEditName->text();

@@ -1,7 +1,7 @@
 #include "Class.h"
 #include "ui_Class.h"
 
-#include "OptionsTemplate.h"
+#include "Options.h"
 #include "CodeGenerator.h"
 
 Class::Class(CodeGenerator* codeGenerator, QWidget *parent) :
@@ -19,7 +19,7 @@ Class::~Class()
 
 void Class::generate(const QString &folder)
 {
-  OptionsTemplate options;
+  Options options;
   options.folderOutput = folder;
 
   options.files << "Template.cpp";

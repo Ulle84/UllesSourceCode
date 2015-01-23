@@ -1,7 +1,7 @@
 #include "Singleton.h"
 #include "ui_Singleton.h"
 
-#include "OptionsTemplate.h"
+#include "Options.h"
 #include "CodeGenerator.h"
 
 Singleton::Singleton(CodeGenerator* codeGenerator, QWidget *parent) :
@@ -19,7 +19,7 @@ Singleton::~Singleton()
 
 void Singleton::generate(const QString &folder)
 {
-  OptionsTemplate options;
+  Options options;
   options.folderOutput = folder;
 
   options.searchAndReplace["Singleton"] = ui->lineEditName->text();

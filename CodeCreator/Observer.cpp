@@ -3,7 +3,7 @@
 #include "Observer.h"
 #include "ui_Observer.h"
 
-#include "OptionsTemplate.h"
+#include "Options.h"
 #include "CodeGenerator.h"
 
 Observer::Observer(CodeGenerator* codeGenerator, QWidget *parent) :
@@ -37,7 +37,7 @@ void Observer::generate(const QString &folder)
     return;
   }
 
-  OptionsTemplate options;
+  Options options;
   options.folderOutput = folder;
   options.folderInput = "templates/observer/";
 
