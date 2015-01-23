@@ -21,8 +21,6 @@ public:
   bool useInheritance;
   bool usePimpl;
   bool disableCopy;
-  bool singleton;
-  bool interface;
 
   QString name;
   QString inheritanceType;
@@ -34,9 +32,7 @@ public:
 inline Options::Options()
   : useInheritance(false),
     usePimpl(false),
-    disableCopy(false),
-    singleton(false),
-    interface(false)
+    disableCopy(false)
 {
 }
 

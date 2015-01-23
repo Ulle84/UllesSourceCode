@@ -47,7 +47,6 @@ void ClassGenerator::generate(const QString& folder)
   options.useInheritance = ui->checkBoxInherit->isChecked();
   options.usePimpl = ui->checkBoxUsePimpl->isChecked();
   options.disableCopy = ui->checkBoxDisableCopy->isChecked();
-  options.singleton = ui->checkBoxSingleton->isChecked();
   options.name = ui->lineEditName->text();
   options.inheritanceType = ui->comboBoxType->currentText();
   options.baseClassName = ui->comboBoxBaseClassName->currentText();
@@ -108,10 +107,6 @@ void ClassGenerator::readXml(QXmlStreamReader &xml)
     {
       ui->checkBoxUsePimpl->setChecked(xml.readElementText() == "true");
     }
-    else if (xml.name() == "Singleton")
-    {
-      ui->checkBoxSingleton->setChecked(xml.readElementText() == "true");
-    }
     else
     {
       xml.skipCurrentElement();
@@ -124,7 +119,6 @@ void ClassGenerator::writeXml(QXmlStreamWriter &xml)
   xml.writeTextElement("Name", ui->lineEditName->text());
   xml.writeTextElement("DisableCopy", ui->checkBoxDisableCopy->isChecked() ? "true" : "false");
   xml.writeTextElement("UsePimpl", ui->checkBoxUsePimpl->isChecked() ? "true" : "false");
-  xml.writeTextElement("Singleton", ui->checkBoxSingleton->isChecked() ? "true" : "false");
 
   xml.writeStartElement("Inheritance");
   xml.writeTextElement("Inherit", ui->checkBoxInherit->isChecked() ? "true" : "false");

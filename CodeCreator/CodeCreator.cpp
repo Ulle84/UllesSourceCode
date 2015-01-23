@@ -6,7 +6,7 @@
  *   namespace
  *   export dll
  *   members + options getter/setter
- * Singleton
+ * Data -> only header with members an inline constructor
  */
 
 #include <QFileDialog>
@@ -18,7 +18,7 @@
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
 #include "CodeGenerator.h"
-#include "ClassGenerator.h"
+#include "Class.h"
 #include "Generator.h"
 #include "Observer.h"
 #include "Interface.h"
@@ -45,7 +45,7 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::initGenerators()
 {
-  mGenerators["Class"] = new ClassGenerator(mCodeGenerator, this);
+  mGenerators["Class"] = new Class(mCodeGenerator, this);
   mGenerators["Interface"] = new Interface(mCodeGenerator, this);
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);

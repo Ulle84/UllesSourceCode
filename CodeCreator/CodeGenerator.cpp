@@ -35,7 +35,7 @@ void CodeGenerator::generateCode(const Options& options)
   case Options::Interface:
     generateCodeHeader();
     break;
-  //default:
+    //default:
   }
 
 }
@@ -119,12 +119,6 @@ void CodeGenerator::generateCodeHeader()
   code.append(QString("#define %1_H").arg(mOptions.name.toUpper()));
   code.append(QString(""));
 
-  if (mOptions.singleton)
-  {
-    code.append(QString("#include <QMutex>"));
-    code.append(QString(""));
-  }
-
   if (mOptions.useInheritance)
   {
     code.append(QString("#include \"%1.h\"").arg(mOptions.baseClassName));
@@ -139,42 +133,8 @@ void CodeGenerator::generateCodeHeader()
   code.append(QString("{"));
   code.append(QString("public:"));
 
-  if (!(mOptions.interface || mOptions.singleton))
-  {
-    code.append(QString("  %1();").arg(mOptions.name));
-    code.append(QString("  ~%1();").arg(mOptions.name));
-  }
-
-  if (mOptions.singleton)
-  {
-    code.append(QString("  static %1* getInstance();").arg(mOptions.name));
-  }
-
-  if (mOptions.interface)
-  {
-    QStringList functions = mOptions.functions.split("\n");
-
-    for (auto it = functions.begin(); it != functions.end(); ++it)
-    {
-      QString simplified = it->simplified();
-
-      if (simplified.isEmpty())
-      {
-        code.append(simplified);
-      }
-      else
-      {
-        if (simplified.left(2) == "//")
-        {
-          code.append(simplified.prepend("  "));
-        }
-        else
-        {
-          code.append(simplified.remove(";").prepend("  virtual ").append(" = 0;"));
-        }
-      }
-    }
-  }
+  code.append(QString("  %1();").arg(mOptions.name));
+  code.append(QString("  ~%1();").arg(mOptions.name));
 
   if (mOptions.usePimpl && !mOptions.disableCopy)
   {
@@ -190,12 +150,6 @@ void CodeGenerator::generateCodeHeader()
     code.append(QString("private:"));
   }
 
-  if (mOptions.singleton)
-  {
-    code.append(QString("  %1();").arg(mOptions.name));
-    code.append(QString("  ~%1();").arg(mOptions.name));
-  }
-
   if (mOptions.disableCopy)
   {
     code.append(QString("  %1(const %1& rhs);").arg(mOptions.name));
@@ -208,21 +162,10 @@ void CodeGenerator::generateCodeHeader()
     code.append(QString(""));
   }
 
-  if (mOptions.singleton)
-  {
-    code.append(QString("  static QMutex m_mutex;"));
-    code.append(QString("  static %1* m_instance;").arg(mOptions.name));
-  }
-
-  if (mOptions.singleton && mOptions.usePimpl)
-  {
-    code.append(QString(""));
-  }
-
   if (mOptions.usePimpl)
   {
     code.append(QString("  class %1Impl;").arg(mOptions.name));
-    code.append(QString("  %1%2Impl* m_pImpl;").arg(mOptions.singleton ? "static " : "").arg(mOptions.name));
+    code.append(QString("  %2Impl* m_pImpl;").arg(mOptions.name));
   }
 
   code.append(QString("};"));
@@ -247,21 +190,11 @@ void CodeGenerator::generateCodeClass()
   if (mOptions.usePimpl)
   {
     code.append(QString("#include \"%1Impl.h\"").arg(mOptions.name));
-
-    if (!mOptions.singleton)
-    {
-      code.append(QString(""));
-      code.append(QString("#include <utilities>"));
-    }
+    code.append(QString(""));
+    code.append(QString("#include <utilities>"));
   }
 
   code.append(QString(""));
-
-  if (mOptions.singleton)
-  {
-    code.append(QString("%1* %1::m_instance = nullptr;").arg(mOptions.name));
-    code.append(QString(""));
-  }
 
   // constructor
   code.append(QString("%1::%1()").arg(mOptions.name));
@@ -275,7 +208,7 @@ void CodeGenerator::generateCodeClass()
   code.append(QString("}"));
   code.append(QString(""));
 
-  if ((mOptions.usePimpl && !mOptions.disableCopy) && !mOptions.singleton)
+  if (mOptions.usePimpl && !mOptions.disableCopy)
   {
     // copy constructor
     code.append(QString("%1::%1(const %1& rhs)").arg(mOptions.name));
@@ -313,21 +246,6 @@ void CodeGenerator::generateCodeClass()
   }
   code.append(QString("}"));
   code.append(QString(""));
-
-  // access to singleton
-  if (mOptions.singleton)
-  {
-    code.append(QString("%1* %1::getInstance()").arg(mOptions.name));
-    code.append(QString("{"));
-    code.append(QString("  m_mutex.lock();"));
-    code.append(QString("  if(m_instance == nullptr)"));
-    code.append(QString("  {"));
-    code.append(QString("    m_instance = new %1();").arg(mOptions.name));
-    code.append(QString("  }"));
-    code.append(QString("  m_mutex.unlock();"));
-    code.append(QString("  return m_instance;"));
-    code.append(QString("}"));
-  }
 
   QString fileName = mOptions.folder + QDir::separator() + mOptions.name + ".cpp";
   saveCode(fileName, code);
