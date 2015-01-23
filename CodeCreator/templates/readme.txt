@@ -1,1 +1,0 @@
-Template must be replacable by something else
