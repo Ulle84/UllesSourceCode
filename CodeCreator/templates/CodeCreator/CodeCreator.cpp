@@ -9,7 +9,7 @@
 CodeCreator::CodeCreator(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::CodeCreator),
-  m_codeGenerator(codeGenerator)
+  mCodeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 }
@@ -34,9 +34,12 @@ void CodeCreator::generate(const QString &folder)
   options.folderInput = "templates/CodeCreator/";
 
   options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
-  // TODO set all options
+    
+  options.files << "CodeCreator.h";
+  options.files << "CodeCreator.cpp";
+  // TODO verify all options
 
-  m_codeGenerator->copyFromTemplate(options);
+  mCodeGenerator->copyFromTemplate(options);
 }
 
 void CodeCreator::readXml(QXmlStreamReader &xml)

@@ -19,7 +19,7 @@ public:
   void notifyObservers();
 
 private:
-  std::vector<ITemplateObserver*> m_observers;
+  std::vector<ITemplateObserver*> mObservers;
 };
 
 #endif // TEMPLATESUBJECT_H

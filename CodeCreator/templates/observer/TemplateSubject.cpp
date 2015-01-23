@@ -17,9 +17,9 @@ bool TemplateSubject::registerObserver(ITemplateObserver* observer)
 
   if (observer != nullptr)
   {
-    if (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end())
+    if (std::find(mObservers.begin(), mObservers.end(), observer) == mObservers.end())
     {
-      m_observers.push_back(observer);
+      mObservers.push_back(observer);
       returnValue = true;
     }
   }
@@ -33,11 +33,11 @@ bool TemplateSubject::unregisterObserver(ITemplateObserver* observer)
 
   if (observer != nullptr)
   {
-    for (auto it = m_observers.begin(); it != m_observers.end(); it++)
+    for (auto it = mObservers.begin(); it != mObservers.end(); it++)
     {
       if (*it == observer)
       {
-        m_observers.erase(it);
+        mObservers.erase(it);
         returnValue = true;
         break;
       }
@@ -49,7 +49,7 @@ bool TemplateSubject::unregisterObserver(ITemplateObserver* observer)
 
 void TemplateSubject::notifyObservers()
 {
-  for (auto it = m_observers.begin(); it != m_observers.end(); it++)
+  for (auto it = mObservers.begin(); it != mObservers.end(); it++)
   {
     (*it)->notify();
   }

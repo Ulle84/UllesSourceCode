@@ -8,11 +8,18 @@
 class Options
 {
 public:
+  Options();
+
   QStringList files;
   QString folderInput;
   QString folderOutput;
 
   QMap<QString, QString> searchAndReplace;
 };
+
+inline Options::Options()
+  : folderInput("false")
+{
+}
 
 #endif // OPTIONS_H

@@ -29,7 +29,7 @@
 #include "Interface.h"
 #include "Singleton.h"
 #include "Options.h"
-#include "Test.h"
+#include "Data.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
@@ -110,7 +110,7 @@ void CodeCreator::initGenerators()
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
   mGenerators["Singleton"] = new Singleton(mCodeGenerator, this);
-  mGenerators["Test"] = new Test(mCodeGenerator, this);
+  mGenerators["Data"] = new Data(mCodeGenerator, this);
 
   for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
   {
