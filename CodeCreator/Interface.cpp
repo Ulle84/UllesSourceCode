@@ -42,13 +42,18 @@ void Interface::generate(const QString &folder)
     }
   }
 
+  QString name = ui->lineEditName->text();
+  if (ui->checkBoxPrefix->isChecked())
+  {
+    name.prepend("I");
+  }
+
   Options options;
   options.folderOutput = folder;
   options.folderInput = "templates/Interface/";
-  options.searchAndReplace["Interface"] = ui->lineEditName->text();
-  options.searchAndReplace["  // TODO add functions here"] = functions.join("\n");
-
   options.files << "Interface.h";
+  options.searchAndReplace["Interface"] = name;
+  options.searchAndReplace["  // TODO add functions here"] = functions.join("\n");
 
   m_codeGenerator->copyFromTemplate(options);
 }

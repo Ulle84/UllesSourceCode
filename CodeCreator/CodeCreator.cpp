@@ -1,6 +1,8 @@
 /*
  * TODO
  *
+ * save current folder at folder selection
+ *
  * Class
  *   use Q_OBJECT Macro
  *   namespace
@@ -27,6 +29,7 @@
 #include "Interface.h"
 #include "Singleton.h"
 #include "Options.h"
+#include "Test.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
@@ -37,7 +40,6 @@ CodeCreator::CodeCreator(QWidget *parent) :
   mCodeGenerator = new CodeGenerator();
   initGenerators();
   readXml();
-  updateComboBoxFolders();
 }
 
 CodeCreator::~CodeCreator()
@@ -108,6 +110,7 @@ void CodeCreator::initGenerators()
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
   mGenerators["Singleton"] = new Singleton(mCodeGenerator, this);
+  mGenerators["Test"] = new Test(mCodeGenerator, this);
 
   for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
   {
@@ -204,6 +207,11 @@ bool CodeCreator::readXml()
           xml.skipCurrentElement();
         }
       }
+      updateComboBoxFolders();
+    }
+    else if (xml.name() == "SelectedFolder")
+    {
+      ui->comboBoxFolder->setCurrentIndex(ui->comboBoxFolder->findText(xml.readElementText()));
     }
     else if (mGenerators.find(xml.name().toString()) != mGenerators.end())
     {
@@ -245,6 +253,9 @@ bool CodeCreator::writeXml()
 
   xml.writeEndElement(); // RecentFolders
 
+  xml.writeTextElement("SelectedFolder", ui->comboBoxFolder->currentText());
+
+  // generator settings
   for (auto it = mGenerators.begin(); it != mGenerators.end(); ++it)
   {
     xml.writeStartElement(it.key());

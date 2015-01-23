@@ -1,7 +1,9 @@
+#include <QMessageBox>
+
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
 
-#include "OptionsTemplate.h"
+#include "Options.h"
 #include "CodeGenerator.h"
 
 CodeCreator::CodeCreator(CodeGenerator* codeGenerator, QWidget *parent) :
@@ -19,12 +21,20 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::generate(const QString &folder)
 {
-  OptionsTemplate options;
+  if (ui->lineEditName->text().isEmpty())
+  {
+    QMessageBox messageBox;
+    messageBox.setText(tr("Please enter a name!"));
+    messageBox.exec();
+    return;
+  }
+
+  Options options;
   options.folderOutput = folder;
   options.folderInput = "templates/CodeCreator/";
 
   options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
-  //TODO set all options
+  // TODO set all options
 
   m_codeGenerator->copyFromTemplate(options);
 }

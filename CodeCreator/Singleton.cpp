@@ -1,3 +1,5 @@
+#include <QMessageBox>
+
 #include "Singleton.h"
 #include "ui_Singleton.h"
 
@@ -19,6 +21,14 @@ Singleton::~Singleton()
 
 void Singleton::generate(const QString &folder)
 {
+  if (ui->lineEditName->text().isEmpty())
+  {
+    QMessageBox messageBox;
+    messageBox.setText(tr("Please enter a name!"));
+    messageBox.exec();
+    return;
+  }
+
   Options options;
   options.folderOutput = folder;
 
