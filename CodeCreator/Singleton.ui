@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Generator</class>
- <widget class="QWidget" name="Generator">
+ <class>Singleton</class>
+ <widget class="QWidget" name="Singleton">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,20 +11,41 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Singleton</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>name</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QLineEdit" name="lineEditName"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>creation tpye</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboBoxType">
+       <item>
+        <property name="text">
+         <string notr="true">lazy</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">eager</string>
+        </property>
+       </item>
+      </widget>
      </item>
     </layout>
    </item>
@@ -36,7 +57,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>240</height>
       </size>
      </property>
     </spacer>

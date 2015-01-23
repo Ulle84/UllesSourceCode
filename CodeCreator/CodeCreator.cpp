@@ -1,13 +1,6 @@
 /*
  * TODO
  *
- *
- *
- *rename ClassGenerator -> Generator
- *  ...
- * rename Header GeneratorIterface -> GeneratorInterface ->IGenerator?
- *
- *
  * Class
  *   use Q_OBJECT Macro
  *   namespace
@@ -29,6 +22,7 @@
 #include "Generator.h"
 #include "Observer.h"
 #include "Interface.h"
+#include "Singleton.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
@@ -55,6 +49,7 @@ void CodeCreator::initGenerators()
   mGenerators["Interface"] = new Interface(mCodeGenerator, this);
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
+  mGenerators["Singleton"] = new Singleton(mCodeGenerator, this);
 
   for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
   {
