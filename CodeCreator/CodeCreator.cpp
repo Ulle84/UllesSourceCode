@@ -3,12 +3,10 @@
  *
  * save current folder at folder selection
  *
- * Class
- *   use Q_OBJECT Macro
- *   namespace
- *   export dll
- *   members + options getter/setter
- * Data -> only header with members an inline constructor
+ * template for exporting dll?
+ *
+ * more patterns
+ *
  */
 
 #include <QFileDialog>
@@ -159,6 +157,10 @@ void CodeCreator::on_pushButtonStart_clicked()
   }
 
   dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText());
+
+  QMessageBox messageBox;
+  messageBox.setText(tr("Creation finished!"));
+  messageBox.exec();
 }
 
 void CodeCreator::on_pushButtonClearHistory_clicked()
