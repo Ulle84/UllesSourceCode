@@ -13,8 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        DecoratorExample.cpp
+        DecoratorExample.cpp \
+    Decorator.cpp \
+    Component.cpp
 
-HEADERS  += DecoratorExample.h
+HEADERS  += DecoratorExample.h \
+    Decorator.h \
+    IComponent.h \
+    Component.h
 
 FORMS    += DecoratorExample.ui

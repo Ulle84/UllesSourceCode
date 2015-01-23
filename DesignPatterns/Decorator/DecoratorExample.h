@@ -3,6 +3,9 @@
 
 #include <QWidget>
 
+class Component;
+class Decorator;
+
 namespace Ui {
 class DecoratorExample;
 }
@@ -15,8 +18,16 @@ public:
   explicit DecoratorExample(QWidget *parent = 0);
   ~DecoratorExample();
 
+private slots:
+  void on_pushButtonOperateComponent_clicked();
+  void on_pushButtonOperateDecorator_clicked();
+  void on_pushButtonOperateDoubleDecorator_clicked();
+
 private:
   Ui::DecoratorExample *ui;
+  Component* mComponent;
+  Decorator* mDecorator;
+  Decorator* mDoubleDecorator;
 };
 
 #endif // DECORATOREXAMPLE_H
