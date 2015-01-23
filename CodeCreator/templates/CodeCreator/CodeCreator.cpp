@@ -19,18 +19,32 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::generate(const QString &folder)
 {
-    OptionsTemplate options;
-    options.m_folderOutput = folder;
-    options.m_folderInput = "templates/CodeCreator/";
-    //TODO set all options
-    
-    m_codeGenerator->copyFromTemplate(options);
+  OptionsTemplate options;
+  options.folderOutput = folder;
+  options.folderInput = "templates/CodeCreator/";
+
+  options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
+  //TODO set all options
+
+  m_codeGenerator->copyFromTemplate(options);
 }
 
 void CodeCreator::readXml(QXmlStreamReader &xml)
 {
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Name")
+    {
+      ui->lineEditName->setText(xml.readElementText());
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
 }
 
 void CodeCreator::writeXml(QXmlStreamWriter &xml)
 {
+  xml.writeTextElement("Name", ui->lineEditName->text());
 }

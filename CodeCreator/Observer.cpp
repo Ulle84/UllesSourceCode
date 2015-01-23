@@ -9,7 +9,7 @@
 Observer::Observer(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::Observer),
-  m_codeGenerator(codeGenerator)
+  mCodeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 }
@@ -51,7 +51,7 @@ void Observer::generate(const QString &folder)
   options.searchAndReplace["TemplateSubject"] = ui->lineEditSubject->text();
   options.searchAndReplace["TemplateObserver"] = ui->lineEditObserver->text();
 
-  m_codeGenerator->copyFromTemplate(options);
+  mCodeGenerator->copyFromTemplate(options);
 }
 
 void Observer::readXml(QXmlStreamReader &xml)

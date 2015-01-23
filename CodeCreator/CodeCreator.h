@@ -1,8 +1,7 @@
 #ifndef CODECREATOR_H
 #define CODECREATOR_H
 
-#include <map>
-
+#include <QMap>
 #include <QWidget>
 #include <QString>
 
@@ -34,12 +33,12 @@ private:
   void initGenerators();
 
   Ui::CodeCreator *ui;
-  std::map<QString, QWidget*> m_generators;
-  QWidget* m_currentGenerator;
-  QStringList m_directories;
-  QString m_fileName;
+  QMap<QString, QWidget*> mGenerators;
+  QWidget* mCurrentGenerator;
+  QStringList mDirectories;
+  QString mFileName;
 
-  CodeGenerator* m_codeGenerator;
+  CodeGenerator* mCodeGenerator;
 };
 
 #endif // CODECREATOR_H

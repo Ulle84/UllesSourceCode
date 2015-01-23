@@ -1,15 +1,17 @@
-#include "Generator.h"
-#include "ui_Generator.h"
-
 #include <QDir>
 #include <QFile>
 #include <QStringList>
 #include <QTextStream>
 
+#include "CodeGenerator.h"
+#include "OptionsTemplate.h"
+#include "Generator.h"
+#include "ui_Generator.h"
+
 Generator::Generator(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::Generator),
-  m_codeGenerator(codeGenerator)
+  mCodeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 }
@@ -21,45 +23,17 @@ Generator::~Generator()
 
 void Generator::generate(const QString &folder)
 {
-  QDir dir("templates/CodeCreator/");
+  OptionsTemplate options;
+  options.folderOutput = folder;
+  options.folderInput = "templates/CodeCreator/";
 
-  QStringList filters;
-  filters << "CodeCreator.h" << "CodeCreator.cpp" << "CodeCreator.ui";
-  dir.setNameFilters(filters);
+  options.files << "CodeCreator.h";
+  options.files << "CodeCreator.cpp";
+  options.files << "CodeCreator.ui";
 
-  QStringList fileNames = dir.entryList();
+  options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
 
-  for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
-  {
-    QString filePath = dir.filePath(*it);
-
-    QFile input(filePath);
-
-    if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-      continue;
-    }
-
-    QStringList fileContent;
-    QTextStream in(&input);
-    while (!in.atEnd())
-    {
-      fileContent.append(in.readLine().replace("CodeCreator", ui->lineEditName->text()).replace("CODECREATOR", ui->lineEditName->text().toUpper()));
-    }
-
-    QFile output(folder + QDir::separator() + (*it).replace("CodeCreator", ui->lineEditName->text()));
-
-    if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-      continue;
-    }
-
-    QTextStream out(&output);
-    out << fileContent.join("\n");
-
-    output.close();
-    input.close();
-  }
+  mCodeGenerator->copyFromTemplate(options);
 }
 
 void Generator::readXml(QXmlStreamReader &xml)

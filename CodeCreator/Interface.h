@@ -1,5 +1,5 @@
-#ifndef CODECREATOR_H
-#define CODECREATOR_H
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
 #include <QWidget>
 
@@ -8,16 +8,16 @@
 class CodeGenerator;
 
 namespace Ui {
-class CodeCreator;
+class Interface;
 }
 
-class CodeCreator : public QWidget, public IGenerator
+class Interface : public QWidget, public IGenerator
 {
   Q_OBJECT
 
 public:
-  explicit CodeCreator(CodeGenerator* codeGenerator, QWidget *parent = 0);
-  ~CodeCreator();
+  explicit Interface(CodeGenerator* codeGenerator, QWidget *parent = 0);
+  ~Interface();
 
   // IGenerator
   void generate(const QString& folder);
@@ -25,9 +25,9 @@ public:
   void writeXml(QXmlStreamWriter& xml);
 
 private:
-  Ui::CodeCreator* ui;
+  Ui::Interface *ui;
 
   CodeGenerator* m_codeGenerator;
 };
 
-#endif // CODECREATOR_H
+#endif // INTERFACE_H

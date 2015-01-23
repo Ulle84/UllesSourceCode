@@ -21,7 +21,7 @@ private:
   void generateCodeClass();
   void generateCodePimpl();
 
-  Options m_options;
+  Options mOptions;
 };
 
 #endif // CODEGENERATOR_H

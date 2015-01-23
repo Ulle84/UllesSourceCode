@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>InterfaceGenerator</class>
- <widget class="QWidget" name="InterfaceGenerator">
+ <class>Interface</class>
+ <widget class="QWidget" name="Interface">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Interface</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -44,16 +44,22 @@
    <item>
     <widget class="QCheckBox" name="checkBoxPrefix">
      <property name="text">
-      <string>create prefix I</string>
+      <string>use prefix I</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxPostfix">
-     <property name="text">
-      <string>create postfix Interface</string>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>240</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

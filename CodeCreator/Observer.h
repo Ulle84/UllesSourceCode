@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "GeneratorIterface.h"
+#include "IGenerator.h"
 
 class CodeGenerator;
 
@@ -11,7 +11,7 @@ namespace Ui {
 class Observer;
 }
 
-class Observer : public QWidget, public GeneratorInterface
+class Observer : public QWidget, public IGenerator
 {
   Q_OBJECT
 
@@ -19,7 +19,7 @@ public:
   explicit Observer(CodeGenerator* codeGenerator, QWidget *parent = 0);
   ~Observer();
 
-  // GeneratorIterface
+  // IGenerator
   void generate(const QString& folder);
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);
@@ -27,7 +27,7 @@ public:
 private:
   Ui::Observer *ui;
 
-  CodeGenerator* m_codeGenerator;
+  CodeGenerator* mCodeGenerator;
 };
 
 #endif // OBSERVER_H

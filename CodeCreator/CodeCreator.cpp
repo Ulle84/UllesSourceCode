@@ -1,16 +1,12 @@
 /*
  * TODO
  *
- * OptionsTemplate.h -> map<replace, by> -> change function copyFromTemplate(...) of CdoeGenerator
- * Generator::generate umstellen auf CodeGenerator::copyFromTemplate
  *
- * rename Options and OptionsTemplate to DOptions and DTemplate -> D like Data???
  *
  *rename ClassGenerator -> Generator
  *  ...
  * rename Header GeneratorIterface -> GeneratorInterface ->IGenerator?
  *
- * interface generator with template?
  *
  * Class
  *   use Q_OBJECT Macro
@@ -26,24 +22,21 @@
 #include <QXmlStreamReader>
 #include <QFile>
 
-
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
-
 #include "CodeGenerator.h"
-
 #include "ClassGenerator.h"
-#include "InterfaceGenerator.h"
 #include "Generator.h"
 #include "Observer.h"
+#include "Interface.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::CodeCreator),
-  m_fileName("Settings.xml")
+  mFileName("Settings.xml")
 {
   ui->setupUi(this);
-  m_codeGenerator = new CodeGenerator();
+  mCodeGenerator = new CodeGenerator();
   initGenerators();
   readXml();
   updateComboBoxFolders();
@@ -52,38 +45,38 @@ CodeCreator::CodeCreator(QWidget *parent) :
 CodeCreator::~CodeCreator()
 {
   writeXml();
-  delete m_codeGenerator;
+  delete mCodeGenerator;
   delete ui;
 }
 
 void CodeCreator::initGenerators()
 {
-  m_generators["Class"] = new ClassGenerator(m_codeGenerator, this);
-  m_generators["Interface"] = new InterfaceGenerator(m_codeGenerator, this);
-  m_generators["Observer"] = new Observer(m_codeGenerator, this);
-  m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
+  mGenerators["Class"] = new ClassGenerator(mCodeGenerator, this);
+  mGenerators["Interface"] = new Interface(mCodeGenerator, this);
+  mGenerators["Observer"] = new Observer(mCodeGenerator, this);
+  mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
 
-  for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
+  for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
   {
-    if (it == m_generators.begin())
+    if (it == mGenerators.begin())
     {
-      m_currentGenerator = it->second;
+      mCurrentGenerator = it.value();
     }
     else
     {
-      it->second->setVisible(false);
+      it.value()->setVisible(false);
     }
 
-    ui->comboBoxType->addItem(it->first);
-    ui->generators->layout()->addWidget(it->second);
+    ui->comboBoxType->addItem(it.key());
+    ui->generators->layout()->addWidget(it.value());
   }
 }
 
 void CodeCreator::on_comboBoxType_currentIndexChanged(const QString &type)
 {
-  m_currentGenerator->setVisible(false);
-  m_currentGenerator = m_generators[type];
-  m_currentGenerator->setVisible(true);
+  mCurrentGenerator->setVisible(false);
+  mCurrentGenerator = mGenerators[type];
+  mCurrentGenerator->setVisible(true);
 }
 
 void CodeCreator::on_pushButtonSelectFolder_clicked()
@@ -95,7 +88,7 @@ void CodeCreator::on_pushButtonSelectFolder_clicked()
     return;
   }
 
-  m_directories.prepend(directory);
+  mDirectories.prepend(directory);
   updateComboBoxFolders();
 }
 
@@ -109,18 +102,18 @@ void CodeCreator::on_pushButtonStart_clicked()
     return;
   }
 
-  dynamic_cast<GeneratorInterface*>(m_generators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText());
+  dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText());
 }
 
 void CodeCreator::on_pushButtonClearHistory_clicked()
 {
-  m_directories.clear();
+  mDirectories.clear();
   updateComboBoxFolders();
 }
 
 bool CodeCreator::readXml()
 {
-  QFile file(m_fileName);
+  QFile file(mFileName);
 
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
   {
@@ -151,7 +144,7 @@ bool CodeCreator::readXml()
       {
         if (xml.name() == "Folder")
         {
-          m_directories.append(xml.readElementText());
+          mDirectories.append(xml.readElementText());
         }
         else
         {
@@ -159,9 +152,9 @@ bool CodeCreator::readXml()
         }
       }
     }
-    else if (m_generators.find(xml.name().toString()) != m_generators.end())
+    else if (mGenerators.find(xml.name().toString()) != mGenerators.end())
     {
-      dynamic_cast<GeneratorInterface*>(m_generators.find(xml.name().toString())->second)->readXml(xml);
+      dynamic_cast<IGenerator*>(mGenerators.find(xml.name().toString()).value())->readXml(xml);
     }
     else
     {
@@ -174,7 +167,7 @@ bool CodeCreator::readXml()
 
 bool CodeCreator::writeXml()
 {
-  QFile file(m_fileName);
+  QFile file(mFileName);
 
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
@@ -192,17 +185,17 @@ bool CodeCreator::writeXml()
 
   xml.writeStartElement("RecentFolders");
 
-  for (auto it = m_directories.begin(); it != m_directories.end(); ++it)
+  for (auto it = mDirectories.begin(); it != mDirectories.end(); ++it)
   {
     xml.writeTextElement("Folder", *it);
   }
 
   xml.writeEndElement(); // RecentFolders
 
-  for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
+  for (auto it = mGenerators.begin(); it != mGenerators.end(); ++it)
   {
-    xml.writeStartElement(it->first);
-    dynamic_cast<GeneratorInterface*>(it->second)->writeXml(xml);
+    xml.writeStartElement(it.key());
+    dynamic_cast<IGenerator*>(it.value())->writeXml(xml);
     xml.writeEndElement();
   }
 
@@ -216,8 +209,8 @@ bool CodeCreator::writeXml()
 
 void CodeCreator::updateComboBoxFolders()
 {
-  m_directories.removeDuplicates();
+  mDirectories.removeDuplicates();
 
   ui->comboBoxFolder->clear();
-  ui->comboBoxFolder->insertItems(0, m_directories);
+  ui->comboBoxFolder->insertItems(0, mDirectories);
 }

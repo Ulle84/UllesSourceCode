@@ -13,8 +13,8 @@
 ClassGenerator::ClassGenerator(CodeGenerator* codeGenerator, QWidget* parent) :
   QWidget(parent),
   ui(new Ui::ClassGenerator),
-  m_fileName("Settings.xml"),
-  m_codeGenerator(codeGenerator)
+  mFileName("Settings.xml"),
+  mCodeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 }
@@ -43,17 +43,17 @@ void ClassGenerator::generate(const QString& folder)
   }
 
   Options options;
-  options.m_type = Options::Class;
-  options.m_useInheritance = ui->checkBoxInherit->isChecked();
-  options.m_usePimpl = ui->checkBoxUsePimpl->isChecked();
-  options.m_disableCopy = ui->checkBoxDisableCopy->isChecked();
-  options.m_singleton = ui->checkBoxSingleton->isChecked();
-  options.m_name = ui->lineEditName->text();
-  options.m_inheritanceType = ui->comboBoxType->currentText();
-  options.m_baseClassName = ui->comboBoxBaseClassName->currentText();
-  options.m_folder = folder;
+  options.type = Options::Class;
+  options.useInheritance = ui->checkBoxInherit->isChecked();
+  options.usePimpl = ui->checkBoxUsePimpl->isChecked();
+  options.disableCopy = ui->checkBoxDisableCopy->isChecked();
+  options.singleton = ui->checkBoxSingleton->isChecked();
+  options.name = ui->lineEditName->text();
+  options.inheritanceType = ui->comboBoxType->currentText();
+  options.baseClassName = ui->comboBoxBaseClassName->currentText();
+  options.folder = folder;
 
-  m_codeGenerator->generateCode(options);
+  mCodeGenerator->generateCode(options);
 }
 
 void ClassGenerator::readXml(QXmlStreamReader &xml)

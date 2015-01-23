@@ -16,27 +16,27 @@ public:
     Singleton
   };
 
-  Options::Type m_type;
+  Options::Type type;
 
-  bool m_useInheritance;
-  bool m_usePimpl;
-  bool m_disableCopy;
-  bool m_singleton;
-  bool m_interface;
+  bool useInheritance;
+  bool usePimpl;
+  bool disableCopy;
+  bool singleton;
+  bool interface;
 
-  QString m_name;
-  QString m_inheritanceType;
-  QString m_baseClassName;
-  QString m_folder;
-  QString m_functions;
+  QString name;
+  QString inheritanceType;
+  QString baseClassName;
+  QString folder;
+  QString functions;
 };
 
 inline Options::Options()
-  : m_useInheritance(false),
-    m_usePimpl(false),
-    m_disableCopy(false),
-    m_singleton(false),
-    m_interface(false)
+  : useInheritance(false),
+    usePimpl(false),
+    disableCopy(false),
+    singleton(false),
+    interface(false)
 {
 }
 
