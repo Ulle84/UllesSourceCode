@@ -1,7 +1,7 @@
-#ifndef TEMPLATESUBJECTINTERFACE_H
-#define TEMPLATESUBJECTINTERFACE_H
+#ifndef ITEMPLATESUBJECT_H
+#define ITEMPLATESUBJECT_H
 
-class TemplateSubjectInterface
+class ITemplateSubject
 {
 public:
   virtual bool registerObserver(TemplateObserverInterface* observer) = 0;
@@ -9,4 +9,4 @@ public:
   virtual void notifyObservers() = 0;
 };
 
-#endif // TEMPLATESUBJECTINTERFACE_H
+#endif // ITEMPLATESUBJECT_H

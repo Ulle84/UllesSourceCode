@@ -38,33 +38,43 @@ void Observer::generate(const QString &folder)
   }
 
   OptionsTemplate options;
-  options.m_folderOutput = folder;
-  options.m_folderInput = "templates/observer/";
+  options.folderOutput = folder;
+  options.folderInput = "templates/observer/";
 
-  options.m_files << "TemplateSubjectInterface.h";
-  options.m_files << "TemplateSubject.h";
-  options.m_files << "TemplateSubject.cpp";
-  options.m_files << "TemplateObserverInterface.h";
-  options.m_files << "TemplateObserver.h";
-  options.m_files << "TemplateObserver.cpp";
+  options.files << "ITemplateSubject.h";
+  options.files << "ITemplateObserver.h";
+  options.files << "TemplateSubject.h";
+  options.files << "TemplateSubject.cpp";
+  options.files << "TemplateObserver.h";
+  options.files << "TemplateObserver.cpp";
 
-  // subject
-  options.m_searchString = "TemplateSubject";
-  options.m_replaceString = ui->lineEditSubject->text();
-
-  m_codeGenerator->copyFromTemplate(options);
-
-  // observer
-  options.m_searchString = "TemplateObserver";
-  options.m_replaceString = ui->lineEditObserver->text();
+  options.searchAndReplace["TemplateSubject"] = ui->lineEditSubject->text();
+  options.searchAndReplace["TemplateObserver"] = ui->lineEditObserver->text();
 
   m_codeGenerator->copyFromTemplate(options);
 }
 
 void Observer::readXml(QXmlStreamReader &xml)
 {
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Subject")
+    {
+      ui->lineEditSubject->setText(xml.readElementText());
+    }
+    else if (xml.name() == "Observer")
+    {
+      ui->lineEditObserver->setText(xml.readElementText());
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
 }
 
 void Observer::writeXml(QXmlStreamWriter &xml)
 {
+  xml.writeTextElement("Subject", ui->lineEditSubject->text());
+  xml.writeTextElement("Observer", ui->lineEditObserver->text());
 }

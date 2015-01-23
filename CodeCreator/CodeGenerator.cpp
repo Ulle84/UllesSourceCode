@@ -60,9 +60,9 @@ bool CodeGenerator::saveCode(const QString &fileName, const QStringList &code)
 
 void CodeGenerator::copyFromTemplate(const OptionsTemplate &options)
 {
-  QDir dir(options.m_folderInput);
+  QDir dir(options.folderInput);
 
-  dir.setNameFilters(options.m_files);
+  dir.setNameFilters(options.files);
 
   QStringList fileNames = dir.entryList();
 
@@ -81,10 +81,23 @@ void CodeGenerator::copyFromTemplate(const OptionsTemplate &options)
     QTextStream in(&input);
     while (!in.atEnd())
     {
-      fileContent.append(in.readLine().replace(options.m_searchString, options.m_replaceString).replace(QString(options.m_searchString).toUpper(), options.m_replaceString.toUpper()));
+      QString line = in.readLine();
+      for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
+      {
+        line.replace(it.key(), it.value());
+        line.replace(it.key().toUpper(), it.value().toUpper());
+      }
+      fileContent.append(line);
     }
 
-    QFile output(options.m_folderOutput + QDir::separator() + (*it).replace(options.m_searchString, options.m_replaceString));
+    QString outputFileName = *it;
+
+    for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
+    {
+      outputFileName.replace(it.key(), it.value());
+    }
+
+    QFile output(options.folderOutput + QDir::separator() + outputFileName);
 
     if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
     {

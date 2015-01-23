@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "TemplateSubject.h"
+#include "ITemplateObserver.h"
 
 TemplateSubject::TemplateSubject()
 {
@@ -10,7 +11,7 @@ TemplateSubject::~TemplateSubject()
 {
 }
 
-bool TemplateSubject::registerObserver( TemplateObserverInterface* observer )
+bool TemplateSubject::registerObserver(ITemplateObserver* observer)
 {
   bool returnValue = false;
 
@@ -26,17 +27,17 @@ bool TemplateSubject::registerObserver( TemplateObserverInterface* observer )
   return returnValue;
 }
 
-bool TemplateSubject::unregisterObserver( TemplateObserverInterface* observer )
+bool TemplateSubject::unregisterObserver(ITemplateObserver* observer)
 {
   bool returnValue = false;
 
   if (observer != nullptr)
   {
-    for (auto iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    for (auto it = m_observers.begin(); it != m_observers.end(); it++)
     {
-      if (*iter == observer)
+      if (*it == observer)
       {
-        m_observers.erase(iter);
+        m_observers.erase(it);
         returnValue = true;
         break;
       }
@@ -48,8 +49,8 @@ bool TemplateSubject::unregisterObserver( TemplateObserverInterface* observer )
 
 void TemplateSubject::notifyObservers()
 {
-  for (auto iter = m_observers.begin(); iter != m_observers.end(); iter++)
+  for (auto it = m_observers.begin(); it != m_observers.end(); it++)
   {
-    (*iter)->notify();
+    (*it)->notify();
   }
 }

@@ -2,6 +2,9 @@
  * TODO
  *
  * OptionsTemplate.h -> map<replace, by> -> change function copyFromTemplate(...) of CdoeGenerator
+ * Generator::generate umstellen auf CodeGenerator::copyFromTemplate
+ *
+ * rename Options and OptionsTemplate to DOptions and DTemplate -> D like Data???
  *
  *rename ClassGenerator -> Generator
  *  ...
