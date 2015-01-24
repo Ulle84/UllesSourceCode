@@ -24,6 +24,11 @@ public:
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);
 
+private slots:
+  void on_checkBoxInherit_toggled(bool checked);
+
+  void on_pushButtonClearHistory_clicked();
+
 private:
   Ui::Class* ui;
 

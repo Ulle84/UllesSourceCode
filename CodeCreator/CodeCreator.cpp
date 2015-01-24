@@ -1,6 +1,12 @@
 /*
  * TODO
  *
+ * autocompleter Class -> BaseClass -> QWidget, ...
+ *
+ * feedback user -> void generate -> bool generate -> show success or error
+ *
+ * Class: use inheritance -> activate commented code again
+ *
  * save current folder at folder selection
  *
  * template for exporting dll?
