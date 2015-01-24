@@ -17,7 +17,7 @@ Interface::~Interface()
   delete ui;
 }
 
-void Interface::generate(const QString &folder)
+bool Interface::generate(const QString &folder)
 {
   QStringList functions = ui->plainTextEditFunctions->toPlainText().split("\n");
 
@@ -55,7 +55,7 @@ void Interface::generate(const QString &folder)
   options.searchAndReplace["Interface"] = name;
   options.searchAndReplace["  // TODO add functions here"] = functions.join("\n");
 
-  m_codeGenerator->copyFromTemplate(options);
+  return m_codeGenerator->copyFromTemplate(options);
 }
 
 void Interface::readXml(QXmlStreamReader &xml)

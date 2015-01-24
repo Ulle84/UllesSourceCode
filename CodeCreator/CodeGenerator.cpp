@@ -13,8 +13,10 @@ CodeGenerator::~CodeGenerator()
 {
 }
 
-void CodeGenerator::copyFromTemplate(const Options& options)
+bool CodeGenerator::copyFromTemplate(const Options& options)
 {
+  // TODO show errors and return false in case
+
   QDir dir(options.folderInput);
 
   dir.setNameFilters(options.files);
@@ -65,4 +67,5 @@ void CodeGenerator::copyFromTemplate(const Options& options)
     output.close();
     input.close();
   }
+  return true;
 }

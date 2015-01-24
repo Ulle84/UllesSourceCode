@@ -5,6 +5,7 @@
 
 #include "IGenerator.h"
 
+class QCompleter;
 class CodeGenerator;
 
 namespace Ui {
@@ -20,19 +21,19 @@ public:
   ~Class();
 
   // IGenerator
-  void generate(const QString& folder);
+  bool generate(const QString& folder);
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);
 
 private slots:
   void on_checkBoxInherit_toggled(bool checked);
-
-  void on_pushButtonClearHistory_clicked();
+  void on_lineEditBaseClass_textEdited(const QString &text);
 
 private:
   Ui::Class* ui;
 
-  CodeGenerator* m_codeGenerator;
+  CodeGenerator* mCodeGenerator;
+  QCompleter* mCompleter;
 };
 
 #endif // CLASS_H

@@ -19,14 +19,14 @@ Singleton::~Singleton()
   delete ui;
 }
 
-void Singleton::generate(const QString &folder)
+bool Singleton::generate(const QString &folder)
 {
   if (ui->lineEditName->text().isEmpty())
   {
     QMessageBox messageBox;
     messageBox.setText(tr("Please enter a name!"));
     messageBox.exec();
-    return;
+    return false;
   }
 
   Options options;
@@ -46,7 +46,7 @@ void Singleton::generate(const QString &folder)
     options.folderInput = "templates/Singleton/eager/";
   }
 
-  m_codeGenerator->copyFromTemplate(options);
+  return m_codeGenerator->copyFromTemplate(options);
 }
 
 void Singleton::readXml(QXmlStreamReader &xml)

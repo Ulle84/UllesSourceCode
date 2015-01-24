@@ -20,7 +20,7 @@ public:
   ~Generator();
 
   // IGenerator
-  void generate(const QString& folder);
+  bool generate(const QString& folder);
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);
 

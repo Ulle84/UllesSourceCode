@@ -11,7 +11,7 @@ public:
   CodeGenerator();
   ~CodeGenerator();
 
-  void copyFromTemplate(const Options& options);
+  bool copyFromTemplate(const Options& options);
 };
 
 #endif // CODEGENERATOR_H

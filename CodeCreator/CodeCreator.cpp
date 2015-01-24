@@ -1,20 +1,3 @@
-/*
- * TODO
- *
- * autocompleter Class -> BaseClass -> QWidget, ...
- *
- * feedback user -> void generate -> bool generate -> show success or error
- *
- * Class: use inheritance -> activate commented code again
- *
- * save current folder at folder selection
- *
- * template for exporting dll?
- *
- * more patterns
- *
- */
-
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QXmlStreamWriter>
@@ -162,11 +145,12 @@ void CodeCreator::on_pushButtonStart_clicked()
     return;
   }
 
-  dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText());
-
-  QMessageBox messageBox;
-  messageBox.setText(tr("Creation finished!"));
-  messageBox.exec();
+  if(dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
+  {
+    QMessageBox messageBox;
+    messageBox.setText(tr("Creation finished!"));
+    messageBox.exec();
+  }
 }
 
 void CodeCreator::on_pushButtonClearHistory_clicked()

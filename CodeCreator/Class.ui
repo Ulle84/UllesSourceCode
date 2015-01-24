@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
+    <width>487</width>
     <height>300</height>
    </rect>
   </property>
@@ -27,20 +27,6 @@
       <widget class="QLineEdit" name="lineEditName"/>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxDisableCopy">
-     <property name="text">
-      <string>disable copy constructor, move constructor and assignment operator</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUsePimpl">
-     <property name="text">
-      <string>use pImpl</string>
-     </property>
-    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -96,29 +82,33 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBoxBaseClass">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="editable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButtonClearHistory">
-          <property name="text">
-           <string>clear history</string>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="lineEditBaseClass"/>
         </item>
        </layout>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxQObject">
+     <property name="text">
+      <string>use macro Q_OBJECT</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxDisableCopy">
+     <property name="text">
+      <string>disable copy constructor, move constructor and assignment operator</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxUsePimpl">
+     <property name="text">
+      <string>use pImpl</string>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">

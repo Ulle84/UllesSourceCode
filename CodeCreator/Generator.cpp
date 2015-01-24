@@ -21,7 +21,7 @@ Generator::~Generator()
   delete ui;
 }
 
-void Generator::generate(const QString &folder)
+bool Generator::generate(const QString &folder)
 {
   Options options;
   options.folderOutput = folder;
@@ -33,7 +33,7 @@ void Generator::generate(const QString &folder)
 
   options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
 
-  mCodeGenerator->copyFromTemplate(options);
+  return mCodeGenerator->copyFromTemplate(options);
 }
 
 void Generator::readXml(QXmlStreamReader &xml)

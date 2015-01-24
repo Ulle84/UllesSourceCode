@@ -19,14 +19,14 @@ Data::~Data()
   delete ui;
 }
 
-void Data::generate(const QString &folder)
+bool Data::generate(const QString &folder)
 {
   if (ui->lineEditName->text().isEmpty())
   {
     QMessageBox messageBox;
     messageBox.setText(tr("Please enter a name!"));
     messageBox.exec();
-    return;
+    return false;
   }
 
   Options options;
@@ -46,7 +46,7 @@ void Data::generate(const QString &folder)
   options.searchAndReplace["Data"] = ui->lineEditName->text();
   // TODO set all options
 
-  mCodeGenerator->copyFromTemplate(options);
+  return mCodeGenerator->copyFromTemplate(options);
 }
 
 void Data::readXml(QXmlStreamReader &xml)

@@ -19,14 +19,14 @@ Observer::~Observer()
   delete ui;
 }
 
-void Observer::generate(const QString &folder)
+bool Observer::generate(const QString &folder)
 {
   if (ui->lineEditObserver->text().isEmpty())
   {
     QMessageBox messageBox;
     messageBox.setText(tr("Please type in observer name!"));
     messageBox.exec();
-    return;
+    return false;
   }
 
   if (ui->lineEditSubject->text().isEmpty())
@@ -34,7 +34,7 @@ void Observer::generate(const QString &folder)
     QMessageBox messageBox;
     messageBox.setText(tr("Please type in subject name!"));
     messageBox.exec();
-    return;
+    return false;
   }
 
   Options options;
@@ -51,7 +51,7 @@ void Observer::generate(const QString &folder)
   options.searchAndReplace["TemplateSubject"] = ui->lineEditSubject->text();
   options.searchAndReplace["TemplateObserver"] = ui->lineEditObserver->text();
 
-  mCodeGenerator->copyFromTemplate(options);
+  return mCodeGenerator->copyFromTemplate(options);
 }
 
 void Observer::readXml(QXmlStreamReader &xml)

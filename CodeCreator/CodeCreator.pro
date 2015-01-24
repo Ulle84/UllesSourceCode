@@ -31,7 +31,8 @@ HEADERS  += CodeCreator.h \
     Singleton.h \
     Class.h \
     Options.h \
-    Data.h
+    Data.h \
+    _ToDo.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

@@ -1,4 +1,5 @@
 #include <QMessageBox>
+#include <QCompleter>
 
 #include "Class.h"
 #include "ui_Class.h"
@@ -9,9 +10,18 @@
 Class::Class(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::Class),
-  m_codeGenerator(codeGenerator)
+  mCodeGenerator(codeGenerator)
 {
   ui->setupUi(this);
+
+  QStringList templates;
+  templates << "QWidget";
+  templates << "QDialog";
+  templates << "QMainWindow";
+  templates << "QObject";
+
+  mCompleter = new QCompleter(templates);
+  ui->lineEditBaseClass->setCompleter(mCompleter);
 }
 
 Class::~Class()
@@ -19,13 +29,22 @@ Class::~Class()
   delete ui;
 }
 
-void Class::generate(const QString &folder)
+bool Class::generate(const QString &folder)
 {
-  if (ui->checkBoxInherit->isChecked() && ui->comboBoxBaseClass->currentText().isEmpty())
+  if (ui->lineEditName->text().isEmpty())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Please enter a name!"));
+    mb.exec();
+    return false;
+  }
+
+  if (ui->checkBoxInherit->isChecked() && ui->lineEditBaseClass->text().isEmpty())
   {
     QMessageBox mb;
     mb.setText(tr("Please enter a base name!"));
     mb.exec();
+    return false;
   }
 
   Options options;
@@ -63,7 +82,7 @@ void Class::generate(const QString &folder)
   }
 
   QString name = ui->lineEditName->text();
-  QString baseClass = ui->comboBoxBaseClass->currentText();
+  QString baseClass = ui->lineEditBaseClass->text();
   QString include;
   QString type = ui->comboBoxType->currentText();
   options.searchAndReplace["Template"] = name;
@@ -82,7 +101,12 @@ void Class::generate(const QString &folder)
         = QString("#include %1\n\nclass %2 : %3 %5").arg(include).arg(name).arg(type).arg(baseClass);
   }
 
-  m_codeGenerator->copyFromTemplate(options);
+  if (ui->checkBoxQObject->isChecked())
+  {
+    options.searchAndReplace["public:"] = "  Q_OBJECT\n\npublic:";
+  }
+
+  return mCodeGenerator->copyFromTemplate(options);
 }
 
 void Class::readXml(QXmlStreamReader &xml)
@@ -101,6 +125,10 @@ void Class::readXml(QXmlStreamReader &xml)
     {
       ui->checkBoxUsePimpl->setChecked(xml.readElementText() == "true");
     }
+    else if (xml.name() == "QObject")
+    {
+      ui->checkBoxQObject->setChecked(xml.readElementText() == "true");
+    }
     else if (xml.name() == "Inherit")
     {
       ui->checkBoxInherit->setChecked(xml.readElementText() == "true");
@@ -109,26 +137,9 @@ void Class::readXml(QXmlStreamReader &xml)
     {
       ui->comboBoxType->setCurrentIndex(ui->comboBoxType->findText(xml.readElementText()));
     }
-    else if (xml.name() == "BaseClasses")
-    {
-      QStringList options;
-      while (xml.readNextStartElement())
-      {
-        if (xml.name() == "Option")
-        {
-          options.append(xml.readElementText());
-        }
-        else
-        {
-          xml.skipCurrentElement();
-        }
-      }
-      ui->comboBoxBaseClass->addItems(options);
-    }
-
     else if (xml.name() == "BaseClass")
     {
-      ui->comboBoxBaseClass->setCurrentIndex(ui->comboBoxBaseClass->findText(xml.readElementText()));
+      ui->lineEditBaseClass->setText(xml.readElementText());
     }
     else
     {
@@ -142,15 +153,10 @@ void Class::writeXml(QXmlStreamWriter &xml)
   xml.writeTextElement("Name", ui->lineEditName->text());
   xml.writeTextElement("DisableCopy", ui->checkBoxDisableCopy->isChecked() ? "true" : "false");
   xml.writeTextElement("UsePimpl", ui->checkBoxUsePimpl->isChecked() ? "true" : "false");
+  xml.writeTextElement("QObject", ui->checkBoxQObject->isChecked() ? "true" : "false");
   xml.writeTextElement("Inherit", ui->checkBoxInherit->isChecked() ? "true" : "false");
   xml.writeTextElement("Type", ui->comboBoxType->currentText());
-  xml.writeStartElement("BaseClasses");
-  for (int i = 0; i < ui->comboBoxBaseClass->count(); i++)
-  {
-    xml.writeTextElement("Option", ui->comboBoxBaseClass->itemText(i));
-  }
-  xml.writeEndElement(); // BaseClasses
-  xml.writeTextElement("BaseClass", ui->comboBoxBaseClass->currentText());
+  xml.writeTextElement("BaseClass", ui->lineEditBaseClass->text());
 }
 
 void Class::on_checkBoxInherit_toggled(bool checked)
@@ -158,7 +164,7 @@ void Class::on_checkBoxInherit_toggled(bool checked)
     ui->widgetInheritance->setEnabled(checked);
 }
 
-void Class::on_pushButtonClearHistory_clicked()
+void Class::on_lineEditBaseClass_textEdited(const QString &text)
 {
-    ui->comboBoxBaseClass->clear();
+    ui->checkBoxQObject->setChecked(text.left(1) == "Q");
 }
