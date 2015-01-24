@@ -32,7 +32,7 @@ bool CodeGenerator::copyFromTemplate(const Options& options)
     if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       QMessageBox mb;
-      mb.setText(tr("Cannot open template file %1!").arg(*it));
+      mb.setText(tr("Cannot open template file %1!").arg(filePath));
       mb.exec();
       return false;
     }
@@ -61,7 +61,7 @@ bool CodeGenerator::copyFromTemplate(const Options& options)
 
     if (output.exists())
     {
-      if (QMessageBox::No == QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(outputFileName), QMessageBox::Ok | QMessageBox::No, QMessageBox::No))
+      if (QMessageBox::No == QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(outputFileName), QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
       {
         return false;
       }

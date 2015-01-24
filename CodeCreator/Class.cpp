@@ -16,8 +16,6 @@ Class::Class(CodeGenerator* codeGenerator, QWidget *parent) :
 
   QStringList templates;
   templates << "QWidget";
-  templates << "QDialog";
-  templates << "QMainWindow";
   templates << "QObject";
 
   mCompleter = new QCompleter(templates);
@@ -91,6 +89,8 @@ bool Class::generate(const QString &folder)
     if (baseClass.left(1) == "Q")
     {
       include = QString("<%1>").arg(baseClass);
+      options.searchAndReplace["  Template()"] = QString("  explicit %1(%2* parent = 0)").arg(name).arg(baseClass);
+      options.searchAndReplace[QString("%1::%1()").arg(name)] = QString("%1::%1(%2* parent) :\n  %2(parent)").arg(name).arg(baseClass);
     }
     else
     {
