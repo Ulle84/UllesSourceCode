@@ -1,12 +1,15 @@
 #ifndef CODEGENERATOR_H
 #define CODEGENERATOR_H
 
+//#include <QWidget>
 #include "Options.h"
 
 class QStringList;
 
-class CodeGenerator
+class CodeGenerator // : public QWidget
 {
+  //Q_OBJECT
+
 public:
   CodeGenerator();
   ~CodeGenerator();

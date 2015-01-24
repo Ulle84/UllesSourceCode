@@ -20,8 +20,6 @@ public:
   explicit CodeCreator(QWidget *parent = 0);
   ~CodeCreator();
 
-  static void copyFromTemplate(const Options& options);
-
 private slots:
   void on_comboBoxType_currentIndexChanged(const QString &type);
   void on_pushButtonSelectFolder_clicked();
