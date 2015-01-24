@@ -31,8 +31,7 @@ HEADERS  += CodeCreator.h \
     Singleton.h \
     Class.h \
     Options.h \
-    Data.h \
-    _ToDo.h
+    Data.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -41,3 +40,6 @@ FORMS    += CodeCreator.ui \
     Singleton.ui \
     Class.ui \
     Data.ui
+
+OTHER_FILES += \
+    ToDo.txt
