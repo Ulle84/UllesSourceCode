@@ -1,0 +1,11 @@
+- template for exporting dll
+- more patterns
+  - Factory
+  - Abstract Factory
+  - Command
+  - Adapter
+  - Template Method
+  - Iterator
+  - Composite
+  - State
+  - Proxy

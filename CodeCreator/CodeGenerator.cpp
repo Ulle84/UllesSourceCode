@@ -6,7 +6,8 @@
 
 #include "CodeGenerator.h"
 
-CodeGenerator::CodeGenerator()
+CodeGenerator::CodeGenerator(QWidget *parent) :
+  QWidget(parent)
 {
 }
 
@@ -16,8 +17,6 @@ CodeGenerator::~CodeGenerator()
 
 bool CodeGenerator::copyFromTemplate(const Options& options)
 {
-  // TODO show errors and return false in case
-
   QDir dir(options.folderInput);
 
   dir.setNameFilters(options.files);
@@ -30,21 +29,10 @@ bool CodeGenerator::copyFromTemplate(const Options& options)
 
     QFile input(filePath);
 
-    if (input.exists())
-    {
-      // TODO
-      /*int reply = QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(*it));
-      if (reply == QMessageBox::No)
-      {
-        return false;
-      }*/
-    }
-
     if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
     {
       QMessageBox mb;
-      // TODO tr mb.setText(tr("Cannot open file %1!").arg(*it));
-      mb.setText(QString("Cannot open file %1!").arg(*it));
+      mb.setText(tr("Cannot open template file %1!").arg(*it));
       mb.exec();
       return false;
     }
@@ -71,16 +59,24 @@ bool CodeGenerator::copyFromTemplate(const Options& options)
 
     QFile output(options.folderOutput + QDir::separator() + outputFileName);
 
+    if (output.exists())
+    {
+      if (QMessageBox::No == QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(outputFileName), QMessageBox::Ok | QMessageBox::No, QMessageBox::No))
+      {
+        return false;
+      }
+    }
+
     if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-      continue;
-    }
+      QMessageBox mb;
+      mb.setText(tr("Cannot open output file %1!").arg(outputFileName));
+      mb.exec();
+      return false;
+    }    
 
     QTextStream out(&output);
     out << fileContent.join("\n");
-
-    output.close();
-    input.close();
   }
   return true;
 }

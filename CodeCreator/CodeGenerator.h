@@ -1,17 +1,17 @@
 #ifndef CODEGENERATOR_H
 #define CODEGENERATOR_H
 
-//#include <QWidget>
+#include <QWidget>
 #include "Options.h"
 
 class QStringList;
 
-class CodeGenerator // : public QWidget
+class CodeGenerator  : public QWidget
 {
-  //Q_OBJECT
+  Q_OBJECT
 
 public:
-  CodeGenerator();
+  explicit CodeGenerator(QWidget *parent = 0);
   ~CodeGenerator();
 
   bool copyFromTemplate(const Options& options);

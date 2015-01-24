@@ -42,4 +42,6 @@ FORMS    += CodeCreator.ui \
     Data.ui
 
 OTHER_FILES += \
-    ToDo.txt
+    ToDo.txt \
+    Bugs.txt \
+    Ideas.txt
