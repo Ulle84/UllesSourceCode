@@ -11,5 +11,5 @@ Decorator::~Decorator()
 
 double Decorator::operation()
 {
-  return mComponent->operation() / 2;
+  return mComponent->operation();
 }

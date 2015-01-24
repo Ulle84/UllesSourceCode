@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         DecoratorExample.cpp \
     Decorator.cpp \
-    Component.cpp
+    Component.cpp \
+    DecoratorA.cpp \
+    DecoratorB.cpp
 
 HEADERS  += DecoratorExample.h \
     Decorator.h \
     IComponent.h \
-    Component.h
+    Component.h \
+    DecoratorA.h \
+    DecoratorB.h
 
 FORMS    += DecoratorExample.ui
