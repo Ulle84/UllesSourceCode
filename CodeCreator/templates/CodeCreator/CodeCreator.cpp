@@ -1,7 +1,7 @@
 #include <QMessageBox>
 
-#include "Decorator.h"
-#include "ui_Decorator.h"
+#include "CodeCreator.h"
+#include "ui_CodeCreator.h"
 #include "Options.h"
 #include "CodeGenerator.h"
 #include "XmlHelper.h"

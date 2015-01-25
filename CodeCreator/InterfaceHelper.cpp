@@ -101,7 +101,30 @@ QString InterfaceHelper::createFunctionImplementations(const QPlainTextEdit *pla
 
     splitted1[0] = splitted2.join(" ");
 
-    QString functionImplementation = splitted1.join("(") + "\n{\n}";
+    QString functionImplementation = splitted1.join("(") + "\n{\n  // TODO add implementation";
+
+    if (splitted1[0].contains("bool"))
+    {
+      functionImplementation += "\n  return false;";
+    }
+    else if (splitted1[0].contains("int"))
+    {
+      functionImplementation += "\n  return 0;";
+    }
+    else if (splitted1[0].contains("double"))
+    {
+      functionImplementation += "\n  return 0.0;";
+    }
+    else if (splitted1[0].contains("void"))
+    {
+      // nothing to do
+    }
+    else
+    {
+      functionImplementation += "\n  return 0; // TODO enter correct return value";
+    }
+
+    functionImplementation += "\n}";
     functionImplementations.append(functionImplementation);
   }
 

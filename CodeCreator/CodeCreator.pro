@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     Data.cpp \
     Decorator.cpp \
     XmlHelper.cpp \
-    InterfaceHelper.cpp
+    InterfaceHelper.cpp \
+    State.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -37,7 +38,8 @@ HEADERS  += CodeCreator.h \
     Data.h \
     Decorator.h \
     XmlHelper.h \
-    InterfaceHelper.h
+    InterfaceHelper.h \
+    State.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -46,7 +48,8 @@ FORMS    += CodeCreator.ui \
     Singleton.ui \
     Class.ui \
     Data.ui \
-    Decorator.ui
+    Decorator.ui \
+    State.ui
 
 OTHER_FILES += \
     ToDo.txt \
