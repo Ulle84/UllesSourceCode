@@ -52,6 +52,9 @@ bool Decorator::generate(const QString &folder)
 
   options.searchAndReplace["Decorator"] = ui->lineEditDecorator->text();
   options.searchAndReplace["Component"] = ui->lineEditComponent->text();
+
+  options.searchAndReplace["//TODO Implementation Decorator"] = InterfaceHelper::createFunctionImplementations(ui->plainTextEditInterface, "Decorator");
+  options.searchAndReplace["//TODO Implementation Component"] = InterfaceHelper::createFunctionImplementations(ui->plainTextEditInterface, "Component");
   options.searchAndReplace["  // TODO add functions here"] = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditInterface);
   options.searchAndReplace["  // IComponent"] = "  // IComponent\n" + InterfaceHelper::createFunctionDeclarations(ui->plainTextEditInterface);
 
