@@ -1,3 +1,4 @@
+- xml helper -> checkbox, lineedit, plaintextedit in xml und zurück -> static functions
 - template for exporting dll
 - more patterns
   - Factory

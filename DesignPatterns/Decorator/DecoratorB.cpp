@@ -8,3 +8,8 @@ DecoratorB::DecoratorB(IComponent *component)
 DecoratorB::~DecoratorB()
 {
 }
+
+double DecoratorB::operation()
+{
+  return Decorator::operation() * 5;
+}

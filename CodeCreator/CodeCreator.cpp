@@ -17,6 +17,7 @@
 #include "Singleton.h"
 #include "Options.h"
 #include "Data.h"
+#include "Decorator.h"
 
 CodeCreator::CodeCreator(QWidget *parent) :
   QWidget(parent),
@@ -44,6 +45,7 @@ void CodeCreator::initGenerators()
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
   mGenerators["Singleton"] = new Singleton(mCodeGenerator, this);
   mGenerators["Data"] = new Data(mCodeGenerator, this);
+  mGenerators["Decorator"] = new Decorator(mCodeGenerator, this);
 
   for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
   {

@@ -8,6 +8,9 @@ class DecoratorB : public Decorator
 public:
   DecoratorB(IComponent* component);
   ~DecoratorB();
+
+  // IComponent
+  double operation();
 };
 
 #endif // DECORATORB_H

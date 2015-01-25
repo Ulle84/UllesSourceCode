@@ -4,6 +4,8 @@
 #include "ui_DecoratorExample.h"
 #include "Component.h"
 #include "Decorator.h"
+#include "DecoratorA.h"
+#include "DecoratorB.h"
 
 DecoratorExample::DecoratorExample(QWidget *parent) :
   QWidget(parent),
@@ -12,8 +14,8 @@ DecoratorExample::DecoratorExample(QWidget *parent) :
   ui->setupUi(this);
 
   mComponent = new Component();
-  mDecorator = new Decorator(mComponent);
-  mDoubleDecorator = new Decorator(mDecorator);
+  mDecorator = new DecoratorA(mComponent);
+  mDoubleDecorator = new DecoratorB(mDecorator);
 }
 
 DecoratorExample::~DecoratorExample()

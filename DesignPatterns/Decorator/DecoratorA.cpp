@@ -8,3 +8,8 @@ DecoratorA::DecoratorA(IComponent *component)
 DecoratorA::~DecoratorA()
 {
 }
+
+double DecoratorA::operation()
+{
+  return Decorator::operation() / 2;
+}

@@ -1,10 +1,10 @@
 #include <QMessageBox>
 
-#include "CodeCreator.h"
-#include "ui_CodeCreator.h"
-
+#include "Decorator.h"
+#include "ui_Decorator.h"
 #include "Options.h"
 #include "CodeGenerator.h"
+#include "XmlHelper.h"
 
 CodeCreator::CodeCreator(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
@@ -19,14 +19,14 @@ CodeCreator::~CodeCreator()
   delete ui;
 }
 
-void CodeCreator::generate(const QString &folder)
+bool CodeCreator::generate(const QString &folder)
 {
   if (ui->lineEditName->text().isEmpty())
   {
     QMessageBox messageBox;
     messageBox.setText(tr("Please enter a name!"));
     messageBox.exec();
-    return;
+    return false;
   }
 
   Options options;
@@ -39,7 +39,7 @@ void CodeCreator::generate(const QString &folder)
   options.files << "CodeCreator.cpp";
   // TODO verify all options
 
-  mCodeGenerator->copyFromTemplate(options);
+  return mCodeGenerator->copyFromTemplate(options);
 }
 
 void CodeCreator::readXml(QXmlStreamReader &xml)
@@ -48,7 +48,7 @@ void CodeCreator::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Name")
     {
-      ui->lineEditName->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditName);
     }
     else
     {
@@ -59,5 +59,5 @@ void CodeCreator::readXml(QXmlStreamReader &xml)
 
 void CodeCreator::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Name", ui->lineEditName->text());
+  XmlHelper::writeXml(xml, "Name", ui->lineEditName);
 }
