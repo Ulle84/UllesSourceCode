@@ -1,8 +1,9 @@
 #include "Interface.h"
 #include "ui_Interface.h"
-
+#include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
+#include "InterfaceHelper.h"
 
 Interface::Interface(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
@@ -19,28 +20,7 @@ Interface::~Interface()
 
 bool Interface::generate(const QString &folder)
 {
-  QStringList functions = ui->plainTextEditFunctions->toPlainText().split("\n");
-
-  for (auto it = functions.begin(); it != functions.end(); ++it)
-  {
-    QString simplified = it->simplified();
-
-    if (simplified.isEmpty())
-    {
-      continue;
-    }
-    else
-    {
-      if (simplified.left(2) == "//")
-      {
-        *it = simplified.prepend("  ");
-      }
-      else
-      {
-        *it = simplified.remove(";").prepend("  virtual ").append(" = 0;");
-      }
-    }
-  }
+  QString interface = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditFunctions);
 
   QString name = ui->lineEditName->text();
   if (ui->checkBoxPrefix->isChecked())
@@ -53,7 +33,7 @@ bool Interface::generate(const QString &folder)
   options.folderInput = "templates/Interface/";
   options.files << "Interface.h";
   options.searchAndReplace["Interface"] = name;
-  options.searchAndReplace["  // TODO add functions here"] = functions.join("\n");
+  options.searchAndReplace["  // TODO add functions here"] = interface;
 
   return m_codeGenerator->copyFromTemplate(options);
 }
@@ -64,11 +44,15 @@ void Interface::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Name")
     {
-      ui->lineEditName->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditName);
+    }
+    else if (xml.name() == "Functions")
+    {
+      XmlHelper::readXml(xml, ui->plainTextEditFunctions);
     }
     else if (xml.name() == "Prefix")
     {
-      ui->checkBoxPrefix->setChecked(xml.readElementText() == "true");
+      XmlHelper::readXml(xml, ui->checkBoxPrefix);
     }
     else
     {
@@ -79,6 +63,7 @@ void Interface::readXml(QXmlStreamReader &xml)
 
 void Interface::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Name", ui->lineEditName->text());
-  xml.writeTextElement("Prefix", ui->checkBoxPrefix->isChecked() ? "true" : "false");
+  XmlHelper::writeXml(xml, "Name", ui->lineEditName);
+  XmlHelper::writeXml(xml, "Prefix", ui->checkBoxPrefix);
+  XmlHelper::writeXml(xml, "Functions", ui->plainTextEditFunctions);
 }

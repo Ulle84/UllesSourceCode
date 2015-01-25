@@ -65,6 +65,17 @@ void CodeCreator::initGenerators()
 
 void CodeCreator::on_comboBoxType_currentIndexChanged(const QString &type)
 {
+  if (ui->comboBoxType->count() < 1)
+  {
+    return;
+  }
+
+  if (type.isEmpty())
+  {
+    ui->comboBoxType->setCurrentIndex(0);
+    return;
+  }
+
   mCurrentGenerator->setVisible(false);
   mCurrentGenerator = mGenerators[type];
   mCurrentGenerator->setVisible(true);

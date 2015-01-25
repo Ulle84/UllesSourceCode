@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     Class.cpp \
     Data.cpp \
     Decorator.cpp \
-    XmlHelper.cpp
+    XmlHelper.cpp \
+    InterfaceHelper.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -35,7 +36,8 @@ HEADERS  += CodeCreator.h \
     Options.h \
     Data.h \
     Decorator.h \
-    XmlHelper.h
+    XmlHelper.h \
+    InterfaceHelper.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

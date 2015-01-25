@@ -3,7 +3,7 @@
 
 #include "Class.h"
 #include "ui_Class.h"
-
+#include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
 
@@ -115,31 +115,31 @@ void Class::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Name")
     {
-      ui->lineEditName->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditName);
     }
     else if (xml.name() == "DisableCopy")
     {
-      ui->checkBoxDisableCopy->setChecked(xml.readElementText() == "true");
+      XmlHelper::readXml(xml, ui->checkBoxDisableCopy);
     }
     else if (xml.name() == "UsePimpl")
     {
-      ui->checkBoxUsePimpl->setChecked(xml.readElementText() == "true");
+      XmlHelper::readXml(xml, ui->checkBoxUsePimpl);
     }
     else if (xml.name() == "QObject")
     {
-      ui->checkBoxQObject->setChecked(xml.readElementText() == "true");
+      XmlHelper::readXml(xml, ui->checkBoxQObject);
     }
     else if (xml.name() == "Inherit")
     {
-      ui->checkBoxInherit->setChecked(xml.readElementText() == "true");
+      XmlHelper::readXml(xml, ui->checkBoxInherit);
     }
     else if (xml.name() == "Type")
     {
-      ui->comboBoxType->setCurrentIndex(ui->comboBoxType->findText(xml.readElementText()));
+      XmlHelper::readXml(xml, ui->comboBoxType);
     }
     else if (xml.name() == "BaseClass")
     {
-      ui->lineEditBaseClass->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditBaseClass);
     }
     else
     {
@@ -150,13 +150,13 @@ void Class::readXml(QXmlStreamReader &xml)
 
 void Class::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Name", ui->lineEditName->text());
-  xml.writeTextElement("DisableCopy", ui->checkBoxDisableCopy->isChecked() ? "true" : "false");
-  xml.writeTextElement("UsePimpl", ui->checkBoxUsePimpl->isChecked() ? "true" : "false");
-  xml.writeTextElement("QObject", ui->checkBoxQObject->isChecked() ? "true" : "false");
-  xml.writeTextElement("Inherit", ui->checkBoxInherit->isChecked() ? "true" : "false");
-  xml.writeTextElement("Type", ui->comboBoxType->currentText());
-  xml.writeTextElement("BaseClass", ui->lineEditBaseClass->text());
+  XmlHelper::writeXml(xml, "Name", ui->lineEditName);
+  XmlHelper::writeXml(xml, "DisableCopy", ui->checkBoxDisableCopy);
+  XmlHelper::writeXml(xml, "UsePimpl", ui->checkBoxUsePimpl);
+  XmlHelper::writeXml(xml, "QObject", ui->checkBoxQObject);
+  XmlHelper::writeXml(xml, "Inherit", ui->checkBoxInherit);
+  XmlHelper::writeXml(xml, "Type", ui->comboBoxType, false);
+  XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);
 }
 
 void Class::on_checkBoxInherit_toggled(bool checked)

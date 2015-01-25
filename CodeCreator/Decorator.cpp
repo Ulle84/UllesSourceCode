@@ -5,6 +5,7 @@
 #include "Options.h"
 #include "CodeGenerator.h"
 #include "XmlHelper.h"
+#include "InterfaceHelper.h"
 
 Decorator::Decorator(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
@@ -21,6 +22,14 @@ Decorator::~Decorator()
 
 bool Decorator::generate(const QString &folder)
 {
+  if (!ui->checkBoxComponent->isChecked() && !ui->checkBoxDecorator->isChecked() && !ui->checkBoxInterface->isChecked())
+  {
+    QMessageBox messageBox;
+    messageBox.setText(tr("No option is selected!"));
+    messageBox.exec();
+    return false;
+  }
+
   if (ui->checkBoxDecorator->isChecked() && ui->lineEditDecorator->text().isEmpty())
   {
     QMessageBox messageBox;
@@ -43,10 +52,25 @@ bool Decorator::generate(const QString &folder)
 
   options.searchAndReplace["Decorator"] = ui->lineEditDecorator->text();
   options.searchAndReplace["Component"] = ui->lineEditComponent->text();
-    
-  options.files << "Decorator.h";
-  options.files << "Decorator.cpp";
-  // TODO verify all options
+  options.searchAndReplace["  // TODO add functions here"] = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditInterface);
+  options.searchAndReplace["  // IComponent"] = "  // IComponent\n" + InterfaceHelper::createFunctionDeclarations(ui->plainTextEditInterface);
+
+  if (ui->checkBoxComponent->isChecked())
+  {
+    options.files << "Component.h";
+    options.files << "Component.cpp";
+  }
+
+  if (ui->checkBoxInterface->isChecked())
+  {
+    options.files << "IComponent.h";
+  }
+
+  if (ui->checkBoxDecorator->isChecked())
+  {
+    options.files << "Decorator.h";
+    options.files << "Decorator.cpp";
+  }
 
   return mCodeGenerator->copyFromTemplate(options);
 }
@@ -58,43 +82,26 @@ void Decorator::readXml(QXmlStreamReader &xml)
     if (xml.name() == "Name")
     {
       XmlHelper::readXml(xml, ui->lineEditDecorator);
-      //ui->lineEditDecorator->setText(xml.readElementText());
     }
     else if (xml.name() == "Component")
     {
       XmlHelper::readXml(xml, ui->lineEditComponent);
-      //ui->lineEditComponent->setText(xml.readElementText());
     }
     else if (xml.name() == "Interface")
     {
-      QStringList lines;
-      while (xml.readNextStartElement())
-      {
-        if (xml.name() == "Line")
-        {
-          lines.append(xml.readElementText());
-        }
-        else
-        {
-          xml.skipCurrentElement();
-        }
-      }
-      ui->plainTextEditInterface->setPlainText(lines.join("\n"));
+      XmlHelper::readXml(xml, ui->plainTextEditInterface);
     }
     else if (xml.name() == "GenerateDecorator")
     {
       XmlHelper::readXml(xml, ui->checkBoxDecorator);
-      //ui->checkBoxDecorator->setChecked(xml.readElementText() == "true");
     }
     else if (xml.name() == "GenerateComponent")
     {
       XmlHelper::readXml(xml, ui->checkBoxComponent);
-      //ui->checkBoxComponent->setChecked(xml.readElementText() == "true");
     }
     else if (xml.name() == "GenerateInterface")
     {
       XmlHelper::readXml(xml, ui->checkBoxInterface);
-      //ui->checkBoxInterface->setChecked(xml.readElementText() == "true");
     }
     else
     {
@@ -111,19 +118,6 @@ void Decorator::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "GenerateDecorator", ui->checkBoxDecorator);
   XmlHelper::writeXml(xml, "GenerateComponent", ui->checkBoxComponent);
   XmlHelper::writeXml(xml, "GenerateInterface", ui->checkBoxInterface);
-
-  /*xml.writeTextElement("Name", ui->lineEditDecorator->text());
-  xml.writeTextElement("Component", ui->lineEditComponent->text());
-  xml.writeStartElement("Interface");
-  QStringList lines = ui->plainTextEditInterface->toPlainText().split("\n");
-  for (auto it = lines.begin(); it != lines.end(); it++)
-  {
-    xml.writeTextElement("Line", *it);
-  }
-  xml.writeEndElement(); // Interface
-  xml.writeTextElement("GenerateDecorator", ui->checkBoxDecorator->isChecked() ? "true" : "false");
-  xml.writeTextElement("GenerateComponent", ui->checkBoxComponent->isChecked() ? "true" : "false");
-  xml.writeTextElement("GenerateInterface", ui->checkBoxInterface->isChecked() ? "true" : "false");*/
 }
 void Decorator::on_checkBoxDecorator_toggled(bool checked)
 {

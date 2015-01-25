@@ -7,6 +7,7 @@
 #include "Options.h"
 #include "Generator.h"
 #include "ui_Generator.h"
+#include "XmlHelper.h"
 
 Generator::Generator(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
@@ -42,7 +43,7 @@ void Generator::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Name")
     {
-      ui->lineEditName->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditName);
     }
     else
     {
@@ -53,5 +54,5 @@ void Generator::readXml(QXmlStreamReader &xml)
 
 void Generator::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Name", ui->lineEditName->text());
+  XmlHelper::writeXml(xml, "Name", ui->lineEditName);
 }

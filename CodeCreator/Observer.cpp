@@ -2,7 +2,7 @@
 
 #include "Observer.h"
 #include "ui_Observer.h"
-
+#include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
 
@@ -60,11 +60,11 @@ void Observer::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Subject")
     {
-      ui->lineEditSubject->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditSubject);
     }
     else if (xml.name() == "Observer")
     {
-      ui->lineEditObserver->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditObserver);
     }
     else
     {
@@ -75,6 +75,6 @@ void Observer::readXml(QXmlStreamReader &xml)
 
 void Observer::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Subject", ui->lineEditSubject->text());
-  xml.writeTextElement("Observer", ui->lineEditObserver->text());
+  XmlHelper::writeXml(xml, "Subject", ui->lineEditSubject);
+  XmlHelper::writeXml(xml, "Observer", ui->lineEditObserver);
 }

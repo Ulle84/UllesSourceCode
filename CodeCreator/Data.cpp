@@ -2,7 +2,7 @@
 
 #include "Data.h"
 #include "ui_Data.h"
-
+#include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
 
@@ -55,11 +55,11 @@ void Data::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Name")
     {
-      ui->lineEditName->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditName);
     }
     else if (xml.name() == "InlineConstructor")
     {
-      ui->checkBoxConstructor->setChecked(xml.readElementText() == "true");
+      XmlHelper::readXml(xml, ui->checkBoxConstructor);
     }
     else
     {
@@ -70,6 +70,6 @@ void Data::readXml(QXmlStreamReader &xml)
 
 void Data::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Name", ui->lineEditName->text());
-  xml.writeTextElement("InlineConstructor", ui->checkBoxConstructor->isChecked() ? "true" : "false");
+  XmlHelper::writeXml(xml, "Name", ui->lineEditName);
+  XmlHelper::writeXml(xml, "InlineConstructor", ui->checkBoxConstructor);
 }

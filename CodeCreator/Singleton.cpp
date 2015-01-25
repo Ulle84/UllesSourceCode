@@ -2,7 +2,7 @@
 
 #include "Singleton.h"
 #include "ui_Singleton.h"
-
+#include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
 
@@ -55,11 +55,11 @@ void Singleton::readXml(QXmlStreamReader &xml)
   {
     if (xml.name() == "Name")
     {
-      ui->lineEditName->setText(xml.readElementText());
+      XmlHelper::readXml(xml, ui->lineEditName);
     }
     else if (xml.name() == "Type")
     {
-      ui->comboBoxType->setCurrentIndex(ui->comboBoxType->findText(xml.readElementText()));
+      XmlHelper::readXml(xml, ui->comboBoxType);
     }
     else
     {
@@ -70,6 +70,6 @@ void Singleton::readXml(QXmlStreamReader &xml)
 
 void Singleton::writeXml(QXmlStreamWriter &xml)
 {
-  xml.writeTextElement("Name", ui->lineEditName->text());
-  xml.writeTextElement("Type", ui->comboBoxType->currentText());
+  XmlHelper::writeXml(xml, "Name", ui->lineEditName);
+  XmlHelper::writeXml(xml, "Type", ui->comboBoxType, false);
 }
