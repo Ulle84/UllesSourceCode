@@ -73,7 +73,7 @@ void XmlHelper::readXml(QXmlStreamReader &xml, QComboBox *comboBox)
     }
     else if (xml.name() == "Selected")
     {
-      comboBox->setCurrentText(xml.readElementText());
+      comboBox->setCurrentIndex(comboBox->findText(xml.readElementText()));
     }
     else
     {
