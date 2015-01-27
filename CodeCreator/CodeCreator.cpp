@@ -193,6 +193,14 @@ bool CodeCreator::writeXml()
   xml.setAutoFormattingIndent(2);
   xml.writeStartDocument();
 
+
+  //xml.writeDTD("<!DOCTYPE html>");
+
+  //xml.writeStartElement("script");
+  //xml.writeAttribute("src", "pathToSourceFile");
+  //xml.writeCharacters("");
+  //xml.writeEndElement();
+
   xml.writeStartElement("Settings");
 
   xml.writeTextElement("SelectedType", ui->comboBoxType->currentText());
