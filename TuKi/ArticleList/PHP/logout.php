@@ -1,5 +1,4 @@
-<?php
-session_start();
+<?php include('authentication.php');
 session_destroy();
 
 $hostname = $_SERVER['HTTP_HOST'];
