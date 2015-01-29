@@ -27,28 +27,24 @@ $uniqueIdList->readFromFile("../Data/uniqueIds.txt");
 
 foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     $id = $uniqueIdList->getId($sellerNumber);
-    //$link = '<a href="http://' . $hostname . ($path == '/' ? '' : $path) . '/articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit">Liste für Verkäufer ' . $sellerNumber . '</a>';
     $url = 'http://tv-hechtsheim.de/tv_tuki/PHP/articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit';
     $link = '<a href="' . $url . '">Liste für Verkäufer ' . $sellerNumber . '</a>';
 
-    //echo $link . '<br />';
-
-
-    $body = 'Hallo,<br /><br />';
-    $body .= 'ab sofort kann die Artikelliste für den Tuki-Basar online ausgefüllt werden: <br/>';
+    $body = 'Liebe(r) Verkäufer(in),<br /><br />';
+    $body .= 'unter dem nachfolgenden Link steht ab sofort Ihre persönliche Online-Artikelliste bereit. <br/>';
     $body .= $link;
-    $body .= '<br/><br/>Bitte tragen Sie bis zum 05.03.2015 ihre Artikel ein<br /><br />';
-    $body .= 'Vielen Dank!<br />Ihr Tuki-Basar Team';
+    $body .= '<br/><br/>Bitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 05.03.2015  ein.<br /><br />';
+    $body .= 'Ihr TuKi-Team';
 
-    $altBody = 'Hallo,\n\n';
-    $altBody .= 'ab sofort kann die Artikelliste für den Tuki-Basar online ausgefüllt werden:\n';
+    $altBody = 'Liebe(r) Verkäufer(in),\n\n';
+    $altBody .= 'unter dem nachfolgenden Link steht ab sofort Ihre persönliche Online-Artikelliste bereit.\n';
     $altBody .= $url;
-    $altBody .= '\n\nBitte tragen Sie bis zum 05.03.2015 ihre Artikel ein!\n\n';
-    $altBody .= 'Vielen Dank!\nIhr Tuki-Basar Team';
+    $altBody .= '\n\nBitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 05.03.2015  ein.\n\n';
+    $altBody .= 'Ihr TuKi-Team';
 
     $mail = new PHPMailer;
 
-    $mail->CharSet = "UTF - 8";
+    $mail->CharSet = "iso-8859-1"; //'iso-8859-1';   UTF-8
     $mail->isSMTP(); // Set mailer to use SMTP
     $mail->Host = 'smtp.1und1.de'; // Specify main and backup server
     $mail->SMTPAuth = true; // Enable SMTP authentication
@@ -78,9 +74,9 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
     $mail->isHTML(true); // Set email format to HTML
 
-    $mail->Subject = 'Ihre TuKi-Basar Artikelliste';
-    $mail->Body = $body;
-    $mail->AltBody = $altBody;
+    $mail->Subject = utf8_decode('Ihre TuKi-Basar Artikelliste');
+    $mail->Body = utf8_decode($body);
+    $mail->AltBody = utf8_decode($altBody);
 
 
     //$mail->SMTPDebug = 1;
