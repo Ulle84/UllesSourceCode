@@ -25,6 +25,7 @@ public:
 
 private:
   void updateWebViews();
+  QString createCssCode();
   QString createHtmlCodeOverview();
   QString createHtmlCodeSoldArticles();
   QString createHtmlCodeUnsoldArticles();
