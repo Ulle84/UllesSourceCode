@@ -1,19 +1,4 @@
-﻿/* TODO
-------------------------------
- * implement new file format of Article List -> Store Seller-Information
- * write some statistics to status bar?
- * Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
- * Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren? *
- *
- * Statistics -> Anzahl der verkauften/angebotenen (?) Artikel in Bereiche (0-9, 10-19, 20-29 etc.) -> implementierung erledigt -> verifizieren
- * Beschreibung und Größe auch in Liste der verkauften Artikel
- * Umsatzliste: Vorname, Nachname, Telefonnumer
- * Ansicht der letzten Verkäufe (evt. editierbar)
- * was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
- */
-
-
-#include <QDir>
+﻿#include <QDir>
 #include <QFile>
 #include <QFileDialog>
 #include <QStringList>

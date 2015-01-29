@@ -4,6 +4,8 @@
 #include <map>
 
 #include <QList>
+#include <QMap>
+#include <QString>
 
 #include "Article.h"
 
@@ -52,6 +54,7 @@ public:
 private:
   QList<Article*> m_articles;
   QList<Article*> m_currentSale;
+  QMap<QString, QList<Article*>> m_transactions;
   QString m_fileName;
   Settings* m_settings;
 };

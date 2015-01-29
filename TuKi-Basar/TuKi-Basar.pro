@@ -40,3 +40,6 @@ FORMS    += TuKiBasar.ui \
     Settings.ui \
     PrizeCorrection.ui \
     EvaluationView.ui
+
+OTHER_FILES += \
+    ToDo.txt
