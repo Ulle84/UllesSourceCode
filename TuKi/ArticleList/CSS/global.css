@@ -105,3 +105,7 @@ tr:last-child > td {
     border-bottom: 1px solid slategray;
     margin-bottom: 10px;
 }
+
+#windowBlocker {
+    background-color: black;
+}
