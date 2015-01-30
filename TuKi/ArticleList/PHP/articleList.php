@@ -88,10 +88,12 @@ class ArticleList
         echo '<head>';
         echo '<title>TuKi Artikelliste</title>';
         echo '<link rel="stylesheet" type="text/css" href="../CSS/global.css" media="all"/>';
-        echo '<script language="JavaScript" src="../JavaScript/articleList.js"></script>';
+        echo '<script src="../JavaScript/articleList.js"></script>';
+        echo '<script src="../JavaScript/Dialog.js"></script>';
+        echo '<script src="../JavaScript/WindowBlocker.js"></script>';
         echo '</head>';
 
-        echo '<body onload="init(' . $this->sellerNumber . ')">';
+        echo '<body onload="init(' . $this->sellerNumber . ', \'' . $this->id . '\')">';
 
         /*if (!$this->dataValid) {
             echo "Daten inkonsistent! Bitte Tuki-Team informieren!";

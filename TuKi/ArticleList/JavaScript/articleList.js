@@ -1,7 +1,24 @@
 var sellerNumber = 0;
+var id;
+var theDialog;
+var decisionDialog;
+var confirmationDialog;
 
-function init (sellerNumberValue) {
+function closeDialog() {
+    theDialog.close();
+    decisionDialog.close();
+}
+
+function init (sellerNumberValue, idValue) {
     sellerNumber = sellerNumberValue;
+    id = idValue;
+    confirmationDialog = new Dialog();
+    decisionDialog = new Dialog();
+    decisionDialog.setButtonText("Zurück zur Liste");
+    decisionDialog.addSecondButton("PDF dennoch anzeigen", "openPdf()");
+    decisionDialog.setBackgroundColor("#FFDED6");
+
+    theDialog = confirmationDialog;
 }
 
 function save(checkInput, confirmation) {
@@ -37,7 +54,9 @@ function save(checkInput, confirmation) {
         saveButton.disabled = true;
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                alert(xmlhttp.responseText);
+                //alert(xmlhttp.responseText);
+                theDialog.setText(xmlhttp.responseText);
+                theDialog.show();
                 saveButton.disabled = false;
             }
         }
@@ -48,25 +67,37 @@ function save(checkInput, confirmation) {
     xmlhttp.send("sellerNumber=" + sellerNumber + "&content=" + content);
 }
 
-function showPdf(id) {
+function showPdf() {
+    theDialog = decisionDialog;
     if (checkAllInputs()) {
-        window.open("../PHP/articleListView.php?seller=" + sellerNumber + "&id=" + id + "&mode=print");
+        openPdf();
     }
+    theDialog = confirmationDialog;
+}
+
+function openPdf() {
+    window.open("../PHP/articleListView.php?seller=" + sellerNumber + "&id=" + id + "&mode=print");
 }
 
 function checkAllInputs() {
     if (window.document.getElementById("firstname").value == "") {
-        alert("Bitte Vornamen eingeben!");
+        //alert("Bitte Vornamen eingeben!");
+        theDialog.setText("Bitte Vornamen eingeben!");
+        theDialog.show();
         return false;
     }
 
     if (window.document.getElementById("lastname").value == "") {
-        alert("Bitte Nachnamen eingeben!");
+        //alert("Bitte Nachnamen eingeben!");
+        theDialog.setText("Bitte Nachnamen eingeben!");
+        theDialog.show();
         return false;
     }
 
     if (window.document.getElementById("phone").value  == "") {
-        alert("Bitte Telefonnummer eingeben!");
+        //alert("Bitte Telefonnummer eingeben!");
+        theDialog.setText("Bitte Telefonnummer eingeben!");
+        theDialog.show();
         return false;
     }
 
@@ -88,11 +119,15 @@ function checkAllInputs() {
 
     if (missingPrices.length > 0) {
         if (missingPrices.length == 1) {
-            alert("Beim Artikel " + missingPrices[0] + " ist eine Artikelbeschreibung, aber kein Preis angegeben.\nBitte tragen Sie einen Preis ein!");
+            //alert("Beim Artikel " + missingPrices[0] + " ist eine Artikelbeschreibung, aber kein Preis angegeben.\nBitte tragen Sie einen Preis ein!");
+            theDialog.setText("Beim Artikel " + missingPrices[0] + " ist eine Artikelbeschreibung, aber kein Preis angegeben.\nBitte tragen Sie einen Preis ein!");
+            theDialog.show();
             return false;
         }
         else {
-            alert("Bei den Artikeln " + missingPrices.join(", ") + " sind Artikelbeschreibungen, aber keine Preise angegeben.\nBitte tragen Sie die Preise ein!");
+            //alert("Bei den Artikeln " + missingPrices.join(", ") + " sind Artikelbeschreibungen, aber keine Preise angegeben.\nBitte tragen Sie die Preise ein!");
+            theDialog.setText("Bei den Artikeln " + missingPrices.join(", ") + " sind Artikelbeschreibungen, aber keine Preise angegeben.\nBitte tragen Sie die Preise ein!");
+            theDialog.show();
             return false;
         }
     }
@@ -108,18 +143,24 @@ function checkPrice(element) {
     var number = parseFloat(element.value.replace(",", "."));
     if (isNaN(number)) {
         element.value = ""; // first delete, otherwise the following message is doubled (due to the onblur-event, which occurs because of the alert)
-        alert("Der eingegebene Preis ist ungültig und wurde gelöscht!")
+        theDialog.setText("Der eingegebene Preis ist ungültig und wurde gelöscht!");
+        theDialog.show();
+        //alert("Der eingegebene Preis ist ungültig und wurde gelöscht!")
     }
     else {
         if (number < 0) {
             element.value = "";
-            alert("Negative Preise sind unsinnig!\nDer eingegebene Preis wurde gelöscht");
+            theDialog.setText("Negative Preise sind unsinnig!\nDer eingegebene Preis wurde gelöscht");
+            theDialog.show();
+            //alert("Negative Preise sind unsinnig!\nDer eingegebene Preis wurde gelöscht");
             return;
         }
 
         if (number > 999.99) {
             element.value = ""; // set, so onblur-function does return immediately
-            alert("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
+            theDialog.setText("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
+            theDialog.show();
+            //alert("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
             number = 999.99;
         }
 
@@ -137,24 +178,32 @@ function checkSize(element) {
     var number = parseInt(element.value);
     if (isNaN(number)) {
         element.value = ""; // first delete, otherwise the following message is doubled (due to the onblur-event, which occurs because of the alert)
-        alert("Die eingegebene Größe ist ungültig und wurde gelöscht!")
+        theDialog.setText("Die eingegebene Größe ist ungültig und wurde gelöscht!");
+        theDialog.show();
+        //alert("Die eingegebene Größe ist ungültig und wurde gelöscht!")
     }
     else {
         if (number < 50) {
             element.value = "";
-            alert("Die eingegebene Größe ist zu klein und wurde gelöscht");
+            theDialog.setText("Die eingegebene Größe ist zu klein und wurde gelöscht");
+            theDialog.show();
+            //alert("Die eingegebene Größe ist zu klein und wurde gelöscht");
             return;
         }
 
         if (number > 188) {
             element.value = "";
-            alert("Die eingegebene Größe ist zu groß und wurde gelöscht");
+            theDialog.setText("Die eingegebene Größe ist zu groß und wurde gelöscht");
+            theDialog.show();
+            //alert("Die eingegebene Größe ist zu groß und wurde gelöscht");
             return;
         }
 
         if ((number - 50) % 6 != 0) {
             element.value = "";
-            alert("Die eingegebene Größe ist falsch und wurde gelöscht");
+            theDialog.setText("Die eingegebene Größe ist falsch und wurde gelöscht");
+            theDialog.show();
+            //alert("Die eingegebene Größe ist falsch und wurde gelöscht");
             return;
         }
 
