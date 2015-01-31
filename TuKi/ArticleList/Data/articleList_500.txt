@@ -3,7 +3,7 @@ Version 1.0
 500
 Vorname
 Nachname
-Telefon
+telefon
 100
 999,99
 190
@@ -387,7 +387,7 @@ hors
 195
 
 
-
+horst
 196
 999,99
 

@@ -1,22 +1,29 @@
 var sellerNumber = 0;
 var id;
 var theDialog;
-var decisionDialog;
+var decisionDialogPdf;
+var decisionDialogSave;
 var confirmationDialog;
 
 function closeDialog() {
-    theDialog.close();
-    decisionDialog.close();
+    confirmationDialog.close();
+    decisionDialogPdf.close();
+    decisionDialogSave.close();
 }
 
 function init (sellerNumberValue, idValue) {
     sellerNumber = sellerNumberValue;
     id = idValue;
     confirmationDialog = new Dialog();
-    decisionDialog = new Dialog();
-    decisionDialog.setButtonText("Zurück zur Liste");
-    decisionDialog.addSecondButton("PDF dennoch anzeigen", "openPdf()");
-    decisionDialog.setBackgroundColor("#FFDED6");
+    decisionDialogPdf = new Dialog();
+    decisionDialogPdf.setButtonText("Zurück zur Liste");
+    decisionDialogPdf.addSecondButton("PDF dennoch anzeigen", "openPdf()");
+    decisionDialogPdf.setBackgroundColor("#FFDED6");
+
+    decisionDialogSave = new Dialog();
+    decisionDialogSave.setButtonText("Zurück zur Liste");
+    decisionDialogSave.addSecondButton("Dennoch speichern", "closeDialog(); save(false, true)");
+    decisionDialogSave.setBackgroundColor("#FFDED6");
 
     theDialog = confirmationDialog;
 }
@@ -25,7 +32,9 @@ function save(checkInput, confirmation) {
 
     var inputChecked = true;
     if (checkInput) {
+        theDialog = decisionDialogSave;
         inputChecked = checkAllInputs();
+        theDialog = confirmationDialog;
     }
 
     var content = "Article List\nVersion 1.0\n" + sellerNumber + "\n";
@@ -68,7 +77,7 @@ function save(checkInput, confirmation) {
 }
 
 function showPdf() {
-    theDialog = decisionDialog;
+    theDialog = decisionDialogPdf;
     if (checkAllInputs()) {
         openPdf();
     }

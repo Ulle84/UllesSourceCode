@@ -94,6 +94,8 @@ class ArticleList
         echo '</head>';
 
         echo '<body onload="init(' . $this->sellerNumber . ', \'' . $this->id . '\')">';
+        //echo 'test: onload="init(' . $this->sellerNumber . ', \'' . $this->id . '\')">';
+        echo '<h1>test</h1>';
 
         /*if (!$this->dataValid) {
             echo "Daten inkonsistent! Bitte Tuki-Team informieren!";
