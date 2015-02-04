@@ -1,4 +1,16 @@
 <?php
+    function writeInformationToFile($reservationNumber) {
+        $fileName = "Reservation_" . $reservationNumber . ".txt";
+        $fh = fopen($fileName, "w");
+        fwrite($fh, $reservationNumber . "\n");
+        fwrite($fh, date("d.m.Y H:i:s") . "\n");
+        fwrite($fh, $_REQUEST['vorname'] . "\n");
+        fwrite($fh, $_REQUEST['nachname'] . "\n");
+        fwrite($fh, $_REQUEST['email'] . "\n");
+        fwrite($fh, $_REQUEST['telefon']);
+        fclose($fh);
+    }
+
     $datei="dateien/counter.txt";
     $stellen = 3;
 
@@ -12,7 +24,7 @@
 	$absender= $_REQUEST['vorname'];
 	$absender.= ', ' . $_REQUEST['nachname'];
     $errorMeldung="";
-    
+
     	if (empty($_REQUEST['vorname'])) {$errorMeldung="F&uuml;llen Sie bitte das Feld Vorname aus";
 	       } elseif (empty($_REQUEST['nachname'])) {$errorMeldung="F&uuml;llen Sie bitte das Feld Nachname aus";
 	       } elseif (empty($_REQUEST['telefon'])) {$errorMeldung="F&uuml;llen Sie bitte das Feld Telefon aus";
@@ -28,7 +40,7 @@
                echo $errorMeldung .'</p>';
 		       $errorMeldung="";
 		       echo "Bitte gehen Sie <a href=\"javascript:history.back();\">zur&uuml;ck!</a>";
-               			
+
 		   } else {
 ?>
               <div class="design_rahmen">
@@ -64,17 +76,17 @@
                  Ihr TuKi-Team";
               $nachricht="Liebe Interessenten am TuKi-Basar,
               
-wir haben Ihnen eine Verkaufsnummer für den Basar am 16. November 2014 reserviert.
+wir haben Ihnen eine Verkaufsnummer fï¿½r den Basar am 16. November 2014 reserviert.
 
 Bitte holen Sie Ihre Unterlagen am Mittwoch, den 15. Oktober 2014 zwischen 19.00 Uhr und 21.00 Uhr
 in der Halle des TV-Hechtsheim im Klein-Winternheimer-Weg ab.
-Bringen Sie dazu bitte die 7 Euro Unterlagengebühr, das ausgedruckte und ausgefüllte Formular 
+Bringen Sie dazu bitte die 7 Euro Unterlagengebï¿½hr, das ausgedruckte und ausgefï¿½llte Formular 
 
 (bitte hier herunterladen http://www.tv-hechtsheim.de/tuki/dateien/TuKi_Bankverbindung.pdf) mit.
 
 Verkaufsnummern, die bis 21.00 Uhr nicht abgeholt werden, vergeben wir an weitere Interessenten auf der Warteliste.
 
-Bis dahin viele Grüße,
+Bis dahin viele Grï¿½ï¿½e,
 Ihr TuKi-Team";
 
               $nachricht2 = "Liebes Tuki-Team,
@@ -83,19 +95,21 @@ Ihr TuKi-Team";
                         " . $absender . "
                         Telefon: " . $telefon . "
                         folgende Nummer reserviert: " . $zahl . "
-                        Gruß";
+                        Gruï¿½";
 
-                       $header = 'From: ' . "Tuki-Team" . "\r\n" . 
+                       $header = 'From: ' . "Tuki-Team" . "\r\n" .
 				        'Reply-To: ' . $absender . "\r\n" .
 			         	'X-Mailer: PHP/' . phpversion();
 			             mail($g_femail, $betreff, $nachricht, $header);
-	
-			  $header = 'From: ' . $g_femail . "\r\n" . 
+
+             writeInformationToFile($zahl);
+
+			  $header = 'From: ' . $g_femail . "\r\n" .
 			        	'Reply-To: ' . $absender . "\r\n" .
 			        	'X-Mailer: PHP/' . phpversion();
 			            mail($empfaenger, $betreff, $nachricht2, $header);
-	
-			  $header = 'From: ' . $g_femail . "\r\n" . 
+
+			  $header = 'From: ' . $g_femail . "\r\n" .
 			        	'Reply-To: ' . $absender . "\r\n" .
 			        	'X-Mailer: PHP/' . phpversion();
 			             mail($empfaenger2, $betreff, $nachricht2, $header);
@@ -107,11 +121,11 @@ Ihr TuKi-Team";
             echo "Liebe TuKi-Interessenten,<br/><br/>
                 leider ist unser Nummernkontingent f&uuml;r diesen Basar schon vergeben. <br/>
                 Wir w&uuml;rden uns aber freuen, wenn Sie bei unserem n&auml;chsten Basar im M&auml;rz den 08.03.2015<br /> 
-                wieder dabei w&auml;ren. Die Online Nummernvergabe f&uuml;r den Frühjahrs-Basar findet<br />
+                wieder dabei w&auml;ren. Die Online Nummernvergabe f&uuml;r den Frï¿½hjahrs-Basar findet<br />
                 am 07. Februar 2015 statt.<br/><br/>
                 Freundliche Gr&uuml;&szlig;e,<br />
                 Ihr TuKi-Team<br /></p>";
            echo "Bitte gehen Sie hier <a href=\"index.php5\"><b>ZUR&Uuml;CK</b></a> zur Startseite!";
-	}	  
+	}
    }
 ?>
