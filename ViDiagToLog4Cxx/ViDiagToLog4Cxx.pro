@@ -18,3 +18,6 @@ SOURCES += main.cpp\
 HEADERS  += ViDiagToLog4Cxx.h
 
 FORMS    += ViDiagToLog4Cxx.ui
+
+OTHER_FILES += \
+    ToDo.txt

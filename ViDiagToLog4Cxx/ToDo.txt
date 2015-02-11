@@ -1,0 +1,4 @@
+* format in conversion for example: %02d
+* \n -> split into 2 diags?
+* checkbox -> append old code
+* avoid following: ... uiIndex << ""); -> trailing empty string

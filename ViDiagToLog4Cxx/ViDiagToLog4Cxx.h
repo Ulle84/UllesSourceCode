@@ -16,9 +16,12 @@ public:
   ~ViDiagToLog4Cxx();
 
 private slots:
+  void clipboardDataChanged();
   void on_lineEditViDiag_editingFinished();
 
 private:
+  QString convertViDiagToLog4Cxx(const QString& viDiag);
+
   Ui::ViDiagToLog4Cxx* ui;
 };
 
