@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TuKiBazarSellers>
+  <Seller>
+    <SellerNumber>0</SellerNumber>
+    <FirstName>Vorname</FirstName>
+    <LastName></LastName>
+    <Phone></Phone>
+  </Seller>
+  <Seller>
+    <SellerNumber>101</SellerNumber>
+    <FirstName>Vorname</FirstName>
+    <LastName>Nachname</LastName>
+    <Phone>Telefon</Phone>
+  </Seller>
+  <Seller>
+    <SellerNumber>102</SellerNumber>
+    <FirstName>Horst</FirstName>
+    <LastName>Schlemmer</LastName>
+    <Phone>0176...</Phone>
+  </Seller>
+  <Seller>
+    <SellerNumber>500</SellerNumber>
+    <FirstName>Vorname</FirstName>
+    <LastName>Nachname</LastName>
+    <Phone>telefon</Phone>
+  </Seller>
+</TuKiBazarSellers>

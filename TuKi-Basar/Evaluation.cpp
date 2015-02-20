@@ -227,12 +227,22 @@ QString Evaluation::createHtmlCodeSoldArticles()
 
     html.append("<h2>Liste der verkauften Artikel</h2>");
     html.append("<table>");
+    html.append("<tr>");
+    html.append("<th>Artikelnummer</th>");
+    html.append("<th>Preis</th>");
+    html.append("<th>Größe</th>");
+    html.append("<th>Artikelbeschreibung</th>");
+    html.append("</tr>");
 
     for (auto itA = articles.begin(); itA != articles.end(); ++itA)
     {
+      Article* article = m_articleManager->getArticle(it->first, itA->first);
+
       html.append("<tr>");
       html.append(QString("<td>%1</td>").arg(itA->first));
       html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
+      html.append(QString("<td>%1</td>").arg(article->m_size));
+      html.append(QString("<td>%1</td>").arg(article->m_description));
       html.append("</tr>");
     }
 

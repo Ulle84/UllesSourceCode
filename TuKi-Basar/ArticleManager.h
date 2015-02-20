@@ -54,7 +54,7 @@ public:
 private:
   QList<Article*> m_articles;
   QList<Article*> m_currentSale;
-  QMap<QString, QList<Article*>> m_transactions;
+  QMap<QString, QList<Article*> > m_transactions;
   QString m_fileName;
   Settings* m_settings;
 };

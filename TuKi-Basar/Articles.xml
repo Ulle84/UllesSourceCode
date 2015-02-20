@@ -6,8 +6,8 @@
     <Prize>1.01</Prize>
     <Size>1</Size>
     <Description>eins</Description>
-    <SoldOnPc>0</SoldOnPc>
-    <SoldTime></SoldTime>
+    <SoldOnPc>1</SoldOnPc>
+    <SoldTime>2015-02-12 06:51:59</SoldTime>
   </Article>
   <Article>
     <Seller>101</Seller>
@@ -41,7 +41,7 @@
     <Number>105</Number>
     <Prize>5.05</Prize>
     <Size>5</Size>
-    <Description>fÃ¼nf</Description>
+    <Description>fünf</Description>
     <SoldOnPc>0</SoldOnPc>
     <SoldTime></SoldTime>
   </Article>
@@ -176,7 +176,7 @@
     <Number>103</Number>
     <Prize>30.3</Prize>
     <Size>30</Size>
-    <Description>dreiÃŸig</Description>
+    <Description>dreißig</Description>
     <SoldOnPc>0</SoldOnPc>
     <SoldTime></SoldTime>
   </Article>
@@ -194,7 +194,7 @@
     <Number>105</Number>
     <Prize>50.05</Prize>
     <Size>50</Size>
-    <Description>fÃ¼nfzig</Description>
+    <Description>fünfzig</Description>
     <SoldOnPc>0</SoldOnPc>
     <SoldTime></SoldTime>
   </Article>
@@ -240,6 +240,42 @@
     <Prize>111.11</Prize>
     <Size>100</Size>
     <Description>hundert</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>500</Seller>
+    <Number>100</Number>
+    <Prize>999.99</Prize>
+    <Size>190</Size>
+    <Description>hors</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>500</Seller>
+    <Number>150</Number>
+    <Prize>999.99</Prize>
+    <Size></Size>
+    <Description></Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>500</Seller>
+    <Number>195</Number>
+    <Prize>0</Prize>
+    <Size></Size>
+    <Description>horst</Description>
+    <SoldOnPc>0</SoldOnPc>
+    <SoldTime></SoldTime>
+  </Article>
+  <Article>
+    <Seller>500</Seller>
+    <Number>196</Number>
+    <Prize>999.99</Prize>
+    <Size></Size>
+    <Description></Description>
     <SoldOnPc>0</SoldOnPc>
     <SoldTime></SoldTime>
   </Article>
