@@ -509,7 +509,7 @@ std::map<QString, int> ArticleManager::getSoldArticlesInRanges()
 
   for (int i = 0; i <= maxCountOfArticles; i += 10)
   {
-    output[QString("%1 - %2").arg(i).arg(i+9)] = 0;
+    output[QString("%1 - %2").arg(i).arg(i + 9)] = 0;
   }
 
   std::map<int, int> soldArticlesPerSeller = getSoldArticlesPerSeller();
@@ -517,7 +517,7 @@ std::map<QString, int> ArticleManager::getSoldArticlesInRanges()
   for (auto it = soldArticlesPerSeller.begin(); it != soldArticlesPerSeller.end(); ++it)
   {
     int value = it->second / 10;
-    output[QString("%1 - %2").arg(value).arg(value+9)]++;
+    output[QString("%1 - %2").arg(value * 10).arg(value * 10 + 9)]++;
   }
 
   return output;
@@ -533,7 +533,7 @@ std::map<QString, int> ArticleManager::getOfferedArticlesInRanges()
 
   for (int i = 0; i <= maxCountOfArticles; i += 10)
   {
-    output[QString("%1 - %2").arg(i).arg(i+9)] = 0;
+    output[QString("%1 - %2").arg(i).arg(i + 9)] = 0;
   }
 
   std::map<int, int> offeredArticlesPerSeller = getOfferedArticlesPerSeller();
@@ -541,7 +541,7 @@ std::map<QString, int> ArticleManager::getOfferedArticlesInRanges()
   for (auto it = offeredArticlesPerSeller.begin(); it != offeredArticlesPerSeller.end(); ++it)
   {
     int value = it->second / 10;
-    output[QString("%1 - %2").arg(value).arg(value+9)]++;
+    output[QString("%1 - %2").arg(value * 10).arg(value * 10 + 9)]++;
   }
 
   return output;
