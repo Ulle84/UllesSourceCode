@@ -15,3 +15,7 @@ DesignPatterns/build-Observer-Qt_4_8_6-Debug/*
 build-ReservationsToExcel-Qt_4_8_6-Release/*
 ReservationsToExcel/Input/*
 ReservationsToExcel/Output/*
+
+TuKi-Basar/Sellers.xml
+
+TuKi-Basar/Articles.xml
