@@ -59,8 +59,9 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
 
     $mail->addAddress($mailAddress);
 
-    // also notify developer
-    //$mail->addBCC('u.belitz@gmx.de', 'Ulrich Belitz');
+    // also notify developer and team
+    $mail->addBCC('u.belitz@gmx.de', 'Ulrich Belitz');
+    $mail->addCC('tuki@tv-hechtsheim.de');
 
     //$mail->addAddress('ellen@example.com');               // Name is optional
     //$mail->addReplyTo('info@example.com', 'Information');
