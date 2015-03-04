@@ -257,6 +257,12 @@ QString Evaluation::createHtmlCodeSoldArticles()
     html.append("</tr>");
     html.append("</table>");
 
+    if (articles.empty())
+    {
+        html.append("</div>");
+        continue;
+    }
+
     //html.append("<h2>Liste der verkauften Artikel</h2>");
     html.append("<br />");
     html.append("<table>");
