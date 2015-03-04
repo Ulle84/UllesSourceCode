@@ -32,6 +32,8 @@ private slots:
   void on_pushButtonCorrectPrize_clicked();
   void on_actionExportSoldArticles_triggered();
 
+  void on_pushButton_clicked(); //TODO remove after testing
+
 private:
   void closeEvent(QCloseEvent *event);
   void setLastArticleInformation();

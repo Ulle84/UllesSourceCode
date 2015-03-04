@@ -30,6 +30,8 @@ private:
   QString createHtmlCodeSoldArticles();
   QString createHtmlCodeUnsoldArticles();
 
+  void appendSoldArticleHeader(QString& html);
+
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;
   SellerManager* m_sellerManager;

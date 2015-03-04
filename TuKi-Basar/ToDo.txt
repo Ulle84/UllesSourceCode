@@ -1,19 +1,20 @@
 Bugs
 --------------------------------------------------------------------------------
+- 515 Umbruch in erster Zeile -> Problem?
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- Ausrichtung der Element überprüfen, so dass ein Ausdruck auf A4-Papier möglich ist
-- Beim Importiern der Artikellisten die Verkäufernummern und Artikelnummern prüfen
+- Ausrichtung der Element Ã¼berprÃ¼fen, so dass ein Ausdruck auf A4-Papier mÃ¶glich ist
+- Beim Importiern der Artikellisten die VerkÃ¤ufernummern und Artikelnummern prÃ¼fen
 
 - was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
 - verifizieren, dass bei einem Preis von Null Euro eine Sicherheitsabfrage kommt
 
-- Feature-Request Katja: Statistik über Kleidung vs. Sonstige Artikel (siehe Mail)
+- Feature-Request Katja: Statistik Ã¼ber Kleidung vs. Sonstige Artikel (siehe Mail)
 
-- Ansicht der letzten Verkäufe (evt. editierbar)
-- Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
-- Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren? *
+- Ansicht der letzten VerkÃ¤ufe (evt. editierbar)
+- Styling Ã¼berarbeiten -> SchriftgrÃ¶ÃŸen, Ausrichtung der GUI-Elemente
+- Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
 
 Ideas
 --------------------------------------------------------------------------------

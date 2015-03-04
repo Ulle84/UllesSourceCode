@@ -83,7 +83,7 @@ QString Evaluation::createCssCode()
   cssCode.append("td, th {max-width: 400px; padding: 5px 5px 5px 5px; vertical-align: top; border-bottom: 1px solid grey; border-right: 1px solid grey;}");
   cssCode.append("td:last-child, th:last-child {border-right: 0px;}");
   cssCode.append("tr:last-child > td {border-bottom: 0px;}");
-  cssCode.append(".page{min-height: 27.85cm; max-height: 27.85cm; border-bottom: 1px solid black;}"); //TODO remove border
+  cssCode.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
   cssCode.append("</style>");
 
   return cssCode;
@@ -207,16 +207,42 @@ QString Evaluation::createHtmlCodeSoldArticles()
     Seller* seller = m_sellerManager->getSeller(it->first);
 
     html.append("<div class=\"page\">");
-    if (seller != 0)
+    /*if (seller != 0)
     {
       html.append(QString("<h1>Verkäufernummer: %1   Name: %2 %3   Telefon: %4</h1>").arg(it->first).arg(seller->m_firstName).arg(seller->m_lastName).arg(seller->m_phone));
     }
     else
     {
-      html.append(QString("<h1>Verkäufernummer: %1").arg(it->first));
-    }
+      html.append(QString("<h1>Verkäufernummer: %1</h1>").arg(it->first));
+    }*/
 
     html.append("<table>");
+    html.append("<tr>");
+    html.append(QString("<td>Verkäufernummer</td>"));
+    html.append(QString("<td>%1</td>").arg(it->first));
+    html.append("</tr>");
+    html.append("<tr>");
+    html.append(QString("<td>Name</td>"));
+    if (seller != 0)
+    {
+        html.append(QString("<td>%1</td>").arg(seller->m_firstName + " " + seller->m_lastName));
+    }
+    else
+    {
+        html.append(QString("<td></td>"));
+    }
+    html.append("</tr>");
+    html.append("<tr>");
+    html.append(QString("<td>Telefon</td>"));
+    if (seller != 0)
+    {
+        html.append(QString("<td>%1</td>").arg(seller->m_phone));
+    }
+    else
+    {
+        html.append(QString("<td></td>"));
+    }
+    html.append("</tr>");
     html.append("<tr>");
     html.append(QString("<td>Umsatz</td>"));
     html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second, 'f', 2).replace('.', ',')));
@@ -231,15 +257,12 @@ QString Evaluation::createHtmlCodeSoldArticles()
     html.append("</tr>");
     html.append("</table>");
 
-    html.append("<h2>Liste der verkauften Artikel</h2>");
+    //html.append("<h2>Liste der verkauften Artikel</h2>");
+    html.append("<br />");
     html.append("<table>");
-    html.append("<tr>");
-    html.append("<th>Artikelnummer</th>");
-    html.append("<th>Preis</th>");
-    html.append("<th>Größe</th>");
-    html.append("<th>Artikelbeschreibung</th>");
-    html.append("</tr>");
+    appendSoldArticleHeader(html);
 
+    int counter = 0;
     for (auto itA = articles.begin(); itA != articles.end(); ++itA)
     {
       Article* article = m_articleManager->getArticle(it->first, itA->first);
@@ -250,6 +273,16 @@ QString Evaluation::createHtmlCodeSoldArticles()
       html.append(QString("<td>%1</td>").arg(article->m_size));
       html.append(QString("<td>%1</td>").arg(article->m_description));
       html.append("</tr>");
+      counter++;
+
+      if ((counter - 25) % 32 == 0)//( // TODO check that no new header is printed in the end!
+      {
+        html.append("</table>");
+        html.append("</div>");
+        html.append("<div class=\"page\">");
+        html.append("<table>");
+        appendSoldArticleHeader(html);
+      }
     }
 
     html.append("</table>");
@@ -298,4 +331,14 @@ QString Evaluation::createHtmlCodeUnsoldArticles()
   html.append("</body></html>");
 
   return html;
+}
+
+void Evaluation::appendSoldArticleHeader(QString &html)
+{
+    html.append("<tr>");
+    html.append("<th>Artikelnummer</th>");
+    html.append("<th>Preis</th>");
+    html.append("<th>Größe</th>");
+    html.append("<th>Artikelbeschreibung</th>");
+    html.append("</tr>");
 }

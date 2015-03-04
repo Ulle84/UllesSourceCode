@@ -455,3 +455,8 @@ void TuKiBasar::on_actionExportSoldArticles_triggered()
 
   m_articleManager->setFileName(toRestore);
 }
+
+void TuKiBasar::on_pushButton_clicked()
+{
+    m_articleManager->sellAllArticles();
+}
