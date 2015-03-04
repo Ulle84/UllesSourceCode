@@ -19,3 +19,5 @@ ReservationsToExcel/Output/*
 TuKi-Basar/Sellers.xml
 
 TuKi-Basar/Articles.xml
+
+TuKi-Basar/*.pdf

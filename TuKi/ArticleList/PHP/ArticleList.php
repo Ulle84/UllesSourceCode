@@ -101,6 +101,13 @@ class ArticleList
             return;
         }*/
 
+        echo '<noscript>';
+		echo '<div class="error">';
+        echo 'In Ihrem Browser ist JavaScript nicht implemenitiert, bzw. deaktiviert.<br />';
+        echo 'Für den vollen Funktionsumfang ist JavaScript erforderlich!';
+	    echo '</div>';
+		echo '</noscript>';
+
         echo '<h1>Artikelliste für Verkäufer Nr. ' . $this->sellerNumber . '</h1>';
 
         if ($readOnly) {

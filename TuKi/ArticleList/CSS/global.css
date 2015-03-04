@@ -78,6 +78,11 @@ tr:last-child > td {
     border: 1px solid black;
 }
 
+.error {
+    border: 3px solid red;
+    padding: 5px;
+}
+
 .hidden {
     display: none;
 }
