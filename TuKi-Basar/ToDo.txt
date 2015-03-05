@@ -1,11 +1,10 @@
 Bugs
 --------------------------------------------------------------------------------
-- 515 Umbruch in erster Zeile -> Problem?
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - Ausrichtung der Element überprüfen, so dass ein Ausdruck auf A4-Papier möglich ist
-- Beim Importiern der Artikellisten die Verkäufernummern und Artikelnummern prüfen
+- Beim Importiern der Artikellisten die Verkäufernummern und Artikelnummern prüfen -> check range
 
 - was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
 - verifizieren, dass bei einem Preis von Null Euro eine Sicherheitsabfrage kommt
@@ -15,6 +14,11 @@ ToDo (priorisiert)
 - Ansicht der letzten Verkäufe (evt. editierbar)
 - Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
 - Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
+- Ausdruck testen
+
+Nice to have
+--------------------------------------------------------------------------------
+- Liste der angebotenen Artikel '0 - 9' -> '  0 -   9' aktuell stört mich, dass die 100-110 zu weit vorne steht
 
 Ideas
 --------------------------------------------------------------------------------

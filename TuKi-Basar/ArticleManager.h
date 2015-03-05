@@ -2,6 +2,7 @@
 #define ARTICLEMANAGER_H
 
 #include <map>
+#include <vector>
 
 #include <QList>
 #include <QMap>
@@ -48,7 +49,7 @@ public:
   std::map<QString, int> getSoldArticlesInRanges();
   std::map<QString, int> getOfferedArticlesInRanges();
   std::map<int, double> getSoldArticles(int sellerNumber);
-  std::map<int, double> getUnsoldArticles(int sellerNumber);
+  std::vector<int> getUnsoldArticles(int sellerNumber);
   void sync(ArticleManager* other);
 
   double getPayOutFactor();

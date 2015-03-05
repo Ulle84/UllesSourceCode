@@ -439,9 +439,9 @@ std::map<int, double> ArticleManager::getSoldArticles(int sellerNumber)
   return map;
 }
 
-std::map<int, double> ArticleManager::getUnsoldArticles(int sellerNumber)
+std::vector<int> ArticleManager::getUnsoldArticles(int sellerNumber)
 {
-  std::map<int, double> map;
+  std::vector<int> vector;
 
   for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
   {
@@ -455,10 +455,10 @@ std::map<int, double> ArticleManager::getUnsoldArticles(int sellerNumber)
       continue;
     }
 
-    map[(*it)->m_articleNumber] = (*it)->m_prize;
+    vector.push_back((*it)->m_articleNumber);
   }
 
-  return map;
+  return vector;
 }
 
 std::map<int, int> ArticleManager::getSoldArticlesPerSeller()

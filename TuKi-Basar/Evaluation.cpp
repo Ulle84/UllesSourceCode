@@ -2,6 +2,7 @@
 #include "ui_Evaluation.h"
 
 #include <map>
+#include <vector>
 
 #include <QPrinter>
 #include <QWebFrame>
@@ -314,21 +315,70 @@ QString Evaluation::createHtmlCodeUnsoldArticles()
 
   for (auto it = matrix.begin(); it != matrix.end(); ++it)
   {
-    std::map<int, double> unsoldArticles = m_articleManager->getUnsoldArticles(it->first);
+    std::vector<int> unsoldArticles = m_articleManager->getUnsoldArticles(it->first);
 
     html.append("<div class=\"page\">");
     html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
 
-    html.append("<h2>Liste der nicht verkauften Artikel</h2>");
+    html.append("<h2>Nicht verkaufte Artikel</h2>");
     html.append("<table>");
 
+    int counter = 0;
+    const int columnCount = 10;
+    for (int i = m_settings->getArticleMin(); i <= m_settings->getArticleMax(); i++)
+    {
+        if (counter % columnCount == 0)
+        {
+            html.append("<tr>");
+        }
+
+        //html.append(QString("<td>%1</td>").arg(itA->first));
+
+        if (std::find(unsoldArticles.begin(), unsoldArticles.end(), i) != unsoldArticles.end())
+        {
+            html.append(QString("<td>%1</td>").arg(i));
+        }
+        else
+        {
+            html.append(QString("<td>&nbsp;&nbsp;&nbsp;</td>"));
+        }
+
+        counter++;
+
+        if (counter % columnCount == 0)
+        {
+            html.append("</tr>");
+        }
+    }
+
+    /*int counter = 0;
+    const int columnCount = 5;
     for (auto itA = unsoldArticles.begin(); itA != unsoldArticles.end(); ++itA)
     {
-      html.append("<tr>");
-      html.append(QString("<td>%1</td>").arg(itA->first));
-      html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
-      html.append("</tr>");
+        if (counter % columnCount == 0)
+        {
+            html.append("<tr>");
+        }
+
+        html.append(QString("<td>%1</td>").arg(itA->first));
+        counter++;
+
+        if (counter % columnCount == 0)
+        {
+            html.append("</tr>");
+        }
     }
+
+    while (counter % columnCount != 0)
+    {
+        html.append(QString("<td></td>"));
+        counter++;
+
+        if (counter % columnCount == 0)
+        {
+            html.append("</tr>");
+        }
+    }*/
 
     html.append("</table>");
     html.append("</div>");
