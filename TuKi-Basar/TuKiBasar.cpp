@@ -32,16 +32,6 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     m_articleManager = new ArticleManager(m_settings, "Articles.xml");
     m_evaluation = new Evaluation(m_articleManager, m_settings, m_sellerManager);
 
-
-
-    // font depends on operating system
-#ifdef Q_WS_MAC
-    ui->plainTextEditArticleList->setFont(QFont::QFont("Monaco", 14, 0, false));
-#endif
-#ifdef Q_WS_WIN
-    ui->plainTextEditArticleList->setFont(QFont::QFont("Courier", 10, 0, false));
-#endif
-
     prepareForNextInput();
 }
 
@@ -356,7 +346,7 @@ void TuKiBasar::clearLastArticleInformation()
 
 void TuKiBasar::updateArticleView()
 {
-    ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
+    //ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
     ui->webViewArticleList->setHtml(m_articleManager->currentSaleToHtml());
 }
 
