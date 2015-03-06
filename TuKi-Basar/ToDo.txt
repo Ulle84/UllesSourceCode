@@ -4,12 +4,8 @@ Bugs
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
-- verifizieren, dass bei einem Preis von Null Euro eine Sicherheitsabfrage kommt
-
-- Feature-Request Katja: Statistik über Kleidung vs. Sonstige Artikel (siehe Mail)
 
 - Ansicht der letzten Verkäufe (evt. editierbar)
-- Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
 - Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
 - Ausdruck testen
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
