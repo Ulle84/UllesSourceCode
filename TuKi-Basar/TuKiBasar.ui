@@ -214,6 +214,15 @@
      </widget>
     </item>
     <item>
+     <widget class="QWebView" name="webViewArticleList">
+      <property name="url">
+       <url>
+        <string>about:blank</string>
+       </url>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPlainTextEdit" name="plainTextEditArticleList">
       <property name="font">
        <font>
@@ -296,6 +305,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>lineEditInput</tabstop>
  </tabstops>

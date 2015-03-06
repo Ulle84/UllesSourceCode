@@ -357,6 +357,7 @@ void TuKiBasar::clearLastArticleInformation()
 void TuKiBasar::updateArticleView()
 {
     ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
+    ui->webViewArticleList->setHtml(m_articleManager->currentSaleToHtml());
 }
 
 void TuKiBasar::askUserToFinishCurrentSale()

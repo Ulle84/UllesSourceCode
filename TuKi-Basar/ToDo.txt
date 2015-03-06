@@ -3,12 +3,10 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- Darstellung des aktullen Verkaufs in mit HTML in QWebView
 - Ansicht der letzten Verkäufe (evt. editierbar)
 - Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
-- Ausdruck testen
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
-- Zusammenfassung: Ausrichtung der Element überprüfen, so dass ein Ausdruck auf A4-Papier möglich ist
+- Summe der verkauften Artikel -> Gegebenens GEld -> Rückgeld
 
 Nice to have
 --------------------------------------------------------------------------------
