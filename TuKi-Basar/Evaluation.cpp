@@ -95,15 +95,6 @@ QString Evaluation::createHtmlCodeOverview()
     html.append(CssHelper::createCssCode());
     html.append("</head><body>");
 
-    html.append("<div class=\"pageTest\">");
-    html.append("<h1>Test auf Seite 1</h1>");
-    html.append("</div>");
-
-    html.append("<div class=\"pageTest\">");
-    html.append("<h1>Test auf Seite 2</h1>");
-    html.append("</div>");
-
-
     html.append("<h1>Zusammenfassung</h1>");
     html.append("<h2>Allgemein</h2>");
     html.append("<table>");

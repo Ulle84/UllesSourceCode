@@ -30,8 +30,8 @@ QString CssHelper::createCssCode(bool advancedStyle)
     cssCode.append("td, th {max-width: 400px; padding: 5px 5px 5px 5px; vertical-align: top; border-bottom: 1px solid grey; border-right: 1px solid grey;}");
     cssCode.append("td:last-child, th:last-child {border-right: 0px;}");
     cssCode.append("tr:last-child > td {border-bottom: 0px;}");
-    cssCode.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
-    cssCode.append(".pageTest{page-break-after:always}");
+    //cssCode.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
+    cssCode.append(".page{page-break-after:always}");
     cssCode.append("</style>");
 
     return cssCode;
