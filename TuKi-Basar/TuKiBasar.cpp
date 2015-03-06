@@ -146,6 +146,11 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
       continue;
     }
 
+    if (sellerNumber < m_settings->getSellerMin() || sellerNumber > m_settings->getSellerMax())
+    {
+        continue;
+    }
+
     Seller* seller = new Seller(sellerNumber, fileContent.at(3), fileContent.at(4), fileContent.at(5));
     m_sellerManager->addSeller(seller);
 
@@ -162,6 +167,12 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
       }
 
       int articleNumber = fileContent.at(headerOffset + linesPerArticle * i).toInt();
+
+      if (articleNumber < m_settings->getArticleMin() || articleNumber > m_settings->getArticleMax())
+      {
+          continue;
+      }
+
       QString size = fileContent.at(headerOffset + linesPerArticle * i + 2);
       QString description = fileContent.at(headerOffset + linesPerArticle * i + 3);
 

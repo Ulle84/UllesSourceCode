@@ -3,9 +3,6 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- Ausrichtung der Element überprüfen, so dass ein Ausdruck auf A4-Papier möglich ist
-- Beim Importiern der Artikellisten die Verkäufernummern und Artikelnummern prüfen -> check range
-
 - was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
 - verifizieren, dass bei einem Preis von Null Euro eine Sicherheitsabfrage kommt
 
@@ -15,10 +12,12 @@ ToDo (priorisiert)
 - Styling überarbeiten -> Schriftgrößen, Ausrichtung der GUI-Elemente
 - Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
 - Ausdruck testen
+- Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
+- Zusammenfassung: Ausrichtung der Element überprüfen, so dass ein Ausdruck auf A4-Papier möglich ist
 
 Nice to have
 --------------------------------------------------------------------------------
-- Liste der angebotenen Artikel '0 - 9' -> '  0 -   9' aktuell stört mich, dass die 100-110 zu weit vorne steht
+
 
 Ideas
 --------------------------------------------------------------------------------
