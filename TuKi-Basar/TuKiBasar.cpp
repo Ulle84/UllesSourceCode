@@ -18,6 +18,7 @@
 #include "Seller.h"
 #include "SellerManager.h"
 #include "Converter.h"
+#include "SalesView.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
@@ -472,4 +473,16 @@ void TuKiBasar::on_doubleSpinBoxMoneyGiven_valueChanged(double moneyGiven)
 {
     double sum = ui->labelSum->text().toDouble();
     ui->labelChange->setText(Converter::prizeToString(moneyGiven - sum));
+}
+
+void TuKiBasar::on_actionSalesHistory_triggered()
+{
+    SalesView salesView;
+    salesView.setTransactions(m_articleManager->getTransactions());
+    salesView.exec();
+}
+
+void TuKiBasar::on_pushButton_2_clicked()
+{
+    m_articleManager->sellAllArticles(false);
 }

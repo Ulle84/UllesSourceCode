@@ -23,6 +23,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>unsell all articles - todo remove</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label_5">
@@ -390,6 +397,7 @@
     <addaction name="actionExportSoldArticles"/>
     <addaction name="actionEvaluation"/>
     <addaction name="actionCompleteEvaluation"/>
+    <addaction name="actionSalesHistory"/>
     <addaction name="actionSettings"/>
    </widget>
    <addaction name="menuErweitert"/>
@@ -426,6 +434,11 @@
   <action name="actionExportSoldArticles">
    <property name="text">
     <string>Verkaufte Artikel exportieren</string>
+   </property>
+  </action>
+  <action name="actionSalesHistory">
+   <property name="text">
+    <string>Verkaufs-Historie</string>
    </property>
   </action>
  </widget>

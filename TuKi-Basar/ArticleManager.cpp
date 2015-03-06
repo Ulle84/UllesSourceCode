@@ -29,14 +29,23 @@ ArticleManager::~ArticleManager()
     }
 }
 
-void ArticleManager::sellAllArticles()
+void ArticleManager::sellAllArticles(bool sell)
 {
     QString soldTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
     for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
-        (*it)->m_soldOnPc = m_settings->getPc();
-        (*it)->m_soldTime = soldTime;
+        if (sell)
+        {
+            (*it)->m_soldOnPc = m_settings->getPc();
+            (*it)->m_soldTime = soldTime;
+        }
+        else
+        {
+            (*it)->m_soldOnPc = 0;
+            (*it)->m_soldTime = "";
+        }
+
     }
 
     toXml();
@@ -224,6 +233,8 @@ void ArticleManager::finishCurrentSale(unsigned int pcNumber)
         (*it)->m_soldOnPc = pcNumber;
         (*it)->m_soldTime = soldTime;
     }
+
+    m_transactions[soldTime] = m_currentSale;
 
     resetCurrentSale();
     toXml();
@@ -580,4 +591,9 @@ void ArticleManager::sync(ArticleManager *other)
 double ArticleManager::getPayOutFactor()
 {
     return (100.0 - m_settings->getDeductionPercentage()) / 100.0;
+}
+
+QMap<QString, QList<Article*> > ArticleManager::getTransactions()
+{
+    return m_transactions;
 }

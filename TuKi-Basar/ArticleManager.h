@@ -19,7 +19,7 @@ public:
   ArticleManager(Settings* settings, QString fileName);
   ~ArticleManager();
 
-  void sellAllArticles(); // TODO delete after testing
+  void sellAllArticles(bool sell = true); // TODO delete after testing
 
   void addArticle(Article* article);
   void clear();
@@ -54,6 +54,8 @@ public:
   void sync(ArticleManager* other);
 
   double getPayOutFactor();
+
+  QMap<QString, QList<Article*> > getTransactions();
 
 private:
   QList<Article*> m_articles;

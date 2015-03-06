@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     Seller.cpp \
     SellerManager.cpp \
     Converter.cpp \
-    CssHelper.cpp
+    CssHelper.cpp \
+    SalesView.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -37,13 +38,15 @@ HEADERS  += TuKiBasar.h \
     Seller.h \
     SellerManager.h \
     Converter.h \
-    CssHelper.h
+    CssHelper.h \
+    SalesView.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \
     Settings.ui \
     PrizeCorrection.ui \
-    EvaluationView.ui
+    EvaluationView.ui \
+    SalesView.ui
 
 OTHER_FILES += \
     ToDo.txt
