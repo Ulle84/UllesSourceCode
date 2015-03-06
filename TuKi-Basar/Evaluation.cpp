@@ -95,7 +95,7 @@ QString Evaluation::createHtmlCodeOverview()
     html.append(CssHelper::createCssCode());
     html.append("</head><body>");
 
-    html.append("<div class=\"page\"");
+    html.append("<div class=\"page\">");
     html.append("<h1>Zusammenfassung</h1>");
     html.append("<h2>Allgemein</h2>");
     html.append("<table>");
@@ -140,7 +140,7 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("</table>");
     html.append("</div>");
 
-    html.append("<div class=\"page\"");
+    html.append("<div class=\"page\">");
     std::map<QString, int> offeredArticlesInRanges = m_articleManager->getOfferedArticlesInRanges();
     html.append("<h2>Anzahl der angebotenen Artikel</h2>");
     html.append("<table>");
@@ -158,12 +158,12 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("</table>");
     html.append("</div>");
 
-    html.append("<div class=\"page\"");
+    html.append("<div class=\"page\">");
     std::map<QString, int> soldArticlesInRanges = m_articleManager->getSoldArticlesInRanges();
     html.append("<h2>Anzahl der verkauften Artikel</h2>");
     html.append("<table>");
     html.append("<tr>");
-    html.append("<td>Verkauft Artikel</td>");
+    html.append("<td>Verkaufte Artikel</td>");
     html.append("<td>Anzahl Verkäufer</td>");
     html.append("</tr>");
     for (std::map<QString, int>::iterator it = soldArticlesInRanges.begin(); it != soldArticlesInRanges.end(); ++it)
@@ -176,8 +176,8 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("</table>");
     html.append("</div>");
 
-    html.append("<div class=\"page\"");
-    html.append("<h1>Verkaufte Artikel pro Verkäufer</h1>");
+    html.append("<div class=\"page\">");
+    html.append("<h1>Umsatz pro Verkäufer</h1>");
     html.append("<table>");
     html.append("<tr>");
     html.append("<th>Verkäufernummer</th>");
@@ -188,6 +188,7 @@ QString Evaluation::createHtmlCodeOverview()
     std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
     double payOutFactor = m_articleManager->getPayOutFactor();
 
+    int counter = 0;
     for (std::map<int, double>::iterator it = matrix.begin(); it != matrix.end(); ++it)
     {
         html.append("<tr>");
@@ -196,7 +197,21 @@ QString Evaluation::createHtmlCodeOverview()
         html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second * payOutFactor, 'f', 2).replace('.', ',')));
         html.append("</tr>");
 
-        // TODO page break
+        counter++;
+
+        if (counter % 42 == 0)
+        {
+            html.append("</table>");
+            html.append("</div>");
+            html.append("<div class=\"page\">");
+            html.append("<h1>Umsatz pro Verkäufer</h1>");
+            html.append("<table>");
+            html.append("<tr>");
+            html.append("<th>Verkäufernummer</th>");
+            html.append("<th>Summe</th>");
+            html.append("<th>Auszuzahlen</th>");
+            html.append("</tr>");
+        }
     }
 
     html.append("</table>");
@@ -300,6 +315,15 @@ QString Evaluation::createHtmlCodeSoldArticles()
         int counter = 0;
         for (std::map<int, double>::iterator itA = articles.begin(); itA != articles.end(); ++itA)
         {
+            if (counter != 0 && ((counter - 37) % 44 == 0))
+            {
+                html.append("</table>");
+                html.append("</div>");
+                html.append("<div class=\"page\">");
+                html.append("<table>");
+                appendSoldArticleHeader(html);
+            }
+
             Article* article = m_articleManager->getArticle(it->first, itA->first);
 
             html.append("<tr>");
@@ -309,15 +333,6 @@ QString Evaluation::createHtmlCodeSoldArticles()
             html.append(QString("<td>%1</td>").arg(article->m_description));
             html.append("</tr>");
             counter++;
-
-            if ((counter - 25) % 32 == 0)//( // TODO check that no new header is printed in the end!
-            {
-                html.append("</table>");
-                html.append("</div>");
-                html.append("<div class=\"page\">");
-                html.append("<table>");
-                appendSoldArticleHeader(html);
-            }
         }
 
         html.append("</table>");
