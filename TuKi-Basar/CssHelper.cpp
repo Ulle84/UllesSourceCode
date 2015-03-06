@@ -6,7 +6,14 @@ QString CssHelper::createCssCode(bool advancedStyle)
     QString cssCode;
     cssCode.append("<style>");
     cssCode.append("body, html{margin: 0px; padding: 0px;}"); // TODO check compliance with further definitions
-    cssCode.append("body {font-family: Verdana; font-size: 10pt; line-height: 150%;}"); // max-width: 800px;
+
+
+
+    //cssCode.append("body {font-family: Verdana; font-size: 10pt; line-height: 150%;}"); // max-width: 800px;
+    cssCode.append("body {font-family: Times New Roman; font-size: 12pt; line-height: 150%;}"); // max-width: 800px;
+
+
+
     //cssCode.append("br {margin-bottom: 12px;}");
     /*cssCode.append("h1 {margin-top: 20px; padding-top: 20px; font-size: 130%; padding-bottom: 5px; margin-bottom: 0px;}");
   cssCode.append("h2 {margin-top: 10px; padding-top: 10px; font-size: 120%; padding-bottom: 5px; margin-bottom: 0px;}");
