@@ -43,11 +43,6 @@ if ($mode == 'edit') {
 
     if ($interval->format('%R%a') < 0) {
         $readOnly = true;
-
-        if ($sellerNumber == "638") { //TODO remove after testing
-            $readOnly = false;
-        }
-
     }
     else {
         $readOnly = false;
