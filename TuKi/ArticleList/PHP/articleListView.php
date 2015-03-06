@@ -42,8 +42,12 @@ if ($mode == 'edit') {
     $interval = $now->diff($deadline);
 
     if ($interval->format('%R%a') < 0) {
-        //$readOnly = true;
-        $readOnly = false; // TODO set true after editing!
+        $readOnly = true;
+
+        if ($sellerNumber == "638") { //TODO remove after testing
+            $readOnly = false;
+        }
+
     }
     else {
         $readOnly = false;

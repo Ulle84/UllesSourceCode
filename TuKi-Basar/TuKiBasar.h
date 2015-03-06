@@ -34,6 +34,8 @@ private slots:
 
   void on_pushButton_clicked(); //TODO remove after testing
 
+  void on_doubleSpinBoxMoneyGiven_valueChanged(double moneyGiven);
+
 private:
   void closeEvent(QCloseEvent *event);
   void setLastArticleInformation();

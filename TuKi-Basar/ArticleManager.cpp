@@ -268,11 +268,11 @@ QString ArticleManager::currentSaleToText()
     QString currentSaleText = "Ver  Art  Preis   Beschreibung\n";
     for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
-        currentSaleText += QString("%1  %2  %3  %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg(prizeToString((*it)->m_prize)).arg((*it)->m_description);
+        currentSaleText += QString("%1  %2  %3  %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg(Converter::prizeToString((*it)->m_prize)).arg((*it)->m_description);
         sum += (*it)->m_prize;
     }
     currentSaleText += "\n";
-    currentSaleText += QString("Summe:    %1").arg(prizeToString(sum));
+    currentSaleText += QString("Summe:    %1").arg(Converter::prizeToString(sum));
     return currentSaleText;
 }
 
@@ -302,7 +302,7 @@ QString ArticleManager::currentSaleToHtml()
         currentSaleHtml += "<tr>";
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_sellerNumber);
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_articleNumber);
-        currentSaleHtml += QString("<td>%1 &euro;</td>").arg(prizeToString((*it)->m_prize));
+        currentSaleHtml += QString("<td>%1 &euro;</td>").arg(Converter::prizeToString((*it)->m_prize));
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_description);
         currentSaleHtml += "</tr>";
     }
@@ -313,21 +313,20 @@ QString ArticleManager::currentSaleToHtml()
     return currentSaleHtml;
 }
 
-QString ArticleManager::prizeToString(double prize)
+double ArticleManager::getSumOfCurrentSale()
 {
-    QString string = QString::number(prize, 'f', 2).replace('.', ',');
-
-    if (prize < 100)
+    double sum = 0;
+    if (m_currentSale.length() < 1)
     {
-        string.prepend(" ");
+        return sum;
     }
 
-    if (prize < 10)
+    for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
-        string.prepend(" ");
+        sum += (*it)->m_prize;
     }
 
-    return string;
+    return sum;
 }
 
 void ArticleManager::calculateStatistics(Statistics* statistics)

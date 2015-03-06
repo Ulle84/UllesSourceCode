@@ -41,7 +41,7 @@ public:
   Article* getLastArticleInCurrentSale();
   QString currentSaleToText();
   QString currentSaleToHtml();
-  QString prizeToString(double prize);
+  double getSumOfCurrentSale();
 
   void calculateStatistics(Statistics* statistics);
   std::map<int, double> getSalesPerSeller();

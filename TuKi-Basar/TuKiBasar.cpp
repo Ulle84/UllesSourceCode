@@ -17,6 +17,7 @@
 #include "PrizeCorrection.h"
 #include "Seller.h"
 #include "SellerManager.h"
+#include "Converter.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
@@ -33,6 +34,8 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     m_evaluation = new Evaluation(m_articleManager, m_settings, m_sellerManager);
 
     prepareForNextInput();
+
+    ui->plainTextEditArticleList->setVisible(false); // TODO that GUI-element should be removed, but there is a problem with the QCloseEvent, when this element is removed in the UI-File
 }
 
 TuKiBasar::~TuKiBasar()
@@ -333,7 +336,7 @@ void TuKiBasar::setLastArticleInformation()
     ui->labelArticleNumber->setText(QString("%1").arg(article->m_articleNumber));
     ui->labelSellerNumber->setText(QString("%1").arg(article->m_sellerNumber));
     ui->labelDescription->setText(article->m_description);
-    ui->labelPrize->setText(m_articleManager->prizeToString(article->m_prize));
+    ui->labelPrize->setText(Converter::prizeToString(article->m_prize));
 }
 
 void TuKiBasar::clearLastArticleInformation()
@@ -348,6 +351,7 @@ void TuKiBasar::updateArticleView()
 {
     //ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
     ui->webViewArticleList->setHtml(m_articleManager->currentSaleToHtml());
+    ui->labelSum->setText(Converter::prizeToString(m_articleManager->getSumOfCurrentSale()));
 }
 
 void TuKiBasar::askUserToFinishCurrentSale()
@@ -373,8 +377,9 @@ void TuKiBasar::prepareForNextInput()
 }
 
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
-{
+{    
     m_articleManager->finishCurrentSale(m_settings->getPc());
+    ui->doubleSpinBoxMoneyGiven->setValue(0.0);
     clearLastArticleInformation();
     updateArticleView();
     prepareForNextInput();
@@ -461,4 +466,10 @@ void TuKiBasar::on_actionExportSoldArticles_triggered()
 void TuKiBasar::on_pushButton_clicked()
 {
     m_articleManager->sellAllArticles();
+}
+
+void TuKiBasar::on_doubleSpinBoxMoneyGiven_valueChanged(double moneyGiven)
+{
+    double sum = ui->labelSum->text().toDouble();
+    ui->labelChange->setText(Converter::prizeToString(moneyGiven - sum));
 }
