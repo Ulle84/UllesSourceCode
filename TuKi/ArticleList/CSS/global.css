@@ -83,6 +83,12 @@ tr:last-child > td {
     padding: 5px;
 }
 
+.warning {
+    border: 3px solid orange;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
 .hidden {
     display: none;
 }

@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <algorithm>
 
 #include <QPrinter>
 #include <QWebFrame>
@@ -20,6 +21,8 @@
 #include "EvaluationView.h"
 #include "Seller.h"
 #include "SellerManager.h"
+
+bool articleSort (Article* A, Article* B) { return (A->m_prize < B->m_prize); }
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
   QDialog(parent),
@@ -184,6 +187,35 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("</tr>");
   }
 
+  html.append("</table>");
+
+  /*html.append("<h1>Alle Artikel sortiert nach Preis</h1>");
+  html.append("<table>");
+  html.append("<tr>");
+  html.append("<th>Preis</th>");
+  html.append("<th>Verkäufernummer</th>");
+  html.append("<th>Artikelnummer</th>");
+  html.append("<th>Beschreibung</th>");
+  html.append("</tr>");
+
+  // ToDo sort articles
+  QList<Article*> allArticles = m_articleManager->getAllArticles();
+
+  std::list<Article*> allArticlesStd = allArticles.toStdList();
+
+  std::sort(allArticles.begin(), allArticles.end());
+
+  for (auto it = allArticles.begin(); it != allArticles.end(); it++)
+  {
+      html.append("<tr>");
+      html.append(QString("<td>%1</td>").arg((*it)->m_prize));
+      html.append(QString("<td>%1</td>").arg((*it)->m_sellerNumber));
+      html.append(QString("<td>%1</td>").arg((*it)->m_articleNumber));
+      html.append(QString("<td>%1</td>").arg((*it)->m_description));
+      html.append("</tr>");
+  }*/
+
+
   html.append("</body></html>");
 
   return html;
@@ -191,6 +223,11 @@ QString Evaluation::createHtmlCodeOverview()
 
 QString Evaluation::createHtmlCodeSoldArticles()
 {
+    // unfortunately there is a bug in webkit and page-break is not supported!
+    // as a hack we use div class page with fixed height
+    // do not use h1 (or other stuff with margin or padding)!
+    // use tested elements like <b> <br /> <table>
+
   QString html;
   html.append("<!DOCTYPE html>");
   html.append("<html><head>");
@@ -206,6 +243,11 @@ QString Evaluation::createHtmlCodeSoldArticles()
     std::map<int, double> articles = m_articleManager->getSoldArticles(it->first);
 
     Seller* seller = m_sellerManager->getSeller(it->first);
+
+    if (seller == 0)
+    {
+        continue;
+    }
 
     html.append("<div class=\"page\">");
     /*if (seller != 0)
@@ -317,10 +359,13 @@ QString Evaluation::createHtmlCodeUnsoldArticles()
   {
     std::vector<int> unsoldArticles = m_articleManager->getUnsoldArticles(it->first);
 
-    html.append("<div class=\"page\">");
-    html.append(QString("<h1>Verkäufernummer %1</h1>").arg(it->first));
+    if (unsoldArticles.empty())
+    {
+        continue;
+    }
 
-    html.append("<h2>Nicht verkaufte Artikel</h2>");
+    html.append("<div class=\"page\">");
+    html.append(QString("<b>Nicht verkaufte Artikel von Verkäufer %1</b><br /><br />").arg(it->first));
     html.append("<table>");
 
     int counter = 0;

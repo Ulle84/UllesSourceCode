@@ -21,3 +21,6 @@ TuKi-Basar/Sellers.xml
 TuKi-Basar/Articles.xml
 
 TuKi-Basar/*.pdf
+TuKi/ArticleList/Data/*
+
+TuKi/ArticleList/Data/articleList_500.txt

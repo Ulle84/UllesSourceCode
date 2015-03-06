@@ -24,6 +24,7 @@ public:
   void addArticle(Article* article);
   void clear();
   Article* getArticle(int sellerNumber, int articleNumber);
+  QList<Article*> getAllArticles(); // TODO delete after testing
 
   void setFileName(QString fileName);
   QString getFileName();

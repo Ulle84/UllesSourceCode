@@ -111,7 +111,7 @@ class ArticleList
         echo '<h1>Artikelliste für Verkäufer Nr. ' . $this->sellerNumber . '</h1>';
 
         if ($readOnly) {
-            echo '<div>Die Frist für die Eingabe von Daten ist abgelaufen!<br />Die eingegebenen Daten können nicht mehr editiert werden!<br /></div>';
+            echo '<div class="warning">Die Frist für die Eingabe von Daten ist abgelaufen!<br />Die eingegebenen Daten können nicht mehr editiert werden!<br /></div>';
         }
 
         echo '<table>';
@@ -176,9 +176,13 @@ class ArticleList
 
         if (!$readOnly) {
             echo '<input type="button" id="saveButton" value="Tabelle Speichern" onclick="save(true, true)"/>';
+            echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="showPdf()"/>';
+        }
+        else {
+            echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="openPdf()"/>';
         }
 
-        echo '<input type="button" value="Tabelle als PDF anzeigen" onclick="showPdf(\'' . $this->id . '\')"/> <br/>';
+
 
         echo '</body>';
         echo '</html>';

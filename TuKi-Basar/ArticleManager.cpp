@@ -62,6 +62,11 @@ Article* ArticleManager::getArticle(int sellerNumber, int articleNumber)
   return 0;
 }
 
+QList<Article *> ArticleManager::getAllArticles()
+{
+    return m_articles;
+}
+
 void ArticleManager::setFileName(QString fileName)
 {
   m_fileName = fileName;

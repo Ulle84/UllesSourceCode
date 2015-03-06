@@ -27,7 +27,7 @@ if (isset($_GET['mode'])) {
 $uniqueIdList = new UniqueIdList();
 $uniqueIdList->readFromFile("../Data/uniqueIds.txt");
 if (!$uniqueIdList->checkId($sellerNumber, $id)) {
-    echo "Kein Zugang!";
+    echo "Link wurde falsch eingegeben - kein Zugang!";
     exit;
 }
 
@@ -42,7 +42,8 @@ if ($mode == 'edit') {
     $interval = $now->diff($deadline);
 
     if ($interval->format('%R%a') < 0) {
-        $readOnly = true;
+        //$readOnly = true;
+        $readOnly = false; // TODO set true after editing!
     }
     else {
         $readOnly = false;
