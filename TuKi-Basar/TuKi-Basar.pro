@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     Statistics.cpp \
     Seller.cpp \
     SellerManager.cpp \
-    Converter.cpp
+    Converter.cpp \
+    CssHelper.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -35,7 +36,8 @@ HEADERS  += TuKiBasar.h \
     Statistics.h \
     Seller.h \
     SellerManager.h \
-    Converter.h
+    Converter.h \
+    CssHelper.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \

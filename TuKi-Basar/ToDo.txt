@@ -3,8 +3,7 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
-
+- Darstellung des aktullen Verkaufs in mit HTML in QWebView
 - Ansicht der letzten Verkäufe (evt. editierbar)
 - Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
 - Ausdruck testen
@@ -17,5 +16,4 @@ Nice to have
 
 Ideas
 --------------------------------------------------------------------------------
-- Darstellung des aktullen Verkaufs in mit HTML in QWebView - oder direkt als editierbare Tabelle?
 - write some statistics to status bar?
