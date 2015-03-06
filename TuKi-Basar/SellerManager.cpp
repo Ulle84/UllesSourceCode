@@ -14,7 +14,7 @@ SellerManager::SellerManager()
 SellerManager::~SellerManager()
 {
   toXml();
-  for (auto it = m_sellers.begin(); it != m_sellers.end(); ++it)
+  for (QList<Seller*>::iterator it = m_sellers.begin(); it != m_sellers.end(); ++it)
   {
     delete *it;
   }
@@ -27,7 +27,7 @@ void SellerManager::addSeller(Seller *seller)
 
 Seller* SellerManager::getSeller(int sellerNumber)
 {
-  for (auto it = m_sellers.begin(); it != m_sellers.end(); ++it)
+  for (QList<Seller*>::iterator it = m_sellers.begin(); it != m_sellers.end(); ++it)
   {
     if ((*it)->m_sellerNumber == sellerNumber)
     {
@@ -58,7 +58,7 @@ bool SellerManager::toXml()
 
   xml.writeStartElement("TuKiBazarSellers");
 
-  for (auto it = m_sellers.begin(); it != m_sellers.end(); ++it)
+  for (QList<Seller*>::iterator it = m_sellers.begin(); it != m_sellers.end(); ++it)
   {
     xml.writeStartElement("Seller");
     xml.writeTextElement("SellerNumber", QString::number((*it)->m_sellerNumber));

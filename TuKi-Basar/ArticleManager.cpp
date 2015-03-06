@@ -23,7 +23,7 @@ ArticleManager::ArticleManager(Settings* settings, QString fileName)
 
 ArticleManager::~ArticleManager()
 {
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         delete *it;
     }
@@ -33,7 +33,7 @@ void ArticleManager::sellAllArticles()
 {
     QString soldTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         (*it)->m_soldOnPc = m_settings->getPc();
         (*it)->m_soldTime = soldTime;
@@ -54,7 +54,7 @@ void ArticleManager::clear()
 
 Article* ArticleManager::getArticle(int sellerNumber, int articleNumber)
 {
-    for (auto it = m_articles.begin(); it != m_articles.end(); it++)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); it++)
     {
         if ((*it)->m_sellerNumber == sellerNumber && (*it)->m_articleNumber == articleNumber)
         {
@@ -176,7 +176,7 @@ bool ArticleManager::toXml()
 
     xml.writeStartElement("TuKiBazarArticles");
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         xml.writeStartElement("Article");
         xml.writeTextElement("Seller", QString("%1").arg((*it)->m_sellerNumber));
@@ -219,7 +219,7 @@ void ArticleManager::finishCurrentSale(unsigned int pcNumber)
 {
     QString soldTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         (*it)->m_soldOnPc = pcNumber;
         (*it)->m_soldTime = soldTime;
@@ -236,7 +236,7 @@ bool ArticleManager::isCurrentSaleEmpty()
 
 bool ArticleManager::isArticleInCurrentSale(unsigned int sellerNumber, unsigned int articleNumber)
 {
-    for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         if ((*it)->m_sellerNumber == sellerNumber && (*it)->m_articleNumber == articleNumber)
         {
@@ -266,7 +266,7 @@ QString ArticleManager::currentSaleToText()
     double sum = 0;
 
     QString currentSaleText = "Ver  Art  Preis   Beschreibung\n";
-    for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         currentSaleText += QString("%1  %2  %3  %4\n").arg((*it)->m_sellerNumber).arg((*it)->m_articleNumber).arg(prizeToString((*it)->m_prize)).arg((*it)->m_description);
         sum += (*it)->m_prize;
@@ -297,7 +297,7 @@ QString ArticleManager::currentSaleToHtml()
     currentSaleHtml += "<th>Beschreibung</th>";
     currentSaleHtml += "</tr>";
 
-    for (auto it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
         currentSaleHtml += "<tr>";
         currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_sellerNumber);
@@ -340,7 +340,7 @@ void ArticleManager::calculateStatistics(Statistics* statistics)
 
     QStringList transactions;
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); it++)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); it++)
     {
         //if ((*it)->m_soldOnPc == m_settings->getPc())
         if ((*it)->m_soldOnPc != 0)
@@ -388,7 +388,7 @@ std::map<int, double> ArticleManager::getSalesPerSeller()
         map[i] = 0.0;
     }
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         if ((*it)->m_soldOnPc == 0)
         {
@@ -411,7 +411,7 @@ std::map<int, double> ArticleManager::getSoldArticles(int sellerNumber)
 {
     std::map<int, double> map;
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         if ((*it)->m_soldOnPc == 0)
         {
@@ -433,7 +433,7 @@ std::vector<int> ArticleManager::getUnsoldArticles(int sellerNumber)
 {
     std::vector<int> vector;
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         if ((*it)->m_soldOnPc != 0)
         {
@@ -460,7 +460,7 @@ std::map<int, int> ArticleManager::getSoldArticlesPerSeller()
         map[i] = 0;
     }
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         if ((*it)->m_soldOnPc == 0)
         {
@@ -488,7 +488,7 @@ std::map<int, int> ArticleManager::getOfferedArticlesPerSeller()
         map[i] = 0;
     }
 
-    for (auto it = m_articles.begin(); it != m_articles.end(); ++it)
+    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
     {
         if (map.find((*it)->m_sellerNumber) == map.end())
         {
@@ -517,7 +517,7 @@ std::map<QString, int> ArticleManager::getSoldArticlesInRanges()
 
     std::map<int, int> soldArticlesPerSeller = getSoldArticlesPerSeller();
 
-    for (auto it = soldArticlesPerSeller.begin(); it != soldArticlesPerSeller.end(); ++it)
+    for (std::map<int, int>::iterator it = soldArticlesPerSeller.begin(); it != soldArticlesPerSeller.end(); ++it)
     {
         int value = it->second / 10;
         output[QString("%1 - %2").arg(Converter::intToQString(value * 10)).arg(Converter::intToQString(value * 10 + 9))]++;
@@ -541,7 +541,7 @@ std::map<QString, int> ArticleManager::getOfferedArticlesInRanges()
 
     std::map<int, int> offeredArticlesPerSeller = getOfferedArticlesPerSeller();
 
-    for (auto it = offeredArticlesPerSeller.begin(); it != offeredArticlesPerSeller.end(); ++it)
+    for (std::map<int, int>::iterator it = offeredArticlesPerSeller.begin(); it != offeredArticlesPerSeller.end(); ++it)
     {
         int value = it->second / 10;
         output[QString("%1 - %2").arg(Converter::intToQString(value * 10)).arg(Converter::intToQString(value * 10 + 9))]++;
@@ -552,7 +552,7 @@ std::map<QString, int> ArticleManager::getOfferedArticlesInRanges()
 
 void ArticleManager::sync(ArticleManager *other)
 {
-    for (auto it = other->m_articles.begin(); it != other->m_articles.end(); it++)
+    for (QList<Article*>::iterator it = other->m_articles.begin(); it != other->m_articles.end(); it++)
     {
         if ((*it)->m_soldOnPc != 0)
         {

@@ -1,8 +1,8 @@
 ﻿#include "EvaluationView.h"
 #include "ui_EvaluationView.h"
 
-#include <QPrinter>
-#include <QWebFrame>
+#include <QtPrintSupport/QPrinter>
+#include <QtWebKitWidgets/QWebFrame>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFile>

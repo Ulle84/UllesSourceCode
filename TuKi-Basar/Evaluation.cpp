@@ -5,8 +5,8 @@
 #include <vector>
 #include <algorithm>
 
-#include <QPrinter>
-#include <QWebFrame>
+#include <QtPrintSupport/QPrinter>
+#include <QtWebKitWidgets/QWebFrame>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFile>
@@ -71,7 +71,7 @@ QString Evaluation::createHtmlCodeOverview()
     int countCloths = 0;
     int countMisc = 0;
 
-    for (auto it = allArticles.begin(); it != allArticles.end(); it++)
+    for (QList<Article*>::iterator it = allArticles.begin(); it != allArticles.end(); it++)
     {
         if ((*it)->m_size.length() < 1)
         {
@@ -143,7 +143,7 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("<td>Angebotene Artikel</td>");
     html.append("<td>Anzahl Verkäufer</td>");
     html.append("</tr>");
-    for (auto it = offeredArticlesInRanges.begin(); it != offeredArticlesInRanges.end(); ++it)
+    for (std::map<QString, int>::iterator it = offeredArticlesInRanges.begin(); it != offeredArticlesInRanges.end(); ++it)
     {
         html.append("<tr>");
         html.append(QString("<td>%1</td>").arg(it->first));
@@ -159,7 +159,7 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("<td>Verkauft Artikel</td>");
     html.append("<td>Anzahl Verkäufer</td>");
     html.append("</tr>");
-    for (auto it = soldArticlesInRanges.begin(); it != soldArticlesInRanges.end(); ++it)
+    for (std::map<QString, int>::iterator it = soldArticlesInRanges.begin(); it != soldArticlesInRanges.end(); ++it)
     {
         html.append("<tr>");
         html.append(QString("<td>%1</td>").arg(it->first));
@@ -179,7 +179,7 @@ QString Evaluation::createHtmlCodeOverview()
     std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
     double payOutFactor = m_articleManager->getPayOutFactor();
 
-    for (auto it = matrix.begin(); it != matrix.end(); ++it)
+    for (std::map<int, double>::iterator it = matrix.begin(); it != matrix.end(); ++it)
     {
         html.append("<tr>");
         html.append(QString("<td>%1</td>").arg(it->first));
@@ -212,7 +212,7 @@ QString Evaluation::createHtmlCodeSoldArticles()
     std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
     double payOutFactor = m_articleManager->getPayOutFactor();
 
-    for (auto it = matrix.begin(); it != matrix.end(); ++it)
+    for (std::map<int, double>::iterator it = matrix.begin(); it != matrix.end(); ++it)
     {
         std::map<int, double> articles = m_articleManager->getSoldArticles(it->first);
 
@@ -286,7 +286,7 @@ QString Evaluation::createHtmlCodeSoldArticles()
         appendSoldArticleHeader(html);
 
         int counter = 0;
-        for (auto itA = articles.begin(); itA != articles.end(); ++itA)
+        for (std::map<int, double>::iterator itA = articles.begin(); itA != articles.end(); ++itA)
         {
             Article* article = m_articleManager->getArticle(it->first, itA->first);
 
@@ -329,7 +329,7 @@ QString Evaluation::createHtmlCodeUnsoldArticles()
 
     std::map<int, double> matrix = m_articleManager->getSalesPerSeller();
 
-    for (auto it = matrix.begin(); it != matrix.end(); ++it)
+    for (std::map<int, double>::iterator it = matrix.begin(); it != matrix.end(); ++it)
     {
         std::vector<int> unsoldArticles = m_articleManager->getUnsoldArticles(it->first);
 
