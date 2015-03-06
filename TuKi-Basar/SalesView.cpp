@@ -86,6 +86,7 @@ void SalesView::setContent(int index)
     currentSaleHtml += "</tr>";
 
     int counter = -1;
+    double sum = 0.0;
     for (QMap<QString, QList<Article*> >::iterator it= m_transactions.begin(); it != m_transactions.end(); it++)
     {
         counter++;
@@ -93,6 +94,8 @@ void SalesView::setContent(int index)
         {
             continue;
         }
+
+        ui->labelDateTime->setText(it.key());
 
         QList<Article*> currentSale = it.value();
 
@@ -104,11 +107,16 @@ void SalesView::setContent(int index)
             currentSaleHtml += QString("<td>%1 &euro;</td>").arg(Converter::prizeToString((*it)->m_prize));
             currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_description);
             currentSaleHtml += "</tr>";
-        }
 
+            sum += (*it)->m_prize;
+        }
+        break;
     }
 
     currentSaleHtml += "</table>";
+
+    currentSaleHtml += QString("<br /><b>Summe: %1 &euro;</b>").arg(Converter::prizeToString(sum));
+
     currentSaleHtml += "</html>";
 
     ui->webViewSale->setHtml(currentSaleHtml);

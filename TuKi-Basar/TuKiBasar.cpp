@@ -379,6 +379,13 @@ void TuKiBasar::prepareForNextInput()
 
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
 {    
+    if (m_articleManager->isCurrentSaleEmpty())
+    {
+        ui->doubleSpinBoxMoneyGiven->setValue(0.0);
+        prepareForNextInput();
+        return;
+    }
+
     m_articleManager->finishCurrentSale(m_settings->getPc());
     ui->doubleSpinBoxMoneyGiven->setValue(0.0);
     clearLastArticleInformation();
