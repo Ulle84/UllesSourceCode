@@ -31,6 +31,7 @@ QString CssHelper::createCssCode(bool advancedStyle)
     cssCode.append("td:last-child, th:last-child {border-right: 0px;}");
     cssCode.append("tr:last-child > td {border-bottom: 0px;}");
     cssCode.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
+    cssCode.append(".pageTest{page-break-after:always}");
     cssCode.append("</style>");
 
     return cssCode;
