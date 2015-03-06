@@ -95,6 +95,7 @@ QString Evaluation::createHtmlCodeOverview()
     html.append(CssHelper::createCssCode());
     html.append("</head><body>");
 
+    html.append("<div class=\"page\"");
     html.append("<h1>Zusammenfassung</h1>");
     html.append("<h2>Allgemein</h2>");
     html.append("<table>");
@@ -137,7 +138,9 @@ QString Evaluation::createHtmlCodeOverview()
     html.append(QString("<td>%1</td>").arg(QString("%1 Prozent").arg(QString::number(m_statistics->m_percentageOfSoldArticles, 'f', 1).replace('.', ','))));
     html.append("</tr>");
     html.append("</table>");
+    html.append("</div>");
 
+    html.append("<div class=\"page\"");
     std::map<QString, int> offeredArticlesInRanges = m_articleManager->getOfferedArticlesInRanges();
     html.append("<h2>Anzahl der angebotenen Artikel</h2>");
     html.append("<table>");
@@ -153,7 +156,9 @@ QString Evaluation::createHtmlCodeOverview()
         html.append("</tr>");
     }
     html.append("</table>");
+    html.append("</div>");
 
+    html.append("<div class=\"page\"");
     std::map<QString, int> soldArticlesInRanges = m_articleManager->getSoldArticlesInRanges();
     html.append("<h2>Anzahl der verkauften Artikel</h2>");
     html.append("<table>");
@@ -169,7 +174,9 @@ QString Evaluation::createHtmlCodeOverview()
         html.append("</tr>");
     }
     html.append("</table>");
+    html.append("</div>");
 
+    html.append("<div class=\"page\"");
     html.append("<h1>Verkaufte Artikel pro Verkäufer</h1>");
     html.append("<table>");
     html.append("<tr>");
@@ -188,9 +195,12 @@ QString Evaluation::createHtmlCodeOverview()
         html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second, 'f', 2).replace('.', ',')));
         html.append(QString("<td>%1 Euro</td>").arg(QString::number(it->second * payOutFactor, 'f', 2).replace('.', ',')));
         html.append("</tr>");
+
+        // TODO page break
     }
 
     html.append("</table>");
+    html.append("</div>");
 
     html.append("</body></html>");
 
