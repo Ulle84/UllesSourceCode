@@ -5,8 +5,14 @@
 #include <vector>
 #include <algorithm>
 
-#include <QtPrintSupport/QPrinter>
-#include <QtWebKitWidgets/QWebFrame>
+#if QT_VERSION >= 0x050000
+    #include <QtPrintSupport/QPrinter>
+    #include <QtWebKitWidgets/QWebFrame>
+#else
+    #include <QPrinter>
+    #include <QWebFrame>
+#endif
+
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFile>
@@ -22,8 +28,6 @@
 #include "Seller.h"
 #include "SellerManager.h"
 #include "CssHelper.h"
-
-bool articleSort (Article* A, Article* B) { return (A->m_prize < B->m_prize); }
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
     QDialog(parent),

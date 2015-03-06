@@ -1,8 +1,15 @@
 ﻿#include "EvaluationView.h"
 #include "ui_EvaluationView.h"
 
-#include <QtPrintSupport/QPrinter>
-#include <QtWebKitWidgets/QWebFrame>
+
+#if QT_VERSION >= 0x050000
+    #include <QtPrintSupport/QPrinter>
+    #include <QtWebKitWidgets/QWebFrame>
+#else
+    #include <QPrinter>
+    #include <QWebFrame>
+#endif
+
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFile>
