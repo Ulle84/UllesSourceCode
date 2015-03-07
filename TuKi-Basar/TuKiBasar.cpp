@@ -240,6 +240,12 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     int sellerNumber = input.left(3).toInt(&conversion1);
     int articleNumber = input.right(3).toInt(&conversion2);
 
+    if (input.left(3) == ui->labelSellerNumber->text() && input.right(3) == ui->labelArticleNumber->text())
+    {
+        ui->lineEditInput->clear();
+        return;
+    }
+
     if (!conversion1 || !conversion2)
     {
         // should not happen, since we use a QRegExpValidator
@@ -544,11 +550,6 @@ void TuKiBasar::on_actionExportSoldArticles_triggered()
     m_articleManager->setFileName(toRestore);
 }
 
-void TuKiBasar::on_pushButton_clicked()
-{
-    m_articleManager->sellAllArticles();
-}
-
 void TuKiBasar::on_doubleSpinBoxMoneyGiven_valueChanged(double moneyGiven)
 {
     calculateChange();
@@ -559,11 +560,6 @@ void TuKiBasar::on_actionSalesHistory_triggered()
     SalesView salesView;
     salesView.setTransactions(m_articleManager->getTransactions());
     salesView.exec();
-}
-
-void TuKiBasar::on_pushButton_2_clicked()
-{
-    m_articleManager->sellAllArticles(false);
 }
 
 void TuKiBasar::on_actionActivateAdvancedAccess_triggered()

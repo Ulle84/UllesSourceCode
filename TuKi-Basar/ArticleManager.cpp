@@ -29,28 +29,6 @@ ArticleManager::~ArticleManager()
     }
 }
 
-void ArticleManager::sellAllArticles(bool sell)
-{
-    QString soldTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-
-    for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
-    {
-        if (sell)
-        {
-            (*it)->m_soldOnPc = m_settings->getPc();
-            (*it)->m_soldTime = soldTime;
-        }
-        else
-        {
-            (*it)->m_soldOnPc = 0;
-            (*it)->m_soldTime = "";
-        }
-
-    }
-
-    toXml();
-}
-
 void ArticleManager::addArticle(Article* article)
 {
     m_articles.append(article);

@@ -19,8 +19,6 @@ public:
   ArticleManager(Settings* settings, QString fileName);
   ~ArticleManager();
 
-  void sellAllArticles(bool sell = true); // TODO delete after testing
-
   void addArticle(Article* article);
   void clear();
   Article* getArticle(int sellerNumber, int articleNumber);

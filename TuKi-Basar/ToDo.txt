@@ -3,7 +3,6 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- doppel Scan ignorieren
 - price changed in list
 - autoscroll to end of list
 - Zusammenfassung - Datum und Uhrzeit, auch im Dateinamen
