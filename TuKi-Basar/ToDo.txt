@@ -7,7 +7,8 @@ ToDo (priorisiert)
 
 Nice to have
 --------------------------------------------------------------------------------
-
+- Corrent Translation of Standard-Buttons - on german system there ist yes/no
+- Richtige Darstellung der Umlaute auf Mac OS -> Qt 5.4 testen
 
 Ideas
 --------------------------------------------------------------------------------

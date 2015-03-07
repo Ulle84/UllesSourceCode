@@ -18,6 +18,7 @@ PrizeCorrection::~PrizeCorrection()
 void PrizeCorrection::setPrize(double prize)
 {
   ui->doubleSpinBoxPrize->setValue(prize);
+  ui->doubleSpinBoxPrize->setFocus();
   ui->doubleSpinBoxPrize->selectAll();
 }
 
