@@ -47,6 +47,9 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     ui->actionCompleteEvaluation->setVisible(false);
     ui->actionDeactivateAdvancedAccess->setVisible(false);
 
+    // hide description since there have been big layout issues on PCs with Aspect Ratio 4:3
+    ui->labelDescription->setVisible(false);
+    ui->labelDescriptionCaption->setVisible(false);
 }
 
 TuKiBasar::~TuKiBasar()
