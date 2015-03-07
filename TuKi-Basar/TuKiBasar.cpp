@@ -380,6 +380,7 @@ void TuKiBasar::updateArticleView()
     //ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
     ui->webViewArticleList->setHtml(m_articleManager->currentSaleToHtml());
     ui->labelSum->setText(Converter::prizeToString(m_articleManager->getSumOfCurrentSale()));
+    calculateChange();
 }
 
 void TuKiBasar::askUserToFinishCurrentSale()
@@ -422,6 +423,13 @@ bool TuKiBasar::checkPassword()
     }
 
     return true;
+}
+
+void TuKiBasar::calculateChange()
+{
+    double moneyGiven = ui->doubleSpinBoxMoneyGiven->value();
+    double sum = ui->labelSum->text().toDouble();
+    ui->labelChange->setText(Converter::prizeToString(moneyGiven - sum));
 }
 
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
@@ -535,8 +543,7 @@ void TuKiBasar::on_pushButton_clicked()
 
 void TuKiBasar::on_doubleSpinBoxMoneyGiven_valueChanged(double moneyGiven)
 {
-    double sum = ui->labelSum->text().toDouble();
-    ui->labelChange->setText(Converter::prizeToString(moneyGiven - sum));
+    calculateChange();
 }
 
 void TuKiBasar::on_actionSalesHistory_triggered()

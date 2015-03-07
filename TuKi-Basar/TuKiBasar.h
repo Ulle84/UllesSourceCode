@@ -52,6 +52,7 @@ private:
   void askUserToFinishCurrentSale();
   void prepareForNextInput();
   bool checkPassword();
+  void calculateChange();
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;
