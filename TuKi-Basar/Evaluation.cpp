@@ -29,6 +29,7 @@
 #include "SellerManager.h"
 #include "CssHelper.h"
 #include "Converter.h"
+#include "DateTimeHelper.h"
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
     QDialog(parent),
@@ -97,7 +98,7 @@ QString Evaluation::createHtmlCodeOverview()
     html.append("</head><body>");
 
     html.append("<div class=\"page\">");
-    html.append("<h1>Zusammenfassung</h1>");
+    html.append(QString("<h1>Zusammenfassung (erstellt am %1 um %2 Uhr)</h1>").arg(DateTimeHelper::getCurrentDateGerman()).arg(DateTimeHelper::getCurrentTimeGerman()));
     html.append("<h2>Allgemein</h2>");
     html.append("<table>");
     html.append("<tr>");

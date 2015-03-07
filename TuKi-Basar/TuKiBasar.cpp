@@ -6,7 +6,12 @@
 #include <QTextStream>
 #include <QRegExp>
 #include <QRegExpValidator>
-#include <QWebFrame>
+
+#if QT_VERSION >= 0x050000
+    #include <QtWebKitWidgets/QWebFrame>
+#else
+    #include <QWebFrame>
+#endif
 
 #include "TuKiBasar.h"
 #include "ui_TuKiBasar.h"
