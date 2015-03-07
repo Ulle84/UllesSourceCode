@@ -19,8 +19,8 @@ SalesView::~SalesView()
 
 void SalesView::setTransactions(QMap<QString, QList<Article *> > transactions)
 {
-    m_index = 0;
     m_transactions = transactions;
+    m_index = transactions.size() - 1;
     update();
 }
 
