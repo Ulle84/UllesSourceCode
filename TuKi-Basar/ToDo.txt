@@ -13,3 +13,4 @@ Ideas
 --------------------------------------------------------------------------------
 - write some statistics to status bar?
 - document original prize to detect wrong entries -> manipulation attempt?
+- Sprachausgabe des Preises
