@@ -104,7 +104,7 @@ void SalesView::setContent(int index)
             currentSaleHtml += "<tr>";
             currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_sellerNumber);
             currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_articleNumber);
-            currentSaleHtml += QString("<td>%1 &euro;</td>").arg(Converter::prizeToString((*it)->m_prize));
+            currentSaleHtml += QString("<td class=\"prize\">%1 &euro;</td>").arg(Converter::prizeToString((*it)->m_prize));
             currentSaleHtml += QString("<td>%1</td>").arg((*it)->m_description);
             currentSaleHtml += "</tr>";
 

@@ -32,6 +32,7 @@ QString CssHelper::createCssCode(bool advancedStyle, bool doubleFontSize)
     cssCode.append("tr:last-child > td {border-bottom: 0px;}");
     //cssCode.append(".page{min-height: 26.85cm; max-height: 26.85cm; border-bottom: 1px solid black;}"); //TODO remove border
     cssCode.append(".page{page-break-after:always}");
+    cssCode.append(".prize{text-align: right}");
     cssCode.append("</style>");
 
     return cssCode;

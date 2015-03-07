@@ -6,7 +6,6 @@ ToDo (priorisiert)
 - doppel Scan ignorieren
 - price changed in list
 - autoscroll to end of list
-- html view price adjust right
 - Zusammenfassung - Datum und Uhrzeit, auch im Dateinamen
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
 
