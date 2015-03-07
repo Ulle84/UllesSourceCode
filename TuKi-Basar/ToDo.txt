@@ -3,12 +3,20 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
+- doppel Scan ignorieren
+- price changed in list
+- autoscroll to end of list
+- html view price adjust right
+- nicht verkaufte artikel liste doppelt so groß
+- anzeige welche kasse
+- Zusammenfassung - Datum und Uhrzeit, auch im Dateinamen
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
 
 Nice to have
 --------------------------------------------------------------------------------
 - Corrent Translation of Standard-Buttons - on german system there ist yes/no
 - Richtige Darstellung der Umlaute auf Mac OS -> Qt 5.4 testen
+- Fortschrittsanzeige beim Exportieren auf USB-Stick
 
 Ideas
 --------------------------------------------------------------------------------

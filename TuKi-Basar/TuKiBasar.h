@@ -53,6 +53,7 @@ private:
   void prepareForNextInput();
   bool checkPassword();
   void calculateChange();
+  void setCashPointNumber();
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;

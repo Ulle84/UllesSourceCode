@@ -37,6 +37,8 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 
     prepareForNextInput();
 
+    setCashPointNumber();
+
     ui->plainTextEditArticleList->setVisible(false); // TODO that GUI-element should be removed, but there is a problem with the QCloseEvent, when this element is removed in the UI-File
 
 
@@ -68,6 +70,7 @@ void TuKiBasar::on_actionSettings_triggered()
         return;
     }*/
     m_settings->exec();
+    setCashPointNumber();
 }
 
 void TuKiBasar::on_actionEvaluation_triggered()
@@ -430,6 +433,11 @@ void TuKiBasar::calculateChange()
     double moneyGiven = ui->doubleSpinBoxMoneyGiven->value();
     double sum = m_articleManager->getSumOfCurrentSale();
     ui->labelChange->setText(Converter::prizeToString(moneyGiven - sum));
+}
+
+void TuKiBasar::setCashPointNumber()
+{
+    ui->labelCashPointNumber->setText(tr("Kasse %1").arg(m_settings->getPc()));
 }
 
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
