@@ -1,8 +1,4 @@
-﻿#include "EvaluationView.h"
-#include "ui_EvaluationView.h"
-
-
-#if QT_VERSION >= 0x050000
+﻿#if QT_VERSION >= 0x050000
     #include <QtPrintSupport/QPrinter>
     #include <QtWebKitWidgets/QWebFrame>
 #else
@@ -16,6 +12,10 @@
 #include <QDir>
 #include <QByteArray>
 #include <QFileDialog>
+
+#include "EvaluationView.h"
+#include "ui_EvaluationView.h"
+#include "DateTimeHelper.h"
 
 EvaluationView::EvaluationView(const QString& name, QWidget *parent) :
   QWidget(parent),
@@ -56,7 +56,7 @@ void EvaluationView::on_webView_loadFinished(bool loadFinished)
 
 void EvaluationView::on_pushButton_clicked()
 {
-  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1.pdf").arg(m_name), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
+  QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1_%2.pdf").arg(m_name).arg(DateTimeHelper::getCurrentDate()), QString("PDF-%1 (*.pdf)").arg(tr("Datei")));
 
   if (outputFile.isEmpty())
   {

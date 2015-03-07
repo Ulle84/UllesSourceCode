@@ -11,9 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webkitwidgets
 TARGET = TuKi-Basar
 TEMPLATE = app
 
-TRANSLATIONS = qt_de.ts
-
-
 SOURCES += main.cpp\
         TuKiBasar.cpp \
     Evaluation.cpp \
@@ -28,7 +25,8 @@ SOURCES += main.cpp\
     Converter.cpp \
     CssHelper.cpp \
     SalesView.cpp \
-    PasswordInput.cpp
+    PasswordInput.cpp \
+    DateTimeHelper.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -43,7 +41,8 @@ HEADERS  += TuKiBasar.h \
     Converter.h \
     CssHelper.h \
     SalesView.h \
-    PasswordInput.h
+    PasswordInput.h \
+    DateTimeHelper.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \

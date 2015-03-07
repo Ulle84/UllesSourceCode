@@ -13,6 +13,7 @@
 #include "Statistics.h"
 #include "Converter.h"
 #include "CssHelper.h"
+#include "DateTimeHelper.h"
 
 ArticleManager::ArticleManager(Settings* settings, QString fileName)
     : m_settings(settings),
@@ -210,7 +211,7 @@ void ArticleManager::removeLastArticleFromCurrentSale()
 
 void ArticleManager::finishCurrentSale(unsigned int pcNumber)
 {
-    QString soldTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    QString soldTime = DateTimeHelper::getCurrentDateAndTime();
 
     for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
     {
