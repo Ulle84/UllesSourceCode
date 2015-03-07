@@ -4,7 +4,6 @@ Bugs
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - price changed in list
-- autoscroll to end of list
 - Zusammenfassung - Datum und Uhrzeit, auch im Dateinamen
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
 

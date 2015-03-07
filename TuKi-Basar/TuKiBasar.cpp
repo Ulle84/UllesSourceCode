@@ -6,6 +6,7 @@
 #include <QTextStream>
 #include <QRegExp>
 #include <QRegExpValidator>
+#include <QWebFrame>
 
 #include "TuKiBasar.h"
 #include "ui_TuKiBasar.h"
@@ -388,6 +389,8 @@ void TuKiBasar::updateArticleView()
 {
     //ui->plainTextEditArticleList->setPlainText(m_articleManager->currentSaleToText());
     ui->webViewArticleList->setHtml(m_articleManager->currentSaleToHtml());
+    //ui->webViewArticleList->triggerPageAction(QWebPage::MoveToEndOfDocument);
+    ui->webViewArticleList->page()->mainFrame()->setScrollBarValue(Qt::Vertical, ui->webViewArticleList->page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
     ui->labelSum->setText(Converter::prizeToString(m_articleManager->getSumOfCurrentSale()));
     calculateChange();
 }
