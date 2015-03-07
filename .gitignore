@@ -16,13 +16,14 @@ build-ReservationsToExcel-Qt_4_8_6-Release/*
 ReservationsToExcel/Input/*
 ReservationsToExcel/Output/*
 
-TuKi-Basar/Sellers.xml
-
-TuKi-Basar/Articles.xml
-
+TuKi-Basar/*.xml
 TuKi-Basar/*.pdf
 TuKi/ArticleList/Data/*
-
-TuKi/ArticleList/Data/articleList_500.txt
 build-TuKi-Basar-Desktop_Qt_5_4_1_MinGW_32bit-Debug/*
 build-TuKi-Basar-Desktop_Qt_5_4_1_MinGW_32bit-Release/*
+
+TuKi-Basar/Articles_PC1.xml
+
+TuKi-Basar/Articles_PC2.xml
+
+TuKi-Basar/Articles_PC3.xml

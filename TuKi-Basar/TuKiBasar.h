@@ -40,6 +40,10 @@ private slots:
 
   void on_pushButton_2_clicked();  //TODO remove after testing
 
+  void on_actionActivateAdvancedAccess_triggered();
+
+  void on_actionDeactivateAdvancedAccess_triggered();
+
 private:
   void closeEvent(QCloseEvent *event);
   void setLastArticleInformation();
@@ -47,6 +51,7 @@ private:
   void updateArticleView();
   void askUserToFinishCurrentSale();
   void prepareForNextInput();
+  bool checkPassword();
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;

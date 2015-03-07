@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     SellerManager.cpp \
     Converter.cpp \
     CssHelper.cpp \
-    SalesView.cpp
+    SalesView.cpp \
+    PasswordInput.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -39,14 +40,16 @@ HEADERS  += TuKiBasar.h \
     SellerManager.h \
     Converter.h \
     CssHelper.h \
-    SalesView.h
+    SalesView.h \
+    PasswordInput.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \
     Settings.ui \
     PrizeCorrection.ui \
     EvaluationView.ui \
-    SalesView.ui
+    SalesView.ui \
+    PasswordInput.ui
 
 OTHER_FILES += \
     ToDo.txt

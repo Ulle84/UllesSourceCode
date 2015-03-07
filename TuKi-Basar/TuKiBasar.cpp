@@ -19,6 +19,7 @@
 #include "SellerManager.h"
 #include "Converter.h"
 #include "SalesView.h"
+#include "PasswordInput.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
@@ -37,6 +38,15 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     prepareForNextInput();
 
     ui->plainTextEditArticleList->setVisible(false); // TODO that GUI-element should be removed, but there is a problem with the QCloseEvent, when this element is removed in the UI-File
+
+
+    ui->actionImportArticleLists->setVisible(false);
+    ui->actionExportSoldArticles->setVisible(false);
+    ui->actionEvaluation->setVisible(false);
+    ui->actionSettings->setVisible(false);
+    ui->actionCompleteEvaluation->setVisible(false);
+    ui->actionDeactivateAdvancedAccess->setVisible(false);
+
 }
 
 TuKiBasar::~TuKiBasar()
@@ -50,11 +60,20 @@ TuKiBasar::~TuKiBasar()
 
 void TuKiBasar::on_actionSettings_triggered()
 {
+    /*if (!checkPassword())
+    {
+        return;
+    }*/
     m_settings->exec();
 }
 
 void TuKiBasar::on_actionEvaluation_triggered()
 {
+    /*if (!checkPassword())
+    {
+        return;
+    }*/
+
     askUserToFinishCurrentSale();
 
     m_evaluation->doEvaluation();
@@ -63,6 +82,11 @@ void TuKiBasar::on_actionEvaluation_triggered()
 
 void TuKiBasar::on_actionImportArticleLists_triggered()
 {
+    /*if (!checkPassword())
+    {
+        return;
+    }*/
+
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, tr("Vorhandene Artikel löschen?"),
                                   tr("Möchten Sie die bereits importierten Artikel löschen?"),
@@ -377,6 +401,26 @@ void TuKiBasar::prepareForNextInput()
     ui->lineEditInput->setFocus();
 }
 
+bool TuKiBasar::checkPassword()
+{
+    PasswordInput passwordInput;
+
+    if (passwordInput.exec() != QDialog::Accepted)
+    {
+        return false;
+    }
+
+    if (passwordInput.getPassword() != "TuKiTante")
+    {
+        QMessageBox mb;
+        mb.setText(tr("Falsches Passwort!"));
+        mb.exec();
+        return false;
+    }
+
+    return true;
+}
+
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
 {    
     if (m_articleManager->isCurrentSaleEmpty())
@@ -395,6 +439,11 @@ void TuKiBasar::on_pushButtonNextCustomer_clicked()
 
 void TuKiBasar::on_actionCompleteEvaluation_triggered()
 {
+    /*if (!checkPassword())
+    {
+        return;
+    }*/
+
     askUserToFinishCurrentSale();
 
     QStringList files = QFileDialog::getOpenFileNames(this, "Bitte Dateien auswählen", "", "XML-Dateien (*.xml)");
@@ -454,6 +503,11 @@ void TuKiBasar::closeEvent(QCloseEvent *event)
 
 void TuKiBasar::on_actionExportSoldArticles_triggered()
 {
+    /*if (!checkPassword())
+    {
+        return;
+    }*/
+
     askUserToFinishCurrentSale();
 
     QString outputFile = QFileDialog::getSaveFileName(this, tr("Bitte geben Sie den Dateinamen an"), QString("%1_PC%2.xml").arg(tr("VerkaufteArtikel")).arg(m_settings->getPc()), QString("XML-%1 (*.xml)").arg(tr("Datei")));
@@ -492,4 +546,29 @@ void TuKiBasar::on_actionSalesHistory_triggered()
 void TuKiBasar::on_pushButton_2_clicked()
 {
     m_articleManager->sellAllArticles(false);
+}
+
+void TuKiBasar::on_actionActivateAdvancedAccess_triggered()
+{
+    if (checkPassword())
+    {
+        ui->actionImportArticleLists->setVisible(true);
+        ui->actionExportSoldArticles->setVisible(true);
+        ui->actionEvaluation->setVisible(true);
+        ui->actionSettings->setVisible(true);
+        ui->actionCompleteEvaluation->setVisible(true);
+        ui->actionActivateAdvancedAccess->setVisible(false);
+        ui->actionDeactivateAdvancedAccess->setVisible(true);
+    }
+}
+
+void TuKiBasar::on_actionDeactivateAdvancedAccess_triggered()
+{
+    ui->actionImportArticleLists->setVisible(false);
+    ui->actionExportSoldArticles->setVisible(false);
+    ui->actionEvaluation->setVisible(false);
+    ui->actionSettings->setVisible(false);
+    ui->actionCompleteEvaluation->setVisible(false);
+    ui->actionDeactivateAdvancedAccess->setVisible(false);
+    ui->actionActivateAdvancedAccess->setVisible(true);
 }

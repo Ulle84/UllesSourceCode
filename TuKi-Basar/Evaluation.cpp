@@ -126,16 +126,16 @@ QString Evaluation::createHtmlCodeOverview()
 
     html.append("<tr>");
     html.append(QString("<td>%1</td>").arg(tr("Kleidungsstücke")));
-    html.append(QString("<td>%1 (%2)</td>").arg(countCloths).arg(QString("%1 Prozent").arg(QString::number(countCloths * 100.0 / (countCloths + countMisc), 'f', 1).replace('.', ','))));
+    html.append(QString("<td>%1 (%2)</td>").arg(countCloths).arg(QString("%1 %").arg(QString::number(countCloths * 100.0 / (countCloths + countMisc), 'f', 1).replace('.', ','))));
     html.append("</tr>");
 
     html.append("<tr>");
     html.append(QString("<td>%1</td>").arg(tr("Nicht-Kleidungsstücke")));
-    html.append(QString("<td>%1 (%2)</td>").arg(countMisc).arg(QString("%1 Prozent").arg(QString::number(countMisc * 100.0 / (countCloths + countMisc), 'f', 1).replace('.', ','))));
+    html.append(QString("<td>%1 (%2)</td>").arg(countMisc).arg(QString("%1 %").arg(QString::number(countMisc * 100.0 / (countCloths + countMisc), 'f', 1).replace('.', ','))));
     html.append("</tr>");
     html.append("<tr>");
     html.append(QString("<td>%1</td>").arg(tr("Verkaufte Artikel")));
-    html.append(QString("<td>%1</td>").arg(QString("%1 Prozent").arg(QString::number(m_statistics->m_percentageOfSoldArticles, 'f', 1).replace('.', ','))));
+    html.append(QString("<td>%1 (%2)</td>").arg(m_statistics->m_countOfSoldArticles).arg(QString("%1 %").arg(QString::number(m_statistics->m_percentageOfSoldArticles, 'f', 1).replace('.', ','))));
     html.append("</tr>");
     html.append("</table>");
     html.append("</div>");

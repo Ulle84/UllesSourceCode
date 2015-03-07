@@ -3,7 +3,6 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren?
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
 
 Nice to have

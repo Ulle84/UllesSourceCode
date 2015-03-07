@@ -393,12 +393,14 @@
     <property name="title">
      <string>Erweitert</string>
     </property>
+    <addaction name="actionSalesHistory"/>
     <addaction name="actionImportArticleLists"/>
     <addaction name="actionExportSoldArticles"/>
     <addaction name="actionEvaluation"/>
     <addaction name="actionCompleteEvaluation"/>
-    <addaction name="actionSalesHistory"/>
     <addaction name="actionSettings"/>
+    <addaction name="actionActivateAdvancedAccess"/>
+    <addaction name="actionDeactivateAdvancedAccess"/>
    </widget>
    <addaction name="menuErweitert"/>
   </widget>
@@ -439,6 +441,16 @@
   <action name="actionSalesHistory">
    <property name="text">
     <string>Verkaufs-Historie</string>
+   </property>
+  </action>
+  <action name="actionActivateAdvancedAccess">
+   <property name="text">
+    <string>Erweiterten Zugang aktivieren</string>
+   </property>
+  </action>
+  <action name="actionDeactivateAdvancedAccess">
+   <property name="text">
+    <string>Erweiterten Zugang deaktivieren</string>
    </property>
   </action>
  </widget>
