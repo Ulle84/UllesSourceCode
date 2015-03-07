@@ -49,6 +49,7 @@ private:
   bool checkPassword();
   void calculateChange();
   void setCashPointNumber();
+  void updateStatusBar();
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;

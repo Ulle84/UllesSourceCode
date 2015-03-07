@@ -12,7 +12,5 @@ Nice to have
 
 Ideas
 --------------------------------------------------------------------------------
-- write some statistics to status bar?
-- document original prize to detect wrong entries -> manipulation attempt?
 - Sprachausgabe des Preises
 - Abweichungen zwischen Listen- und Etikettpreis auswerten -> Übersicht: Anzahl der Abweichungen + Summe der Abweichungen

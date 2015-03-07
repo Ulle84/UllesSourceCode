@@ -52,6 +52,8 @@ public:
   void sync(ArticleManager* other);
 
   double getPayOutFactor();
+  int getCountOfTransactions();
+  int getCountOfSoldArticles();
 
   QMap<QString, QList<Article*> > getTransactions();
 

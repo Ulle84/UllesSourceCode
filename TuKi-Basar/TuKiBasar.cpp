@@ -58,6 +58,8 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     // hide description since there have been big layout issues on PCs with Aspect Ratio 4:3
     ui->labelDescription->setVisible(false);
     ui->labelDescriptionCaption->setVisible(false);
+
+    updateStatusBar();
 }
 
 TuKiBasar::~TuKiBasar()
@@ -454,6 +456,11 @@ void TuKiBasar::setCashPointNumber()
     ui->labelCashPointNumber->setText(tr("Kasse %1").arg(m_settings->getPc()));
 }
 
+void TuKiBasar::updateStatusBar()
+{
+    ui->statusBar->showMessage(tr("Anzahl der Verkäufe: %1   Anzahl der verkauften Artikel: %2").arg(m_articleManager->getCountOfTransactions()).arg(m_articleManager->getCountOfSoldArticles()));
+}
+
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
 {    
     if (m_articleManager->isCurrentSaleEmpty())
@@ -468,6 +475,7 @@ void TuKiBasar::on_pushButtonNextCustomer_clicked()
     clearLastArticleInformation();
     updateArticleView();
     prepareForNextInput();
+    updateStatusBar();
 }
 
 void TuKiBasar::on_actionCompleteEvaluation_triggered()

@@ -578,6 +578,21 @@ double ArticleManager::getPayOutFactor()
     return (100.0 - m_settings->getDeductionPercentage()) / 100.0;
 }
 
+int ArticleManager::getCountOfTransactions()
+{
+    return m_transactions.size();
+}
+
+int ArticleManager::getCountOfSoldArticles()
+{
+    int count = 0;
+    for (QMap<QString, QList<Article*> >::iterator it = m_transactions.begin(); it != m_transactions.end(); ++it)
+    {
+        count += it.value().size();
+    }
+    return count;
+}
+
 QMap<QString, QList<Article*> > ArticleManager::getTransactions()
 {
     return m_transactions;
