@@ -364,7 +364,7 @@ void TuKiBasar::setLastArticleInformation()
     ui->labelArticleNumber->setText(QString("%1").arg(article->m_articleNumber));
     ui->labelSellerNumber->setText(QString("%1").arg(article->m_sellerNumber));
     ui->labelDescription->setText(article->m_description);
-    ui->labelPrize->setText(Converter::prizeToString(article->m_prize));
+    ui->labelPrize->setText(Converter::prizeToString(article->m_prize, false));
 }
 
 void TuKiBasar::clearLastArticleInformation()

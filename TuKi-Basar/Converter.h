@@ -7,7 +7,7 @@ class Converter
 {
 public:
     static QString intToQString(int number);
-    static QString prizeToString(double prize);
+    static QString prizeToString(double prize, bool leadingSpace = true);
 };
 
 #endif // CONVERTER_H

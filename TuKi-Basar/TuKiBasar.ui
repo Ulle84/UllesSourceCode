@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>823</width>
+    <width>578</width>
     <height>879</height>
    </rect>
   </property>
@@ -25,7 +25,7 @@
          </font>
         </property>
         <property name="text">
-         <string>sell all articles - todo remove this button</string>
+         <string>sell all articles</string>
         </property>
        </widget>
       </item>
@@ -37,7 +37,7 @@
          </font>
         </property>
         <property name="text">
-         <string>unsell all articles - todo remove</string>
+         <string>unsell all articles</string>
         </property>
        </widget>
       </item>
@@ -197,6 +197,30 @@
            </property>
           </widget>
          </item>
+         <item row="5" column="0" colspan="3">
+          <widget class="QPushButton" name="pushButtonDeleteLastInput">
+           <property name="font">
+            <font>
+             <pointsize>16</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Letzte Eingabe löschen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="3">
+          <widget class="QPushButton" name="pushButtonCorrectPrize">
+           <property name="font">
+            <font>
+             <pointsize>16</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Preis korrigieren</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer">
            <property name="font">
@@ -214,30 +238,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="4" column="0" colspan="3">
-          <widget class="QPushButton" name="pushButtonCorrectPrize">
-           <property name="font">
-            <font>
-             <pointsize>16</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Preis korrigieren</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0" colspan="3">
-          <widget class="QPushButton" name="pushButtonDeleteLastInput">
-           <property name="font">
-            <font>
-             <pointsize>16</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Letzte Eingabe löschen</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </widget>
@@ -488,7 +488,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>823</width>
+     <width>578</width>
      <height>22</height>
     </rect>
    </property>
