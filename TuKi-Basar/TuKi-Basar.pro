@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webkitwidgets
 TARGET = TuKi-Basar
 TEMPLATE = app
 
+TRANSLATIONS = qt_de.ts
+
 
 SOURCES += main.cpp\
         TuKiBasar.cpp \

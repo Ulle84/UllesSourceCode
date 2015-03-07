@@ -8,7 +8,6 @@ ToDo (priorisiert)
 
 Nice to have
 --------------------------------------------------------------------------------
-- Corrent Translation of Standard-Buttons - on german system there ist yes/no
 - Richtige Darstellung der Umlaute auf Mac OS -> Qt 5.4 testen
 - Fortschrittsanzeige beim Exportieren auf USB-Stick
 
@@ -17,3 +16,4 @@ Ideas
 - write some statistics to status bar?
 - document original prize to detect wrong entries -> manipulation attempt?
 - Sprachausgabe des Preises
+- Abweichungen zwischen Listen- und Etikettpreis auswerten -> Übersicht: Anzahl der Abweichungen + Summe der Abweichungen
