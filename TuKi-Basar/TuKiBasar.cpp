@@ -428,7 +428,7 @@ bool TuKiBasar::checkPassword()
 void TuKiBasar::calculateChange()
 {
     double moneyGiven = ui->doubleSpinBoxMoneyGiven->value();
-    double sum = ui->labelSum->text().toDouble();
+    double sum = m_articleManager->getSumOfCurrentSale();
     ui->labelChange->setText(Converter::prizeToString(moneyGiven - sum));
 }
 
