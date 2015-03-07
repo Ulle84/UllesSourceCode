@@ -28,6 +28,7 @@
 #include "Seller.h"
 #include "SellerManager.h"
 #include "CssHelper.h"
+#include "Converter.h"
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
     QDialog(parent),
@@ -328,9 +329,23 @@ QString Evaluation::createHtmlCodeSoldArticles()
 
             html.append("<tr>");
             html.append(QString("<td>%1</td>").arg(itA->first));
-            html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
+            //html.append(QString("<td>%1 Euro</td>").arg(QString::number(itA->second, 'f', 2).replace('.', ',')));
+            html += QString("<td class=\"prize\">%1 &euro;</td>").arg(Converter::prizeToString(article->m_prize));
+
             html.append(QString("<td>%1</td>").arg(article->m_size));
             html.append(QString("<td>%1</td>").arg(article->m_description));
+
+            if (article->m_prize != article->m_listPrize)
+            {
+                html += QString("<td>Listenpreis: %1 &euro;</td>").arg(Converter::prizeToString(article->m_listPrize));
+            }
+            else
+            {
+                html += "<td></td>";
+            }
+
+
+
             html.append("</tr>");
             counter++;
         }
@@ -442,5 +457,6 @@ void Evaluation::appendSoldArticleHeader(QString &html)
     html.append("<th>Preis</th>");
     html.append("<th>Größe</th>");
     html.append("<th>Artikelbeschreibung</th>");
+    html.append("<th>Abweichungen</th>");
     html.append("</tr>");
 }

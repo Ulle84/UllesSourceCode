@@ -206,7 +206,7 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
                 continue;
             }
 
-            Article* article = new Article(articleNumber, sellerNumber, 0, prize, size, description, "");
+            Article* article = new Article(articleNumber, sellerNumber, 0, prize, prize, size, description, "");
             m_articleManager->addArticle(article); //TODO check that no article is added twice
 
             articleCounter++;
@@ -328,7 +328,7 @@ void TuKiBasar::on_lineEditInput_returnPressed()
     }
     else
     {
-        Article* newArticle = new Article(articleNumber, sellerNumber, 0, 0.0, "", "", "");
+        Article* newArticle = new Article(articleNumber, sellerNumber, 0, 0.0, 0.0, "", "", "");
         m_articleManager->addArticle(newArticle);
         m_articleManager->addArticleToCurrentSale(newArticle);
 

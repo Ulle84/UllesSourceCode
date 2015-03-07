@@ -95,6 +95,7 @@ bool ArticleManager::fromXml()
             unsigned int sellerNumber = 0;
             unsigned int soldOnPc = 0;
             double prize = 0.0;
+            double listPrize = 0.0;
             QString size;
             QString description;
             QString soldTime;
@@ -112,6 +113,10 @@ bool ArticleManager::fromXml()
                 else if (xml.name() == "Prize")
                 {
                     prize = xml.readElementText().toDouble();
+                }
+                else if (xml.name() == "ListPrize")
+                {
+                    listPrize = xml.readElementText().toDouble();
                 }
                 else if (xml.name() == "Size")
                 {
@@ -135,7 +140,7 @@ bool ArticleManager::fromXml()
                 }
             }
 
-            Article* article = new Article(articleNumber, sellerNumber, soldOnPc, prize, size, description, soldTime);
+            Article* article = new Article(articleNumber, sellerNumber, soldOnPc, prize, listPrize, size, description, soldTime);
             addArticle(article);
         }
         else
@@ -169,6 +174,7 @@ bool ArticleManager::toXml()
         xml.writeTextElement("Seller", QString("%1").arg((*it)->m_sellerNumber));
         xml.writeTextElement("Number", QString("%1").arg((*it)->m_articleNumber));
         xml.writeTextElement("Prize", QString("%1").arg((*it)->m_prize));
+        xml.writeTextElement("ListPrize", QString("%1").arg((*it)->m_listPrize));
         xml.writeTextElement("Size", (*it)->m_size);
         xml.writeTextElement("Description", (*it)->m_description);
         xml.writeTextElement("SoldOnPc", QString("%1").arg((*it)->m_soldOnPc));
@@ -559,7 +565,7 @@ void ArticleManager::sync(ArticleManager *other)
             }
             else
             {
-                Article* newArticle = new Article((*it)->m_articleNumber, (*it)->m_sellerNumber, (*it)->m_soldOnPc, (*it)->m_prize, (*it)->m_size, (*it)->m_description, (*it)->m_soldTime);
+                Article* newArticle = new Article((*it)->m_articleNumber, (*it)->m_sellerNumber, (*it)->m_soldOnPc, (*it)->m_prize, (*it)->m_listPrize, (*it)->m_size, (*it)->m_description, (*it)->m_soldTime);
                 m_articles.append(newArticle);
             }
         }
