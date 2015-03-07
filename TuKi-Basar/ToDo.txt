@@ -7,8 +7,6 @@ ToDo (priorisiert)
 - price changed in list
 - autoscroll to end of list
 - html view price adjust right
-- nicht verkaufte artikel liste doppelt so groß
-- anzeige welche kasse
 - Zusammenfassung - Datum und Uhrzeit, auch im Dateinamen
 - Excel-Export -> Welcher Verkäufer bekommt was überwiesen?
 

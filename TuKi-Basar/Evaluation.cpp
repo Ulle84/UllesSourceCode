@@ -351,7 +351,7 @@ QString Evaluation::createHtmlCodeUnsoldArticles()
     html.append("<html><head>");
     html.append("<meta charset=\"utf-8\">");
     html.append("<title></title>");
-    html.append(CssHelper::createCssCode());
+    html.append(CssHelper::createCssCode(false, true));
     html.append("</head><body>");
 
     std::map<int, double> matrix = m_articleManager->getSalesPerSeller();

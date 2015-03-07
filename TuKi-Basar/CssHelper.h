@@ -6,7 +6,7 @@
 class CssHelper
 {
 public:
-    static QString createCssCode(bool advancedStyle = false);
+    static QString createCssCode(bool advancedStyle = false, bool doubleFontSize = false);
 };
 
 #endif // CSSHELPER_H
