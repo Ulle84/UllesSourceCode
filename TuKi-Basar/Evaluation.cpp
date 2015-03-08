@@ -345,6 +345,8 @@ QString Evaluation::createHtmlCodeSoldArticles()
                 html += "<td></td>";
             }
 
+            //html += QString("<td>%1</td>").arg(article->m_soldOnPc);
+
 
 
             html.append("</tr>");
@@ -459,5 +461,6 @@ void Evaluation::appendSoldArticleHeader(QString &html)
     html.append("<th>Größe</th>");
     html.append("<th>Artikelbeschreibung</th>");
     html.append("<th>Abweichungen</th>");
+    //html.append("<th>Kasse</th>");
     html.append("</tr>");
 }

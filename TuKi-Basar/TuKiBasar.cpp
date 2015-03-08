@@ -453,7 +453,7 @@ void TuKiBasar::calculateChange()
 
 void TuKiBasar::setCashPointNumber()
 {
-    ui->labelCashPointNumber->setText(tr("Kasse %1").arg(m_settings->getPc()));
+    ui->labelCashPointNumber->setText(tr("Kasse %1 ").arg(m_settings->getPc()));
 }
 
 void TuKiBasar::updateInformation()

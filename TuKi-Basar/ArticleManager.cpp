@@ -563,6 +563,7 @@ void ArticleManager::sync(ArticleManager *other)
                 {
                     article->m_soldOnPc = (*it)->m_soldOnPc;
                     article->m_soldTime = (*it)->m_soldTime;
+                    article->m_prize = (*it)->m_prize;
                 }
                 else
                 {
@@ -571,6 +572,7 @@ void ArticleManager::sync(ArticleManager *other)
             }
             else
             {
+                // append article also to this list
                 Article* newArticle = new Article((*it)->m_articleNumber, (*it)->m_sellerNumber, (*it)->m_soldOnPc, (*it)->m_prize, (*it)->m_listPrize, (*it)->m_size, (*it)->m_description, (*it)->m_soldTime);
                 m_articles.append(newArticle);
             }
