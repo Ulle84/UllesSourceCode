@@ -334,6 +334,8 @@ void ArticleManager::calculateStatistics(Statistics* statistics)
 {
     statistics->m_volumeOfSale = 0.0;
     statistics->m_countOfSoldArticles = 0;
+    statistics->m_countOfSoldClothes = 0;
+    statistics->m_countOfSoldMisc = 0;
 
     statistics->m_deductionPercentage = m_settings->getDeductionPercentage();
 
@@ -349,6 +351,16 @@ void ArticleManager::calculateStatistics(Statistics* statistics)
 
             statistics->m_volumeOfSale += (*it)->m_prize;
             (statistics->m_countOfSoldArticles)++;
+
+            if ((*it)->m_size.length() > 1)
+            {
+                (statistics->m_countOfSoldClothes)++;
+            }
+            else
+            {
+                (statistics->m_countOfSoldMisc)++;
+            }
+
             if (!transactions.contains(transaction))
             {
                 transactions.append(transaction);

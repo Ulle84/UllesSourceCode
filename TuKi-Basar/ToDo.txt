@@ -5,7 +5,6 @@ ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - Feedback - ARtikelliste wurde erfolgreich exportiert
 - artikel nach baszar wieder rauslöschen -> Rückgabefunktion
-- wieviel Prozent der Kleidungsstücke und wieivel Prozent der Spielsachen wurden verkauft?
 - Abweichunge weglassen, wenn keine Abweichungen vorhanden
 - Verkäufer-Ausdruck: "Header" wiederholen
 

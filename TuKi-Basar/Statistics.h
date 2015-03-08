@@ -9,6 +9,8 @@ public:
   int m_countOfSales;
   int m_countOfSoldArticles;
   int m_countOfAllArticles;
+  int m_countOfSoldClothes;
+  int m_countOfSoldMisc;
 
   double m_volumeOfSale;
   double m_deduction;
