@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     CssHelper.cpp \
     SalesView.cpp \
     PasswordInput.cpp \
-    DateTimeHelper.cpp
+    DateTimeHelper.cpp \
+    ExcelExport.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -42,7 +43,8 @@ HEADERS  += TuKiBasar.h \
     CssHelper.h \
     SalesView.h \
     PasswordInput.h \
-    DateTimeHelper.h
+    DateTimeHelper.h \
+    ExcelExport.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \
@@ -50,7 +52,8 @@ FORMS    += TuKiBasar.ui \
     PrizeCorrection.ui \
     EvaluationView.ui \
     SalesView.ui \
-    PasswordInput.ui
+    PasswordInput.ui \
+    ExcelExport.ui
 
 OTHER_FILES += \
     ToDo.txt

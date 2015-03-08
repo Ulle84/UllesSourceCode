@@ -30,6 +30,7 @@
 #include "CssHelper.h"
 #include "Converter.h"
 #include "DateTimeHelper.h"
+#include "ExcelExport.h"
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
     QDialog(parent),
@@ -49,6 +50,9 @@ Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, Selle
     ui->tabWidget->addTab(m_overview, m_overview->getName());
     ui->tabWidget->addTab(m_soldArticles, m_soldArticles->getName());
     ui->tabWidget->addTab(m_unsoldArticles, m_unsoldArticles->getName());
+
+    m_excelExport = new ExcelExport(m_articleManager, m_settings, m_sellerManager, this);
+    ui->tabWidget->addTab(m_excelExport, tr("Excel Export"));
 }
 
 Evaluation::~Evaluation()

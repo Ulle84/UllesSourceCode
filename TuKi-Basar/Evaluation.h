@@ -8,6 +8,7 @@ class Settings;
 class EvaluationView;
 class Statistics;
 class SellerManager;
+class ExcelExport;
 
 namespace Ui {
 class Evaluation;
@@ -39,6 +40,7 @@ private:
   EvaluationView* m_soldArticles;
   EvaluationView* m_unsoldArticles;
   Statistics* m_statistics;
+  ExcelExport* m_excelExport;
 };
 
 #endif // EVALUATION_H

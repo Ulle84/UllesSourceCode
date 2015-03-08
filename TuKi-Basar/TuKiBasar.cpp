@@ -48,12 +48,13 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     ui->plainTextEditArticleList->setVisible(false); // TODO that GUI-element should be removed, but there is a problem with the QCloseEvent, when this element is removed in the UI-File
 
 
-    ui->actionImportArticleLists->setVisible(false);
+    // TODO uncomment follwoing section to activate "password-login" again
+    /*ui->actionImportArticleLists->setVisible(false);
     ui->actionExportSoldArticles->setVisible(false);
     ui->actionEvaluation->setVisible(false);
     ui->actionSettings->setVisible(false);
     ui->actionCompleteEvaluation->setVisible(false);
-    ui->actionDeactivateAdvancedAccess->setVisible(false);
+    ui->actionDeactivateAdvancedAccess->setVisible(false);*/
 
     // hide description since there have been big layout issues on PCs with Aspect Ratio 4:3
     ui->labelDescription->setVisible(false);
