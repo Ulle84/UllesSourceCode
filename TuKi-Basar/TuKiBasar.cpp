@@ -59,7 +59,7 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
     ui->labelDescription->setVisible(false);
     ui->labelDescriptionCaption->setVisible(false);
 
-    updateStatusBar();
+    updateInformation();
 }
 
 TuKiBasar::~TuKiBasar()
@@ -456,9 +456,11 @@ void TuKiBasar::setCashPointNumber()
     ui->labelCashPointNumber->setText(tr("Kasse %1").arg(m_settings->getPc()));
 }
 
-void TuKiBasar::updateStatusBar()
+void TuKiBasar::updateInformation()
 {
-    ui->statusBar->showMessage(tr("Anzahl der Verkäufe: %1   Anzahl der verkauften Artikel: %2").arg(m_articleManager->getCountOfTransactions()).arg(m_articleManager->getCountOfSoldArticles()));
+    //ui->statusBar->showMessage(tr("Anzahl der Verkäufe: %1   Anzahl der verkauften Artikel: %2").arg(m_articleManager->getCountOfTransactions()).arg(m_articleManager->getCountOfSoldArticles()));
+    ui->labelCountSoldArticles->setText(QString::number(m_articleManager->getCountOfSoldArticles()));
+    ui->labelCountTransactions->setText(QString::number(m_articleManager->getCountOfTransactions()));
 }
 
 void TuKiBasar::on_pushButtonNextCustomer_clicked()
@@ -475,7 +477,7 @@ void TuKiBasar::on_pushButtonNextCustomer_clicked()
     clearLastArticleInformation();
     updateArticleView();
     prepareForNextInput();
-    updateStatusBar();
+    updateInformation();
 }
 
 void TuKiBasar::on_actionCompleteEvaluation_triggered()
@@ -571,13 +573,6 @@ void TuKiBasar::on_doubleSpinBoxMoneyGiven_valueChanged(double moneyGiven)
     calculateChange();
 }
 
-void TuKiBasar::on_actionSalesHistory_triggered()
-{
-    SalesView salesView;
-    salesView.setTransactions(m_articleManager->getTransactions());
-    salesView.exec();
-}
-
 void TuKiBasar::on_actionActivateAdvancedAccess_triggered()
 {
     if (checkPassword())
@@ -601,4 +596,11 @@ void TuKiBasar::on_actionDeactivateAdvancedAccess_triggered()
     ui->actionCompleteEvaluation->setVisible(false);
     ui->actionDeactivateAdvancedAccess->setVisible(false);
     ui->actionActivateAdvancedAccess->setVisible(true);
+}
+
+void TuKiBasar::on_pushButtonSalesHistorie_clicked()
+{
+    SalesView salesView;
+    salesView.setTransactions(m_articleManager->getTransactions());
+    salesView.exec();
 }

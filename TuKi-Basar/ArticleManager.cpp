@@ -143,6 +143,11 @@ bool ArticleManager::fromXml()
 
             Article* article = new Article(articleNumber, sellerNumber, soldOnPc, prize, listPrize, size, description, soldTime);
             addArticle(article);
+
+            if (soldOnPc == m_settings->getPc() && !soldTime.isEmpty())
+            {
+                m_transactions[soldTime].append(article);
+            }
         }
         else
         {

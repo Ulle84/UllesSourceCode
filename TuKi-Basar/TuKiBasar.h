@@ -27,7 +27,6 @@ private slots:
   void on_actionImportArticleLists_triggered();
   void on_actionCompleteEvaluation_triggered();
   void on_actionExportSoldArticles_triggered();
-  void on_actionSalesHistory_triggered();
   void on_actionActivateAdvancedAccess_triggered();
   void on_actionDeactivateAdvancedAccess_triggered();
 
@@ -38,6 +37,7 @@ private slots:
   void on_pushButtonDeleteLastInput_clicked();
   void on_pushButtonNextCustomer_clicked();
   void on_pushButtonCorrectPrize_clicked();
+  void on_pushButtonSalesHistorie_clicked();
 
 private:
   void closeEvent(QCloseEvent *event);
@@ -49,7 +49,7 @@ private:
   bool checkPassword();
   void calculateChange();
   void setCashPointNumber();
-  void updateStatusBar();
+  void updateInformation();
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;

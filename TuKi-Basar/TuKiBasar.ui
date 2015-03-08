@@ -69,7 +69,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>30</height>
+            <height>15</height>
            </size>
           </property>
           <property name="font">
@@ -248,7 +248,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>30</height>
+            <height>15</height>
            </size>
           </property>
           <property name="font">
@@ -451,6 +451,50 @@
          </spacer>
         </item>
         <item>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Informationen</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Anzahl der Verkäufe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Anzahl der verkauften Artikel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelCountTransactions">
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="labelCountSoldArticles">
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPushButton" name="pushButtonSalesHistorie">
+             <property name="text">
+              <string>Verkaufs-Historie anzeigen</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
          <widget class="QPlainTextEdit" name="plainTextEditArticleList">
           <property name="font">
            <font>
@@ -490,14 +534,13 @@
      <x>0</x>
      <y>0</y>
      <width>709</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuErweitert">
     <property name="title">
      <string>Erweitert</string>
     </property>
-    <addaction name="actionSalesHistory"/>
     <addaction name="actionImportArticleLists"/>
     <addaction name="actionExportSoldArticles"/>
     <addaction name="actionEvaluation"/>
@@ -540,11 +583,6 @@
   <action name="actionExportSoldArticles">
    <property name="text">
     <string>Verkaufte Artikel exportieren</string>
-   </property>
-  </action>
-  <action name="actionSalesHistory">
-   <property name="text">
-    <string>Verkaufs-Historie</string>
    </property>
   </action>
   <action name="actionActivateAdvancedAccess">
