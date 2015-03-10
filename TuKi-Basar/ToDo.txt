@@ -5,7 +5,7 @@ ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - Feedback - ARtikelliste wurde erfolgreich exportiert
 - artikel nach baszar wieder rauslöschen -> Rückgabefunktion
-- Abweichunge weglassen, wenn keine Abweichungen vorhanden
+- Abweichungen weglassen, wenn keine Abweichungen vorhanden
 - Verkäufer-Ausdruck: "Header" wiederholen
 
 Nice to have
