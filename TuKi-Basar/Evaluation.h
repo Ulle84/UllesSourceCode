@@ -8,6 +8,7 @@ class Settings;
 class EvaluationView;
 class Statistics;
 class SellerManager;
+class ExcelExport;
 
 namespace Ui {
 class Evaluation;
@@ -25,10 +26,11 @@ public:
 
 private:
   void updateWebViews();
-  QString createCssCode();
   QString createHtmlCodeOverview();
   QString createHtmlCodeSoldArticles();
   QString createHtmlCodeUnsoldArticles();
+
+  void appendSoldArticleHeader(QString& html);
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;
@@ -38,6 +40,7 @@ private:
   EvaluationView* m_soldArticles;
   EvaluationView* m_unsoldArticles;
   Statistics* m_statistics;
+  ExcelExport* m_excelExport;
 };
 
 #endif // EVALUATION_H

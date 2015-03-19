@@ -3,19 +3,22 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- Ausrichtung der Element ¸berpr¸fen, so dass ein Ausdruck auf A4-Papier mˆglich ist
-- Beim Importiern der Artikellisten die Verk‰ufernummern und Artikelnummern pr¸fen
+- Feedback - ARtikelliste wurde erfolgreich exportiert
+- artikel nach baszar wieder rausl√∂schen -> R√ºckgabefunktion
+- Abweichungen weglassen, wenn keine Abweichungen vorhanden
+- Verk√§ufer-Ausdruck: "Header" wiederholen
 
-- was tun bei bereits verkauften Artikeln? -> Abfrage, ob Angaben richtig sind und fertig -> der Artikel, der vorher falsch eingegeben wurde ist dann "verschwunden"
-- verifizieren, dass bei einem Preis von Null Euro eine Sicherheitsabfrage kommt
-
-- Feature-Request Katja: Statistik ¸ber Kleidung vs. Sonstige Artikel (siehe Mail)
-
-- Ansicht der letzten Verk‰ufe (evt. editierbar)
-- Styling ¸berarbeiten -> Schriftgrˆﬂen, Ausrichtung der GUI-Elemente
-- Scanner -> definieren, wie dieser eingestellt werden muss - Liste kopieren? *
+Nice to have
+--------------------------------------------------------------------------------
+- Richtige Darstellung der Umlaute auf Mac OS -> Qt 5.4 testen
+- Fortschrittsanzeige beim Exportieren auf USB-Stick
 
 Ideas
 --------------------------------------------------------------------------------
-- Darstellung des aktullen Verkaufs in mit HTML in QWebView - oder direkt als editierbare Tabelle?
-- write some statistics to status bar?
+- Sprachausgabe des Preises
+- Abweichungen zwischen Listen- und Etikettpreis auswerten -> √úbersicht: Anzahl der Abweichungen + Summe der Abweichungen
+- Spacer zwischen Verk√§ufer- und Artikelnummer
+
+Vor dem n√§chsten Basar
+--------------------------------------------------------------------------------
+- Passwort-Schutz wieder scharf schalten

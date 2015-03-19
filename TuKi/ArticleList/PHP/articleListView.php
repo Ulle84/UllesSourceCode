@@ -27,7 +27,7 @@ if (isset($_GET['mode'])) {
 $uniqueIdList = new UniqueIdList();
 $uniqueIdList->readFromFile("../Data/uniqueIds.txt");
 if (!$uniqueIdList->checkId($sellerNumber, $id)) {
-    echo "Kein Zugang!";
+    echo "Link wurde falsch eingegeben - kein Zugang!";
     exit;
 }
 

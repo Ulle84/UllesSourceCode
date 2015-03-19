@@ -2,6 +2,7 @@
 #define ARTICLEMANAGER_H
 
 #include <map>
+#include <vector>
 
 #include <QList>
 #include <QMap>
@@ -21,6 +22,7 @@ public:
   void addArticle(Article* article);
   void clear();
   Article* getArticle(int sellerNumber, int articleNumber);
+  QList<Article*> getAllArticles(); // TODO delete after testing
 
   void setFileName(QString fileName);
   QString getFileName();
@@ -37,7 +39,7 @@ public:
   Article* getLastArticleInCurrentSale();
   QString currentSaleToText();
   QString currentSaleToHtml();
-  QString prizeToString(double prize);
+  double getSumOfCurrentSale();
 
   void calculateStatistics(Statistics* statistics);
   std::map<int, double> getSalesPerSeller();
@@ -46,10 +48,14 @@ public:
   std::map<QString, int> getSoldArticlesInRanges();
   std::map<QString, int> getOfferedArticlesInRanges();
   std::map<int, double> getSoldArticles(int sellerNumber);
-  std::map<int, double> getUnsoldArticles(int sellerNumber);
+  std::vector<int> getUnsoldArticles(int sellerNumber);
   void sync(ArticleManager* other);
 
   double getPayOutFactor();
+  int getCountOfTransactions();
+  int getCountOfSoldArticles();
+
+  QMap<QString, QList<Article*> > getTransactions();
 
 private:
   QList<Article*> m_articles;
