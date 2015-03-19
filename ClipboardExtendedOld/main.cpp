@@ -4,8 +4,11 @@
 int main(int argc, char* argv[])
 {
   QApplication a(argc, argv);
+  QCoreApplication::setOrganizationDomain("UllesSourceCodeDomain");
+  QCoreApplication::setOrganizationName("UllesSourceCode");
+  QCoreApplication::setApplicationName("ClipBoardExtended");
+  QCoreApplication::setApplicationVersion("1.0.0");
   ClipboardExtended w;
-  w.resize(800, 600);
   w.show();
   return a.exec();
 }

@@ -35,6 +35,7 @@ private slots:
   void templateToClipboard();
   void historyToClipboard();
   void dateTimeToClipboard();
+  void superUserPasswordToClipboard();
 };
 
 #endif // CLIPBOARDEXTENDED_H

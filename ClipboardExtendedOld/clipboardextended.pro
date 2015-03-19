@@ -9,6 +9,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        clipboardextended.cpp
+        clipboardextended.cpp \
+    SuperUser.cpp
 
-HEADERS  += clipboardextended.h
+HEADERS  += clipboardextended.h \
+    SuperUser.h

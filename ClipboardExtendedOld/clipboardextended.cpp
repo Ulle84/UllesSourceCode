@@ -1,6 +1,10 @@
-#include "clipboardextended.h"
-#include <iostream>
 #include <QtGui>
+#include <QSettings>
+
+#include <iostream>
+
+#include "clipboardextended.h"
+#include "SuperUser.h"
 
 /*
 Bugs
@@ -60,7 +64,8 @@ ClipboardExtended::ClipboardExtended(QWidget* parent) : QWidget(parent)
   historyListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   textEditClipboard = new QTextEdit();
   QPushButton* deleteHistoryButton = new QPushButton(tr("Clear History"));
-  QPushButton* dateTimeButton = new QPushButton(tr("Write date-string to clipboard"));
+  QPushButton* dateTimeButton = new QPushButton(tr("date-string to clipboard"));
+  QPushButton* superUserButton = new QPushButton(tr("SuperUser Password to clipboard"));
 
   // font depends on operating system
 #ifdef Q_WS_MAC
@@ -84,8 +89,9 @@ ClipboardExtended::ClipboardExtended(QWidget* parent) : QWidget(parent)
 
   // creating Layout
   QHBoxLayout* hBoxLayout = new QHBoxLayout();
-  hBoxLayout->addWidget(dateTimeEdit);
-  hBoxLayout->addWidget(dateTimeButton);
+  //hBoxLayout->addWidget(dateTimeEdit);
+  //hBoxLayout->addWidget(dateTimeButton);
+  hBoxLayout->addWidget(superUserButton);
 
   QVBoxLayout* vBoxLayout = new QVBoxLayout();
   vBoxLayout->addWidget(new QLabel(tr("Content of Clipboard")));
@@ -103,15 +109,20 @@ ClipboardExtended::ClipboardExtended(QWidget* parent) : QWidget(parent)
   connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
   connect(deleteHistoryButton, SIGNAL(clicked()), this, SLOT(clearHistory()));
   connect(dateTimeButton, SIGNAL(clicked()), this, SLOT(dateTimeToClipboard()));
+  connect(superUserButton, SIGNAL(clicked()), this, SLOT(superUserPasswordToClipboard()));
 
   setLayout(vBoxLayout);
 
   clipboardDataChanged();
+
+  QSettings settings;
+  restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
 }
 
 ClipboardExtended::~ClipboardExtended()
 {
-
+  QSettings settings;
+  settings.setValue("mainWindowGeometry", saveGeometry());
 }
 
 void ClipboardExtended::templateToClipboard()
@@ -166,4 +177,9 @@ void ClipboardExtended::dateTimeToClipboard()
 {
   QDateTime dateTime = QDateTime::currentDateTime();
   QApplication::clipboard()->setText(dateTime.toString(dateTimeEdit->text()));
+}
+
+void ClipboardExtended::superUserPasswordToClipboard()
+{
+  QApplication::clipboard()->setText(SuperUser::password());
 }
