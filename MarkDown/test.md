@@ -1,6 +1,6 @@
-﻿# My First MarkDown Test
+# My First MarkDown Test
 
-Man sollte unbedingt das File in UTF-8 abspeichern - dann funktionier auch die Sonderzeichen!
+Man sollte unbedingt das File in UTF-8 abspeichern - dann funktionieren auch die Sonderzeichen!
 
 <!-- Kommentare kann man mit der HTML-Syntax auzeichnen -->
 
@@ -50,6 +50,7 @@ Markiert Text als `Quelltext`
 ###### h6
 
 # Fazit
-Der absolute Hammer - sehr easy und mächtig!
+Der absolute Hammer - sehr easy und dennoch mächtig!
+Die paar Auszeichnungselement kann ich mir gut behalten!
 Eine echte Alternative zu HTML, da ich doch immer wieder dieselben Tags benutze und immer wieder die selben Style-Sheets einbinden muss, damit es halbwegs vernüftig aussieht.
 Außerdem mache ich bei HTML immer wieder dieselben Fehler
