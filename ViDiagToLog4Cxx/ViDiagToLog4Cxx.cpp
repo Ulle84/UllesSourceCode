@@ -63,100 +63,123 @@ QString ViDiagToLog4Cxx::convertViDiagToLog4Cxx(const QString &viDiag)
 
   QString simplified = viDiag.simplified();
 
-  if (simplified.left(6) == "ViDIAG")
+  int indexOfPlaceholderString = 0;
+  int parameterIndex = 0;
+  int offset = 0;
+  if (simplified.left(6) == "ViDIAG" )
   {
-    int leftParanthesis = simplified.indexOf("(");
-    int rightParanthesis = simplified.lastIndexOf(")");
+    offset = 2;
+    parameterIndex = 2;
+    indexOfPlaceholderString = 1;
+  }
+  else if (simplified.left(4) == "Diag")
+  {
+    offset = 3;
+    parameterIndex = 3;
+    indexOfPlaceholderString = 2;
+  }
+  else
+  {
+    return log4CxxString;
+  }
 
-    if (leftParanthesis < 0 || rightParanthesis <  0)
+  int leftParanthesis = simplified.indexOf("(");
+  int rightParanthesis = simplified.lastIndexOf(")");
+
+  if (leftParanthesis < 0 || rightParanthesis <  0)
+  {
+    return log4CxxString;
+  }
+
+  QStringList parameters = simplified.mid(leftParanthesis + 1, rightParanthesis - leftParanthesis - 1).split(",");
+
+  if (parameters.count() < offset)
+  {
+    if (simplified.left(11) == "ViDIAG_INFO" && parameters.count() == 1)
     {
-      return log4CxxString;
+      log4CxxString = QString("LOG4CXX_INFO(%1, __FUNCTION__ << \" \" << %2);").arg(ui->lineEditLogger->text()).arg(parameters[0]);
     }
+    return log4CxxString;
+  }
 
-    QStringList parameters = simplified.mid(leftParanthesis + 1, rightParanthesis - leftParanthesis - 1).split(",");
+  if (parameters[indexOfPlaceholderString].count("%") != parameters.length() - offset)
+  {
+    return log4CxxString;
+  }
 
-    if (parameters.count() < 2)
+  for (auto it = parameters.begin(); it != parameters.end(); it++)
+  {
+    *it = (*it).simplified();
+  }
+
+  bool conversionSuccessfull;
+  int logLevel = parameters[0].toInt(&conversionSuccessfull);
+  if (conversionSuccessfull)
+  {
+    switch(logLevel)
     {
-      if (simplified.left(11) == "ViDIAG_INFO" && parameters.count() == 1)
-      {
-        log4CxxString = QString("LOG4CXX_INFO(%1, __FUNCTION__ << \" \" << %2);").arg(ui->lineEditLogger->text()).arg(parameters[0]);
-      }
-      return log4CxxString;
+    case 0:
+      log4CxxString = "LOG4CXX_FATAL";
+      break;
+    case 1:
+      log4CxxString = "LOG4CXX_ERROR";
+      break;
+    case 2:
+      log4CxxString = "LOG4CXX_WARN";
+      break;
+    case 3:
+      log4CxxString = "LOG4CXX_INFO";
+      break;
+    case 4:
+      log4CxxString = "LOG4CXX_DEBUG";
+      break;
+    default:
+      log4CxxString = "LOG4CXX_TRACE";
     }
-
-    if (parameters[1].count("%") != parameters.length() - 2)
+  }
+  else
+  {
+    if (parameters[0] == "DIAG_ERROR")
     {
-      return log4CxxString;
+      log4CxxString = "LOG4CXX_ERROR";
     }
-
-    for (auto it = parameters.begin(); it != parameters.end(); it++)
+    else if (parameters[0] == "DIAG_WARNING")
     {
-      *it = (*it).simplified();
+      log4CxxString = "LOG4CXX_WARN";
     }
-
-    bool conversionSuccessfull;
-    int logLevel = parameters[0].toInt(&conversionSuccessfull);
-    if (conversionSuccessfull)
+    else if (parameters[0] == "DIAG_INFO")
     {
-      switch(logLevel)
-      {
-      case 0:
-        log4CxxString = "LOG4CXX_FATAL";
-        break;
-      case 1:
-        log4CxxString = "LOG4CXX_ERROR";
-        break;
-      case 2:
-        log4CxxString = "LOG4CXX_WARN";
-        break;
-      case 3:
-        log4CxxString = "LOG4CXX_INFO";
-        break;
-      case 4:
-        log4CxxString = "LOG4CXX_DEBUG";
-        break;
-      default:
-        log4CxxString = "LOG4CXX_TRACE";
-      }
+      log4CxxString = "LOG4CXX_INFO";
+    }
+    else if (parameters[0] == "DIAG_TRACE")
+    {
+      log4CxxString = "LOG4CXX_DEBUG";
+    }
+    else if (parameters[0] == "DIAG_FINE_DETAIL")
+    {
+      log4CxxString = "LOG4CXX_TRACE";
     }
     else
     {
-      if (parameters[0] == "DIAG_ERROR")
-      {
-        log4CxxString = "LOG4CXX_ERROR";
-      }
-      else if (parameters[0] == "DIAG_WARNING")
-      {
-        log4CxxString = "LOG4CXX_WARN";
-      }
-      else if (parameters[0] == "DIAG_INFO")
-      {
-        log4CxxString = "LOG4CXX_INFO";
-      }
-      else if (parameters[0] == "DIAG_TRACE")
-      {
-        log4CxxString = "LOG4CXX_DEBUG";
-      }
-      else if (parameters[0] == "DIAG_FINE_DETAIL")
-      {
-        log4CxxString = "LOG4CXX_TRACE";
-      }
-      else
-      {
-        log4CxxString = "LOG4CXX_TRACE";
-      }
+      log4CxxString = "LOG4CXX_TRACE";
     }
-
-
-
-    int parameterIndex = 2;
-    while(parameters[1].contains("%"))
-    {
-      // todo endless loop, when string with %-sign is replaced?
-      parameters[1].replace(parameters[1].indexOf("%"), 2, QString("\" << %1 << \"").arg(parameters[parameterIndex++]));
-    }
-
-    log4CxxString.append(QString("(%1, __FUNCTION__ << \" \" << %2);").arg(ui->lineEditLogger->text()).arg(parameters[1]));
   }
+
+  while(parameters[indexOfPlaceholderString].contains("%"))
+  {
+    // todo endless loop, when string with %-sign is replaced?
+    parameters[indexOfPlaceholderString].replace(parameters[indexOfPlaceholderString].indexOf("%"), 2, QString("\" << %1 << \"").arg(parameters[parameterIndex++]));
+  }
+
+  if (simplified.left(6) == "ViDIAG" )
+  {
+    log4CxxString.append(QString("(%1, __FUNCTION__ << \" \" << %2);").arg(ui->lineEditLogger->text()).arg(parameters[indexOfPlaceholderString]));
+  }
+  else
+  {
+    log4CxxString.append(QString("(%1, __FUNCTION__ << \" Acq-Channel: \" << %2 << \" \" << %3);").arg(ui->lineEditLogger->text()).arg(parameters[1]).arg(parameters[indexOfPlaceholderString]));
+  }
+  
+
   return log4CxxString;
 }
