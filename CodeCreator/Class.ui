@@ -43,16 +43,7 @@
         <bool>false</bool>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>0</number>
         </property>
         <item>
@@ -99,7 +90,7 @@
    <item>
     <widget class="QCheckBox" name="checkBoxDisableCopy">
      <property name="text">
-      <string>disable copy constructor, move constructor and assignment operator</string>
+      <string>declare constructor, move constructor and assignment operator private</string>
      </property>
     </widget>
    </item>
