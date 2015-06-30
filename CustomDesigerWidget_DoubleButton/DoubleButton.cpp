@@ -26,16 +26,6 @@ QString DoubleButton::buttonText2()
   return ui->pushButton2->text();
 }
 
-QStringList DoubleButton::buttonTexts()
-{
-  return m_test;
-}
-
-QVariantMap DoubleButton::variantMap()
-{
-  return m_variantMap;
-}
-
 void DoubleButton::setButtonText1(const QString& buttonText1)
 {
   ui->pushButton1->setText(buttonText1);
@@ -44,16 +34,6 @@ void DoubleButton::setButtonText1(const QString& buttonText1)
 void DoubleButton::setButtonText2(const QString& buttonText2)
 {
   ui->pushButton2->setText(buttonText2);
-}
-
-void DoubleButton::setButtonTexts(const QStringList& buttonTexts)
-{
-  m_test = buttonTexts;
-}
-
-void DoubleButton::setVariantMap(const QVariantMap& variantMap)
-{
-  m_variantMap = variantMap;
 }
 
 void DoubleButton::on_pushButton1_clicked()

@@ -14,8 +14,8 @@ class DoubleButton : public QWidget
 {
   Q_OBJECT
   Q_PROPERTY(QString buttonText1 READ buttonText1 WRITE setButtonText1)
-  Q_PROPERTY(QStringList buttonTexts READ buttonTexts WRITE setButtonTexts)
-  Q_PROPERTY(QVariantMap variantMap READ variantMap WRITE setVariantMap)
+  Q_PROPERTY(QString buttonText2 READ buttonText2 WRITE setButtonText2)
+
 
 public:
   explicit DoubleButton(QWidget* parent = 0);
@@ -23,13 +23,9 @@ public:
 
   QString buttonText1();
   QString buttonText2();
-  QStringList buttonTexts();
-  QVariantMap variantMap();
 
   void setButtonText1(const QString& buttonText1);
   void setButtonText2(const QString& buttonText2);
-  void setButtonTexts(const QStringList& buttonTexts);
-  void setVariantMap(const QVariantMap& variantMap);
 
 private slots:
   void on_pushButton1_clicked();
