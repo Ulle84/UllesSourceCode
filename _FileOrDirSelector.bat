@@ -1,1 +1,0 @@
-start .\FileOrDirSelector\release\FileOrDirSelector.exe

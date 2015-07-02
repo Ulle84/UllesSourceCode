@@ -1,1 +1,0 @@
-start .\ClipboardExtended\release\ClipboardExtended.exe

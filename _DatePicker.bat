@@ -1,1 +1,0 @@
-start .\DatePicker\release\DatePicker.exe

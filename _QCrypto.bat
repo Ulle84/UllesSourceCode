@@ -1,1 +1,0 @@
-start .\QCrypto\release\QCrypto.exe

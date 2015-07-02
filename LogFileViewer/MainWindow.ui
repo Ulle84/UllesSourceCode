@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QPlainTextEdit" name="plainTextEdit">
       <property name="font">
        <font>
@@ -25,10 +25,17 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QPushButton" name="pushButtonOpenFiles">
       <property name="text">
        <string>open files</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="pushButtonCombineFiles">
+      <property name="text">
+       <string>combine files to one file</string>
       </property>
      </widget>
     </item>

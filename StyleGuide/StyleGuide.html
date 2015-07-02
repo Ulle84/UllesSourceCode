@@ -24,6 +24,7 @@
   <body onload="init(); sh_highlightDocument();">
     <h1>ToDo</h1>
     <ul>
+      <li>Qt Styleguide zu großen Teilen übernehmen</li>
       <li>Umgebung definieren -> QtCreator + Plugins</li> 
       <li>element initialisierer ?</li> 
       <li>andere style guides berücksichtigen (google ...)</li> 
@@ -33,7 +34,11 @@
       <li>keine for schleife, wenn der Sinn nicht klar wird - besser while: z. B. for (GrabResult r; pStreamGrabber->RetrieveResult(r);); --> unsinnig</li>
       <li>Schreibweise von konstanten c_aConstant???</li>
       <li>keine Macros -> nur inline functions</li>
-      <li>keine defines -> nur constanten, bzw. enums  - Konstanten mit führendem c -> c_countOfImagesToGrab</li>
+      <li>keine defines -> nur constanten, bzw. enums  - Konstanten nicht mit führendem c_, da es sonst</li>
+      <ul>
+        <li>Uneinigkeiten mit const members (cm_ oder mc_) gibt</li>
+        <li>Uneinigkeiten mit const globals (cg_ oder gc_) gibt</li>
+      </ul>
       <li>struct vs. class</li>
       <li>kein typedef - ViPICTURE -> ViPIXEL**; ViPIXEL -> ViUBYTE; ViUBYTE ->unsigned char das führt nur zur Verwirrung - besser unsigned char** -  Falls man Code wirklich portieren will, kann man diese stupiden Ersetzungen auch per Script machen (der Präcompiler macht nichst anderes!)</li>
       <li>auto nur bei begrenztem scope und wenn es wirklich Schreibarbeit erspart, z. B. bei Iteratoren</li>
@@ -41,6 +46,17 @@
       <li>if ((bValid == true) || (bBreak == true)) --> if (bValid || bBreak)</li>
       <li>globale Variablen mit g_ deklarieren? allgemein: keine globalen Variablen!!!</li>
       <li>Member-Variablen durch Großschreibung "deklarieren"?</li>
+      <li>kein Postfix Interface in Header-Dateinamen verwenden -> kann nämlich sein, dass irgendwann doch mal eine non-pure-virtual function hinzukommt und schon ist der Name des Headers falsch -> Headernamen kann man oft nicht im Nachhinein ändern. Weiterhin ist es für den Anwender egal, ob er gegen ein Interface oder eine konkrete Klasse programmiert</li>
+      <li>Klassen, von denen abgeleitet wird, brauchen immer einen virtuellen Destruktor -> sonst drohen Speicherlecks!!!</li>
+      <li>Exportierte Klassen sollten immer einen pImpl haben. Die Membervarialbe heißt dann m_data. Die ImplKlasse trägt das Suffix 'Data'</li>
+      <li>member haben das Präfix m_ (oder m)? -> Recherche: Qt-Framework</li>
+      <li>getter haben kein Präfix get. Setter haben das Präfix get. int value()   void setValue(int value)</li>
+      <li>use exceptions?</li>
+      <li>Kommentare</li>
+      <ul>
+        <li>richtiger Kommentar mit Space nach Slahes: // richter Kommentar</li>
+        <li>auskommentierter Code ohne Space nach Slahes: //int i = 0; oder per /*multiple lines of code*/</li>
+      </ul>
     </ul>
 
     <h1>AStyle</h1>

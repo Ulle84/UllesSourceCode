@@ -1,1 +1,0 @@
-start .\CreateViClass\release\CreateViClass.exe

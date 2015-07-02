@@ -1,1 +1,0 @@
-start .\AnalyseDoneList\release\AnalyseDoneList.exe

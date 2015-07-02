@@ -1,1 +1,0 @@
-start .\TimeCalculator\release\TimeCalculator.exe

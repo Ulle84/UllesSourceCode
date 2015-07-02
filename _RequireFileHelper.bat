@@ -1,1 +1,0 @@
-start .\RequireFileHelper\release\RequireFileHelper.exe
