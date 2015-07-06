@@ -42,7 +42,7 @@
 #ifndef MULTIPAGEWIDGETPLUGIN_H
 #define MULTIPAGEWIDGETPLUGIN_H
 
-#include <QtDesigner/QDesignerCustomWidgetInterface>
+#include <QtUiPlugin/QDesignerCustomWidgetInterface>
 
 QT_BEGIN_NAMESPACE
 class QIcon;
@@ -52,21 +52,24 @@ QT_END_NAMESPACE
 class MultiPageWidgetPlugin: public QObject, public QDesignerCustomWidgetInterface
 {
     Q_OBJECT
+//! [1]
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QDesignerCustomWidget" FILE "multipagewidget.json")
+//! [1]
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
-    MultiPageWidgetPlugin(QObject *parent = 0);
+    explicit MultiPageWidgetPlugin(QObject *parent = 0);
 
-    QString name() const;
-    QString group() const;
-    QString toolTip() const;
-    QString whatsThis() const;
-    QString includeFile() const;
-    QIcon icon() const;
-    bool isContainer() const;
-    QWidget *createWidget(QWidget *parent);
-    bool isInitialized() const;
-    void initialize(QDesignerFormEditorInterface *formEditor);
-    QString domXml() const;
+    QString name() const Q_DECL_OVERRIDE;
+    QString group() const Q_DECL_OVERRIDE;
+    QString toolTip() const Q_DECL_OVERRIDE;
+    QString whatsThis() const Q_DECL_OVERRIDE;
+    QString includeFile() const Q_DECL_OVERRIDE;
+    QIcon icon() const Q_DECL_OVERRIDE;
+    bool isContainer() const Q_DECL_OVERRIDE;
+    QWidget *createWidget(QWidget *parent) Q_DECL_OVERRIDE;
+    bool isInitialized() const Q_DECL_OVERRIDE;
+    void initialize(QDesignerFormEditorInterface *formEditor) Q_DECL_OVERRIDE;
+    QString domXml() const Q_DECL_OVERRIDE;
 
 private slots:
     void currentIndexChanged(int index);

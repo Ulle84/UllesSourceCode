@@ -38,24 +38,27 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QStackedWidget>
 
 #include "multipagewidget.h"
 
 MultiPageWidget::MultiPageWidget(QWidget *parent)
     : QWidget(parent)
+    , stackWidget(new QStackedWidget)
+    , comboBox(new QComboBox)
 {
-    comboBox = new QComboBox();
+    typedef void (QComboBox::*ComboBoxActivatedIntSignal)(int);
+
     comboBox->setObjectName("__qt__passive_comboBox");
-    stackWidget = new QStackedWidget();
 
-    connect(comboBox, SIGNAL(activated(int)),
-            this, SLOT(setCurrentIndex(int)));
+    connect(comboBox, static_cast<ComboBoxActivatedIntSignal>(&QComboBox::activated),
+            this, &MultiPageWidget::setCurrentIndex);
 
-    layout = new QVBoxLayout();
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(comboBox);
     layout->addWidget(stackWidget);
-    setLayout(layout);
 }
 
 QSize MultiPageWidget::sizeHint() const
@@ -97,6 +100,8 @@ void MultiPageWidget::insertPage(int index, QWidget *page)
         title = tr("Page %1").arg(comboBox->count() + 1);
         page->setWindowTitle(title);
     }
+    connect(page, &QWidget::windowTitleChanged,
+            this, &MultiPageWidget::pageWindowTitleChanged);
     comboBox->insertItem(index, title);
 }
 
@@ -107,6 +112,13 @@ void MultiPageWidget::setCurrentIndex(int index)
         comboBox->setCurrentIndex(index);
         emit currentIndexChanged(index);
     }
+}
+
+void MultiPageWidget::pageWindowTitleChanged()
+{
+    QWidget *page = qobject_cast<QWidget *>(sender());
+    const int index = stackWidget->indexOf(page);
+    comboBox->setItemText(index, page->windowTitle());
 }
 
 QWidget* MultiPageWidget::widget(int index)
@@ -123,7 +135,6 @@ QString MultiPageWidget::pageTitle() const
 
 void MultiPageWidget::setPageTitle(QString const &newTitle)
 {
-    comboBox->setItemText(currentIndex(), newTitle);
     if (QWidget *currentWidget = stackWidget->currentWidget())
         currentWidget->setWindowTitle(newTitle);
     emit pageTitleChanged(newTitle);

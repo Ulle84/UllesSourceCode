@@ -54,19 +54,19 @@
 
 //! [0]
 MultiPageWidgetPlugin::MultiPageWidgetPlugin(QObject *parent)
-    :QObject(parent)
+    : QObject(parent)
+    , initialized(false)
 {
-    initialized = false;
 }
 
 QString MultiPageWidgetPlugin::name() const
 {
-    return QLatin1String("MultiPageWidget");
+    return QLatin1String("ButtonBar");
 }
 
 QString MultiPageWidgetPlugin::group() const
 {
-    return QLatin1String("Display Widgets [Examples]");
+    return QLatin1String("Vitronic Widgets");
 }
 
 QString MultiPageWidgetPlugin::toolTip() const
@@ -99,10 +99,10 @@ bool MultiPageWidgetPlugin::isContainer() const
 QWidget *MultiPageWidgetPlugin::createWidget(QWidget *parent)
 {
     MultiPageWidget *widget = new MultiPageWidget(parent);
-    connect(widget, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(currentIndexChanged(int)));
-    connect(widget, SIGNAL(pageTitleChanged(QString)),
-            this, SLOT(pageTitleChanged(QString)));
+    connect(widget, &MultiPageWidget::currentIndexChanged,
+            this, &MultiPageWidgetPlugin::currentIndexChanged);
+    connect(widget, &MultiPageWidget::pageTitleChanged,
+            this, &MultiPageWidgetPlugin::pageTitleChanged);
     return widget;
 }
 
@@ -190,7 +190,3 @@ void MultiPageWidgetPlugin::pageTitleChanged(const QString &title)
 }
 
 //! [13]
-
-//! [14]
-Q_EXPORT_PLUGIN2(containerextension, MultiPageWidgetPlugin)
-//! [14]
