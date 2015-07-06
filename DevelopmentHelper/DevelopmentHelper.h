@@ -7,6 +7,8 @@ namespace Ui {
 class DevelopmentHelper;
 }
 
+class StashHelper;
+
 class DevelopmentHelper : public QMainWindow
 {
   Q_OBJECT
@@ -17,6 +19,7 @@ public:
 
 private:
   Ui::DevelopmentHelper *ui;
+  StashHelper* stashHelper;
 };
 
 #endif // DEVELOPMENTHELPER_H

@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        DevelopmentHelper.cpp
+        DevelopmentHelper.cpp \
+    StashHelper.cpp
 
-HEADERS  += DevelopmentHelper.h
+HEADERS  += DevelopmentHelper.h \
+    StashHelper.h
 
-FORMS    += DevelopmentHelper.ui
+FORMS    += DevelopmentHelper.ui \
+    StashHelper.ui
