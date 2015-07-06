@@ -6,6 +6,7 @@
 #include "CodeAssistant.h"
 #include "ConverterBase64.h"
 #include "DateTimeHelper.h"
+#include "HtmlTableGenerator.h"
 #include "LogFileViewer.h"
 #include "StashHelper.h"
 
@@ -22,12 +23,14 @@ DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   m_codeAssistant = new CodeAssistant(this);
   m_converterBase64 = new ConverterBase64(this);
   m_dateTimeHelper = new DateTimeHelper(this);
+  m_htmlTableGenerator = new HtmlTableGenerator(this);
 
   ui->tabWidget->addTab(m_stashHelper, "Stash");
   ui->tabWidget->addTab(m_logFileViewer, tr("Log File Viewer"));
   ui->tabWidget->addTab(m_codeAssistant, tr("Code Assistant"));
   ui->tabWidget->addTab(m_converterBase64, tr("Converter Base 64"));
   ui->tabWidget->addTab(m_dateTimeHelper, tr("Date and Time"));
+  ui->tabWidget->addTab(m_htmlTableGenerator, tr("HTML Table Generator"));
 
   if (m_settings->contains("activeTabNumber"))
   {

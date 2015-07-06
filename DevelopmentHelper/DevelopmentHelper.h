@@ -13,6 +13,7 @@ class StashHelper;
 class CodeAssistant;
 class ConverterBase64;
 class DateTimeHelper;
+class HtmlTableGenerator;
 
 class DevelopmentHelper : public QMainWindow
 {
@@ -29,6 +30,7 @@ private:
   CodeAssistant* m_codeAssistant;
   ConverterBase64* m_converterBase64;
   DateTimeHelper* m_dateTimeHelper;
+  HtmlTableGenerator* m_htmlTableGenerator;
   QSettings* m_settings;
 };
 

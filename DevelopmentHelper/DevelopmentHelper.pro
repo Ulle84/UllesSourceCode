@@ -18,18 +18,21 @@ SOURCES += main.cpp\
     LogFileViewer.cpp \
     CodeAssistant.cpp \
     ConverterBase64.cpp \
-    DateTimeHelper.cpp
+    DateTimeHelper.cpp \
+    HtmlTableGenerator.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
     LogFileViewer.h \
     CodeAssistant.h \
     ConverterBase64.h \
-    DateTimeHelper.h
+    DateTimeHelper.h \
+    HtmlTableGenerator.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
     LogFileViewer.ui \
     CodeAssistant.ui \
     ConverterBase64.ui \
-    DateTimeHelper.ui
+    DateTimeHelper.ui \
+    HtmlTableGenerator.ui
