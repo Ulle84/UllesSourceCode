@@ -10,6 +10,9 @@ class DevelopmentHelper;
 class QSettings;
 class LogFileViewer;
 class StashHelper;
+class CodeAssistant;
+class ConverterBase64;
+class DateTimeHelper;
 
 class DevelopmentHelper : public QMainWindow
 {
@@ -23,6 +26,9 @@ private:
   Ui::DevelopmentHelper *ui;
   StashHelper* m_stashHelper;
   LogFileViewer* m_logFileViewer;
+  CodeAssistant* m_codeAssistant;
+  ConverterBase64* m_converterBase64;
+  DateTimeHelper* m_dateTimeHelper;
   QSettings* m_settings;
 };
 

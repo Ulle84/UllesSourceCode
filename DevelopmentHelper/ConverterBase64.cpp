@@ -1,29 +1,29 @@
-#include "Widget.h"
-#include "ui_Widget.h"
-
 #include <QString>
 #include <QByteArray>
 
-Widget::Widget(QWidget *parent) :
+#include "ConverterBase64.h"
+#include "ui_ConverterBase64.h"
+
+ConverterBase64::ConverterBase64(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::Widget)
+  ui(new Ui::ConverterBase64)
 {
   ui->setupUi(this);
 }
 
-Widget::~Widget()
+ConverterBase64::~ConverterBase64()
 {
   delete ui;
 }
 
-void Widget::on_lineEditPlainText_editingFinished()
+void ConverterBase64::on_lineEditPlainText_editingFinished()
 {
   QByteArray ba;
   ba.append(ui->lineEditPlainText->text());
   ui->lineEditBase64EncodedText->setText(ba.toBase64().data());
 }
 
-void Widget::on_lineEditBase64EncodedText_editingFinished()
+void ConverterBase64::on_lineEditBase64EncodedText_editingFinished()
 {
   QByteArray ba;
   ba.append(ui->lineEditBase64EncodedText->text());
