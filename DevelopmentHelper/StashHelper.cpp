@@ -27,10 +27,13 @@ StashHelper::StashHelper(QWidget *parent) :
   {
     ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText(m_settings->value("project").toString()));
   }
+
   if (m_settings->contains("repository"))
   {
     ui->lineEditRepository->setText(m_settings->value("repository").toString());
   }
+
+  setStashUrl();
 }
 
 StashHelper::~StashHelper()
@@ -43,6 +46,23 @@ StashHelper::~StashHelper()
 
 void StashHelper::on_lineEditRepository_textEdited(const QString &repository)
 {
+  if (repository.startsWith("ViQtWidget"))
+  {
+    ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViQtWidgets"));
+  }
+  else if (repository.startsWith("Vi") && repository.endsWith("Widget"))
+  {
+    ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViWidgets"));
+  }
+  else if (repository.startsWith("ViAcqui"))
+  {
+    ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViAcquisition"));
+  }
+  else if (repository.startsWith("ViMeth"))
+  {
+    ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViObjectsMethods"));
+  }
+
   setStashUrl();
 }
 
