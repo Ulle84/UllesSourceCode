@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         DevelopmentHelper.cpp \
-    StashHelper.cpp
+    StashHelper.cpp \
+    LogFileViewer.cpp
 
 HEADERS  += DevelopmentHelper.h \
-    StashHelper.h
+    StashHelper.h \
+    LogFileViewer.h
 
 FORMS    += DevelopmentHelper.ui \
-    StashHelper.ui
+    StashHelper.ui \
+    LogFileViewer.ui

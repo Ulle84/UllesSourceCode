@@ -7,6 +7,8 @@ namespace Ui {
 class DevelopmentHelper;
 }
 
+class QSettings;
+class LogFileViewer;
 class StashHelper;
 
 class DevelopmentHelper : public QMainWindow
@@ -19,7 +21,9 @@ public:
 
 private:
   Ui::DevelopmentHelper *ui;
-  StashHelper* stashHelper;
+  StashHelper* m_stashHelper;
+  LogFileViewer* m_logFileViewer;
+  QSettings* m_settings;
 };
 
 #endif // DEVELOPMENTHELPER_H
