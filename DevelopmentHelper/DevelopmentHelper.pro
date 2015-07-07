@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     CodeAssistant.cpp \
     ConverterBase64.cpp \
     DateTimeHelper.cpp \
-    HtmlTableGenerator.cpp
+    HtmlTableGenerator.cpp \
+    CryptoHelper.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -27,7 +28,8 @@ HEADERS  += DevelopmentHelper.h \
     CodeAssistant.h \
     ConverterBase64.h \
     DateTimeHelper.h \
-    HtmlTableGenerator.h
+    HtmlTableGenerator.h \
+    CryptoHelper.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -35,4 +37,5 @@ FORMS    += DevelopmentHelper.ui \
     CodeAssistant.ui \
     ConverterBase64.ui \
     DateTimeHelper.ui \
-    HtmlTableGenerator.ui
+    HtmlTableGenerator.ui \
+    CryptoHelper.ui

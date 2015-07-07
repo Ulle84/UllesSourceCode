@@ -14,6 +14,7 @@ class CodeAssistant;
 class ConverterBase64;
 class DateTimeHelper;
 class HtmlTableGenerator;
+class CryptoHelper;
 
 class DevelopmentHelper : public QMainWindow
 {
@@ -31,6 +32,7 @@ private:
   ConverterBase64* m_converterBase64;
   DateTimeHelper* m_dateTimeHelper;
   HtmlTableGenerator* m_htmlTableGenerator;
+  CryptoHelper* m_cryptoHelper;
   QSettings* m_settings;
 };
 

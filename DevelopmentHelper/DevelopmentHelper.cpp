@@ -9,6 +9,7 @@
 #include "HtmlTableGenerator.h"
 #include "LogFileViewer.h"
 #include "StashHelper.h"
+#include "CryptoHelper.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   QMainWindow(parent),
@@ -24,13 +25,15 @@ DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   m_converterBase64 = new ConverterBase64(this);
   m_dateTimeHelper = new DateTimeHelper(this);
   m_htmlTableGenerator = new HtmlTableGenerator(this);
+  m_cryptoHelper = new CryptoHelper(this);
 
   ui->tabWidget->addTab(m_stashHelper, "Stash");
   ui->tabWidget->addTab(m_logFileViewer, tr("Log File Viewer"));
   ui->tabWidget->addTab(m_codeAssistant, tr("Code Assistant"));
-  ui->tabWidget->addTab(m_converterBase64, tr("Converter Base 64"));
+  ui->tabWidget->addTab(m_converterBase64, tr("Base 64"));
   ui->tabWidget->addTab(m_dateTimeHelper, tr("Date and Time"));
   ui->tabWidget->addTab(m_htmlTableGenerator, tr("HTML Table Generator"));
+  ui->tabWidget->addTab(m_cryptoHelper, tr("Crypto"));
 
   if (m_settings->contains("activeTabNumber"))
   {
