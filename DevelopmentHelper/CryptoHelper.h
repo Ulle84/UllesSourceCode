@@ -16,7 +16,7 @@ public:
   ~CryptoHelper();
 
 private slots:
-    void on_lineEditInput_textChanged(const QString &arg1);
+    void on_lineEditInput_returnPressed();
     void on_pushButton_clicked();
 
 private:

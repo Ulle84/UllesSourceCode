@@ -44,8 +44,10 @@ StashHelper::~StashHelper()
   delete ui;
 }
 
-void StashHelper::on_lineEditRepository_textEdited(const QString &repository)
+void StashHelper::on_lineEditRepository_returnPressed()
 {
+  QString repository = ui->lineEditRepository->text();
+
   if (repository.startsWith("ViQtWidget"))
   {
     ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViQtWidgets"));

@@ -19,7 +19,7 @@ public:
   ~StashHelper();
 
 private slots:
-  void on_lineEditRepository_textEdited(const QString &repository);
+  void on_lineEditRepository_returnPressed();
   void on_comboBoxProject_currentIndexChanged(const QString &project);
   void on_pushButtonRepositoryToClipoard_clicked();
   void on_pushButtonStashUrlToClipboard_clicked();

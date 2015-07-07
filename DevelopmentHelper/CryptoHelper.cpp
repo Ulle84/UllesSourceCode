@@ -16,9 +16,9 @@ CryptoHelper::~CryptoHelper()
   delete ui;
 }
 
-void CryptoHelper::on_lineEditInput_textChanged(const QString &arg1)
+void CryptoHelper::on_lineEditInput_returnPressed()
 {
-    QByteArray inputBytes(arg1.toUtf8());
+    QByteArray inputBytes(ui->lineEditInput->text().toUtf8());
     QByteArray myHash = QCryptographicHash::hash(inputBytes, QCryptographicHash::Sha1);
     QString result(myHash.toHex());
 

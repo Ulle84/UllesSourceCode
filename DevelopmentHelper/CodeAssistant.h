@@ -17,6 +17,7 @@ public:
 
 private slots:
   void on_lineEditContainer_returnPressed();
+  void on_lineEditForLoop_returnPressed();
 
 private:
   Ui::CodeAssistant *ui;
