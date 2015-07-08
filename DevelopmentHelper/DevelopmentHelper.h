@@ -5,7 +5,8 @@
 #include <QMap>
 #include <QString>
 
-namespace Ui {
+namespace Ui
+{
 class DevelopmentHelper;
 }
 
@@ -16,7 +17,7 @@ class DevelopmentHelper : public QMainWindow
   Q_OBJECT
 
 public:
-  explicit DevelopmentHelper(QWidget *parent = 0);
+  explicit DevelopmentHelper(QWidget* parent = 0);
   ~DevelopmentHelper();
 
 private slots:
@@ -25,7 +26,7 @@ private slots:
 private:
   void setWidgetVisible(int index);
 
-  Ui::DevelopmentHelper *ui;
+  Ui::DevelopmentHelper* ui;
   QSettings* m_settings;
 
   QMap<QString, QWidget*> m_widgets;

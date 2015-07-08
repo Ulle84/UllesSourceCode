@@ -3,7 +3,7 @@
 #include "CodeAssistant.h"
 #include "ui_CodeAssistant.h"
 
-CodeAssistant::CodeAssistant(QWidget *parent) :
+CodeAssistant::CodeAssistant(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::CodeAssistant)
 {

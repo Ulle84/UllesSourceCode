@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class RegExpTester;
 }
 
@@ -14,7 +15,7 @@ class RegExpTester : public QWidget
   Q_OBJECT
 
 public:
-  explicit RegExpTester(QWidget *parent = 0);
+  explicit RegExpTester(QWidget* parent = 0);
   ~RegExpTester();
 
 private slots:
@@ -24,7 +25,7 @@ private slots:
 private:
   void evaluate();
 
-  Ui::RegExpTester *ui;
+  Ui::RegExpTester* ui;
   QSettings* m_settings;
 };
 

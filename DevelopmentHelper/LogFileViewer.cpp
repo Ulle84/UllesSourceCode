@@ -21,7 +21,7 @@ bool compareLogStrings(const QString& s1, const QString& s2)
   return s1.left(g_dateStringLength) < s2.left(g_dateStringLength);
 }
 
-LogFileViewer::LogFileViewer(QWidget *parent) :
+LogFileViewer::LogFileViewer(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::LogFileViewer)
 {
@@ -29,16 +29,16 @@ LogFileViewer::LogFileViewer(QWidget *parent) :
 
   m_settings = new QSettings("company.com", "LogFileViewer", this);
 
-    if (m_settings->contains("dir"))
-    {
-      m_dir.setPath(m_settings->value("dir").toString());
-    }
-    else
-    {
-      m_dir = QDir::current();
-    }
+  if (m_settings->contains("dir"))
+  {
+    m_dir.setPath(m_settings->value("dir").toString());
+  }
+  else
+  {
+    m_dir = QDir::current();
+  }
 
-    m_regExp = new QRegExp("\\d{4,4}-\\d{2,2}-\\d{2,2} \\d{2,2}:\\d{2,2}:\\d{2,2},\\d{3,3}");
+  m_regExp = new QRegExp("\\d{4,4}-\\d{2,2}-\\d{2,2} \\d{2,2}:\\d{2,2}:\\d{2,2},\\d{3,3}");
 }
 
 LogFileViewer::~LogFileViewer()
@@ -112,14 +112,14 @@ bool LogFileViewer::readFilesAndMerge()
   return true;
 }
 
-void LogFileViewer::updateDir(const QString &fileName)
+void LogFileViewer::updateDir(const QString& fileName)
 {
   m_dir.setPath(fileName);
   m_dir.cdUp();
   m_settings->setValue("dir", m_dir.absolutePath());
 }
 
-bool LogFileViewer::readFile(const QString &fileName)
+bool LogFileViewer::readFile(const QString& fileName)
 {
   QFile file(fileName);
 
@@ -129,6 +129,7 @@ bool LogFileViewer::readFile(const QString &fileName)
   }
 
   bool firstLine = true;
+
   while (!file.atEnd())
   {
     QByteArray line = file.readLine();
@@ -150,6 +151,7 @@ bool LogFileViewer::readFile(const QString &fileName)
         m_mergedFileContent.last().append(line);
       }
     }
+
     firstLine = false;
   }
 

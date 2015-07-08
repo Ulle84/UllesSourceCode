@@ -5,7 +5,8 @@
 #include <QDomDocument>
 #include <QFile>
 
-namespace Ui {
+namespace Ui
+{
 class RequireFileHelper;
 }
 
@@ -14,7 +15,7 @@ class RequireFileHelper : public QWidget
   Q_OBJECT
 
 public:
-  explicit RequireFileHelper(QWidget *parent = 0);
+  explicit RequireFileHelper(QWidget* parent = 0);
   ~RequireFileHelper();
   void setFile(QString fileName);
 
@@ -31,7 +32,7 @@ private:
   void writeInt(QString tagName, int value);
   void updateVersionLabel();
 
-  Ui::RequireFileHelper *ui;
+  Ui::RequireFileHelper* ui;
   QString fileName;
 
   int major;

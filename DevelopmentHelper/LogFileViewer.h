@@ -8,7 +8,8 @@
 class QSettings;
 class QRegExp;
 
-namespace Ui {
+namespace Ui
+{
 class LogFileViewer;
 }
 

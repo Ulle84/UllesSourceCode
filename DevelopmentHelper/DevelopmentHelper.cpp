@@ -15,7 +15,7 @@
 #include "RequireFileHelper.h"
 #include "RegExpTester.h"
 
-DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
+DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   QMainWindow(parent),
   ui(new Ui::DevelopmentHelper),
   m_currentIndex(-1)
@@ -37,6 +37,7 @@ DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   m_widgets["RegExp Tester"] = new RegExpTester(this);
 
   bool firstWidget = true;
+
   for (auto it = m_widgets.begin(); it != m_widgets.end(); it++)
   {
     ui->comboBox->addItem(it.key());
@@ -71,6 +72,7 @@ void DevelopmentHelper::on_comboBox_currentIndexChanged(int index)
 void DevelopmentHelper::setWidgetVisible(int index)
 {
   int counter = 0;
+
   for (auto it = m_widgets.begin(); it != m_widgets.end(); it++)
   {
     if (counter == m_currentIndex)
@@ -85,5 +87,6 @@ void DevelopmentHelper::setWidgetVisible(int index)
 
     counter++;
   }
+
   m_currentIndex = index;
 }

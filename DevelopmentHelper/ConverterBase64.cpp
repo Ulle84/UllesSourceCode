@@ -4,7 +4,7 @@
 #include "ConverterBase64.h"
 #include "ui_ConverterBase64.h"
 
-ConverterBase64::ConverterBase64(QWidget *parent) :
+ConverterBase64::ConverterBase64(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::ConverterBase64)
 {

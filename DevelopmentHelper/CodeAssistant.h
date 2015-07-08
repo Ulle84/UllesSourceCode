@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class CodeAssistant;
 }
 
@@ -12,7 +13,7 @@ class CodeAssistant : public QWidget
   Q_OBJECT
 
 public:
-  explicit CodeAssistant(QWidget *parent = 0);
+  explicit CodeAssistant(QWidget* parent = 0);
   ~CodeAssistant();
 
 private slots:
@@ -27,7 +28,7 @@ private slots:
 private:
   void createForLoopCode();
 
-  Ui::CodeAssistant *ui;
+  Ui::CodeAssistant* ui;
 };
 
 #endif // CODEASSISTANT_H

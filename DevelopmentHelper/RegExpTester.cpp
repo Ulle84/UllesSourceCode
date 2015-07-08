@@ -4,7 +4,7 @@
 #include "RegExpTester.h"
 #include "ui_RegExpTester.h"
 
-RegExpTester::RegExpTester(QWidget *parent) :
+RegExpTester::RegExpTester(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::RegExpTester)
 {
@@ -28,8 +28,8 @@ RegExpTester::RegExpTester(QWidget *parent) :
 RegExpTester::~RegExpTester()
 {
   m_settings->setValue("regExp", ui->lineEditRegExp->text());
-   m_settings->setValue("testString", ui->lineEditTestString->text());
-   delete ui;
+  m_settings->setValue("testString", ui->lineEditTestString->text());
+  delete ui;
 }
 
 void RegExpTester::on_lineEditRegExp_textEdited(const QString& regExp)

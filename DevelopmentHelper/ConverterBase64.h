@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class ConverterBase64;
 }
 
@@ -12,7 +13,7 @@ class ConverterBase64 : public QWidget
   Q_OBJECT
 
 public:
-  explicit ConverterBase64(QWidget *parent = 0);
+  explicit ConverterBase64(QWidget* parent = 0);
   ~ConverterBase64();
 
 private slots:
@@ -20,7 +21,7 @@ private slots:
   void on_lineEditBase64EncodedText_editingFinished();
 
 private:
-  Ui::ConverterBase64 *ui;
+  Ui::ConverterBase64* ui;
 };
 
 #endif // CONVERTERBASE64_H

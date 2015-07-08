@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class CryptoHelper;
 }
 
@@ -12,15 +13,15 @@ class CryptoHelper : public QWidget
   Q_OBJECT
 
 public:
-  explicit CryptoHelper(QWidget *parent = 0);
+  explicit CryptoHelper(QWidget* parent = 0);
   ~CryptoHelper();
 
 private slots:
-    void on_lineEditInput_returnPressed();
-    void on_pushButton_clicked();
+  void on_lineEditInput_returnPressed();
+  void on_pushButton_clicked();
 
 private:
-  Ui::CryptoHelper *ui;
+  Ui::CryptoHelper* ui;
 };
 
 #endif // CRYPTOHELPER_H

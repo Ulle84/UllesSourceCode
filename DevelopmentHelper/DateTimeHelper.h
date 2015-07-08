@@ -7,7 +7,8 @@
 
 class QSettings;
 
-namespace Ui {
+namespace Ui
+{
 class DateTimeHelper;
 }
 
@@ -16,7 +17,7 @@ class DateTimeHelper : public QWidget
   Q_OBJECT
 
 public:
-  explicit DateTimeHelper(QWidget *parent = 0);
+  explicit DateTimeHelper(QWidget* parent = 0);
   ~DateTimeHelper();
 
 private slots:
@@ -28,7 +29,7 @@ private slots:
 private:
   void copyDateToClipboard();
 
-  Ui::DateTimeHelper *ui;
+  Ui::DateTimeHelper* ui;
 
   QString m_outputFormat;
   const QString m_outputFormatDefault;

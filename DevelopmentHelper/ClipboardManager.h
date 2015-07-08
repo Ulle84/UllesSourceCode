@@ -5,7 +5,8 @@
 #include <QStringList>
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class ClipboardManager;
 }
 
@@ -16,7 +17,7 @@ class ClipboardManager : public QWidget
   Q_OBJECT
 
 public:
-  explicit ClipboardManager(QWidget *parent = 0);
+  explicit ClipboardManager(QWidget* parent = 0);
   ~ClipboardManager();
 
 private slots:
@@ -28,7 +29,7 @@ private slots:
 private:
   void update();
 
-  Ui::ClipboardManager *ui;
+  Ui::ClipboardManager* ui;
 
   QString m_currentClipbardData;
   QString m_lastClipbardData;

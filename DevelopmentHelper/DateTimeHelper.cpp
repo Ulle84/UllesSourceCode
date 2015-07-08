@@ -6,7 +6,7 @@
 #include "DateTimeHelper.h"
 #include "ui_DateTimeHelper.h"
 
-DateTimeHelper::DateTimeHelper(QWidget *parent) :
+DateTimeHelper::DateTimeHelper(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::DateTimeHelper),
   m_outputFormatDefault("ddd, dd.MM.yyyy")

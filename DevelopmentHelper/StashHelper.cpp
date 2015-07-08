@@ -3,7 +3,7 @@
 
 #include <QClipboard>
 
-StashHelper::StashHelper(QWidget *parent) :
+StashHelper::StashHelper(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::StashHelper)
 {
@@ -20,7 +20,7 @@ StashHelper::StashHelper(QWidget *parent) :
 
   for (auto it = m_projectCodes.begin(); it != m_projectCodes.end(); it++)
   {
-   ui->comboBoxProject->addItem(it.key());
+    ui->comboBoxProject->addItem(it.key());
   }
 
   if (m_settings->contains("project"))
@@ -78,7 +78,7 @@ ViQtWidgets      - ViQtWidgetAbout         -> http://ube@stash.vitronic.de:7990/
 ViWidgets        - ViAboutWidget           -> http://ube@stash.vitronic.de:7990/scm/viwdgt/viaboutwidget.git
 */
 
-void StashHelper::on_comboBoxProject_currentIndexChanged(const QString &project)
+void StashHelper::on_comboBoxProject_currentIndexChanged(const QString& project)
 {
   setStashUrl();
 }
@@ -96,10 +96,10 @@ void StashHelper::setStashUrl()
 
 void StashHelper::on_pushButtonRepositoryToClipoard_clicked()
 {
-    QApplication::clipboard()->setText(ui->lineEditRepository->text());
+  QApplication::clipboard()->setText(ui->lineEditRepository->text());
 }
 
 void StashHelper::on_pushButtonStashUrlToClipboard_clicked()
 {
-    QApplication::clipboard()->setText(ui->lineEditStashUrl->text());
+  QApplication::clipboard()->setText(ui->lineEditStashUrl->text());
 }
