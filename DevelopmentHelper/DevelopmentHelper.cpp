@@ -10,34 +10,38 @@
 #include "LogFileViewer.h"
 #include "StashHelper.h"
 #include "CryptoHelper.h"
+#include "ClipboardManager.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   QMainWindow(parent),
-  ui(new Ui::DevelopmentHelper)
+  ui(new Ui::DevelopmentHelper),
+  m_currentIndex(-1)
 {
   ui->setupUi(this);
 
   m_settings = new QSettings("Ulle", "DevelopmentHelper", this);
 
-  m_stashHelper = new StashHelper(this);
-  m_logFileViewer = new LogFileViewer(this);
-  m_codeAssistant = new CodeAssistant(this);
-  m_converterBase64 = new ConverterBase64(this);
-  m_dateTimeHelper = new DateTimeHelper(this);
-  m_htmlTableGenerator = new HtmlTableGenerator(this);
-  m_cryptoHelper = new CryptoHelper(this);
+  m_widgets["Stash"] = new StashHelper(this);
+  m_widgets["Log File Viewer"] = new LogFileViewer(this);
+  m_widgets["Code Assistant"] = new CodeAssistant(this);
+  m_widgets["Converter Base64"] = new ConverterBase64(this);
+  m_widgets["Date and Time Helper"] = new DateTimeHelper(this);
+  m_widgets["HTML Table Generator"] = new HtmlTableGenerator(this);
+  m_widgets["Crypto Helper"] = new CryptoHelper(this);
+  m_widgets["Clipboard Manager"] = new ClipboardManager(this);
 
-  ui->tabWidget->addTab(m_stashHelper, "Stash");
-  ui->tabWidget->addTab(m_logFileViewer, tr("Log File Viewer"));
-  ui->tabWidget->addTab(m_codeAssistant, tr("Code Assistant"));
-  ui->tabWidget->addTab(m_converterBase64, tr("Base 64"));
-  ui->tabWidget->addTab(m_dateTimeHelper, tr("Date and Time"));
-  ui->tabWidget->addTab(m_htmlTableGenerator, tr("HTML Table Generator"));
-  ui->tabWidget->addTab(m_cryptoHelper, tr("Crypto"));
+  bool firstWidget = true;
+  for (auto it = m_widgets.begin(); it != m_widgets.end(); it++)
+  {
+    ui->comboBox->addItem(it.key());
+    ui->centralWidget->layout()->addWidget(it.value());
+    it.value()->setVisible(firstWidget);
+    firstWidget = false;
+  }
 
   if (m_settings->contains("activeTabNumber"))
   {
-    ui->tabWidget->setCurrentIndex(m_settings->value("activeTabNumber").toInt());
+    ui->comboBox->setCurrentIndex(m_settings->value("activeTabNumber").toInt());
   }
 
   if (m_settings->contains("windowGeometry"))
@@ -49,6 +53,31 @@ DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
 DevelopmentHelper::~DevelopmentHelper()
 {
   m_settings->setValue("windowGeometry", this->geometry());
-  m_settings->setValue("activeTabNumber", ui->tabWidget->currentIndex());
+  m_settings->setValue("activeTabNumber", ui->comboBox->currentIndex());
   delete ui;
+}
+
+void DevelopmentHelper::on_comboBox_currentIndexChanged(int index)
+{
+  setWidgetVisible(index);
+}
+
+void DevelopmentHelper::setWidgetVisible(int index)
+{
+  int counter = 0;
+  for (auto it = m_widgets.begin(); it != m_widgets.end(); it++)
+  {
+    if (counter == m_currentIndex)
+    {
+      it.value()->setVisible(false);
+    }
+
+    if (counter == index)
+    {
+      it.value()->setVisible(true);
+    }
+
+    counter++;
+  }
+  m_currentIndex = index;
 }

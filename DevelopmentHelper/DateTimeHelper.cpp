@@ -60,7 +60,6 @@ void DateTimeHelper::on_pushButtonDefault_clicked()
 void DateTimeHelper::on_lineEditOutputFormat_textChanged(const QString& newOutputFormat)
 {
   m_outputFormat = newOutputFormat;
-  copyDateToClipboard();
 }
 
 void DateTimeHelper::copyDateToClipboard()

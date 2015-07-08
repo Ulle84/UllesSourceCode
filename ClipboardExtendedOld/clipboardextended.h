@@ -1,7 +1,7 @@
 #ifndef CLIPBOARDEXTENDED_H
 #define CLIPBOARDEXTENDED_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 class QLineEdit;
 class QListView;
 class QString;

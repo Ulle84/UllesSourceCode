@@ -2,6 +2,8 @@
 #define DEVELOPMENTHELPER_H
 
 #include <QMainWindow>
+#include <QMap>
+#include <QString>
 
 namespace Ui {
 class DevelopmentHelper;
@@ -15,6 +17,7 @@ class ConverterBase64;
 class DateTimeHelper;
 class HtmlTableGenerator;
 class CryptoHelper;
+class ClipboardManager;
 
 class DevelopmentHelper : public QMainWindow
 {
@@ -24,16 +27,17 @@ public:
   explicit DevelopmentHelper(QWidget *parent = 0);
   ~DevelopmentHelper();
 
+private slots:
+  void on_comboBox_currentIndexChanged(int index);
+
 private:
+  void setWidgetVisible(int index);
+
   Ui::DevelopmentHelper *ui;
-  StashHelper* m_stashHelper;
-  LogFileViewer* m_logFileViewer;
-  CodeAssistant* m_codeAssistant;
-  ConverterBase64* m_converterBase64;
-  DateTimeHelper* m_dateTimeHelper;
-  HtmlTableGenerator* m_htmlTableGenerator;
-  CryptoHelper* m_cryptoHelper;
   QSettings* m_settings;
+
+  QMap<QString, QWidget*> m_widgets;
+  int m_currentIndex;
 };
 
 #endif // DEVELOPMENTHELPER_H
