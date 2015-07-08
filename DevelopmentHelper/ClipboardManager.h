@@ -22,9 +22,7 @@ public:
 private slots:
   void clipboardDataChanged();
   void historyToClipboard();
-
   void on_pushButtonClearHistory_clicked();
-
   void on_pushButtonClearClipboard_clicked();
 
 private:

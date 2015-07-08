@@ -16,10 +16,17 @@ public:
   ~CodeAssistant();
 
 private slots:
+
+
   void on_lineEditContainer_returnPressed();
-  void on_lineEditForLoop_returnPressed();
+
+  void on_lineEditForLoopIterator_returnPressed();
+
+  void on_lineEditForLoopEnd_returnPressed();
 
 private:
+  void createForLoopCode();
+
   Ui::CodeAssistant *ui;
 };
 

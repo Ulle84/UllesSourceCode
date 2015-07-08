@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +21,11 @@ SOURCES += main.cpp\
     DateTimeHelper.cpp \
     HtmlTableGenerator.cpp \
     CryptoHelper.cpp \
-    ClipboardManager.cpp
+    ClipboardManager.cpp \
+    ColorPicker.cpp \
+    SliderSpinBox.cpp \
+    RequireFileHelper.cpp \
+    RegExpTester.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -31,7 +35,11 @@ HEADERS  += DevelopmentHelper.h \
     DateTimeHelper.h \
     HtmlTableGenerator.h \
     CryptoHelper.h \
-    ClipboardManager.h
+    ClipboardManager.h \
+    ColorPicker.h \
+    SliderSpinBox.h \
+    RequireFileHelper.h \
+    RegExpTester.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -41,4 +49,8 @@ FORMS    += DevelopmentHelper.ui \
     DateTimeHelper.ui \
     HtmlTableGenerator.ui \
     CryptoHelper.ui \
-    ClipboardManager.ui
+    ClipboardManager.ui \
+    ColorPicker.ui \
+    SliderSpinBox.ui \
+    RequireFileHelper.ui \
+    RegExpTester.ui

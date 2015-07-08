@@ -11,6 +11,9 @@
 #include "StashHelper.h"
 #include "CryptoHelper.h"
 #include "ClipboardManager.h"
+#include "ColorPicker.h"
+#include "RequireFileHelper.h"
+#include "RegExpTester.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   QMainWindow(parent),
@@ -29,6 +32,9 @@ DevelopmentHelper::DevelopmentHelper(QWidget *parent) :
   m_widgets["HTML Table Generator"] = new HtmlTableGenerator(this);
   m_widgets["Crypto Helper"] = new CryptoHelper(this);
   m_widgets["Clipboard Manager"] = new ClipboardManager(this);
+  m_widgets["Color Picker"] = new ColorPicker(this);
+  m_widgets["Require File Helper"] = new RequireFileHelper(this);
+  m_widgets["RegExp Tester"] = new RegExpTester(this);
 
   bool firstWidget = true;
   for (auto it = m_widgets.begin(); it != m_widgets.end(); it++)

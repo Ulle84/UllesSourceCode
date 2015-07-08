@@ -10,14 +10,6 @@ class DevelopmentHelper;
 }
 
 class QSettings;
-class LogFileViewer;
-class StashHelper;
-class CodeAssistant;
-class ConverterBase64;
-class DateTimeHelper;
-class HtmlTableGenerator;
-class CryptoHelper;
-class ClipboardManager;
 
 class DevelopmentHelper : public QMainWindow
 {
