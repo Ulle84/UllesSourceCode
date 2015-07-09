@@ -25,7 +25,10 @@ SOURCES += main.cpp\
     ColorPicker.cpp \
     SliderSpinBox.cpp \
     RequireFileHelper.cpp \
-    RegExpTester.cpp
+    RegExpTester.cpp \
+    TimeCalculator.cpp \
+    HtmlEditor.cpp \
+    DateTimeAdder.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -39,7 +42,10 @@ HEADERS  += DevelopmentHelper.h \
     ColorPicker.h \
     SliderSpinBox.h \
     RequireFileHelper.h \
-    RegExpTester.h
+    RegExpTester.h \
+    TimeCalculator.h \
+    HtmlEditor.h \
+    DateTimeAdder.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -53,4 +59,7 @@ FORMS    += DevelopmentHelper.ui \
     ColorPicker.ui \
     SliderSpinBox.ui \
     RequireFileHelper.ui \
-    RegExpTester.ui
+    RegExpTester.ui \
+    TimeCalculator.ui \
+    HtmlEditor.ui \
+    DateTimeAdder.ui
