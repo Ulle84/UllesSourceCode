@@ -1,7 +1,7 @@
 #include "DateTimeAdder.h"
 #include "ui_DateTimeAdder.h"
 
-DateTimeAdder::DateTimeAdder(QWidget *parent) :
+DateTimeAdder::DateTimeAdder(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::DateTimeAdder),
   m_seconds(0)
@@ -20,7 +20,7 @@ void DateTimeAdder::on_spinBox_valueChanged(int seconds)
   calculate();
 }
 
-void DateTimeAdder::on_dateTimeEdit_dateTimeChanged(const QDateTime &dateTime)
+void DateTimeAdder::on_dateTimeEdit_dateTimeChanged(const QDateTime& dateTime)
 {
   m_dateTime = dateTime;
   calculate();

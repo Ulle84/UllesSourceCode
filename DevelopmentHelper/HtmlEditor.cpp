@@ -3,7 +3,7 @@
 #include "HtmlEditor.h"
 #include "ui_HtmlEditor.h"
 
-HtmlEditor::HtmlEditor(QWidget *parent) :
+HtmlEditor::HtmlEditor(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::HtmlEditor)
 {

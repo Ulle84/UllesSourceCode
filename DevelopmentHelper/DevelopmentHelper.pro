@@ -28,7 +28,9 @@ SOURCES += main.cpp\
     RegExpTester.cpp \
     TimeCalculator.cpp \
     HtmlEditor.cpp \
-    DateTimeAdder.cpp
+    DateTimeAdder.cpp \
+    NumberConverter.cpp \
+    FileOrDirSelector.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -45,7 +47,9 @@ HEADERS  += DevelopmentHelper.h \
     RegExpTester.h \
     TimeCalculator.h \
     HtmlEditor.h \
-    DateTimeAdder.h
+    DateTimeAdder.h \
+    NumberConverter.h \
+    FileOrDirSelector.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -62,4 +66,6 @@ FORMS    += DevelopmentHelper.ui \
     RegExpTester.ui \
     TimeCalculator.ui \
     HtmlEditor.ui \
-    DateTimeAdder.ui
+    DateTimeAdder.ui \
+    NumberConverter.ui \
+    FileOrDirSelector.ui

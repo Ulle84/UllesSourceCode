@@ -94,6 +94,7 @@ void DateTimeHelper::on_lineEditUnixTime_returnPressed()
 void DateTimeHelper::on_lineEditRealTime_returnPressed()
 {
   QDateTime dateTime = QDateTime::fromString(ui->lineEditRealTime->text(), "yyyy-MM-dd hh:mm:ss");
+
   if (dateTime.isValid())
   {
     ui->lineEditUnixTime->setText(QString::number(dateTime.toTime_t()));
