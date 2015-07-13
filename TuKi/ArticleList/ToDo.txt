@@ -1,0 +1,3 @@
+ToDo
+* Sicherheitsabfrage bei Preisen über 50 Euro -> 2 Buttons: "Preis ändern" oder Preis beibehalten und speichern
+* aktuelle Zeile grau hinterlegen
