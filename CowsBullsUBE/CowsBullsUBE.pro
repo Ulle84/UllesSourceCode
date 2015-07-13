@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        CowsBullsUBE.cpp
+        CowsBullsUBE.cpp \
+    Guess.cpp
 
-HEADERS  += CowsBullsUBE.h
+HEADERS  += CowsBullsUBE.h \
+    Guess.h
 
 FORMS    += CowsBullsUBE.ui
