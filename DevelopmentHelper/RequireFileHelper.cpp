@@ -1,6 +1,8 @@
-#include <QFile>
-#include <QMessageBox>
 #include <QDebug>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QString>
 
 #include "RequireFileHelper.h"
 #include "ui_RequireFileHelper.h"
@@ -55,12 +57,11 @@ void RequireFileHelper::readFile()
   updateVersionLabel();
 }
 
-void RequireFileHelper::updateFile()
+void RequireFileHelper::update()
 {
   writeInt("major", major);
   writeInt("minor", minor);
   writeInt("fixlevel", fixlevel);
-  writeFile();
   updateVersionLabel();
 }
 
@@ -114,7 +115,7 @@ void RequireFileHelper::writeInt(QString tagName, int value)
 void RequireFileHelper::on_pushButtonFixlevel_clicked()
 {
   fixlevel++;
-  updateFile();
+  update();
 }
 
 void RequireFileHelper::on_pushButtonMajor_clicked()
@@ -122,18 +123,35 @@ void RequireFileHelper::on_pushButtonMajor_clicked()
   fixlevel = 0;
   minor = 0;
   major++;
-  updateFile();
+  update();
 }
 
 void RequireFileHelper::on_pushButtonMinor_clicked()
 {
   fixlevel = 0;
   minor++;
-  updateFile();
+  update();
 }
 
 
 void RequireFileHelper::updateVersionLabel()
 {
   ui->labelVersion->setText(QString("%1.%2.%3").arg(major).arg(minor).arg(fixlevel));
+}
+
+void RequireFileHelper::on_pushButtonOpen_clicked()
+{
+  QString fileName = QFileDialog::getOpenFileName(this, tr("select require-file"));
+
+  if (fileName.isEmpty())
+  {
+    return;
+  }
+
+  setFile(fileName);
+}
+
+void RequireFileHelper::on_pushButtonSave_clicked()
+{
+  writeFile();
 }

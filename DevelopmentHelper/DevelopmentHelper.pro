@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     HtmlEditor.cpp \
     DateTimeAdder.cpp \
     NumberConverter.cpp \
-    FileOrDirSelector.cpp
+    FileOrDirSelector.cpp \
+    PackageHelper.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -49,7 +50,8 @@ HEADERS  += DevelopmentHelper.h \
     HtmlEditor.h \
     DateTimeAdder.h \
     NumberConverter.h \
-    FileOrDirSelector.h
+    FileOrDirSelector.h \
+    PackageHelper.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -68,4 +70,5 @@ FORMS    += DevelopmentHelper.ui \
     HtmlEditor.ui \
     DateTimeAdder.ui \
     NumberConverter.ui \
-    FileOrDirSelector.ui
+    FileOrDirSelector.ui \
+    PackageHelper.ui

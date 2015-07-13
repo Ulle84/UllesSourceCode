@@ -23,10 +23,12 @@ private slots:
   void on_pushButtonFixlevel_clicked();
   void on_pushButtonMajor_clicked();
   void on_pushButtonMinor_clicked();
+  void on_pushButtonOpen_clicked();
+  void on_pushButtonSave_clicked();
 
 private:
   void readFile();
-  void updateFile();
+  void update();
   void writeFile();
   int readInt(QString tagName);
   void writeInt(QString tagName, int value);
