@@ -1,3 +1,6 @@
+#include <qmath.h>
+
+#include <QDateTime>
 #include <QMessageBox>
 
 #include "CowsBullsUBE.h"
@@ -9,7 +12,9 @@ CowsBullsUBE::CowsBullsUBE(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  ui->lineEditGuess->setText("1234"); // TODO random number
+  qsrand(QDateTime::currentDateTime().toTime_t());
+
+  ui->lineEditGuess->setText(QString::number((qrand() % 9000) + 1000)); // TODO random number
 }
 
 CowsBullsUBE::~CowsBullsUBE()
