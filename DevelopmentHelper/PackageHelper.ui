@@ -31,7 +31,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -43,6 +43,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="pushButtonOpenInExplorer">
+     <property name="text">
+      <string>open path in explorer</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
