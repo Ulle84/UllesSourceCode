@@ -2,8 +2,9 @@
 #define COWSBULLSUBE_H
 
 #include <QWidget>
-#include <QMap>
-#include <QPair>
+#include <QList>
+
+#include "Guess.h"
 
 namespace Ui {
 class CowsBullsUBE;
@@ -22,9 +23,14 @@ private slots:
 
 private:
   void calculateNextGuess();
+  void doFirstGuess();
+  void showCurrentGuess();
+
+  QString listToString(const QList<int>& list);
 
   Ui::CowsBullsUBE *ui;
-  QMap<int, QPair<int, int>> m_answers;
+  QList<Guess> m_guesses;
+  Guess m_currentGuess;
 };
 
 #endif // COWSBULLSUBE_H

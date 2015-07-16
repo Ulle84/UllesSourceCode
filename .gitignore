@@ -22,3 +22,12 @@ TuKi/ArticleList/Data/*
 build-TuKi-Basar-Desktop_Qt_5_4_1_MinGW_32bit-Debug/*
 build-TuKi-Basar-Desktop_Qt_5_4_1_MinGW_32bit-Release/*
 *.xlsx
+
+*.plist
+
+build-Alive-Qt_4_8_6-Debug/*
+build-CowsBullsUBE-Desktop_Qt_5_2_0_clang_64bit-Release/*
+build-ImageViewer-Qt_4_8_6-Debug/*
+build-ImageViewer-Qt_4_8_6-Release/*
+build-JsonTest-Desktop_Qt_5_2_0_clang_64bit-Debug/*
+build-SQLiteTest-Qt_4_8_6-Debug/*
