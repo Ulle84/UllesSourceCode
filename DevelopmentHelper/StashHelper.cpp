@@ -11,12 +11,15 @@ StashHelper::StashHelper(QWidget* parent) :
 
   m_settings = new QSettings("Ulle", "DevelopmentHelper.StashHelper", this);
 
-  m_projectCodes["Base"]             = "base";
-  m_projectCodes["ViAcquisition"]    = "viacq";
-  m_projectCodes["ViObjects"]        = "viob";
+  m_projectCodes["Base"] = "base";
+  m_projectCodes["IndVisualStudioTemplates"] = "invst";
+  m_projectCodes["ViAcquisition"] = "viacq";
+  m_projectCodes["ViIO"] = "viio";
+  m_projectCodes["ViObjects"] = "viob";
   m_projectCodes["ViObjectsMethods"] = "vimeth";
-  m_projectCodes["ViQtWidgets"]      = "viqtwdgt";
-  m_projectCodes["ViWidgets"]        = "viwdgt";
+  m_projectCodes["ViObjectsResults"] = "vires";
+  m_projectCodes["ViQtWidgets"] = "viqtwdgt";
+  m_projectCodes["ViWidgets"] = "viwdgt";
 
   for (auto it = m_projectCodes.begin(); it != m_projectCodes.end(); it++)
   {
@@ -64,19 +67,17 @@ void StashHelper::on_lineEditRepository_returnPressed()
   {
     ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViObjectsMethods"));
   }
+  else if (repository.startsWith("ViIO"))
+  {
+    ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViIO"));
+  }
+  else if (repository.startsWith("ViRes") || repository.startsWith("ViPLCRes"))
+  {
+    ui->comboBoxProject->setCurrentIndex(ui->comboBoxProject->findText("ViObjectsResults"));
+  }
 
   setStashUrl();
 }
-
-
-/*
-Base             - IndDynTranslator        -> http://ube@stash.vitronic.de:7990/scm/base/inddyntranslator.git
-ViAcquisition    - ViAcquiDocumentation    -> http://ube@stash.vitronic.de:7990/scm/viacq/viacquidocumentation.git
-ViObjects        - ViObjectsBasis          -> http://ube@stash.vitronic.de:7990/scm/viob/viobjectsbasis.git
-ViObjectsMethods - ViMethArray2DClassifier -> http://ube@stash.vitronic.de:7990/scm/vimeth/vimetharray2dclassifier.git
-ViQtWidgets      - ViQtWidgetAbout         -> http://ube@stash.vitronic.de:7990/scm/viqtwdgt/viqtwidgetabout.git
-ViWidgets        - ViAboutWidget           -> http://ube@stash.vitronic.de:7990/scm/viwdgt/viaboutwidget.git
-*/
 
 void StashHelper::on_comboBoxProject_currentIndexChanged(const QString& project)
 {

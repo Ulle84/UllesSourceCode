@@ -4,13 +4,16 @@
 #include "PackageHelper.h"
 #include "ui_PackageHelper.h"
 
-PackageHelper::PackageHelper(QWidget *parent) :
+PackageHelper::PackageHelper(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::PackageHelper)
 {
   ui->setupUi(this);
 
+  // TODO read directories via config file
   m_packageDirectories["ViWidgetsConfig"] = "\\\\dev1\\Vitronic\\Industrie\\ViWidgets\\ViWidgetsConfig";
+  m_packageDirectories["ViAcquiDeviceTest"] = "\\\\dev1\\Vitronic\\ViBase\\ViAcqui\\ViAcquiDeviceTest";
+  m_packageDirectories["ViIOPLCNamedPipe"] = "\\\\dev1\\Vitronic\\Industrie\\ViIO\\ViIOPLCNamedPipe";
 }
 
 PackageHelper::~PackageHelper()

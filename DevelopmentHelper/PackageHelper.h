@@ -5,7 +5,8 @@
 #include <QString>
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class PackageHelper;
 }
 
@@ -14,7 +15,7 @@ class PackageHelper : public QWidget
   Q_OBJECT
 
 public:
-  explicit PackageHelper(QWidget *parent = 0);
+  explicit PackageHelper(QWidget* parent = 0);
   ~PackageHelper();
 
 private slots:
@@ -22,7 +23,7 @@ private slots:
   void on_pushButton_clicked();
 
 private:
-  Ui::PackageHelper *ui;
+  Ui::PackageHelper* ui;
   QMap<QString, QString> m_packageDirectories;
 };
 
