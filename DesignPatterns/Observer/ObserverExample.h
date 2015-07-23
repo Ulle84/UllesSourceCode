@@ -21,7 +21,6 @@ public:
 
 private slots:
   void on_pushButtonNotifyObservers_clicked();
-
   void on_pushButtonConnectA_clicked();
   void on_pushButtonDisconnectA_clicked();
   void on_pushButtonConnectB_clicked();

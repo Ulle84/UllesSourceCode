@@ -23,6 +23,7 @@ PackageHelper::PackageHelper(QWidget* parent) :
 
   // TODO read directories via config file
   m_packageDirectories["ViWidgetsConfig"] = "\\\\dev1\\Vitronic\\Industrie\\ViWidgets\\ViWidgetsConfig";
+  m_packageDirectories["ViAuthorisation"] = "\\\\dev1\\Vitronic\\ViBase\\ViAuthorisation";
 }
 
 PackageHelper::~PackageHelper()
@@ -57,6 +58,10 @@ void PackageHelper::on_lineEdit_returnPressed()
     else if (packageName.startsWith("ViIO"))
     {
       packageBaseDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViIO";
+    }
+    else if (packageName.startsWith("Hwd"))
+    {
+      packageBaseDirectory = "\\\\buildmachine1\\Download\\Packages\\Internal";
     }
     ui->label->setText(QString("%1\\%2").arg(packageBaseDirectory).arg(packageName));
   }
