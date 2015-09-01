@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     DateTimeAdder.cpp \
     NumberConverter.cpp \
     FileOrDirSelector.cpp \
-    PackageHelper.cpp
+    PackageHelper.cpp \
+    WorkHoursCalculator.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -51,7 +52,8 @@ HEADERS  += DevelopmentHelper.h \
     DateTimeAdder.h \
     NumberConverter.h \
     FileOrDirSelector.h \
-    PackageHelper.h
+    PackageHelper.h \
+    WorkHoursCalculator.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -71,4 +73,5 @@ FORMS    += DevelopmentHelper.ui \
     DateTimeAdder.ui \
     NumberConverter.ui \
     FileOrDirSelector.ui \
-    PackageHelper.ui
+    PackageHelper.ui \
+    WorkHoursCalculator.ui

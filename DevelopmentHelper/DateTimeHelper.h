@@ -25,9 +25,7 @@ private slots:
   void on_pushButtonToday_clicked();
   void on_pushButtonDefault_clicked();
   void on_lineEditOutputFormat_textChanged(const QString& newOutputFormat);
-
   void on_lineEditUnixTime_returnPressed();
-
   void on_lineEditRealTime_returnPressed();
 
 private:

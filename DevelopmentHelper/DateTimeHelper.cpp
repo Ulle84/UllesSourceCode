@@ -8,6 +8,7 @@
 #include "ui_DateTimeHelper.h"
 #include "TimeCalculator.h"
 #include "DateTimeAdder.h"
+#include "WorkHoursCalculator.h"
 
 DateTimeHelper::DateTimeHelper(QWidget* parent) :
   QWidget(parent),
@@ -41,6 +42,9 @@ DateTimeHelper::DateTimeHelper(QWidget* parent) :
 
   DateTimeAdder* dateTimeAdder = new DateTimeAdder(this);
   ui->groupBoxDateTimeAdder->layout()->addWidget(dateTimeAdder);
+
+  WorkHoursCalculator* workHoursCalculator = new WorkHoursCalculator(this);
+  ui->groupBoxWorkHoursCalculator->layout()->addWidget(workHoursCalculator);
 }
 
 DateTimeHelper::~DateTimeHelper()

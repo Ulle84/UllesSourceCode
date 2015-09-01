@@ -121,6 +121,14 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBoxWorkHoursCalculator">
+     <property name="title">
+      <string>Work Hours Calculator</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6"/>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
