@@ -12,12 +12,13 @@
 #include "CryptoHelper.h"
 #include "ClipboardManager.h"
 #include "ColorPicker.h"
-//#include "RequireFileHelper.h"
+#include "RequireFileHelper.h"
 #include "RegExpTester.h"
 #include "HtmlEditor.h"
 #include "NumberConverter.h"
 #include "FileOrDirSelector.h"
 #include "PackageHelper.h"
+#include "TextConverter.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   QMainWindow(parent),
@@ -33,16 +34,17 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   m_widgets["Code Assistant"] = new CodeAssistant(this);
   m_widgets["Converter Base64"] = new ConverterBase64(this);
   m_widgets["Date and Time Helper"] = new DateTimeHelper(this);
-  m_widgets["HTML Table Generator"] = new HtmlTableGenerator(this);
+  //m_widgets["HTML Table Generator"] = new HtmlTableGenerator(this);
   m_widgets["Crypto Helper"] = new CryptoHelper(this);
   m_widgets["Clipboard Manager"] = new ClipboardManager(this);
   m_widgets["Color Picker"] = new ColorPicker(this);
   //m_widgets["Require File Helper"] = new RequireFileHelper(this);
   m_widgets["RegExp Tester"] = new RegExpTester(this);
-  m_widgets["HTML Editor"] = new HtmlEditor(this);
+  //m_widgets["HTML Editor"] = new HtmlEditor(this);
   m_widgets["Number Converter"] = new NumberConverter(this);
-  m_widgets["File or Dir Selector"] = new FileOrDirSelector(this);
+  //m_widgets["File or Dir Selector"] = new FileOrDirSelector(this);
   m_widgets["Package Helper"] = new PackageHelper(this);
+  m_widgets["Text Converter"] = new TextConverter(this);
 
   bool firstWidget = true;
 
@@ -56,7 +58,11 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
 
   if (m_settings->contains("activeTabNumber"))
   {
-    ui->comboBox->setCurrentIndex(m_settings->value("activeTabNumber").toInt());
+    int activeTabNumber = m_settings->value("activeTabNumber").toInt();
+    if (activeTabNumber < ui->comboBox->count())
+    {
+      ui->comboBox->setCurrentIndex(activeTabNumber);
+    }
   }
 
   if (m_settings->contains("windowGeometry"))

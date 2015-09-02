@@ -32,7 +32,9 @@ SOURCES += main.cpp\
     NumberConverter.cpp \
     FileOrDirSelector.cpp \
     PackageHelper.cpp \
-    WorkHoursCalculator.cpp
+    WorkHoursCalculator.cpp \
+    TextConverter.cpp \
+    SlashConverter.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -53,7 +55,9 @@ HEADERS  += DevelopmentHelper.h \
     NumberConverter.h \
     FileOrDirSelector.h \
     PackageHelper.h \
-    WorkHoursCalculator.h
+    WorkHoursCalculator.h \
+    TextConverter.h \
+    SlashConverter.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -74,4 +78,6 @@ FORMS    += DevelopmentHelper.ui \
     NumberConverter.ui \
     FileOrDirSelector.ui \
     PackageHelper.ui \
-    WorkHoursCalculator.ui
+    WorkHoursCalculator.ui \
+    TextConverter.ui \
+    SlashConverter.ui

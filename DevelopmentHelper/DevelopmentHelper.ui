@@ -16,7 +16,11 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QComboBox" name="comboBox"/>
+     <widget class="QComboBox" name="comboBox">
+      <property name="maxVisibleItems">
+       <number>30</number>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
