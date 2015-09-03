@@ -5,6 +5,7 @@
 #include "ui_BlockCodeFormatter.h"
 
 // TODO detect block comment /* ... */
+// TODO do not simplify string literals in "..."
 
 BlockCodeFormatter::BlockCodeFormatter(QWidget* parent) :
   QWidget(parent),

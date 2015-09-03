@@ -1,0 +1,89 @@
+	//| |=| optional flags
+		bool a = b
+	QString fd = h
+	void test = 9
+
+horst blub
+
+  //| - |
+afdasfas - kjökjö
+0 - 9
+
+//|=|"|e|"|;|
+    firstName =    "Ulle";
+    theLastName = "Belitz";
+
+//|]|(|.|.|
+output["automaticLogout"] = ViAuthorisationConversions::boolToQString(policies.getAutomaticLogout()).toStdString();
+output["blockAfterFail"] = ViAuthorisationConversions::boolToQString(policies.getBlockAfterFail()).toStdString();
+output["changeAtFirstLogin"] = ViAuthorisationConversions::boolToQString(policies.getChangeAtFirstLogin()).toStdString();
+output["passwordHistory"] = ViAuthorisationConversions::boolToQString(policies.getPasswordHistory()).toStdString();
+output["passwordChanges"] = ViAuthorisationConversions::boolToQString(policies.getPasswordChanges()).toStdString();
+output["automaticLogoutNum"] = ViAuthorisationConversions::intToQString(policies.getAutomaticLogoutNum()).toStdString();
+output["blockAfterFailNum"] = ViAuthorisationConversions::intToQString(policies.getBlockAfterFailNum()).toStdString();
+output["passwordHistoryNum"] = ViAuthorisationConversions::intToQString(policies.getPasswordHistoryNum()).toStdString();
+output["passwordChangesNum"] = ViAuthorisationConversions::intToQString(policies.getPasswordChangesNum()).toStdString();
+output["minLength"] = ViAuthorisationConversions::boolToQString(policies.getMinLength()).toStdString();
+output["number"] = ViAuthorisationConversions::boolToQString(policies.getNumber()).toStdString();
+output["specialCharacter"] = ViAuthorisationConversions::boolToQString(policies.getSpecialCharacter()).toStdString();
+output["upperLowerCase"] = ViAuthorisationConversions::boolToQString(policies.getUpperLowerCase()).toStdString();
+output["minLengthNum"] = ViAuthorisationConversions::intToQString(policies.getMinLengthNum()).toStdString();
+
+//|]|user|.|
+output["firstName" ] = user->getFirstName().toStdString();
+output["lastName" ] = user->getLastName().toStdString();
+output["company" ] = user->getCompany().toStdString();
+output["department" ] = user->getDepartment().toStdString();
+output["language" ] = user->getLanguage().toStdString();
+output["country" ] = user->getCountry().toStdString();
+output["lastPasswordChange"] = ViAuthorisationConversions::qDateToQString(user->getLastPasswordChange()).toStdString();
+output["roles" ] = ViAuthorisationConversions::qStringListToQString(user->getRoles()).toStdString();
+output["computerGroups" ] = ViAuthorisationConversions::qStringListToQString(user->getComputerGroups()).toStdString();
+output["state" ] = ViAuthorisationConversions::boolToString(user->getState());
+output["validityUnlimited" ] = ViAuthorisationConversions::boolToString(user->getValidityUnlimited());
+output["validityDate" ] = ViAuthorisationConversions::qDateToString(user->getValidityDate());
+
+//|=|]|
+std::string automaticLogout = input["automaticLogout"];
+std::string blockAfterFail = input["blockAfterFail"];
+std::string changeAtFirstLogin = input["changeAtFirstLogin"];
+std::string passwordHistory = input["passwordHistory"];
+std::string passwordChanges = input["passwordChanges"];
+std::string automaticLogoutNum = input["automaticLogoutNum"];
+std::string blockAfterFailNum = input["blockAfterFailNum"];
+std::string passwordHistoryNum = input["passwordHistoryNum"];
+std::string passwordChangesNum = input["passwordChangesNum"];
+std::string minLength = input["minLength"];
+std::string number = input["number"];
+std::string specialCharacter = input["specialCharacter"];
+std::string upperLowerCase = input["upperLowerCase"];
+std::string minLengthNum = input["minLengthNum"];
+
+//|(|(|)|
+policies.setAutomaticLogout(ViAuthorisationConversions::qStringToBool(QString::fromStdString(automaticLogout)));
+policies.setBlockAfterFail(ViAuthorisationConversions::qStringToBool(QString::fromStdString(blockAfterFail)));
+policies.setChangeAtFirstLogin(ViAuthorisationConversions::qStringToBool(QString::fromStdString(changeAtFirstLogin)));
+policies.setPasswordHistory(ViAuthorisationConversions::qStringToBool(QString::fromStdString(passwordHistory)));
+policies.setPasswordChanges(ViAuthorisationConversions::qStringToBool(QString::fromStdString(passwordChanges)));
+policies.setAutomaticLogoutNum(ViAuthorisationConversions::qStringToInt(QString::fromStdString(automaticLogoutNum)));
+policies.setBlockAfterFailNum(ViAuthorisationConversions::qStringToInt(QString::fromStdString(blockAfterFailNum)));
+policies.setPasswordHistoryNum(ViAuthorisationConversions::qStringToInt(QString::fromStdString(passwordHistoryNum)));
+policies.setPasswordChangesNum(ViAuthorisationConversions::qStringToInt(QString::fromStdString(passwordChangesNum)));
+policies.setMinLength(ViAuthorisationConversions::qStringToBool(QString::fromStdString(minLength)));
+policies.setNumber(ViAuthorisationConversions::qStringToBool(QString::fromStdString(number)));
+policies.setSpecialCharacter(ViAuthorisationConversions::qStringToBool(QString::fromStdString(specialCharacter)));
+policies.setUpperLowerCase(ViAuthorisationConversions::qStringToBool(QString::fromStdString(upperLowerCase)));
+policies.setMinLengthNum(ViAuthorisationConversions::qStringToInt(QString::fromStdString(minLengthNum)));
+
+//|(|(input|]|
+user->setFirstName(QString::fromStdString(input["firstName"]));
+user->setLastName(QString::fromStdString(input["lastName"]));
+user->setCompany(QString::fromStdString(input["company"]));
+user->setDepartment(QString::fromStdString(input["department"]));
+user->setLanguage(QString::fromStdString(input["language"]));
+user->setCountry(QString::fromStdString(input["country"]));
+user->setRoles(ViAuthorisationConversions::qStringToQStringList(QString::fromStdString(input["roles"])));
+user->setComputerGroups(ViAuthorisationConversions::qStringToQStringList(QString::fromStdString(input["computerGroups"])));
+user->setState(ViAuthorisationConversions::stringToBool(input["state"]));
+user->setValidityUnlimited(ViAuthorisationConversions::stringToBool(input["validityUnlimited"]));
+user->setValidityDate(ViAuthorisationConversions::stringToQDate(input["validityDate"]));
