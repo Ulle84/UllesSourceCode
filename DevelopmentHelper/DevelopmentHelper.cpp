@@ -19,6 +19,7 @@
 #include "FileOrDirSelector.h"
 #include "PackageHelper.h"
 #include "TextConverter.h"
+#include "BlockCodeFormatter.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   QMainWindow(parent),
@@ -45,6 +46,7 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   //m_widgets["File or Dir Selector"] = new FileOrDirSelector(this);
   m_widgets["Package Helper"] = new PackageHelper(this);
   m_widgets["Text Converter"] = new TextConverter(this);
+  m_widgets["Block Code Formatter"] = new BlockCodeFormatter(this);
 
   bool firstWidget = true;
 
@@ -59,6 +61,7 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   if (m_settings->contains("activeTabNumber"))
   {
     int activeTabNumber = m_settings->value("activeTabNumber").toInt();
+
     if (activeTabNumber < ui->comboBox->count())
     {
       ui->comboBox->setCurrentIndex(activeTabNumber);

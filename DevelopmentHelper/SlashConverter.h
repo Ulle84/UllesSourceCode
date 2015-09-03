@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class SlashConverter;
 }
 
@@ -12,7 +13,7 @@ class SlashConverter : public QWidget
   Q_OBJECT
 
 public:
-  explicit SlashConverter(QWidget *parent = 0);
+  explicit SlashConverter(QWidget* parent = 0);
   ~SlashConverter();
 
 private slots:
@@ -22,7 +23,7 @@ private slots:
 private:
   void updateText(const QString& text);
 
-  Ui::SlashConverter *ui;
+  Ui::SlashConverter* ui;
 };
 
 #endif // SLASHCONVERTER_H

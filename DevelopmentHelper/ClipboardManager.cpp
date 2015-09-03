@@ -30,10 +30,7 @@ ClipboardManager::ClipboardManager(QWidget* parent) :
   ui->listViewClipbaordHistory->setAlternatingRowColors(true);
   ui->listViewClipbaordHistory->setStyleSheet("alternate-background-color: darkgrey;");
 
-  connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
   connect(ui->listViewClipbaordHistory, SIGNAL(clicked(QModelIndex)), this, SLOT(historyToClipboard()));
-
-  clipboardDataChanged();
 }
 
 ClipboardManager::~ClipboardManager()
@@ -91,4 +88,18 @@ void ClipboardManager::on_pushButtonClearClipboard_clicked()
 {
   QApplication::clipboard()->clear();
   ui->plainTextEditCurrentClipboard->clear();
+}
+
+void ClipboardManager::on_checkBox_stateChanged(int state)
+{
+  if (state == Qt::Checked)
+  {
+    connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
+    clipboardDataChanged();
+  }
+  else
+  {
+    ui->plainTextEditCurrentClipboard->clear();
+    disconnect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
+  }
 }

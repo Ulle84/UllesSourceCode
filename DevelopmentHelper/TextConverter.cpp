@@ -3,7 +3,7 @@
 #include "TextConverter.h"
 #include "ui_TextConverter.h"
 
-TextConverter::TextConverter(QWidget *parent) :
+TextConverter::TextConverter(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::TextConverter)
 {

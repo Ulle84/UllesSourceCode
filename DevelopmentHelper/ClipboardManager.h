@@ -25,6 +25,7 @@ private slots:
   void historyToClipboard();
   void on_pushButtonClearHistory_clicked();
   void on_pushButtonClearClipboard_clicked();
+  void on_checkBox_stateChanged(int state);
 
 private:
   void update();

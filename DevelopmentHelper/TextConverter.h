@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class TextConverter;
 }
 
@@ -12,11 +13,11 @@ class TextConverter : public QWidget
   Q_OBJECT
 
 public:
-  explicit TextConverter(QWidget *parent = 0);
+  explicit TextConverter(QWidget* parent = 0);
   ~TextConverter();
 
 private:
-  Ui::TextConverter *ui;
+  Ui::TextConverter* ui;
 };
 
 #endif // TEXTCONVERTER_H

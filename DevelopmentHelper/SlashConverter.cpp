@@ -3,7 +3,7 @@
 #include "SlashConverter.h"
 #include "ui_SlashConverter.h"
 
-SlashConverter::SlashConverter(QWidget *parent) :
+SlashConverter::SlashConverter(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::SlashConverter)
 {
@@ -27,7 +27,7 @@ void SlashConverter::on_pushButtonConvertToFowardSlash_clicked()
   updateText(converted);
 }
 
-void SlashConverter::updateText(const QString &text)
+void SlashConverter::updateText(const QString& text)
 {
   ui->lineEdit->setText(text);
   QApplication::clipboard()->setText(text);

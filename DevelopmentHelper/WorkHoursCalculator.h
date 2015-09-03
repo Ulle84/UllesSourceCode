@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class WorkHoursCalculator;
 }
 
@@ -12,7 +13,7 @@ class WorkHoursCalculator : public QWidget
   Q_OBJECT
 
 public:
-  explicit WorkHoursCalculator(QWidget *parent = 0);
+  explicit WorkHoursCalculator(QWidget* parent = 0);
   ~WorkHoursCalculator();
 
 private slots:
@@ -22,7 +23,7 @@ private:
   int timeStringToMinutes(const QString& timeString);
   QString minutesToTimeString(int minutes);
 
-  Ui::WorkHoursCalculator *ui;
+  Ui::WorkHoursCalculator* ui;
 };
 
 #endif // WORKHOURSCALCULATOR_H

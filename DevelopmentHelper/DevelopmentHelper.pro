@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     PackageHelper.cpp \
     WorkHoursCalculator.cpp \
     TextConverter.cpp \
-    SlashConverter.cpp
+    SlashConverter.cpp \
+    BlockCodeFormatter.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -57,7 +58,8 @@ HEADERS  += DevelopmentHelper.h \
     PackageHelper.h \
     WorkHoursCalculator.h \
     TextConverter.h \
-    SlashConverter.h
+    SlashConverter.h \
+    BlockCodeFormatter.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -80,4 +82,5 @@ FORMS    += DevelopmentHelper.ui \
     PackageHelper.ui \
     WorkHoursCalculator.ui \
     TextConverter.ui \
-    SlashConverter.ui
+    SlashConverter.ui \
+    BlockCodeFormatter.ui

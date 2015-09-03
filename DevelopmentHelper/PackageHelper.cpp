@@ -43,6 +43,7 @@ void PackageHelper::on_lineEdit_returnPressed()
   {
     QString packageName = ui->lineEdit->text();
     QString packageBaseDirectory;
+
     if (packageName.startsWith("ViQtWidget"))
     {
       packageBaseDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViQtWidgets";
@@ -63,6 +64,7 @@ void PackageHelper::on_lineEdit_returnPressed()
     {
       packageBaseDirectory = "\\\\buildmachine1\\Download\\Packages\\Internal";
     }
+
     ui->label->setText(QString("%1\\%2").arg(packageBaseDirectory).arg(packageName));
   }
 }

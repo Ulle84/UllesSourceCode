@@ -1,7 +1,7 @@
 #include "WorkHoursCalculator.h"
 #include "ui_WorkHoursCalculator.h"
 
-WorkHoursCalculator::WorkHoursCalculator(QWidget *parent) :
+WorkHoursCalculator::WorkHoursCalculator(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::WorkHoursCalculator)
 {
@@ -32,7 +32,7 @@ void WorkHoursCalculator::on_pushButtonCalculateEndOfDay_clicked()
   ui->labelEndOfDay->setText(minutesToTimeString(endOfDay));
 }
 
-int WorkHoursCalculator::timeStringToMinutes(const QString &timeString)
+int WorkHoursCalculator::timeStringToMinutes(const QString& timeString)
 {
   QStringList seperated = timeString.split(':');
 
