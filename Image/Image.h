@@ -21,6 +21,8 @@ color
 - median
 */
 
+// implementation with templates possible?
+
 
 class Image
 {

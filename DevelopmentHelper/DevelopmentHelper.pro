@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     SlashConverter.cpp \
     BlockCodeFormatter.cpp \
     ProjectCleaner.cpp \
-    ProjectCleanerConfirmation.cpp
+    ProjectCleanerConfirmation.cpp \
+    ProjectRenamer.cpp
 
 HEADERS  += DevelopmentHelper.h \
     StashHelper.h \
@@ -63,7 +64,8 @@ HEADERS  += DevelopmentHelper.h \
     SlashConverter.h \
     BlockCodeFormatter.h \
     ProjectCleaner.h \
-    ProjectCleanerConfirmation.h
+    ProjectCleanerConfirmation.h \
+    ProjectRenamer.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -89,4 +91,5 @@ FORMS    += DevelopmentHelper.ui \
     SlashConverter.ui \
     BlockCodeFormatter.ui \
     ProjectCleaner.ui \
-    ProjectCleanerConfirmation.ui
+    ProjectCleanerConfirmation.ui \
+    ProjectRenamer.ui
