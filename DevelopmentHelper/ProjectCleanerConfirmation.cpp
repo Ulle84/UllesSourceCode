@@ -1,7 +1,7 @@
 #include "ProjectCleanerConfirmation.h"
 #include "ui_ProjectCleanerConfirmation.h"
 
-ProjectCleanerConfirmation::ProjectCleanerConfirmation(QWidget *parent) :
+ProjectCleanerConfirmation::ProjectCleanerConfirmation(QWidget* parent) :
   QDialog(parent),
   ui(new Ui::ProjectCleanerConfirmation)
 {
@@ -13,7 +13,7 @@ ProjectCleanerConfirmation::~ProjectCleanerConfirmation()
   delete ui;
 }
 
-void ProjectCleanerConfirmation::setFilesToDelete(const QStringList &filesToDelete)
+void ProjectCleanerConfirmation::setFilesToDelete(const QStringList& filesToDelete)
 {
   ui->plainTextEditFilesToDelete->setPlainText(filesToDelete.join("\n"));
 }

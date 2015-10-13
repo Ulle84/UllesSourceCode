@@ -4,7 +4,8 @@
 #include <QDialog>
 #include <QStringList>
 
-namespace Ui {
+namespace Ui
+{
 class ProjectCleanerConfirmation;
 }
 
@@ -13,13 +14,13 @@ class ProjectCleanerConfirmation : public QDialog
   Q_OBJECT
 
 public:
-  explicit ProjectCleanerConfirmation(QWidget *parent = 0);
+  explicit ProjectCleanerConfirmation(QWidget* parent = 0);
   ~ProjectCleanerConfirmation();
 
   void setFilesToDelete(const QStringList& filesToDelete);
 
 private:
-  Ui::ProjectCleanerConfirmation *ui;
+  Ui::ProjectCleanerConfirmation* ui;
 };
 
 #endif // PROJECTCLEANERCONFIRMATION_H

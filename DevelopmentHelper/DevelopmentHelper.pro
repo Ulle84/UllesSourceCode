@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         DevelopmentHelper.cpp \
-    StashHelper.cpp \
     LogFileViewer.cpp \
     CodeAssistant.cpp \
     ConverterBase64.cpp \
@@ -38,10 +37,10 @@ SOURCES += main.cpp\
     BlockCodeFormatter.cpp \
     ProjectCleaner.cpp \
     ProjectCleanerConfirmation.cpp \
-    ProjectRenamer.cpp
+    ProjectRenamer.cpp \
+    BitbucketHelper.cpp
 
 HEADERS  += DevelopmentHelper.h \
-    StashHelper.h \
     LogFileViewer.h \
     CodeAssistant.h \
     ConverterBase64.h \
@@ -65,7 +64,8 @@ HEADERS  += DevelopmentHelper.h \
     BlockCodeFormatter.h \
     ProjectCleaner.h \
     ProjectCleanerConfirmation.h \
-    ProjectRenamer.h
+    ProjectRenamer.h \
+    BitbucketHelper.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -92,4 +92,5 @@ FORMS    += DevelopmentHelper.ui \
     BlockCodeFormatter.ui \
     ProjectCleaner.ui \
     ProjectCleanerConfirmation.ui \
-    ProjectRenamer.ui
+    ProjectRenamer.ui \
+    BitbucketHelper.ui

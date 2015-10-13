@@ -1,15 +1,15 @@
-#include "StashHelper.h"
-#include "ui_StashHelper.h"
+#include "BitbucketHelper.h"
+#include "ui_BitbucketHelper.h"
 
 #include <QClipboard>
 
-StashHelper::StashHelper(QWidget* parent) :
+BitbucketHelper::BitbucketHelper(QWidget* parent) :
   QWidget(parent),
-  ui(new Ui::StashHelper)
+  ui(new Ui::BitbucketHelper)
 {
   ui->setupUi(this);
 
-  m_settings = new QSettings("Ulle", "DevelopmentHelper.StashHelper", this);
+  m_settings = new QSettings("Ulle", "DevelopmentHelper.BitbucketHelper", this);
 
   m_projectCodes["Base"] = "base";
   m_projectCodes["IndVisualStudioTemplates"] = "invst";
@@ -39,7 +39,7 @@ StashHelper::StashHelper(QWidget* parent) :
   setStashUrl();
 }
 
-StashHelper::~StashHelper()
+BitbucketHelper::~BitbucketHelper()
 {
   m_settings->setValue("project", ui->comboBoxProject->currentText());
   m_settings->setValue("repository", ui->lineEditRepository->text());
@@ -47,7 +47,7 @@ StashHelper::~StashHelper()
   delete ui;
 }
 
-void StashHelper::on_lineEditRepository_returnPressed()
+void BitbucketHelper::on_lineEditRepository_returnPressed()
 {
   QString repository = ui->lineEditRepository->text();
 
@@ -79,12 +79,12 @@ void StashHelper::on_lineEditRepository_returnPressed()
   setStashUrl();
 }
 
-void StashHelper::on_comboBoxProject_currentIndexChanged(const QString& project)
+void BitbucketHelper::on_comboBoxProject_currentIndexChanged(const QString& project)
 {
   setStashUrl();
 }
 
-void StashHelper::setStashUrl()
+void BitbucketHelper::setStashUrl()
 {
   QString stashUrl = "http://ube@stash.vitronic.de:7990/scm/";
   stashUrl.append(m_projectCodes[ui->comboBoxProject->currentText()]);
@@ -95,12 +95,12 @@ void StashHelper::setStashUrl()
   ui->lineEditStashUrl->setText(stashUrl);
 }
 
-void StashHelper::on_pushButtonRepositoryToClipoard_clicked()
+void BitbucketHelper::on_pushButtonRepositoryToClipoard_clicked()
 {
   QApplication::clipboard()->setText(ui->lineEditRepository->text());
 }
 
-void StashHelper::on_pushButtonStashUrlToClipboard_clicked()
+void BitbucketHelper::on_pushButtonStashUrlToClipboard_clicked()
 {
   QApplication::clipboard()->setText(ui->lineEditStashUrl->text());
 }

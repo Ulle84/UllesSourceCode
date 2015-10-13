@@ -8,7 +8,7 @@
 #include "ProjectCleanerConfirmation.h"
 #include "ui_ProjectCleaner.h"
 
-ProjectCleaner::ProjectCleaner(QWidget *parent) :
+ProjectCleaner::ProjectCleaner(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::ProjectCleaner)
 {
@@ -20,6 +20,7 @@ ProjectCleaner::ProjectCleaner(QWidget *parent) :
   {
     m_directory = m_settings->value("directory").toString();
   }
+
   if (m_settings->contains("filter"))
   {
     ui->lineEditFilter->setText(m_settings->value("filter").toString());
@@ -49,6 +50,7 @@ void ProjectCleaner::on_pushButtonChooseDirectory_clicked()
   QStringList filesToDelete;
 
   QDirIterator it(m_directory, filePatterns, QDir::Files | QDir::AllEntries | QDir::Hidden | QDir::System, QDirIterator::Subdirectories);
+
   while (it.hasNext())
   {
     filesToDelete.append(it.next());

@@ -8,7 +8,6 @@
 #include "DateTimeHelper.h"
 #include "HtmlTableGenerator.h"
 #include "LogFileViewer.h"
-#include "StashHelper.h"
 #include "CryptoHelper.h"
 #include "ClipboardManager.h"
 #include "ColorPicker.h"
@@ -21,6 +20,7 @@
 #include "TextConverter.h"
 #include "BlockCodeFormatter.h"
 #include "ProjectCleaner.h"
+#include "BitbucketHelper.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   QMainWindow(parent),
@@ -31,7 +31,7 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
 
   m_settings = new QSettings("Ulle", "DevelopmentHelper", this);
 
-  m_widgets["Stash"] = new StashHelper(this);
+  m_widgets["Bitbucket Helper"] = new BitbucketHelper(this);
   m_widgets["Log File Viewer"] = new LogFileViewer(this);
   m_widgets["Code Assistant"] = new CodeAssistant(this);
   m_widgets["Converter Base64"] = new ConverterBase64(this);
