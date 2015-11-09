@@ -86,7 +86,7 @@ void BitbucketHelper::on_comboBoxProject_currentIndexChanged(const QString& proj
 
 void BitbucketHelper::setStashUrl()
 {
-  QString stashUrl = "http://ube@stash.vitronic.de:7990/scm/";
+  QString stashUrl = "http://ube@bitbucket.vitronic.de:7990/scm/";
   stashUrl.append(m_projectCodes[ui->comboBoxProject->currentText()]);
   stashUrl.append("/");
   stashUrl.append(ui->lineEditRepository->text().toLower());
