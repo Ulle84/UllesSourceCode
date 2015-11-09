@@ -14,7 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
   setCentralWidget(imageDisplay);
 
   m_image = new Image(512, 400);
-  m_image->setIncreasingPixelValues();
+  //m_image->setIncreasingPixelValues();
+  m_image->sedRandomPixelValues();
+  m_image->binarize(127);
+  //m_image->filterMean(13);
 
   imageDisplay->setImage(m_image);
 }

@@ -138,6 +138,63 @@ void Image::setIncreasingPixelValues()
   }
 }
 
+void Image::sedRandomPixelValues()
+{
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    m_pixels[i] = rand() % 256;
+  }
+}
+
+void Image::erode(unsigned int filterSize)
+{
+  for (int y = 0; y < m_height; y++)
+  {
+    for (int x = 0; x < m_width; x++)
+    {
+      // TODO implement
+    }
+  }
+}
+
+void Image::filterMean(unsigned int filterSize)
+{
+  int offset = filterSize / 2;
+  double calculatedValue;
+
+  for (int y = offset; y < (m_height - offset); y++)
+  {
+    for (int x = offset; x < (m_width - offset); x++)
+    {
+      calculatedValue = 0;
+      for (int fx = -offset; fx <= offset; fx++)
+      {
+        for (int fy = -offset; fy <= offset; fy++)
+        {
+          calculatedValue += m_matrix[y+fy][x+fx];
+        }
+      }
+      calculatedValue /= (filterSize * filterSize);
+      m_matrix[y][x] = calculatedValue + 0.5;
+    }
+  }
+}
+
+void Image::binarize(unsigned char threshold)
+{
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    if (m_pixels[i] <= threshold)
+    {
+      m_pixels[i] = 0;
+    }
+    else
+    {
+      m_pixels[i] = 255;
+    }
+  }
+}
+
 void Image::printToConsole(const std::string& description) const
 {
   std::cout << "--------------------------------------------------------------------------------" << std::endl;
