@@ -27,6 +27,8 @@ ImageDisplay::ImageDisplay(QWidget *parent) :
   ui->graphicsView->show();
 
   ui->graphicsView->installEventFilter(this);
+  ui->graphicsView->verticalScrollBar()->installEventFilter(this);
+  ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
 
   m_scene = new QGraphicsScene();
 }
@@ -39,7 +41,7 @@ ImageDisplay::~ImageDisplay()
 
 bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 {
-  if (target == ui->graphicsView || target == ui->graphicsView->verticalScrollBar())
+  if (target == ui->graphicsView || target == ui->graphicsView->verticalScrollBar() || target == ui->graphicsView->horizontalScrollBar())
   {    
     if (event->type() == QEvent::KeyPress)
     {
@@ -65,7 +67,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
       qreal factor = qPow(1.2, wheelEvent->delta() / 240.0);
       ui->graphicsView->scale(factor, factor);
-      event->accept();
+      return true;
     }
   }
   return QWidget::eventFilter(target, event);
