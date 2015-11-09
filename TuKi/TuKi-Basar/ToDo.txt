@@ -5,8 +5,15 @@ ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - Feedback - ARtikelliste wurde erfolgreich exportiert
 - artikel nach baszar wieder rauslöschen -> Rückgabefunktion
-- Abweichungen weglassen, wenn keine Abweichungen vorhanden
-- Verkäufer-Ausdruck: "Header" wiederholen
+  - ArticleManager::returnArticle(...) nach erfolgreichem Beenden des Dialogs aufrufen
+  - reset:
+    - (*it)->m_soldOnPc = pcNumber;
+    - (*it)->m_soldTime = soldTime;
+  - betroffen
+    - aktueller verkauf
+    - VErkaufshistorie
+    - Auswertungen
+- Verkäufer-Ausdruck: "Header" wiederholen -> verifzieren, dass Ausdruck korrekt ist - ggf. Funktion Evaluation::createHtmlCodeSoldArticles() anpassen
 
 Nice to have
 --------------------------------------------------------------------------------

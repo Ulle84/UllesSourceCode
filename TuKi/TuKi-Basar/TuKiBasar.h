@@ -22,6 +22,7 @@ public:
   ~TuKiBasar();
 
 private slots:
+  void on_actionArticleReturn_triggered();
   void on_actionSettings_triggered();
   void on_actionEvaluation_triggered();
   void on_actionImportArticleLists_triggered();

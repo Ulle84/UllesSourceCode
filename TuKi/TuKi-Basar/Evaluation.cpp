@@ -285,14 +285,15 @@ QString Evaluation::createHtmlCodeSoldArticles()
         html.append("</tr>");
         html.append("<tr>");
         html.append(QString("<td>Name</td>"));
+
+        QString sellerName;
+
         if (seller != 0)
         {
-            html.append(QString("<td>%1</td>").arg(seller->m_firstName + " " + seller->m_lastName));
+            sellerName = seller->m_firstName + " " + seller->m_lastName;
         }
-        else
-        {
-            html.append(QString("<td></td>"));
-        }
+
+        html.append(QString("<td>%1</td>").arg(sellerName));
         html.append("</tr>");
         html.append("<tr>");
         html.append(QString("<td>Telefon</td>"));
@@ -325,21 +326,32 @@ QString Evaluation::createHtmlCodeSoldArticles()
             continue;
         }
 
+        bool columnDiscrepancyNeeded = false;
+        for (std::map<int, double>::iterator itA = articles.begin(); itA != articles.end(); ++itA)
+        {
+            Article* article = m_articleManager->getArticle(it->first, itA->first);
+            if (article->m_prize != article->m_listPrize)
+            {
+                columnDiscrepancyNeeded = true;
+            }
+        }
+
         //html.append("<h2>Liste der verkauften Artikel</h2>");
         html.append("<br />");
         html.append("<table>");
-        appendSoldArticleHeader(html);
+        appendSoldArticleHeader(html, columnDiscrepancyNeeded);
 
         int counter = 0;
         for (std::map<int, double>::iterator itA = articles.begin(); itA != articles.end(); ++itA)
         {
-            if (counter != 0 && ((counter - 37) % 44 == 0))
+            if (counter != 0 && ((counter - 37) % 42 == 0)) // %44
             {
                 html.append("</table>");
                 html.append("</div>");
                 html.append("<div class=\"page\">");
+                html.append(QString("<h2>Liste der verkauften Artikel von Verkäufer %1 - %2</h2>").arg(it->first).arg(sellerName));
                 html.append("<table>");
-                appendSoldArticleHeader(html);
+                appendSoldArticleHeader(html, columnDiscrepancyNeeded);
             }
 
             Article* article = m_articleManager->getArticle(it->first, itA->first);
@@ -352,14 +364,18 @@ QString Evaluation::createHtmlCodeSoldArticles()
             html.append(QString("<td>%1</td>").arg(article->m_size));
             html.append(QString("<td>%1</td>").arg(article->m_description));
 
-            if (article->m_prize != article->m_listPrize)
+            if (columnDiscrepancyNeeded)
             {
-                html += QString("<td>Listenpreis: %1 &euro;</td>").arg(Converter::prizeToString(article->m_listPrize));
+                if (article->m_prize != article->m_listPrize)
+                {
+                    html += QString("<td>Listenpreis: %1 &euro;</td>").arg(Converter::prizeToString(article->m_listPrize));
+                }
+                else
+                {
+                    html += "<td></td>";
+                }
             }
-            else
-            {
-                html += "<td></td>";
-            }
+
 
             //html += QString("<td>%1</td>").arg(article->m_soldOnPc);
 
@@ -469,14 +485,17 @@ QString Evaluation::createHtmlCodeUnsoldArticles()
     return html;
 }
 
-void Evaluation::appendSoldArticleHeader(QString &html)
+void Evaluation::appendSoldArticleHeader(QString &html, bool columnDiscrepancyNeeded)
 {
     html.append("<tr>");
     html.append("<th>Artikelnummer</th>");
     html.append("<th>Preis</th>");
     html.append("<th>Größe</th>");
     html.append("<th>Artikelbeschreibung</th>");
-    html.append("<th>Abweichungen</th>");
+    if (columnDiscrepancyNeeded)
+    {
+        html.append("<th>Abweichungen</th>");
+    }
     //html.append("<th>Kasse</th>");
     html.append("</tr>");
 }
