@@ -97,7 +97,7 @@ void Image::setPixelValue(unsigned int x, unsigned int y, unsigned char value)
   if (x < m_width && y < m_height)
   {
     m_matrix[y][x] = value;
-  }  
+  }
 }
 
 unsigned char Image::getPixelValue(unsigned int x, unsigned int y) const
@@ -109,7 +109,7 @@ unsigned char Image::getPixelValue(unsigned int x, unsigned int y) const
   else
   {
     return 0;
-  }  
+  }
 }
 
 unsigned int Image::getHeight() const
@@ -130,6 +130,32 @@ unsigned char** Image::getMatrix() const
 unsigned char* Image::getPixels() const
 {
   return m_pixels;
+}
+
+unsigned char Image::getMinimum() const
+{
+  unsigned char minimum = 255;
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    if(m_pixels[i] < minimum)
+    {
+      minimum = m_pixels[i];
+    }
+  }
+  return minimum;
+}
+
+unsigned char Image::getMaximum() const
+{
+  unsigned char maximum = 0;
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    if(m_pixels[i] > maximum)
+    {
+      maximum = m_pixels[i];
+    }
+  }
+  return maximum;
 }
 
 void Image::setIncreasingPixelValues()
@@ -237,6 +263,80 @@ void Image::binarize(unsigned char threshold)
     {
       m_pixels[i] = 255;
     }
+  }
+}
+
+void Image::spread()
+{
+  unsigned char maximum = getMaximum();
+  unsigned char minimum = getMinimum();
+
+  if ((maximum - minimum) == 0)
+  {
+    return;
+  }
+
+  // map minimum to zero
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    m_pixels[i] -= minimum;
+  }
+
+  // spread
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    m_pixels[i] = m_pixels[i] * 255 / (maximum - minimum);
+  }
+}
+
+bool Image::isPointInImage(const Point &point)
+{
+  return point.m_x < m_width && point.m_y < m_height;
+}
+
+void Image::markPoint(const Point &point, unsigned char value)
+{
+  if (isPointInImage(point))
+  {
+    m_matrix[point.m_y][point.m_x] = value;
+  }
+}
+
+void Image::markLine(unsigned int lineNumber, unsigned char value)
+{
+  if (lineNumber >= m_height)
+  {
+    return;
+  }
+
+  memset(&m_pixels[lineNumber * m_width], value, m_width);
+}
+
+void Image::markColumn(unsigned int columnNumber, unsigned char value)
+{
+  if (columnNumber >= m_width)
+  {
+    return;
+  }
+
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    m_matrix[y][columnNumber] = value;
+  }
+}
+
+void Image::markRectangle(const Rectangle &rectangle, unsigned char value)
+{
+  if (rectangle.m_topLeftCorner.m_x >= m_width || rectangle.m_topLeftCorner.m_y >= m_height)
+  {
+    return;
+  }
+
+  // TODO shrink rectangle if it does not fit in image
+
+  for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
+  {
+    memset(&m_pixels[y * m_width + rectangle.m_topLeftCorner.m_x], value, rectangle.m_width);
   }
 }
 

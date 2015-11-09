@@ -2,6 +2,9 @@
 
 #include <string>
 
+#include "Point.h"
+#include "Rectangle.h"
+
 class Image
 {
 public:
@@ -19,6 +22,8 @@ public:
   unsigned int getWidth() const;
   unsigned char** getMatrix() const;
   unsigned char* getPixels() const;
+  unsigned char getMinimum() const;
+  unsigned char getMaximum() const;
 
   void setAllPixelValues(unsigned char value);
   void setPixelValue(unsigned int x, unsigned int y, unsigned char value);
@@ -30,6 +35,14 @@ public:
   void filterMean(unsigned int filterSize);
 
   void binarize(unsigned char threshold);
+  void spread();
+
+  bool isPointInImage(const Point& point);
+
+  void markPoint(const Point& point, unsigned char value);
+  void markLine(unsigned int lineNumber, unsigned char value);
+  void markColumn(unsigned int columnNumber, unsigned char value);
+  void markRectangle(const Rectangle& rectangle, unsigned char value);
 
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);

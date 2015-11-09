@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     Image.cpp \
-    ImageDisplay.cpp
+    ImageDisplay.cpp \
+    Point.cpp \
+    Rectangle.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
-    ImageDisplay.h
+    ImageDisplay.h \
+    Point.h \
+    Rectangle.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
