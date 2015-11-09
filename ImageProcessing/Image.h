@@ -23,8 +23,9 @@ public:
   void setAllPixelValues(unsigned char value);
   void setPixelValue(unsigned int x, unsigned int y, unsigned char value);
   void setIncreasingPixelValues();
-  void sedRandomPixelValues();
+  void setRandomPixelValues();
 
+  void dilate(unsigned int filterSize);
   void erode(unsigned int filterSize);
   void filterMean(unsigned int filterSize);
 

@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <QDebug>
+
 #include "Image.h"
 
 Image::Image() :
@@ -138,7 +140,7 @@ void Image::setIncreasingPixelValues()
   }
 }
 
-void Image::sedRandomPixelValues()
+void Image::setRandomPixelValues()
 {
   for (unsigned int i = 0; i < m_height * m_width; i++)
   {
@@ -146,19 +148,62 @@ void Image::sedRandomPixelValues()
   }
 }
 
+void Image::dilate(unsigned int filterSize)
+{
+  Image original(*this);
+
+  int offset = filterSize / 2;
+
+  for (int y = offset; y < (m_height - offset); y++)
+  {
+    for (int x = offset; x < (m_width - offset); x++)
+    {
+      unsigned char maximum = 0;
+      for (int fy = -offset; fy <= offset; fy++)
+      {
+        for (int fx = -offset; fx <= offset; fx++)
+        {
+          if (original.m_matrix[y+fy][x+fx] > maximum)
+          {
+            maximum = original.m_matrix[y+fy][x+fx];
+          }
+        }
+      }
+      m_matrix[y][x] = maximum;
+    }
+  }
+}
+
 void Image::erode(unsigned int filterSize)
 {
-  for (int y = 0; y < m_height; y++)
+  Image original(*this);
+
+  int offset = filterSize / 2;
+
+  for (int y = offset; y < (m_height - offset); y++)
   {
-    for (int x = 0; x < m_width; x++)
+    for (int x = offset; x < (m_width - offset); x++)
     {
-      // TODO implement
+      unsigned char minimum = 255;
+      for (int fy = -offset; fy <= offset; fy++)
+      {
+        for (int fx = -offset; fx <= offset; fx++)
+        {
+          if (original.m_matrix[y+fy][x+fx] < minimum)
+          {
+            minimum = original.m_matrix[y+fy][x+fx];
+          }
+        }
+      }
+      m_matrix[y][x] = minimum;
     }
   }
 }
 
 void Image::filterMean(unsigned int filterSize)
 {
+  Image original(*this);
+
   int offset = filterSize / 2;
   double calculatedValue;
 
@@ -167,11 +212,11 @@ void Image::filterMean(unsigned int filterSize)
     for (int x = offset; x < (m_width - offset); x++)
     {
       calculatedValue = 0;
-      for (int fx = -offset; fx <= offset; fx++)
+      for (int fy = -offset; fy <= offset; fy++)
       {
-        for (int fy = -offset; fy <= offset; fy++)
+        for (int fx = -offset; fx <= offset; fx++)
         {
-          calculatedValue += m_matrix[y+fy][x+fx];
+          calculatedValue += original.m_matrix[y+fy][x+fx];
         }
       }
       calculatedValue /= (filterSize * filterSize);
