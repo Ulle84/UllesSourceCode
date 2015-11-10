@@ -33,13 +33,13 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     $body = 'Liebe(r) Verkäufer(in),<br /><br />';
     $body .= 'unter dem nachfolgenden Link steht ab sofort Ihre persönliche Online-Artikelliste bereit. <br/>';
     $body .= $link;
-    $body .= '<br/><br/>Bitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 05.03.2015  ein.<br /><br />';
+    $body .= '<br/><br/>Bitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 12.11.2015  ein.<br /><br />';
     $body .= 'Ihr TuKi-Team';
 
     $altBody = 'Liebe(r) Verkäufer(in),\n\n';
     $altBody .= 'unter dem nachfolgenden Link steht ab sofort Ihre persönliche Online-Artikelliste bereit.\n';
     $altBody .= $url;
-    $altBody .= '\n\nBitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 05.03.2015  ein.\n\n';
+    $altBody .= '\n\nBitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 12.11.2015  ein.\n\n';
     $altBody .= 'Ihr TuKi-Team';
 
     $mail = new PHPMailer;

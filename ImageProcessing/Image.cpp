@@ -326,13 +326,16 @@ void Image::markColumn(unsigned int columnNumber, unsigned char value)
 }
 
 void Image::markRectangle(const Rectangle &rectangle, unsigned char value)
-{
-  if (rectangle.m_topLeftCorner.m_x >= m_width || rectangle.m_topLeftCorner.m_y >= m_height)
+{  
+  if ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) >= m_width)
   {
     return;
   }
 
-  // TODO shrink rectangle if it does not fit in image
+  if ((rectangle.m_topLeftCorner.m_y + rectangle.m_height) >= m_height)
+  {
+    return;
+  }
 
   for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
   {

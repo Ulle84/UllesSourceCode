@@ -25,7 +25,3 @@ Ideas
 - Sprachausgabe des Preises
 - Abweichungen zwischen Listen- und Etikettpreis auswerten -> Übersicht: Anzahl der Abweichungen + Summe der Abweichungen
 - Spacer zwischen Verkäufer- und Artikelnummer
-
-Vor dem nächsten Basar
---------------------------------------------------------------------------------
-- Passwort-Schutz wieder scharf schalten

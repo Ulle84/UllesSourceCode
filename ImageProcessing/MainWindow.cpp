@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
   m_image = new Image(512, 400); // width % 4 needs to be zero!
   m_image->setRandomPixelValues();
 
+  // TODO do more image processing with image
+
   imageDisplay->setImage(m_image);
 }
 
