@@ -4,6 +4,7 @@
 
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+#include <QDebug>
 #include <QFile>
 #include <QVariant>
 #include <QDateTime>
@@ -615,4 +616,34 @@ int ArticleManager::getCountOfSoldArticles()
 QMap<QString, QList<Article*> > ArticleManager::getTransactions()
 {
     return m_transactions;
+}
+
+bool ArticleManager::returnArticle(int sellerNumber, int articleNumber)
+{
+    for (QList<Article*>::iterator it = m_currentSale.begin(); it != m_currentSale.end(); ++it)
+    {
+        if ((*it)->m_articleNumber == articleNumber && (*it)->m_sellerNumber == sellerNumber)
+        {
+            qDebug() << "found article in current sale -> article was returned";
+            (*it)->m_soldOnPc = 0;
+            (*it)->m_soldTime = "";
+            // TODO update UI?
+            return true;
+        }
+    }
+
+    for (QMap<QString, QList<Article*> >::iterator it = m_transactions.begin(); it != m_transactions.end(); ++it)
+    {
+        for (QList<Article*>::iterator it2 = it.value().begin(); it2 != it.value().end(); ++it2)
+        {
+            if ((*it2)->m_articleNumber == articleNumber && (*it2)->m_sellerNumber == sellerNumber)
+            {
+                qDebug() << "found article in sale history -> article was returned";
+                (*it2)->m_soldOnPc = 0;
+                (*it2)->m_soldTime = "";
+                // TODO update UI?
+                return true;
+            }
+        }
+    }
 }

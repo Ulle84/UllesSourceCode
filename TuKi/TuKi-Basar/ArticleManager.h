@@ -57,6 +57,8 @@ public:
 
   QMap<QString, QList<Article*> > getTransactions();
 
+  bool returnArticle(int sellerNumber, int articleNumber);
+
 private:
   QList<Article*> m_articles;
   QList<Article*> m_currentSale;
