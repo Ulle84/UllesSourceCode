@@ -24,8 +24,8 @@ public:
 private:
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
-  int m_eventCounter;
   bool m_ctrlButtonIsPressed;
+  const Image* m_image;
 };
 
 #endif // IMAGEDISPLAY_H
