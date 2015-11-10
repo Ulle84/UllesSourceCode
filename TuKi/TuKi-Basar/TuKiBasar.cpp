@@ -26,6 +26,7 @@
 #include "Converter.h"
 #include "SalesView.h"
 #include "PasswordInput.h"
+#include "ArticleReturn.h"
 
 TuKiBasar::TuKiBasar(QWidget *parent) :
     QMainWindow(parent),
@@ -47,14 +48,12 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
 
     ui->plainTextEditArticleList->setVisible(false); // TODO that GUI-element should be removed, but there is a problem with the QCloseEvent, when this element is removed in the UI-File
 
-
-    // TODO uncomment follwoing section to activate "password-login" again
-    /*ui->actionImportArticleLists->setVisible(false);
+    ui->actionImportArticleLists->setVisible(false);
     ui->actionExportSoldArticles->setVisible(false);
     ui->actionEvaluation->setVisible(false);
     ui->actionSettings->setVisible(false);
     ui->actionCompleteEvaluation->setVisible(false);
-    ui->actionDeactivateAdvancedAccess->setVisible(false);*/
+    ui->actionDeactivateAdvancedAccess->setVisible(false);
 
     // hide description since there have been big layout issues on PCs with Aspect Ratio 4:3
     ui->labelDescription->setVisible(false);
@@ -70,6 +69,12 @@ TuKiBasar::~TuKiBasar()
     delete m_sellerManager;
     delete m_settings;
     delete ui;
+}
+
+void TuKiBasar::on_actionArticleReturn_triggered()
+{
+    ArticleReturn articleReturn;
+    articleReturn.exec();
 }
 
 void TuKiBasar::on_actionSettings_triggered()

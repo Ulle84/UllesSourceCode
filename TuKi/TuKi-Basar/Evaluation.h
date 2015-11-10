@@ -30,7 +30,7 @@ private:
   QString createHtmlCodeSoldArticles();
   QString createHtmlCodeUnsoldArticles();
 
-  void appendSoldArticleHeader(QString& html);
+  void appendSoldArticleHeader(QString& html, bool columnDiscrepancyNeeded);
 
   Ui::Evaluation *ui;
   ArticleManager* m_articleManager;

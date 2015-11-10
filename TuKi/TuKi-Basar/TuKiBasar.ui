@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>709</width>
-    <height>760</height>
+    <height>844</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -521,13 +521,14 @@
      <x>0</x>
      <y>0</y>
      <width>709</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuErweitert">
     <property name="title">
      <string>Erweitert</string>
     </property>
+    <addaction name="actionArticleReturn"/>
     <addaction name="actionImportArticleLists"/>
     <addaction name="actionExportSoldArticles"/>
     <addaction name="actionEvaluation"/>
@@ -580,6 +581,11 @@
   <action name="actionDeactivateAdvancedAccess">
    <property name="text">
     <string>Erweiterten Zugang deaktivieren</string>
+   </property>
+  </action>
+  <action name="actionArticleReturn">
+   <property name="text">
+    <string>Artikel zurückgeben</string>
    </property>
   </action>
  </widget>
