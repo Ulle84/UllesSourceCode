@@ -44,6 +44,10 @@ public:
   void markColumn(unsigned int columnNumber, unsigned char value);
   void markRectangle(const Rectangle& rectangle, unsigned char value);
 
+  void mirrorOnHorizontalAxis();
+  void mirrorOnVerticalAxis();
+  void rotateBy90DegreeClockwise();
+
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);
 

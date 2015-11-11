@@ -14,9 +14,14 @@ MainWindow::MainWindow(QWidget *parent) :
   setCentralWidget(imageDisplay);
 
   m_image = new Image(512, 400); // width % 4 needs to be zero!
-  m_image->setRandomPixelValues();
+  m_image->markRectangle(Rectangle(Point(10, 10), 200, 100), 255);
+  m_image->rotateBy90DegreeClockwise();
 
-  // TODO do more image processing with image
+  /*m_image = new Image(8, 4);
+  m_image->setIncreasingPixelValues();
+  m_image->printToConsole("original");
+  m_image->rotateBy90DegreeClockwise();
+  m_image->printToConsole("rotatedBy90DegreeClockwise");*/
 
   imageDisplay->setImage(m_image);
 }

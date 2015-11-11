@@ -343,6 +343,53 @@ void Image::markRectangle(const Rectangle &rectangle, unsigned char value)
   }
 }
 
+void Image::mirrorOnHorizontalAxis()
+{
+  Image original(*this);
+
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    memcpy(&m_matrix[y][0], &(original.m_matrix[m_height - y - 1][0]), m_width);
+  }
+}
+
+void Image::mirrorOnVerticalAxis()
+{
+  Image original(*this);
+
+  for (unsigned int x = 0; x < m_width; x++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      m_matrix[y][x] = original.m_matrix[y][m_width - x - 1];
+    }
+  }
+}
+
+void Image::rotateBy90DegreeClockwise()
+{
+  Image original(*this);
+
+  m_width = original.m_height;
+  m_height = original.m_width;
+
+  delete[] m_matrix;
+  m_matrix = new unsigned char*[m_height];
+
+  for (unsigned int i = 0; i < m_height; i++)
+  {
+    m_matrix[i] = &m_pixels[i * m_width];
+  }
+
+  for (int y = 0; y < m_height; y++)
+  {
+    for (int x = 0; x < m_width; x++)
+    {
+      m_matrix[y][x] = original.m_matrix[original.m_height - x - 1][y];
+    }
+  }
+}
+
 void Image::printToConsole(const std::string& description) const
 {
   std::cout << "--------------------------------------------------------------------------------" << std::endl;
