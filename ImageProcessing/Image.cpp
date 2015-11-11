@@ -390,6 +390,37 @@ void Image::rotateBy90DegreeClockwise()
   }
 }
 
+void Image::rotateBy90DegreeCounterClockwise()
+{
+  Image original(*this);
+
+  m_width = original.m_height;
+  m_height = original.m_width;
+
+  delete[] m_matrix;
+  m_matrix = new unsigned char*[m_height];
+
+  /*for (unsigned int i = 0; i < m_height; i++)
+  {
+    m_matrix[i] = &m_pixels[i * m_width];
+  }*/
+
+  // TODO implement this function
+}
+
+void Image::rotateBy180Degree()
+{
+  Image original(*this);
+
+  for (int y = 0; y < m_height; y++)
+  {
+    for (int x = 0; x < m_width; x++)
+    {
+      m_matrix[y][x] = original.m_matrix[m_height - y - 1][m_width - x - 1];
+    }
+  }
+}
+
 void Image::printToConsole(const std::string& description) const
 {
   std::cout << "--------------------------------------------------------------------------------" << std::endl;

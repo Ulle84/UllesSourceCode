@@ -47,6 +47,8 @@ public:
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
   void rotateBy90DegreeClockwise();
+  void rotateBy90DegreeCounterClockwise();
+  void rotateBy180Degree();
 
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);
