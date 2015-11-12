@@ -32,6 +32,8 @@ public:
 
   void dilate(unsigned int filterSize);
   void erode(unsigned int filterSize);
+  void doOpening(unsigned int filterSize);
+  void doClosing(unsigned int filterSize);
   void filterMean(unsigned int filterSize);
 
   void binarize(unsigned char threshold);

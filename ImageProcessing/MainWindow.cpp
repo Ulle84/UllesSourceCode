@@ -15,7 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
   m_image = new Image(512, 400); // width % 4 needs to be zero!
   m_image->markRectangle(Rectangle(Point(10, 10), 200, 100), 255);
-  m_image->rotateBy90DegreeCounterClockwise();
+  m_image->markRectangle(Rectangle(Point(15, 15), 3, 3), 0);
+  m_image->markRectangle(Rectangle(Point(6, 6), 3, 3), 255);
+  //m_image->doClosing(7);
+  //m_image->doOpening(7);
+  //m_image->rotateBy90DegreeCounterClockwise();
 
   /*m_image = new Image(8, 4);
   m_image->setIncreasingPixelValues();

@@ -226,6 +226,18 @@ void Image::erode(unsigned int filterSize)
   }
 }
 
+void Image::doOpening(unsigned int filterSize)
+{
+  erode(filterSize);
+  dilate(filterSize);
+}
+
+void Image::doClosing(unsigned int filterSize)
+{
+  dilate(filterSize);
+  erode(filterSize);
+}
+
 void Image::filterMean(unsigned int filterSize)
 {
   Image original(*this);
