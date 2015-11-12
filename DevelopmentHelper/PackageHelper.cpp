@@ -42,30 +42,34 @@ void PackageHelper::on_lineEdit_returnPressed()
   else
   {
     QString packageName = ui->lineEdit->text();
-    QString packageBaseDirectory;
+    QString packageDirectory;
 
     if (packageName.startsWith("ViQtWidget"))
     {
-      packageBaseDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViQtWidgets";
+      packageDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViQtWidgets\\" + packageName;
     }
     else if (packageName.startsWith("Vi") && packageName.endsWith("Widget"))
     {
-      packageBaseDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViWidgets";
+      packageDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViWidgets\\" + packageName;
     }
     else if (packageName.startsWith("ViAcqui"))
     {
-      packageBaseDirectory = "\\\\dev1\\Vitronic\\ViBase\\ViAcqui";
+      packageDirectory = "\\\\dev1\\Vitronic\\ViBase\\ViAcqui\\" + packageName;
     }
     else if (packageName.startsWith("ViIO"))
     {
-      packageBaseDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViIO";
+      packageDirectory = "\\\\dev1\\Vitronic\\Industrie\\ViIO\\" + packageName;
     }
     else if (packageName.startsWith("Hwd"))
     {
-      packageBaseDirectory = "\\\\buildmachine1\\Download\\Packages\\Internal";
+      packageDirectory = "\\\\buildmachine1\\Download\\Packages\\Internal\\" + packageName;
+    }
+    else if (packageName.startsWith("ExtQt"))
+    {
+      packageDirectory = "\\\\DEV1\\Vitronic\\ViBase\\ExtQt";
     }
 
-    ui->label->setText(QString("%1\\%2").arg(packageBaseDirectory).arg(packageName));
+    ui->label->setText(QString("%1").arg(packageDirectory));
   }
 }
 
