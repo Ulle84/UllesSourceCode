@@ -180,9 +180,9 @@ void Image::dilate(unsigned int filterSize)
 
   int offset = filterSize / 2;
 
-  for (int y = offset; y < (m_height - offset); y++)
+  for (unsigned int y = offset; y < (m_height - offset); y++)
   {
-    for (int x = offset; x < (m_width - offset); x++)
+    for (unsigned int x = offset; x < (m_width - offset); x++)
     {
       unsigned char maximum = 0;
       for (int fy = -offset; fy <= offset; fy++)
@@ -206,9 +206,9 @@ void Image::erode(unsigned int filterSize)
 
   int offset = filterSize / 2;
 
-  for (int y = offset; y < (m_height - offset); y++)
+  for (unsigned int y = offset; y < (m_height - offset); y++)
   {
-    for (int x = offset; x < (m_width - offset); x++)
+    for (unsigned int x = offset; x < (m_width - offset); x++)
     {
       unsigned char minimum = 255;
       for (int fy = -offset; fy <= offset; fy++)
@@ -233,9 +233,9 @@ void Image::filterMean(unsigned int filterSize)
   int offset = filterSize / 2;
   double calculatedValue;
 
-  for (int y = offset; y < (m_height - offset); y++)
+  for (unsigned int y = offset; y < (m_height - offset); y++)
   {
-    for (int x = offset; x < (m_width - offset); x++)
+    for (unsigned int x = offset; x < (m_width - offset); x++)
     {
       calculatedValue = 0;
       for (int fy = -offset; fy <= offset; fy++)
@@ -381,9 +381,9 @@ void Image::rotateBy90DegreeClockwise()
     m_matrix[i] = &m_pixels[i * m_width];
   }
 
-  for (int y = 0; y < m_height; y++)
+  for (unsigned int y = 0; y < m_height; y++)
   {
-    for (int x = 0; x < m_width; x++)
+    for (unsigned int x = 0; x < m_width; x++)
     {
       m_matrix[y][x] = original.m_matrix[original.m_height - x - 1][y];
     }
@@ -400,21 +400,27 @@ void Image::rotateBy90DegreeCounterClockwise()
   delete[] m_matrix;
   m_matrix = new unsigned char*[m_height];
 
-  /*for (unsigned int i = 0; i < m_height; i++)
+  for (unsigned int i = 0; i < m_height; i++)
   {
     m_matrix[i] = &m_pixels[i * m_width];
-  }*/
+  }
 
-  // TODO implement this function
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      m_matrix[y][x] = original.m_matrix[x][original.m_width - y - 1];
+    }
+  }
 }
 
 void Image::rotateBy180Degree()
 {
   Image original(*this);
 
-  for (int y = 0; y < m_height; y++)
+  for (unsigned int y = 0; y < m_height; y++)
   {
-    for (int x = 0; x < m_width; x++)
+    for (unsigned int x = 0; x < m_width; x++)
     {
       m_matrix[y][x] = original.m_matrix[m_height - y - 1][m_width - x - 1];
     }
@@ -426,9 +432,9 @@ void Image::printToConsole(const std::string& description) const
   std::cout << "--------------------------------------------------------------------------------" << std::endl;
   std::cout << description << std::endl;
 
-  for (int y = 0; y < m_height; y++)
+  for (unsigned int y = 0; y < m_height; y++)
   {
-    for (int x = 0; x < m_width; x++)
+    for (unsigned int x = 0; x < m_width; x++)
     {
       if (m_matrix[y][x] < 10)
       {
