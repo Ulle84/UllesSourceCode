@@ -647,3 +647,12 @@ bool ArticleManager::returnArticle(int sellerNumber, int articleNumber)
         }
     }
 }
+
+void ArticleManager::sellAllArticles()
+{
+  for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); ++it)
+  {
+    (*it)->m_soldOnPc = m_settings->getPc();
+    (*it)->m_soldTime = DateTimeHelper::getCurrentDateAndTime();
+  }
+}

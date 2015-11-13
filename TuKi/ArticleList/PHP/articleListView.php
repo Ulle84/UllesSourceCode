@@ -24,6 +24,13 @@ if (isset($_GET['mode'])) {
     $mode = 'view';
 }
 
+$admin = false;
+if (isset($_GET['admin'])) {
+    if ($_GET['admin'] == "true") {
+        $admin = true;
+    }
+}
+
 $uniqueIdList = new UniqueIdList();
 $uniqueIdList->readFromFile("../Data/uniqueIds.txt");
 if (!$uniqueIdList->checkId($sellerNumber, $id)) {
@@ -47,6 +54,11 @@ if ($mode == 'edit') {
     else {
         $readOnly = false;
     }
+
+    if ($admin) {
+        $readOnly = false;
+    }
+
     $articleList->writeHtml($readOnly);
 }
 else {

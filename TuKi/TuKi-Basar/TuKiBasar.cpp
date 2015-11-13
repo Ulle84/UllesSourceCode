@@ -242,6 +242,8 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
     }
 
     mb.exec();
+
+    m_articleManager->sellAllArticles(); // TODO remove after testing!
 }
 
 void TuKiBasar::on_lineEditInput_returnPressed()

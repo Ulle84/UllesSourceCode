@@ -1,8 +1,11 @@
 Bugs
 --------------------------------------------------------------------------------
+- Verkaufshistorie wird nicht gelöscht, wenn man Aritkel importiert
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
+- Kram auf Windows zum Laufen bekommen und testen (insbesondere das GEenrieren von PDFs)!!!
+- sellAllArticles bei Artikel-Import wieder entfernen!!!
 - Feedback - ARtikelliste wurde erfolgreich exportiert
 - artikel nach baszar wieder rauslöschen -> Rückgabefunktion
   - ArticleManager::returnArticle(...) nach erfolgreichem Beenden des Dialogs aufrufen
@@ -14,6 +17,8 @@ ToDo (priorisiert)
     - VErkaufshistorie
     - Auswertungen
 - Verkäufer-Ausdruck: "Header" wiederholen -> verifzieren, dass Ausdruck korrekt ist - ggf. Funktion Evaluation::createHtmlCodeSoldArticles() anpassen
+- Liste der Artikel nach Preis sortiert
+- Wenn Artikel nicht im System hinterlegt, dann verifizeren, dass der Preis abgefragt wird -> Im Ausdruck für den Verkäufer entsprechenden Hinweis machen (nicht Listenpreis 0,00, sonder etwas aussagerkäftiges)
 
 Nice to have
 --------------------------------------------------------------------------------

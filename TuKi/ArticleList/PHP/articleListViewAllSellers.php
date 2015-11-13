@@ -25,7 +25,7 @@ for ($sellerNumber = $settings->minSellerNumber; $sellerNumber <= $settings->max
     $id = $uniqueIdList->getId($sellerNumber);
     $articleList = new ArticleList($sellerNumber, $id, $settings->minArticleNumber, $settings->maxArticleNumber);
 
-    echo '<a target="_blank" href="articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit">Liste für Verkäufer ' . $sellerNumber . '</a><br />';
+    echo '<a target="_blank" href="articleListView.php?seller=' . $sellerNumber . '&id=' . $id . '&mode=edit&admin=true">Liste für Verkäufer ' . $sellerNumber . '</a><br />';
 }
 
 ?>

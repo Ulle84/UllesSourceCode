@@ -22,7 +22,7 @@ public:
   void addArticle(Article* article);
   void clear();
   Article* getArticle(int sellerNumber, int articleNumber);
-  QList<Article*> getAllArticles(); // TODO delete after testing
+  QList<Article*> getAllArticles();
 
   void setFileName(QString fileName);
   QString getFileName();
@@ -58,6 +58,8 @@ public:
   QMap<QString, QList<Article*> > getTransactions();
 
   bool returnArticle(int sellerNumber, int articleNumber);
+
+  void sellAllArticles(); // this ist for testing purposes only!!!
 
 private:
   QList<Article*> m_articles;
