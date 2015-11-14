@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QStringList>
 #include <QMessageBox>
+#include <QTextCodec>
 #include <QTextStream>
 #include <QRegExp>
 #include <QRegExpValidator>
@@ -140,7 +141,8 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
   reply = QMessageBox::question(this, tr("Vorhandene Artikel löschen?"),
                                 tr("Möchten Sie die bereits importierten Artikel löschen?"),
                                 QMessageBox::Yes|QMessageBox::No);
-  if (reply == QMessageBox::Yes) {
+  if (reply == QMessageBox::Yes)
+  {
     m_articleManager->clear();
     m_sellerManager->clear();
   }
@@ -179,6 +181,7 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
 
     QStringList fileContent;
     QTextStream in(&file);
+    in.setCodec(QTextCodec::codecForName("UTF-8"));
     while (!in.atEnd())
     {
       fileContent.append(in.readLine());
@@ -218,6 +221,8 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
       continue;
     }
 
+    //qDebug() << fileContent.at(3) << fileContent.at(4);
+
     Seller* seller = new Seller(sellerNumber, fileContent.at(3), fileContent.at(4), fileContent.at(5));
     m_sellerManager->addSeller(seller);
 
@@ -242,6 +247,8 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
 
       QString size = fileContent.at(headerOffset + linesPerArticle * i + 2);
       QString description = fileContent.at(headerOffset + linesPerArticle * i + 3);
+
+      //qDebug() << sellerNumber << articleNumber << description;
 
       if (prize < 0.01 && description.isEmpty())
       {
@@ -271,8 +278,6 @@ void TuKiBasar::on_actionImportArticleLists_triggered()
   }
 
   mb.exec();
-
-  //m_articleManager->sellAllArticles(); // TODO remove after testing!
 }
 
 void TuKiBasar::on_lineEditInput_returnPressed()

@@ -4,10 +4,6 @@ Bugs
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
-- Kram auf Windows zum Laufen bekommen und testen (insbesondere das GEenrieren von PDFs)!!!
-- sellAllArticles bei Artikel-Import wieder entfernen!!!
-- Verkäufer-Ausdruck: "Header" wiederholen -> verifzieren, dass Ausdruck korrekt ist - ggf. Funktion Evaluation::createHtmlCodeSoldArticles() anpassen
-- Wenn Artikel nicht im System hinterlegt, dann verifizeren, dass der Preis abgefragt wird -> Im Ausdruck für den Verkäufer entsprechenden Hinweis machen (nicht Listenpreis 0,00, sonder etwas aussagerkäftiges)
 - update UI after returning article -> model view controler pattern?
 
 Nice to have
@@ -15,6 +11,8 @@ Nice to have
 - Richtige Darstellung der Umlaute auf Mac OS -> Qt 5.4 testen
 - Fortschrittsanzeige beim Exportieren auf USB-Stick
 - Liste der Artikel nach Preis sortiert
+- Gesamtübersicht: Namen der Verkäufer?
+- Gesamtübersicht: Summe -> Umsatz?
 
 Ideas
 --------------------------------------------------------------------------------
