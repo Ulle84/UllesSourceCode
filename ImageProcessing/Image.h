@@ -46,7 +46,7 @@ public:
 
   void drawPoint(const Point& point, unsigned char value);
   void drawRectangle(const Rectangle& rectangle, unsigned char value);
-  void drawCircle(const Point& center, unsigned int radius, unsigned char value);
+  void drawCircle(const Point& center, unsigned int radius, unsigned char value, bool fill);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
