@@ -1,29 +1,20 @@
 Bugs
 --------------------------------------------------------------------------------
-- Verkaufshistorie wird nicht gelöscht, wenn man Aritkel importiert
+- Verkaufshistorie wird nicht gelöscht, wenn man Aritkel importiert -> allgemein scheint es da Update-Probleme zu geben -> Workaround: SW starten, Artikel importieren -> SW neustarten
 
 ToDo (priorisiert)
 --------------------------------------------------------------------------------
 - Kram auf Windows zum Laufen bekommen und testen (insbesondere das GEenrieren von PDFs)!!!
 - sellAllArticles bei Artikel-Import wieder entfernen!!!
-- Feedback - ARtikelliste wurde erfolgreich exportiert
-- artikel nach baszar wieder rauslöschen -> Rückgabefunktion
-  - ArticleManager::returnArticle(...) nach erfolgreichem Beenden des Dialogs aufrufen
-  - reset:
-    - (*it)->m_soldOnPc = pcNumber;
-    - (*it)->m_soldTime = soldTime;
-  - betroffen
-    - aktueller verkauf
-    - VErkaufshistorie
-    - Auswertungen
 - Verkäufer-Ausdruck: "Header" wiederholen -> verifzieren, dass Ausdruck korrekt ist - ggf. Funktion Evaluation::createHtmlCodeSoldArticles() anpassen
-- Liste der Artikel nach Preis sortiert
 - Wenn Artikel nicht im System hinterlegt, dann verifizeren, dass der Preis abgefragt wird -> Im Ausdruck für den Verkäufer entsprechenden Hinweis machen (nicht Listenpreis 0,00, sonder etwas aussagerkäftiges)
+- update UI after returning article -> model view controler pattern?
 
 Nice to have
 --------------------------------------------------------------------------------
 - Richtige Darstellung der Umlaute auf Mac OS -> Qt 5.4 testen
 - Fortschrittsanzeige beim Exportieren auf USB-Stick
+- Liste der Artikel nach Preis sortiert
 
 Ideas
 --------------------------------------------------------------------------------

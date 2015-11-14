@@ -1,6 +1,8 @@
 ﻿#ifndef TUKIBASAR_H
 #define TUKIBASAR_H
 
+#include <QAction>
+#include <QList>
 #include <QMainWindow>
 
 class Article;
@@ -51,12 +53,14 @@ private:
   void calculateChange();
   void setCashPointNumber();
   void updateInformation();
+  void setPasswordProtectedActionsVisible(bool visible);
 
   Ui::TuKiBasar *ui;
   Settings* m_settings;
   Evaluation* m_evaluation;
   ArticleManager* m_articleManager;
   SellerManager* m_sellerManager;
+  QList<QAction*> m_passwortProtectedActions;
 };
 
 #endif // TUKIBASAR_H

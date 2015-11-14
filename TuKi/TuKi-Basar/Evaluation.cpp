@@ -368,7 +368,14 @@ QString Evaluation::createHtmlCodeSoldArticles()
             {
                 if (article->m_prize != article->m_listPrize)
                 {
+                  if (article->m_listPrize > 0.001)
+                  {
                     html += QString("<td>Listenpreis: %1 &euro;</td>").arg(Converter::prizeToString(article->m_listPrize));
+                  }
+                  else
+                  {
+                    html += QString("<td>Artikel wurde nicht online eingegeben.</td>");
+                  }
                 }
                 else
                 {
