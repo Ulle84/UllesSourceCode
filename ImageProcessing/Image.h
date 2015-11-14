@@ -41,10 +41,12 @@ public:
 
   bool isPointInImage(const Point& point);
 
-  void markPoint(const Point& point, unsigned char value);
   void markLine(unsigned int lineNumber, unsigned char value);
   void markColumn(unsigned int columnNumber, unsigned char value);
-  void markRectangle(const Rectangle& rectangle, unsigned char value);
+
+  void drawPoint(const Point& point, unsigned char value);
+  void drawRectangle(const Rectangle& rectangle, unsigned char value);
+  void drawCircle(const Point& center, unsigned int radius, unsigned char value);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();

@@ -27,3 +27,6 @@ HEADERS  += MainWindow.h \
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
+
+OTHER_FILES += \
+    ToDo.txt

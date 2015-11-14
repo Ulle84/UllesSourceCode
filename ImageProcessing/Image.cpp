@@ -306,7 +306,7 @@ bool Image::isPointInImage(const Point &point)
   return point.m_x < m_width && point.m_y < m_height;
 }
 
-void Image::markPoint(const Point &point, unsigned char value)
+void Image::drawPoint(const Point &point, unsigned char value)
 {
   if (isPointInImage(point))
   {
@@ -337,7 +337,7 @@ void Image::markColumn(unsigned int columnNumber, unsigned char value)
   }
 }
 
-void Image::markRectangle(const Rectangle &rectangle, unsigned char value)
+void Image::drawRectangle(const Rectangle &rectangle, unsigned char value)
 {  
   if ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) >= m_width)
   {
@@ -352,6 +352,43 @@ void Image::markRectangle(const Rectangle &rectangle, unsigned char value)
   for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
   {
     memset(&m_pixels[y * m_width + rectangle.m_topLeftCorner.m_x], value, rectangle.m_width);
+  }
+}
+
+void Image::drawCircle(const Point &center, unsigned int radius, unsigned char value)
+{
+  // code below copied from
+  // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+
+  int x = radius;
+  int y = 0;
+  int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+
+  while(y <= x)
+  {
+    // TODO fill -> memset from one point to another point
+    // 1st ocatant <-> 4th octant (mirrored on vertical axis)
+    // 2nd octant  <-> 3rd octant (mirrored on vertical axis)
+    // 4th octant - 8th octant can be copied on horizontal axis
+
+    m_matrix[ y + center.m_y][ x + center.m_x] = value; // Octant 1
+    m_matrix[ x + center.m_y][ y + center.m_x] = value; // Octant 2
+    m_matrix[ y + center.m_y][-x + center.m_x] = value; // Octant 4
+    m_matrix[ x + center.m_y][-y + center.m_x] = value; // Octant 3
+    m_matrix[-y + center.m_y][-x + center.m_x] = value; // Octant 5
+    m_matrix[-x + center.m_y][-y + center.m_x] = value; // Octant 6
+    m_matrix[-y + center.m_y][ x + center.m_x] = value; // Octant 8
+    m_matrix[-x + center.m_y][ y + center.m_x] = value; // Octant 7
+    y++;
+    if (decisionOver2 <= 0)
+    {
+      decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+    }
+    else
+    {
+      x--;
+      decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+    }
   }
 }
 
