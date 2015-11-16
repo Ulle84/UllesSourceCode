@@ -47,6 +47,7 @@ public:
   void drawPoint(const Point& point, unsigned char value);
   void drawRectangle(const Rectangle& rectangle, unsigned char value);
   void drawCircle(const Point& center, unsigned int radius, unsigned char value, bool fill);
+  void drawLine(const Point& p1, const Point& p2, unsigned char value);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
@@ -59,6 +60,9 @@ public:
 
 private:
   void initPixels();
+
+  unsigned int minimum(unsigned int value1, unsigned int value2);
+  unsigned int maximum(unsigned int value1, unsigned int value2);
 
   unsigned int m_width;
   unsigned int m_height;

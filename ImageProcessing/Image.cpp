@@ -87,6 +87,16 @@ void Image::initPixels()
   memset(m_pixels, 0, m_width * m_height);
 }
 
+unsigned int Image::minimum(unsigned int value1, unsigned int value2)
+{
+  return value1 < value2 ? value1 : value2;
+}
+
+unsigned int Image::maximum(unsigned int value1, unsigned int value2)
+{
+  return value1 > value2 ? value1 : value2;
+}
+
 void Image::setAllPixelValues(unsigned char value)
 {
   memset(m_pixels, value, m_width * m_height);
@@ -368,7 +378,7 @@ void Image::drawCircle(const Point &center, unsigned int radius, unsigned char v
   {
     if (fill)
     {
-      // TODO improve performance: memset is called "too often" for Octant 2 + 3 and Octant 6 + 7
+      // TODO improve performance: memset is called "too often" for first/last line in Octant 2 + 3 and Octant 6 + 7
       memset(&m_pixels[( y + center.m_y) * m_width - x + center.m_x], value, 2 * x + 1); //  Octant 1 + Octant 4
       memset(&m_pixels[( x + center.m_y) * m_width - y + center.m_x], value, 2 * y + 1); //  Octant 2 + Octant 3
 
@@ -399,6 +409,59 @@ void Image::drawCircle(const Point &center, unsigned int radius, unsigned char v
       x--;
       decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
     }
+  }
+}
+
+void Image::drawLine(const Point &p1, const Point &p2, unsigned char value)
+{
+  if (!isPointInImage(p1) || !isPointInImage(p2))
+  {
+    return;
+  }
+
+  if (p1.m_x == p2.m_x)
+  {
+    // draw vertical line
+    unsigned int min = minimum(p1.m_y, p2.m_y);
+    unsigned int max = maximum(p1.m_y, p2.m_y);
+
+    for (unsigned int i = min; i <= max; i++)
+    {
+      m_matrix[i][p1.m_x] = value;
+    }
+
+    return;
+  }
+
+  if (p1.m_y == p2.m_y)
+  {
+    // draw horizontal line
+    unsigned int min = minimum(p1.m_x, p2.m_x);
+    unsigned int max = maximum(p1.m_x, p2.m_x);
+
+    memset(&m_pixels[p1.m_y * m_width + min] , value, max - min + 1);
+
+    return;
+  }
+
+  // code below copied partially from
+  // https://de.wikipedia.org/wiki/Bresenham-Algorithmus#Kompakte_Variante
+
+  int x0 = p1.m_x;
+  int y0 = p1.m_y;
+  int x1 = p2.m_x;
+  int y1 = p2.m_y;
+
+  int dx =  abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+  int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+  int err = dx + dy, e2; /* error value e_xy */
+
+  while(1){
+    m_matrix[y0][x0] = value; //setPixel(x0,y0);
+    if (x0==x1 && y0==y1) break;
+    e2 = 2*err;
+    if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+    if (e2 < dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
   }
 }
 

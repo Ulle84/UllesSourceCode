@@ -1,3 +1,11 @@
 ToDo
 -------------------------------------
 - return reference to image at functions which change the image content, i. e. erode dialte etc.
+
+Ideas
+-------------------------------------
+- rectangle with orientation-angle
+- cirlce -> own data type
+- drawEllipse
+- polygon/polyline data type + drawFunction (polygon is a closed polyline)
+- teachIn (circle, line, rectangle, polygon)
