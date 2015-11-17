@@ -38,7 +38,10 @@ SOURCES += main.cpp\
     ProjectCleaner.cpp \
     ProjectCleanerConfirmation.cpp \
     ProjectRenamer.cpp \
-    BitbucketHelper.cpp
+    BitbucketHelper.cpp \
+    IterateOverContainer.cpp \
+    FindInContainer.cpp \
+    ForLoopCreator.cpp
 
 HEADERS  += DevelopmentHelper.h \
     LogFileViewer.h \
@@ -65,7 +68,10 @@ HEADERS  += DevelopmentHelper.h \
     ProjectCleaner.h \
     ProjectCleanerConfirmation.h \
     ProjectRenamer.h \
-    BitbucketHelper.h
+    BitbucketHelper.h \
+    IterateOverContainer.h \
+    FindInContainer.h \
+    ForLoopCreator.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -93,4 +99,7 @@ FORMS    += DevelopmentHelper.ui \
     ProjectCleaner.ui \
     ProjectCleanerConfirmation.ui \
     ProjectRenamer.ui \
-    BitbucketHelper.ui
+    BitbucketHelper.ui \
+    IterateOverContainer.ui \
+    FindInContainer.ui \
+    ForLoopCreator.ui
