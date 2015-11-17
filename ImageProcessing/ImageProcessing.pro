@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     Image.cpp \
     ImageDisplay.cpp \
     Point.cpp \
-    Rectangle.cpp
+    Rectangle.cpp \
+    Circle.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
     ImageDisplay.h \
     Point.h \
-    Rectangle.h
+    Rectangle.h \
+    Circle.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

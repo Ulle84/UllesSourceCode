@@ -365,12 +365,12 @@ void Image::drawRectangle(const Rectangle &rectangle, unsigned char value)
   }
 }
 
-void Image::drawCircle(const Point &center, unsigned int radius, unsigned char value, bool fill)
+void Image::drawCircle(const Circle &circle, unsigned char value, bool fill)
 {
   // code below copied partially from
   // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 
-  int x = radius;
+  int x = circle.m_radius;
   int y = 0;
   int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
 
@@ -379,23 +379,23 @@ void Image::drawCircle(const Point &center, unsigned int radius, unsigned char v
     if (fill)
     {
       // TODO improve performance: memset is called "too often" for first/last line in Octant 2 + 3 and Octant 6 + 7
-      memset(&m_pixels[( y + center.m_y) * m_width - x + center.m_x], value, 2 * x + 1); //  Octant 1 + Octant 4
-      memset(&m_pixels[( x + center.m_y) * m_width - y + center.m_x], value, 2 * y + 1); //  Octant 2 + Octant 3
+      memset(&m_pixels[( y + circle.m_center.m_y) * m_width - x + circle.m_center.m_x], value, 2 * x + 1); //  Octant 1 + Octant 4
+      memset(&m_pixels[( x + circle.m_center.m_y) * m_width - y + circle.m_center.m_x], value, 2 * y + 1); //  Octant 2 + Octant 3
 
-      memset(&m_pixels[(-y + center.m_y) * m_width - x + center.m_x], value, 2 * x + 1); //  Octant 5 + Octant 8
-      memset(&m_pixels[(-x + center.m_y) * m_width - y + center.m_x], value, 2 * y + 1); //  Octant 6 + Octant 7
+      memset(&m_pixels[(-y + circle.m_center.m_y) * m_width - x + circle.m_center.m_x], value, 2 * x + 1); //  Octant 5 + Octant 8
+      memset(&m_pixels[(-x + circle.m_center.m_y) * m_width - y + circle.m_center.m_x], value, 2 * y + 1); //  Octant 6 + Octant 7
     }
     else
     {
-      m_matrix[ y + center.m_y][ x + center.m_x] = value; // Octant 1
-      m_matrix[ x + center.m_y][ y + center.m_x] = value; // Octant 2
-      m_matrix[ x + center.m_y][-y + center.m_x] = value; // Octant 3
-      m_matrix[ y + center.m_y][-x + center.m_x] = value; // Octant 4
+      m_matrix[ y + circle.m_center.m_y][ x + circle.m_center.m_x] = value; // Octant 1
+      m_matrix[ x + circle.m_center.m_y][ y + circle.m_center.m_x] = value; // Octant 2
+      m_matrix[ x + circle.m_center.m_y][-y + circle.m_center.m_x] = value; // Octant 3
+      m_matrix[ y + circle.m_center.m_y][-x + circle.m_center.m_x] = value; // Octant 4
 
-      m_matrix[-y + center.m_y][-x + center.m_x] = value; // Octant 5
-      m_matrix[-x + center.m_y][-y + center.m_x] = value; // Octant 6
-      m_matrix[-x + center.m_y][ y + center.m_x] = value; // Octant 7
-      m_matrix[-y + center.m_y][ x + center.m_x] = value; // Octant 8
+      m_matrix[-y + circle.m_center.m_y][-x + circle.m_center.m_x] = value; // Octant 5
+      m_matrix[-x + circle.m_center.m_y][-y + circle.m_center.m_x] = value; // Octant 6
+      m_matrix[-x + circle.m_center.m_y][ y + circle.m_center.m_x] = value; // Octant 7
+      m_matrix[-y + circle.m_center.m_y][ x + circle.m_center.m_x] = value; // Octant 8
     }
 
     y++;

@@ -15,10 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   m_image = new Image(16, 16); // width % 4 needs to be zero!
 
-  Point p1(1, 1);
-  Point p2(8, 8);
-
-  m_image->drawLine(p1, p2, 255);
+  Circle circle(Point(8, 8), 7);
+  m_image->drawCircle(circle, 255, true);
 
   imageDisplay->setImage(m_image);
 }
