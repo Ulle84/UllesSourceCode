@@ -5,9 +5,9 @@ ToDo
 Ideas
 -------------------------------------
 - rectangle with orientation-angle
-- cirlce -> own data type
-- drawEllipse
+- drawEllipse - circle is also an ellipse
 - polygon/polyline data type + drawFunction (polygon is a closed polyline)
 - teachIn (circle, line, rectangle, polygon)
 - multi layer images
 - image class based on templates (bit, byte, short, int, float, double)
+- histogram data type
