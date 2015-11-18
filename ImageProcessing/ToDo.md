@@ -1,0 +1,12 @@
+# ToDo
+* return reference to image at functions which change the image content, i. e. erode dialte etc.
+
+# Ideas
+* implement move-constructor and move-operator
+* rectangle with orientation-angle
+* drawEllipse - circle is also an ellipse
+* polygon/polyline data type + drawFunction (polygon is a closed polyline)
+* teachIn (circle, line, rectangle, polygon)
+* multi layer images
+* image class based on templates (bit, byte, short, int, float, double)
+* histogram data type
