@@ -10,3 +10,5 @@
 * multi layer images
 * image class based on templates (bit, byte, short, int, float, double)
 * histogram data type
+* LUT
+* invert image

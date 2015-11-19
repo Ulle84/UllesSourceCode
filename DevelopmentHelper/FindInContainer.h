@@ -19,6 +19,7 @@ private slots:
   void on_lineEditContainer_returnPressed();
   void on_lineEditElement_returnPressed();
   void on_lineEditIterator_returnPressed();
+  void on_checkBoxCreateElseBranch_stateChanged(int arg1);
 
 private:
   void createCode();
