@@ -26,6 +26,14 @@ CodeCreator::CodeCreator(QWidget *parent) :
   mFileName("Settings.xml")
 {
   ui->setupUi(this);
+
+  mSettings = new QSettings("Ulle", "CodeCreator");
+
+  if (mSettings->contains("windowGeometry"))
+  {
+    this->setGeometry(mSettings->value("windowGeometry").toRect());
+  }
+
   mCodeGenerator = new CodeGenerator();
   initGenerators();
   readXml();
@@ -33,6 +41,7 @@ CodeCreator::CodeCreator(QWidget *parent) :
 
 CodeCreator::~CodeCreator()
 {
+  mSettings->setValue("windowGeometry", this->geometry());
   writeXml();
   delete mCodeGenerator;
   delete ui;

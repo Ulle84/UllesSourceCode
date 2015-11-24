@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QWidget>
 #include <QString>
+#include <QSettings>
 
 class CodeGenerator;
 class Options;
@@ -39,6 +40,7 @@ private:
   QWidget* mCurrentGenerator;
   QStringList mDirectories;
   QString mFileName;
+  QSettings* mSettings;
 
   CodeGenerator* mCodeGenerator;
 };
