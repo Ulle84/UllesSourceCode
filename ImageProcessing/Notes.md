@@ -14,3 +14,5 @@
 * invert image
 * add type region -> bit-mask for mopholgical operations
 * crop image
+* add noise to image
+* look into Burger/Burge and implement some algorithms

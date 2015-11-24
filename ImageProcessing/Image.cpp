@@ -277,24 +277,31 @@ void Image::filterWithMask(const FilterMask &filterMask)
 {
   Image original(*this);
 
-  int offset = filterSize / 2;
+  int offset= filterMask.m_width / 2;
+  double calculatedValue;
+
+  // TODO use code below --> correct offsets depend on filterMask dimensions and referencePoint
+  //int offsetX = filterMask.m_referencePoint.m_x; // TODO offset left and right depending on referencpoint
+  //int offsetY = filterMask.m_referencePoint.m_y; // TODO offset top and bottom depending on referencpoint
 
   for (unsigned int y = offset; y < (m_height - offset); y++)
   {
     for (unsigned int x = offset; x < (m_width - offset); x++)
     {
-      unsigned char minimum = 255;
+      calculatedValue = 0;
       for (int fy = -offset; fy <= offset; fy++)
       {
         for (int fx = -offset; fx <= offset; fx++)
         {
-          if (original.m_matrix[y+fy][x+fx] < minimum)
-          {
-            minimum = original.m_matrix[y+fy][x+fx];
-          }
+          //qDebug() << "original:" << original.m_matrix[y+fy][x+fx];
+          //qDebug() << "filterMask:" << filterMask.m_matrix[fy+offset][fx+offset];
+
+          calculatedValue += original.m_matrix[y+fy][x+fx] * filterMask.m_matrix[fy+offset][fx+offset];
         }
       }
-      m_matrix[y][x] = minimum;
+      //calculatedValue /= filterMask.getSumOfMatrix(); // TODO define correct divisor and apply
+      m_matrix[y][x] = calculatedValue + 0.5;
+      //qDebug() << "image:" << m_matrix[y][x];
     }
   }
 }

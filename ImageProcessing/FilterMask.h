@@ -10,17 +10,24 @@ public:
   ~FilterMask();
 
   void setReferencePoint(const Point& referencePoint);
+  int getSumOfMatrix() const;
+
+  int** m_matrix; // TODO how to set up the matrix from the outside
+
+  unsigned int m_width; // TODO declare private
+  unsigned int m_height; // TODO declare private
 
 private:
-  unsigned int m_width;
-  unsigned int m_height;
+
 
   Point m_referencePoint;
 
   int* m_buffer;
-  int** m_matrix; // TODO how to set up the matrix from the outside
+
 
   FilterMask();
+
+  friend class Image; // TODO is this neccessary?
 };
 
 #endif // FILTERMASK_H
