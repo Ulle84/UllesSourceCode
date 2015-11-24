@@ -1,10 +1,10 @@
 ﻿# Bugs
-* looking in wrong folder for templates -> need to be configurable!!!
 
 # ToDo
 * save current folder at folder selection
 
 # Ideas
+* Templates -> generate project per template?
 * xml helper -> checkbox, lineedit, plaintextedit in xml und zurück -> static functions
 * template for exporting dll
 * more patterns
@@ -17,3 +17,6 @@
   * Composite
   * State
   * Proxy
+
+# Done
+* looking in wrong folder for templates -> needs to be configurable!!!

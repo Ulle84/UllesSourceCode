@@ -25,6 +25,7 @@ private slots:
   void on_pushButtonSelectFolder_clicked();
   void on_pushButtonStart_clicked();
   void on_pushButtonClearHistory_clicked();
+  void on_pushButtonSelectTemplateFolder_clicked();
 
 private:
   bool readXml();
@@ -33,7 +34,7 @@ private:
   void updateComboBoxFolders();
   void initGenerators();
 
-  Ui::CodeCreator *ui;
+  Ui::CodeCreator* ui;
   QMap<QString, QWidget*> mGenerators;
   QWidget* mCurrentGenerator;
   QStringList mDirectories;

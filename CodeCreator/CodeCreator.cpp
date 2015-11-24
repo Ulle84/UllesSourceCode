@@ -166,6 +166,12 @@ bool CodeCreator::readXml()
     {
       ui->comboBoxFolder->setCurrentIndex(ui->comboBoxFolder->findText(xml.readElementText()));
     }
+    else if (xml.name() == "TemplateFolder")
+    {
+      QString templateFolder = xml.readElementText();
+      ui->lineEditTemplateFolder->setText(templateFolder);
+      mCodeGenerator->setBasePath(templateFolder);
+    }
     else if (mGenerators.find(xml.name().toString()) != mGenerators.end())
     {
       dynamic_cast<IGenerator*>(mGenerators.find(xml.name().toString()).value())->readXml(xml);
@@ -193,14 +199,6 @@ bool CodeCreator::writeXml()
   xml.setAutoFormattingIndent(2);
   xml.writeStartDocument();
 
-
-  //xml.writeDTD("<!DOCTYPE html>");
-
-  //xml.writeStartElement("script");
-  //xml.writeAttribute("src", "pathToSourceFile");
-  //xml.writeCharacters("");
-  //xml.writeEndElement();
-
   xml.writeStartElement("Settings");
 
   xml.writeTextElement("SelectedType", ui->comboBoxType->currentText());
@@ -215,6 +213,7 @@ bool CodeCreator::writeXml()
   xml.writeEndElement(); // RecentFolders
 
   xml.writeTextElement("SelectedFolder", ui->comboBoxFolder->currentText());
+  xml.writeTextElement("TemplateFolder", ui->lineEditTemplateFolder->text());
 
   // generator settings
   for (auto it = mGenerators.begin(); it != mGenerators.end(); ++it)
@@ -238,4 +237,17 @@ void CodeCreator::updateComboBoxFolders()
 
   ui->comboBoxFolder->clear();
   ui->comboBoxFolder->insertItems(0, mDirectories);
+}
+
+void CodeCreator::on_pushButtonSelectTemplateFolder_clicked()
+{
+  QString directory = QFileDialog::getExistingDirectory(this, tr("Select template folder"));
+
+  if (directory.isEmpty())
+  {
+    return;
+  }
+
+  ui->lineEditTemplateFolder->setText(directory); // TODO relative path?
+  mCodeGenerator->setBasePath(directory);
 }

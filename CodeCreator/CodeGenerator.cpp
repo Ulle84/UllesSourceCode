@@ -16,16 +16,38 @@ CodeGenerator::~CodeGenerator()
 {
 }
 
+void CodeGenerator::setBasePath(const QString &basePath)
+{
+  m_basePath = basePath;
+}
+
 bool CodeGenerator::copyFromTemplate(const Options& options)
 {
-  QString basePath = "../../CodeCreator/templates/"; // TODO make base path configurable
-  QDir dir(basePath + options.folderInput);
+  QString directory = m_basePath + QDir::separator() + options.folderInput;
+  QDir dir(directory);
 
-  qDebug() << "looking for template in folder:" << basePath + options.folderInput;
+  if (!dir.exists())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Cannot open template directory %1").arg(directory));
+    mb.exec();
+    return false;
+  }
 
   dir.setNameFilters(options.files);
 
   QStringList fileNames = dir.entryList();
+
+  for (auto it = options.files.begin(); it != options.files.end(); it++)
+  {
+    if (!fileNames.contains(*it))
+    {
+      QMessageBox mb;
+      mb.setText(tr("Cannot find template file %1!").arg(*it));
+      mb.exec();
+      return false;
+    }
+  }
 
   for (auto it = fileNames.begin(); it != fileNames.end(); ++it)
   {
