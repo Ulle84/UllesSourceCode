@@ -12,14 +12,20 @@ class QPlainTextEdit;
 class XmlHelper
 {
 public:
+  // QCheckBox
   static void writeXml(QXmlStreamWriter& xml, const QString& name, const QCheckBox* checkBox);
-  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QComboBox* comboBox, bool writeOptions = true);
-  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QLineEdit* lineEdit);
-  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QPlainTextEdit* plainTextEdit);
-
   static void readXml(QXmlStreamReader& xml, QCheckBox* checkBox);
+
+  // QComboBox
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QComboBox* comboBox, bool writeOptions = true);
   static void readXml(QXmlStreamReader& xml, QComboBox* comboBox);
+
+  // QLineEdit
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QLineEdit* lineEdit);
   static void readXml(QXmlStreamReader& xml, QLineEdit* lineEdit);
+
+  // QPlainTextEdit
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QPlainTextEdit* plainTextEdit);
   static void readXml(QXmlStreamReader& xml, QPlainTextEdit* plainTextEdit);
 };
 
