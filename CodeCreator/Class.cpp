@@ -83,28 +83,29 @@ bool Class::generate(const QString &folder)
   QString baseClass = ui->lineEditBaseClass->text();
   QString include;
   QString type = ui->comboBoxType->currentText();
-  options.searchAndReplace["Template"] = name;
+  options.searchAndReplace.append(qMakePair(QString("Template"), name));
   if (ui->checkBoxInherit->isChecked())
   {
     if (baseClass.left(1) == "Q")
     {
       include = QString("<%1>").arg(baseClass);
-      options.searchAndReplace["  Template()"] = QString("  explicit %1(%2* parent = 0)").arg(name).arg(baseClass);
-      options.searchAndReplace[QString("%1::%1()").arg(name)] = QString("%1::%1(%2* parent) :\n  %2(parent)").arg(name).arg(baseClass);
+      options.searchAndReplace.append(qMakePair(QString("  Template()"), QString("  explicit %1(%2* parent = 0)").arg(name).arg(baseClass)));
+      options.searchAndReplace.append(qMakePair(QString("%1::%1()").arg(name), QString("%1::%1(%2* parent) :\n  %2(parent)").arg(name).arg(baseClass)));
     }
     else
     {
       include = QString("\"%1.h\"").arg(baseClass);
     }
 
-    options.searchAndReplace[QString("class %1").arg(name)]
-        = QString("#include %1\n\nclass %2 : %3 %5").arg(include).arg(name).arg(type).arg(baseClass);
+    options.searchAndReplace.append(qMakePair(QString("class %1").arg(name), QString("#include %1\n\nclass %2 : %3 %5").arg(include).arg(name).arg(type).arg(baseClass)));
   }
 
   if (ui->checkBoxQObject->isChecked())
   {
-    options.searchAndReplace["public:"] = "  Q_OBJECT\n\npublic:";
+    options.searchAndReplace.append(qMakePair(QString("public:"), QString("  Q_OBJECT\n\npublic:")));
   }
+
+  options.sortSearchAndReplaceList();
 
   return mCodeGenerator->copyFromTemplate(options);
 }

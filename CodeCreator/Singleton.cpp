@@ -32,7 +32,7 @@ bool Singleton::generate(const QString &folder)
   Options options;
   options.folderOutput = folder;
 
-  options.searchAndReplace["Singleton"] = ui->lineEditName->text();
+  options.searchAndReplace.append(qMakePair(QString("Singleton"), ui->lineEditName->text()));
 
   options.files << "Singleton.cpp";
   options.files << "Singleton.h";

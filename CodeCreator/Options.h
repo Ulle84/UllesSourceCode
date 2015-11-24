@@ -12,16 +12,12 @@ class Options
 public:
   Options();
 
+  void sortSearchAndReplaceList();
+
   QStringList files;
   QString folderInput;
   QString folderOutput;
-
-  QMap<QString, QString> searchAndReplace; // TODO QList<QPair<QString, QString>> instead of QMap<QString, QString> -> sort this list in all existing templates to be reverse compatible -> use macro qMakePair
+  QList<QPair<QString, QString>> searchAndReplace;
 };
-
-inline Options::Options()
-  : folderInput("false")
-{
-}
 
 #endif // OPTIONS_H

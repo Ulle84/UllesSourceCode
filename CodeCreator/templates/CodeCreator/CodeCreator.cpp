@@ -33,7 +33,7 @@ bool CodeCreator::generate(const QString &folder)
   options.folderOutput = folder;
   options.folderInput = "CodeCreator/";
 
-  options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
+  options.searchAndReplace.append(QString("CodeCreator"), ui->lineEditName->text());
     
   options.files << "CodeCreator.h";
   options.files << "CodeCreator.cpp";

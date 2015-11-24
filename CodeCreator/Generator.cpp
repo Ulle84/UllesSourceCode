@@ -32,7 +32,7 @@ bool Generator::generate(const QString &folder)
   options.files << "CodeCreator.cpp";
   options.files << "CodeCreator.ui";
 
-  options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
+  options.searchAndReplace.append(qMakePair(QString("CodeCreator"), ui->lineEditName->text()));
 
   return mCodeGenerator->copyFromTemplate(options);
 }

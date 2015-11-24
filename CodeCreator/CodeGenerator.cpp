@@ -68,19 +68,34 @@ bool CodeGenerator::copyFromTemplate(const Options& options)
     while (!in.atEnd())
     {
       QString line = in.readLine();
-      for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
+
+      // TODO remove after implementing searchAndReplaceList
+      /*for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
       {
         line.replace(it.key(), it.value());
         line.replace(it.key().toUpper(), it.value().toUpper());
+      }*/
+
+      for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
+      {
+        line.replace(it->first, it->second);
+        line.replace(it->first.toUpper(), it->second.toUpper());
       }
+
       fileContent.append(line);
     }
 
     QString outputFileName = *it;
 
-    for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
+    // TODO remove after implementing searchAndReplaceList
+    /*for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
     {
       outputFileName.replace(it.key(), it.value());
+    }*/
+
+    for (auto it = options.searchAndReplace.begin(); it != options.searchAndReplace.end(); ++it)
+    {
+      outputFileName.replace(it->first, it->second);
     }
 
     QFile output(options.folderOutput + QDir::separator() + outputFileName);

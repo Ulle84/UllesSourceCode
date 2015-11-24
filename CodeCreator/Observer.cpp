@@ -48,8 +48,10 @@ bool Observer::generate(const QString &folder)
   options.files << "TemplateObserver.h";
   options.files << "TemplateObserver.cpp";
 
-  options.searchAndReplace["TemplateSubject"] = ui->lineEditSubject->text();
-  options.searchAndReplace["TemplateObserver"] = ui->lineEditObserver->text();
+  options.searchAndReplace.append(qMakePair(QString("TemplateSubject"), ui->lineEditSubject->text()));
+  options.searchAndReplace.append(qMakePair(QString("TemplateObserver"), ui->lineEditObserver->text()));
+
+  options.sortSearchAndReplaceList();
 
   return mCodeGenerator->copyFromTemplate(options);
 }

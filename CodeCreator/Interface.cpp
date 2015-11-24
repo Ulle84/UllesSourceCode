@@ -32,8 +32,10 @@ bool Interface::generate(const QString &folder)
   options.folderOutput = folder;
   options.folderInput = "Interface/";
   options.files << "Interface.h";
-  options.searchAndReplace["Interface"] = name;
-  options.searchAndReplace["  // TODO add functions here"] = interface;
+  options.searchAndReplace.append(qMakePair(QString("Interface"), name));
+  options.searchAndReplace.append(qMakePair(QString("  // TODO add functions here"), interface));
+
+  options.sortSearchAndReplaceList();
 
   return m_codeGenerator->copyFromTemplate(options);
 }

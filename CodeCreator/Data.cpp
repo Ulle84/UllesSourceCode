@@ -43,8 +43,7 @@ bool Data::generate(const QString &folder)
 
   options.files << "Data.h";
 
-  options.searchAndReplace["Data"] = ui->lineEditName->text();
-  // TODO set all options
+  options.searchAndReplace.append(qMakePair(QString("Data"), ui->lineEditName->text()));
 
   return mCodeGenerator->copyFromTemplate(options);
 }

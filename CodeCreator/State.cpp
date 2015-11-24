@@ -50,14 +50,14 @@ bool State::generate(const QString &folder)
   options.folderOutput = folder;
   options.folderInput = "State/";
 
-  options.searchAndReplace["Context"] = ui->lineEditContext->text();
-  options.searchAndReplace["State"] = ui->lineEditState->text();
-  options.searchAndReplace["Interface"] = ui->lineEditState->text();
+  options.searchAndReplace.append(qMakePair(QString("Context"), ui->lineEditContext->text()));
+  options.searchAndReplace.append(qMakePair(QString("State"), ui->lineEditState->text()));
+  options.searchAndReplace.append(qMakePair(QString("Interface"), ui->lineEditState->text()));
 
-  options.searchAndReplace["//TODO Implementation Context"] = InterfaceHelper::createFunctionImplementations(ui->plainTextEditStateInterface, "Context");
-  options.searchAndReplace["//TODO Implementation State"] = InterfaceHelper::createFunctionImplementations(ui->plainTextEditStateInterface, "State");
-  options.searchAndReplace["  // TODO add functions here"] = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditStateInterface);
-  options.searchAndReplace["  // IState"] = "  // IState\n" + InterfaceHelper::createFunctionDeclarations(ui->plainTextEditStateInterface);
+  options.searchAndReplace.append(qMakePair(QString("//TODO Implementation Context"), InterfaceHelper::createFunctionImplementations(ui->plainTextEditStateInterface, "Context")));
+  options.searchAndReplace.append(qMakePair(QString("//TODO Implementation State"), InterfaceHelper::createFunctionImplementations(ui->plainTextEditStateInterface, "State")));
+  options.searchAndReplace.append(qMakePair(QString("  // TODO add functions here"), InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditStateInterface)));
+  options.searchAndReplace.append(qMakePair(QString("  // IState"), QString("  // IState\n") + InterfaceHelper::createFunctionDeclarations(ui->plainTextEditStateInterface)));
 
   if (ui->checkBoxContext->isChecked())
   {
@@ -75,6 +75,8 @@ bool State::generate(const QString &folder)
     options.files << "State.h";
     options.files << "State.cpp";
   }
+
+  options.sortSearchAndReplaceList();
 
   return mCodeGenerator->copyFromTemplate(options);
 }

@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     Decorator.cpp \
     XmlHelper.cpp \
     InterfaceHelper.cpp \
-    State.cpp
+    State.cpp \
+    Options.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \

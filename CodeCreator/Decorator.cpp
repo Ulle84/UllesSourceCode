@@ -50,13 +50,13 @@ bool Decorator::generate(const QString &folder)
   options.folderOutput = folder;
   options.folderInput = "Decorator/";
 
-  options.searchAndReplace["Decorator"] = ui->lineEditDecorator->text();
-  options.searchAndReplace["Component"] = ui->lineEditComponent->text();
+  options.searchAndReplace.append(qMakePair(QString("Decorator"), ui->lineEditDecorator->text()));
+  options.searchAndReplace.append(qMakePair(QString("Component"), ui->lineEditComponent->text()));
 
-  options.searchAndReplace["//TODO Implementation Decorator"] = InterfaceHelper::createFunctionImplementations(ui->plainTextEditInterface, "Decorator");
-  options.searchAndReplace["//TODO Implementation Component"] = InterfaceHelper::createFunctionImplementations(ui->plainTextEditInterface, "Component");
-  options.searchAndReplace["  // TODO add functions here"] = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditInterface);
-  options.searchAndReplace["  // IComponent"] = "  // IComponent\n" + InterfaceHelper::createFunctionDeclarations(ui->plainTextEditInterface);
+  options.searchAndReplace.append(qMakePair(QString("//TODO Implementation Decorator"), InterfaceHelper::createFunctionImplementations(ui->plainTextEditInterface, "Decorator")));
+  options.searchAndReplace.append(qMakePair(QString("//TODO Implementation Component"), InterfaceHelper::createFunctionImplementations(ui->plainTextEditInterface, "Component")));
+  options.searchAndReplace.append(qMakePair(QString("  // TODO add functions here"), InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditInterface)));
+  options.searchAndReplace.append(qMakePair(QString("  // IComponent"), "  // IComponent\n" + InterfaceHelper::createFunctionDeclarations(ui->plainTextEditInterface)));
 
   if (ui->checkBoxComponent->isChecked())
   {
@@ -74,6 +74,8 @@ bool Decorator::generate(const QString &folder)
     options.files << "Decorator.h";
     options.files << "Decorator.cpp";
   }
+
+  options.sortSearchAndReplaceList();
 
   return mCodeGenerator->copyFromTemplate(options);
 }
