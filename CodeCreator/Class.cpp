@@ -60,22 +60,22 @@ bool Class::generate(const QString &folder)
   {
     if (ui->checkBoxDisableCopy->isChecked())
     {
-      options.folderInput = "templates/Class/pImplNoCopy/";
+      options.folderInput = "Class/pImplNoCopy/";
     }
     else
     {
-      options.folderInput = "templates/Class/pImpl/";
+      options.folderInput = "Class/pImpl/";
     }
   }
   else
   {
     if (ui->checkBoxDisableCopy->isChecked())
     {
-      options.folderInput = "templates/Class/noCopy/";
+      options.folderInput = "Class/noCopy/";
     }
     else
     {
-      options.folderInput = "templates/Class/base/";
+      options.folderInput = "Class/base/";
     }
   }
 

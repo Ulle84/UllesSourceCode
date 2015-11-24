@@ -39,11 +39,11 @@ bool Singleton::generate(const QString &folder)
 
   if (ui->comboBoxType->currentText() == "lazy")
   {
-    options.folderInput = "templates/Singleton/lazy/";
+    options.folderInput = "Singleton/lazy/";
   }
   else
   {
-    options.folderInput = "templates/Singleton/eager/";
+    options.folderInput = "Singleton/eager/";
   }
 
   return m_codeGenerator->copyFromTemplate(options);

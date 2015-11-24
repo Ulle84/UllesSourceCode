@@ -18,17 +18,22 @@ SOURCES += main.cpp\
     ImageDisplay.cpp \
     Point.cpp \
     Rectangle.cpp \
-    Circle.cpp
+    Circle.cpp \
+    FilterMask.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
     ImageDisplay.h \
     Point.h \
     Rectangle.h \
-    Circle.h
+    Circle.h \
+    FilterMask.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
 
 OTHER_FILES += \
     ToDo.txt
+
+DISTFILES += \
+    Notes.md

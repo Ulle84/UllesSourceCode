@@ -55,3 +55,6 @@ OTHER_FILES += \
     ToDo.txt \
     Bugs.txt \
     Ideas.txt
+
+DISTFILES += \
+    Notes.md

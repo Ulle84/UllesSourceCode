@@ -34,11 +34,11 @@ bool Data::generate(const QString &folder)
 
   if (ui->checkBoxConstructor->isChecked())
   {
-    options.folderInput = "templates/Data/inlineConstructor/";
+    options.folderInput = "Data/inlineConstructor/";
   }
   else
   {
-    options.folderInput = "templates/Data/base/";
+    options.folderInput = "Data/base/";
   }
 
   options.files << "Data.h";

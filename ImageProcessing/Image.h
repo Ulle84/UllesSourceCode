@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "Rectangle.h"
 #include "Circle.h"
+#include "FilterMask.h"
 
 class Image
 {
@@ -36,6 +37,8 @@ public:
   void doOpening(unsigned int filterSize);
   void doClosing(unsigned int filterSize);
   void filterMean(unsigned int filterSize);
+
+  void filterWithMask(const FilterMask& filterMask);
 
   void binarize(unsigned char threshold);
   void spread();

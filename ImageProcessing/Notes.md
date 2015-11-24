@@ -12,3 +12,5 @@
 * histogram data type
 * LUT
 * invert image
+* add type region -> bit-mask for mopholgical operations
+* crop image

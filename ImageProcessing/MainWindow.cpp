@@ -14,9 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
   setCentralWidget(imageDisplay);
 
   m_image = new Image(16, 16); // width % 4 needs to be zero!
+  m_image->setIncreasingPixelValues();
 
-  Circle circle(Point(8, 8), 7);
-  m_image->drawCircle(circle, 255, true);
+  FilterMask filterMask(3, 3);
+  m_image->filterWithMask(filterMask);
 
   imageDisplay->setImage(m_image);
 }

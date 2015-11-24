@@ -26,7 +26,7 @@ bool Generator::generate(const QString &folder)
 {
   Options options;
   options.folderOutput = folder;
-  options.folderInput = "templates/CodeCreator/";
+  options.folderInput = "CodeCreator/";
 
   options.files << "CodeCreator.h";
   options.files << "CodeCreator.cpp";

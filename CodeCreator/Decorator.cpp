@@ -48,7 +48,7 @@ bool Decorator::generate(const QString &folder)
 
   Options options;
   options.folderOutput = folder;
-  options.folderInput = "templates/Decorator/";
+  options.folderInput = "Decorator/";
 
   options.searchAndReplace["Decorator"] = ui->lineEditDecorator->text();
   options.searchAndReplace["Component"] = ui->lineEditComponent->text();

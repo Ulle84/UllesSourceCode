@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QStringList>
 #include <QFile>
 #include <QDir>
@@ -17,7 +18,10 @@ CodeGenerator::~CodeGenerator()
 
 bool CodeGenerator::copyFromTemplate(const Options& options)
 {
-  QDir dir(options.folderInput);
+  QString basePath = "../../CodeCreator/templates/"; // TODO make base path configurable
+  QDir dir(basePath + options.folderInput);
+
+  qDebug() << "looking for template in folder:" << basePath + options.folderInput;
 
   dir.setNameFilters(options.files);
 

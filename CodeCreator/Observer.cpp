@@ -39,7 +39,7 @@ bool Observer::generate(const QString &folder)
 
   Options options;
   options.folderOutput = folder;
-  options.folderInput = "templates/observer/";
+  options.folderInput = "observer/";
 
   options.files << "ITemplateSubject.h";
   options.files << "ITemplateObserver.h";

@@ -30,7 +30,7 @@ bool Interface::generate(const QString &folder)
 
   Options options;
   options.folderOutput = folder;
-  options.folderInput = "templates/Interface/";
+  options.folderInput = "Interface/";
   options.files << "Interface.h";
   options.searchAndReplace["Interface"] = name;
   options.searchAndReplace["  // TODO add functions here"] = interface;

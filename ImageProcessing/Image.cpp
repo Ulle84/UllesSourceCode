@@ -273,6 +273,32 @@ void Image::filterMean(unsigned int filterSize)
   }
 }
 
+void Image::filterWithMask(const FilterMask &filterMask)
+{
+  Image original(*this);
+
+  int offset = filterSize / 2;
+
+  for (unsigned int y = offset; y < (m_height - offset); y++)
+  {
+    for (unsigned int x = offset; x < (m_width - offset); x++)
+    {
+      unsigned char minimum = 255;
+      for (int fy = -offset; fy <= offset; fy++)
+      {
+        for (int fx = -offset; fx <= offset; fx++)
+        {
+          if (original.m_matrix[y+fy][x+fx] < minimum)
+          {
+            minimum = original.m_matrix[y+fy][x+fx];
+          }
+        }
+      }
+      m_matrix[y][x] = minimum;
+    }
+  }
+}
+
 void Image::binarize(unsigned char threshold)
 {
   for (unsigned int i = 0; i < m_height * m_width; i++)

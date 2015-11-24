@@ -31,7 +31,7 @@ bool CodeCreator::generate(const QString &folder)
 
   Options options;
   options.folderOutput = folder;
-  options.folderInput = "templates/CodeCreator/";
+  options.folderInput = "CodeCreator/";
 
   options.searchAndReplace["CodeCreator"] = ui->lineEditName->text();
     
@@ -50,6 +50,7 @@ void CodeCreator::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->lineEditName);
     }
+    // TODO read further elements
     else
     {
       xml.skipCurrentElement();
@@ -60,4 +61,5 @@ void CodeCreator::readXml(QXmlStreamReader &xml)
 void CodeCreator::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
+  // TODO write further elements
 }

@@ -21,7 +21,6 @@ public:
   static void readXml(QXmlStreamReader& xml, QComboBox* comboBox);
   static void readXml(QXmlStreamReader& xml, QLineEdit* lineEdit);
   static void readXml(QXmlStreamReader& xml, QPlainTextEdit* plainTextEdit);
-
 };
 
 #endif // XMLHELPER_H

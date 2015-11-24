@@ -48,7 +48,7 @@ bool State::generate(const QString &folder)
 
   Options options;
   options.folderOutput = folder;
-  options.folderInput = "templates/State/";
+  options.folderInput = "State/";
 
   options.searchAndReplace["Context"] = ui->lineEditContext->text();
   options.searchAndReplace["State"] = ui->lineEditState->text();
