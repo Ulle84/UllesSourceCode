@@ -14,11 +14,15 @@ MainWindow::MainWindow(QWidget *parent) :
   ImageDisplay* imageDisplay = new ImageDisplay(this);
   setCentralWidget(imageDisplay);
 
-  m_image = new Image(16, 16); // width % 4 needs to be zero!
+  const unsigned int size = 512;
+  m_image = new Image(size, size); // width % 4 needs to be zero!
   //m_image->setIncreasingPixelValues();
   //m_image->setRandomPixelValues();
-  m_image->drawCircle(Circle(Point(8, 8), 6), 128, true);
 
+  for (unsigned int i = (size / 2) - 1; i > 0; i--)
+  {
+    m_image->drawCircle(Circle(Point(size / 2, size / 2), i), i * (512 / size), true);
+  }
 
   FilterMask filterMask(3, 3);
 
@@ -38,17 +42,20 @@ MainWindow::MainWindow(QWidget *parent) :
     }
   }*/
 
-  m_image->filterWithMask(filterMask);
+  //m_image->filterWithMask(filterMask);
 
-  imageDisplay->setImage(m_image);
+  Image* polarTransformed = m_image->doPolarTransformation(Circle(Point(size / 2, size / 2), (size / 2) - 1));
+  imageDisplay->setImage(polarTransformed);
+
+  //imageDisplay->setImage(m_image);
 
 
   // template test
-  ImageT<unsigned short> imageT(1, 65537);
+  /*ImageT<unsigned short> imageT(1, 65537);
   imageT.setIncreasingPixelValues();
   imageT.printToConsole("imageT");
   std::cout << "size of one pixel in bytes: " << (int) imageT.sizeOfOnePixelInBytes() << std::endl;
-  std::cout << "max possible value: " << (unsigned long long) imageT.getMaximumValue() << std::endl;
+  std::cout << "max possible value: " << (unsigned long long) imageT.getMaximumValue() << std::endl;*/
 }
 
 MainWindow::~MainWindow()

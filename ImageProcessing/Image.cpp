@@ -4,6 +4,10 @@
 
 #include "Image.h"
 
+#include <math.h>
+
+#define PI 3.14159265359
+
 Image::Image() :
   m_width(5),
   m_height(3)
@@ -496,6 +500,47 @@ void Image::drawLine(const Point &p1, const Point &p2, unsigned char value)
     if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
     if (e2 < dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
   }
+}           
+
+// TODO remove potential memory leak
+Image* Image::doPolarTransformation(const Circle &circle)
+{
+  unsigned int circumference = circle.m_radius * 2 * 3.14159265359 + 0.5;
+
+  int width = circumference;
+
+  if (width % 4 != 0)
+  {
+    width += (4 - (width % 4)); // round up -> width % 4 needs to be zero!
+  }
+
+  Image* calculated = new Image(width, circle.m_radius); // TODO correct sizes
+
+  for (unsigned int y = 0; y < circle.m_radius; y++) // radius
+  {
+    for (unsigned int x = 0; x < circumference; x++) // angle
+    {
+      // TODO improve performace -> avoid duplicated calculations -> avoid conversions
+
+      int angle = x * 360.0 / circumference;
+      int radius = y;
+
+      // x = radius * cos (angle)
+      // y = radius * sin (angle)
+
+      int xx = radius * cos ( angle * PI / 180.0 );
+      int yy = radius * sin ( angle * PI / 180.0 );
+
+      /*if (y == circle.m_radius - 1)
+      {
+        qDebug() << xx;
+      }*/
+
+      calculated->m_matrix[y][x] = m_matrix[yy + circle.m_center.m_y][xx + circle.m_center.m_x];
+    }
+  }
+
+  return calculated;
 }
 
 void Image::mirrorOnHorizontalAxis()

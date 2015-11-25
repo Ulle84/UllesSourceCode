@@ -54,6 +54,8 @@ public:
   void drawCircle(const Circle& circle, unsigned char value, bool fill);
   void drawLine(const Point& p1, const Point& p2, unsigned char value);
 
+  Image* doPolarTransformation(const Circle& circle);
+
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
   void rotateBy90DegreeClockwise();
