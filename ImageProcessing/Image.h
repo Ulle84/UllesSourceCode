@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IMAGE_H
+#define IMAGE_H
 
 #include <string>
 
@@ -74,3 +75,5 @@ private:
   unsigned char* m_pixels;
   unsigned char** m_matrix;
 };
+
+#endif // IMAGE_H

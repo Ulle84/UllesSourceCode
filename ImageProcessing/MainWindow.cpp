@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 
 #include "Image.h"
+#include "ImageT.h"
 #include "ImageDisplay.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -40,6 +41,14 @@ MainWindow::MainWindow(QWidget *parent) :
   m_image->filterWithMask(filterMask);
 
   imageDisplay->setImage(m_image);
+
+
+  // template test
+  ImageT<unsigned short> imageT(1, 65537);
+  imageT.setIncreasingPixelValues();
+  imageT.printToConsole("imageT");
+  std::cout << "size of one pixel in bytes: " << (int) imageT.sizeOfOnePixelInBytes() << std::endl;
+  std::cout << "max possible value: " << (unsigned long long) imageT.getMaximumValue() << std::endl;
 }
 
 MainWindow::~MainWindow()

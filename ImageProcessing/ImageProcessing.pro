@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     Point.cpp \
     Rectangle.cpp \
     Circle.cpp \
-    FilterMask.cpp
+    FilterMask.cpp \
+    ImageT.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
@@ -27,7 +28,8 @@ HEADERS  += MainWindow.h \
     Point.h \
     Rectangle.h \
     Circle.h \
-    FilterMask.h
+    FilterMask.h \
+    ImageT.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
