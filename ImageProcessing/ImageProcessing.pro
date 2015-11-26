@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     ImageT.cpp \
     FreemanCode.cpp \
     PolyLine.cpp \
-    Histogram.cpp
+    Histogram.cpp \
+    LookUpTable.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
@@ -35,7 +36,8 @@ HEADERS  += MainWindow.h \
     ImageT.h \
     FreemanCode.h \
     PolyLine.h \
-    Histogram.h
+    Histogram.h \
+    LookUpTable.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

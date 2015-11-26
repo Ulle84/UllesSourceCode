@@ -10,6 +10,7 @@
 #include "FreemanCode.h"
 #include "PolyLine.h"
 #include "Histogram.h"
+#include "LookUpTable.h"
 
 class Image
 {
@@ -72,6 +73,7 @@ public:
   void rotateBy180Degree();
 
   void invert();
+  void applyLookUpTable(const LookUpTable& lookUpTable);
 
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);

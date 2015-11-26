@@ -93,13 +93,21 @@ MainWindow::MainWindow(QWidget *parent) :
   imageDisplay->setImage(polyLineTest);*/
 
   // histogram test
-  Image* histogramTest = new Image(512, 100);
+  /*Image* histogramTest = new Image(512, 100);
   histogramTest->setRandomPixelValues();
 
   Histogram histogram = histogramTest->getHistogram();
   histogramTest->drawHistogram(histogram);
 
-  imageDisplay->setImage(histogramTest);
+  imageDisplay->setImage(histogramTest);*/
+
+  // LookUpTable test
+  LookUpTable lookUpTable;
+
+  Image* lookUpTableTest = new Image(512, 100);
+  lookUpTableTest->setIncreasingPixelValues();
+  lookUpTableTest->applyLookUpTable(lookUpTable);
+  imageDisplay->setImage(lookUpTableTest);
 }
 
 MainWindow::~MainWindow()
