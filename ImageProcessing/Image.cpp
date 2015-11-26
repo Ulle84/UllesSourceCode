@@ -172,6 +172,37 @@ unsigned char Image::getMaximum() const
   return maximum;
 }
 
+Histogram Image::getHistogram()
+{
+  Histogram histogram;
+
+  for (unsigned int i = 0; i < m_height * m_width; i++)
+  {
+    histogram.m_values[m_pixels[i]]++;
+  }
+
+  return histogram;
+}
+
+void Image::drawHistogram(const Histogram &histogram)
+{
+  clear();
+
+  unsigned int barWidth = m_width / 256; // TODO use this value
+  qDebug() << "barWidth" << barWidth;
+
+  unsigned int maxValue = histogram.getMaxValue();
+
+  for (unsigned int i = 0; i < 256; i++)
+  {
+    unsigned int barHeight = histogram.m_values[i] * m_height * 1.0 / maxValue;
+    for (unsigned int j = 0; j < barWidth; j++)
+    {
+      drawLine(Point(i*barWidth + j, m_height - 1), Point(i*barWidth + j, m_height - barHeight), 255);
+    }
+  }
+}
+
 void Image::setIncreasingPixelValues()
 {
   for (unsigned int i = 0; i < m_height * m_width; i++)
@@ -346,6 +377,11 @@ void Image::spread()
   {
     m_pixels[i] = m_pixels[i] * 255 / (maximum - minimum);
   }
+}
+
+void Image::clear()
+{
+  setAllPixelValues(0);
 }
 
 bool Image::isPointInImage(const Point &point)

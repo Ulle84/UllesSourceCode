@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
   imageDisplay->setImage(freemanTest);*/
 
   // polyline test
-  QList<Point> points;
+  /*QList<Point> points;
 
   points.append(Point(0, 0));
   points.append(Point(10, 0));
@@ -90,7 +90,16 @@ MainWindow::MainWindow(QWidget *parent) :
   Image* polyLineTest = new Image(20, 20);
   polyLineTest->drawPolyLine(polyLine);
   polyLineTest->invert();
-  imageDisplay->setImage(polyLineTest);
+  imageDisplay->setImage(polyLineTest);*/
+
+  // histogram test
+  Image* histogramTest = new Image(512, 100);
+  histogramTest->setRandomPixelValues();
+
+  Histogram histogram = histogramTest->getHistogram();
+  histogramTest->drawHistogram(histogram);
+
+  imageDisplay->setImage(histogramTest);
 }
 
 MainWindow::~MainWindow()

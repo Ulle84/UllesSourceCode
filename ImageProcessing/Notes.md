@@ -8,7 +8,6 @@
 * polygon data type + drawFunction (polygon is a closed polyline) -> for filled polygons: Saatfül-Algorithmus
 * teachIn (circle, line, rectangle, polygon)
 * multi layer images
-* histogram data type
 * LUT
 * add type region -> bit-mask for mopholgical operations
 * crop image

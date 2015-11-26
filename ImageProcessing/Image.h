@@ -9,6 +9,7 @@
 #include "FilterMask.h"
 #include "FreemanCode.h"
 #include "PolyLine.h"
+#include "Histogram.h"
 
 class Image
 {
@@ -30,6 +31,9 @@ public:
   unsigned char getMinimum() const;
   unsigned char getMaximum() const;
 
+  Histogram getHistogram();
+  void drawHistogram(const Histogram& histogram);
+
   void setAllPixelValues(unsigned char value);
   void setPixelValue(unsigned int x, unsigned int y, unsigned char value);
   void setIncreasingPixelValues();
@@ -45,6 +49,7 @@ public:
 
   void binarize(unsigned char threshold);
   void spread();
+  void clear();
 
   bool isPointInImage(const Point& point);
 

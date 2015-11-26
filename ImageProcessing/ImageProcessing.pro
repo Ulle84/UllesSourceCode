@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     FilterMask.cpp \
     ImageT.cpp \
     FreemanCode.cpp \
-    PolyLine.cpp
+    PolyLine.cpp \
+    Histogram.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
@@ -33,7 +34,8 @@ HEADERS  += MainWindow.h \
     FilterMask.h \
     ImageT.h \
     FreemanCode.h \
-    PolyLine.h
+    PolyLine.h \
+    Histogram.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
