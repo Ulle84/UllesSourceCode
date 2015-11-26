@@ -702,6 +702,17 @@ void Image::rotateBy180Degree()
   }
 }
 
+void Image::invert()
+{
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      m_matrix[y][x] = 255 - m_matrix[y][x];
+    }
+  }
+}
+
 void Image::printToConsole(const std::string& description) const
 {
   std::cout << "--------------------------------------------------------------------------------" << std::endl;

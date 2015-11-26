@@ -66,6 +66,8 @@ public:
   void rotateBy90DegreeCounterClockwise();
   void rotateBy180Degree();
 
+  void invert();
+
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);
 

@@ -89,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   Image* polyLineTest = new Image(20, 20);
   polyLineTest->drawPolyLine(polyLine);
+  polyLineTest->invert();
   imageDisplay->setImage(polyLineTest);
 }
 

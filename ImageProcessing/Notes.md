@@ -1,16 +1,15 @@
-# ToDo
+﻿# ToDo
 * return reference to image at functions which change the image content, i. e. erode dialte etc.
 
 # Ideas
 * implement move-constructor and move-operator
 * rectangle with orientation-angle
 * drawEllipse - circle is also an ellipse
-* polygon data type + drawFunction (polygon is a closed polyline) -> for filled polygons: Saatf�l-Algorithmus
+* polygon data type + drawFunction (polygon is a closed polyline) -> for filled polygons: Saatfül-Algorithmus
 * teachIn (circle, line, rectangle, polygon)
 * multi layer images
 * histogram data type
 * LUT
-* invert image
 * add type region -> bit-mask for mopholgical operations
 * crop image
 * add noise to image
