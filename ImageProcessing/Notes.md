@@ -2,7 +2,7 @@
 * return reference to image at functions which change the image content, i. e. erode dialte etc.
 
 # Ideas
-* implement move-constructor and move-operator
+* implement move-constructor and move-operator -> copy from cImage and remove afterwards
 * rectangle with orientation-angle
 * drawEllipse - circle is also an ellipse
 * polygon data type + drawFunction (polygon is a closed polyline) -> for filled polygons: Saatfül-Algorithmus
