@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     Rectangle.cpp \
     Circle.cpp \
     FilterMask.cpp \
-    ImageT.cpp
+    ImageT.cpp \
+    FreemanCode.cpp \
+    PolyLine.cpp
 
 HEADERS  += MainWindow.h \
     Image.h \
@@ -29,7 +31,9 @@ HEADERS  += MainWindow.h \
     Rectangle.h \
     Circle.h \
     FilterMask.h \
-    ImageT.h
+    ImageT.h \
+    FreemanCode.h \
+    PolyLine.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

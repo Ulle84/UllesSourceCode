@@ -56,6 +56,40 @@ MainWindow::MainWindow(QWidget *parent) :
   imageT.printToConsole("imageT");
   std::cout << "size of one pixel in bytes: " << (int) imageT.sizeOfOnePixelInBytes() << std::endl;
   std::cout << "max possible value: " << (unsigned long long) imageT.getMaximumValue() << std::endl;*/
+
+
+  // freeman test
+  /*QList<unsigned char> directions;
+
+  for (unsigned char i = 0; i < 8; i++)
+  {
+    directions.append(i);
+  }
+
+  FreemanCode freemanCode;
+  freemanCode.setStartPoint(Point(10, 10));
+  freemanCode.setDirections(directions);
+
+  Image* freemanTest = new Image(20, 20);
+  freemanTest->drawFreemanCode(freemanCode);
+  imageDisplay->setImage(freemanTest);*/
+
+  // polyline test
+  QList<Point> points;
+
+  points.append(Point(0, 0));
+  points.append(Point(10, 0));
+  points.append(Point(10, 10));
+  points.append(Point(0, 0));
+  points.append(Point(0, 10));
+  points.append(Point(19, 19));
+
+  PolyLine polyLine;
+  polyLine.setPoints(points);
+
+  Image* polyLineTest = new Image(20, 20);
+  polyLineTest->drawPolyLine(polyLine);
+  imageDisplay->setImage(polyLineTest);
 }
 
 MainWindow::~MainWindow()

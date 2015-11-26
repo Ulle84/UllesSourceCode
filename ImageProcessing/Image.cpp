@@ -500,7 +500,82 @@ void Image::drawLine(const Point &p1, const Point &p2, unsigned char value)
     if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
     if (e2 < dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
   }
-}           
+}
+
+void Image::drawFreemanCode(const FreemanCode &freemanCode)
+{
+  drawPoint(freemanCode.m_startPoint, 255);
+
+  unsigned int x = freemanCode.m_startPoint.m_x;
+  unsigned int y = freemanCode.m_startPoint.m_y;
+
+  for (auto it = freemanCode.m_directions.begin(); it != freemanCode.m_directions.end(); it++)
+  {
+    qDebug() << "code: " << *it;
+
+    /* 321
+     * 4*0
+     * 567 */
+
+    switch (*it)
+    {
+    case 0:
+      x++;
+      break;
+    case 1:
+      x++;
+      y--;
+      break;
+    case 2:
+      y--;
+      break;
+    case 3:
+      x--;
+      y--;
+      break;
+    case 4:
+      x--;
+      break;
+    case 5:
+      x--;
+      y++;
+      break;
+    case 6:
+      y++;
+      break;
+    case 7:
+      x++;
+      y++;
+      break;
+    default:
+      // should not happen
+      break;
+    }
+
+    m_matrix[y][x] = 255;
+  }
+}
+
+void Image::drawPolyLine(const PolyLine &polyLine)
+{
+  if (polyLine.m_points.length() < 2)
+  {
+    return;
+  }
+
+  auto itPrevious = polyLine.m_points.begin();
+  for (auto it = polyLine.m_points.begin(); it != polyLine.m_points.end(); it++)
+  {
+    if (it == polyLine.m_points.begin())
+    {
+      continue;
+    }
+
+    drawLine(*itPrevious, *it, 255);
+
+    itPrevious = it;
+  }
+}
 
 // TODO remove potential memory leak
 Image* Image::doPolarTransformation(const Circle &circle)

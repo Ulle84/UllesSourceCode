@@ -7,6 +7,8 @@
 #include "Rectangle.h"
 #include "Circle.h"
 #include "FilterMask.h"
+#include "FreemanCode.h"
+#include "PolyLine.h"
 
 class Image
 {
@@ -53,6 +55,8 @@ public:
   void drawRectangle(const Rectangle& rectangle, unsigned char value);
   void drawCircle(const Circle& circle, unsigned char value, bool fill);
   void drawLine(const Point& p1, const Point& p2, unsigned char value);
+  void drawFreemanCode(const FreemanCode& freemanCode);
+  void drawPolyLine(const PolyLine& polyLine);
 
   Image* doPolarTransformation(const Circle& circle);
 

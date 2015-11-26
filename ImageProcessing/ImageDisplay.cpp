@@ -98,6 +98,7 @@ void ImageDisplay::setImage(const Image* image)
   QImage qImage(image->getPixels(), image->getWidth(), image->getHeight(), QImage::Format_Indexed8);
   QPixmap pixmap = QPixmap::fromImage(qImage);
 
+  m_scene->clear();
   m_scene->addPixmap(pixmap);
 
   ui->graphicsView->setScene(m_scene);
