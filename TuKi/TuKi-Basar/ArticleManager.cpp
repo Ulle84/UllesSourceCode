@@ -331,67 +331,6 @@ double ArticleManager::getSumOfCurrentSale()
   return sum;
 }
 
-void ArticleManager::calculateStatistics(Statistics* statistics)
-{
-  statistics->m_volumeOfSale = 0.0;
-  statistics->m_countOfSoldArticles = 0;
-  statistics->m_countOfSoldClothes = 0;
-  statistics->m_countOfSoldMisc = 0;
-
-  statistics->m_deductionPercentage = m_settings->getDeductionPercentage();
-
-
-  QStringList transactions;
-
-  for (QList<Article*>::iterator it = m_articles.begin(); it != m_articles.end(); it++)
-  {
-    //if ((*it)->m_soldOnPc == m_settings->getPc())
-    if ((*it)->m_soldOnPc != 0)
-    {
-      QString transaction = QString("%1 %2").arg((*it)->m_soldOnPc).arg((*it)->m_soldTime);
-
-      statistics->m_volumeOfSale += (*it)->m_prize;
-      (statistics->m_countOfSoldArticles)++;
-
-      if ((*it)->m_size.length() > 1)
-      {
-        (statistics->m_countOfSoldClothes)++;
-      }
-      else
-      {
-        (statistics->m_countOfSoldMisc)++;
-      }
-
-      if (!transactions.contains(transaction))
-      {
-        transactions.append(transaction);
-      }
-    }
-  }
-
-  statistics->m_countOfSales = transactions.length();
-  if (statistics->m_countOfSales == 0)
-  {
-    statistics->m_articlesPerSale = 0;
-  }
-  else
-  {
-    statistics->m_articlesPerSale = statistics->m_countOfSoldArticles * 1.0 / statistics->m_countOfSales;
-  }
-  statistics->m_deduction = statistics->m_volumeOfSale * m_settings->getDeductionPercentage() / 100.0;
-
-  statistics->m_countOfAllArticles = m_articles.length();
-
-  if (statistics->m_countOfAllArticles == 0)
-  {
-    statistics->m_percentageOfSoldArticles = 0.0;
-  }
-  else
-  {
-    statistics->m_percentageOfSoldArticles = statistics->m_countOfSoldArticles * 100.0 / statistics->m_countOfAllArticles;
-  }
-}
-
 std::map<int, double> ArticleManager::getSalesPerSeller()
 {
   std::map<int, double> map;

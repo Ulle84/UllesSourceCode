@@ -11,7 +11,6 @@
 #include "Article.h"
 
 class Settings;
-class Statistics;
 
 class ArticleManager
 {
@@ -41,7 +40,6 @@ public:
   QString currentSaleToHtml();
   double getSumOfCurrentSale();
 
-  void calculateStatistics(Statistics* statistics);
   std::map<int, double> getSalesPerSeller();
   std::map<int, int> getSoldArticlesPerSeller();
   std::map<int, int> getOfferedArticlesPerSeller();
