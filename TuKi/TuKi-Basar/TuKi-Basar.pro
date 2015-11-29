@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     DateTimeHelper.cpp \
     ExcelExport.cpp \
     ArticleReturn.cpp \
-    EvaluationByCategory.cpp
+    EvaluationByCategory.cpp \
+    PercentageCalculator.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -48,7 +49,8 @@ HEADERS  += TuKiBasar.h \
     DateTimeHelper.h \
     ExcelExport.h \
     ArticleReturn.h \
-    EvaluationByCategory.h
+    EvaluationByCategory.h \
+    PercentageCalculator.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \

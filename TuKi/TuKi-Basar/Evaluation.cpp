@@ -31,6 +31,7 @@
 #include "Converter.h"
 #include "DateTimeHelper.h"
 #include "ExcelExport.h"
+#include "EvaluationByCategory.h"
 
 Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, SellerManager *sellerManager, QWidget *parent) :
   QDialog(parent),
@@ -53,6 +54,9 @@ Evaluation::Evaluation(ArticleManager* articleManager, Settings *settings, Selle
 
   m_excelExport = new ExcelExport(m_articleManager, m_settings, m_sellerManager, this);
   ui->tabWidget->addTab(m_excelExport, tr("Excel Export"));
+
+  m_evaluationByCategory = new EvaluationByCategory(m_articleManager, this);
+  ui->tabWidget->addTab(m_evaluationByCategory, tr("Auswertung nach Kategorie"));
 }
 
 Evaluation::~Evaluation()
