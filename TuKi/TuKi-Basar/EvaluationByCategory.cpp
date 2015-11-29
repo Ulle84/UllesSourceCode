@@ -87,7 +87,7 @@ void EvaluationByCategory::doEvaluation()
   html.append("</tr>");
 
   html.append("<tr>");
-  html.append(QString("<td>Gesamtzahl der verkauften Artikel aus der Kategorie '%1'</td>").arg(category));
+  html.append(QString("<td>davon verkauft</td>").arg(category));
   html.append(QString("<td>%1 (%2)</td>").arg(qtySoldCategoryArticles).arg(PercentageCalculator::getPercentage(qtySoldCategoryArticles + qtyUnsoldCategoryArticles, qtySoldCategoryArticles)));
   html.append("</tr>");
 
