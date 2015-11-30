@@ -12,3 +12,15 @@ Article::Article(unsigned int articleNumber, unsigned int sellerNumber, unsigned
 {
 
 }
+
+QString Article::getCategory()
+{
+/*if ((*it)->m_size.length() > 1)
+      {
+        (statistics->m_qtySoldClothes)++;
+      }
+      else
+      {
+        (statistics->m_qtySoldMisc)++;
+      }*/
+}

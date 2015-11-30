@@ -28,7 +28,9 @@ SOURCES += main.cpp\
     PasswordInput.cpp \
     DateTimeHelper.cpp \
     ExcelExport.cpp \
-    ArticleReturn.cpp
+    ArticleReturn.cpp \
+    EvaluationByCategory.cpp \
+    PercentageCalculator.cpp
 
 HEADERS  += TuKiBasar.h \
     Evaluation.h \
@@ -46,7 +48,9 @@ HEADERS  += TuKiBasar.h \
     PasswordInput.h \
     DateTimeHelper.h \
     ExcelExport.h \
-    ArticleReturn.h
+    ArticleReturn.h \
+    EvaluationByCategory.h \
+    PercentageCalculator.h
 
 FORMS    += TuKiBasar.ui \
     Evaluation.ui \
@@ -56,7 +60,8 @@ FORMS    += TuKiBasar.ui \
     SalesView.ui \
     PasswordInput.ui \
     ExcelExport.ui \
-    ArticleReturn.ui
+    ArticleReturn.ui \
+    EvaluationByCategory.ui
 
 OTHER_FILES += \
     ToDo.txt

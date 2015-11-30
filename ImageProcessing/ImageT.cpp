@@ -85,6 +85,7 @@ template<class T> void ImageT<T>::setIncreasingPixelValues()
 }
 
 // list of supported types
+template class ImageT<bool>;
 template class ImageT<unsigned char>;
 template class ImageT<unsigned short>;
 template class ImageT<unsigned int>;

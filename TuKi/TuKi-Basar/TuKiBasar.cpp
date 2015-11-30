@@ -57,17 +57,10 @@ TuKiBasar::TuKiBasar(QWidget *parent) :
   m_passwortProtectedActions.append(ui->actionCompleteEvaluation);
   m_passwortProtectedActions.append(ui->actionDeactivateAdvancedAccess);
 
-  setPasswordProtectedActionsVisible(false);
-
-  /*
-
-  ui->actionArticleReturn->setVisible(false);
-  ui->actionImportArticleLists->setVisible(false);
-  ui->actionExportSoldArticles->setVisible(false);
-  ui->actionEvaluation->setVisible(false);
-  ui->actionSettings->setVisible(false);
-  ui->actionCompleteEvaluation->setVisible(false);
-  ui->actionDeactivateAdvancedAccess->setVisible(false);*/
+  #ifndef Q_OS_MAC
+    // on Mac OS (development enviroment) we do not need password protection
+    setPasswordProtectedActionsVisible(false);
+  #endif
 
   // hide description since there have been big layout issues on PCs with Aspect Ratio 4:3
   ui->labelDescription->setVisible(false);

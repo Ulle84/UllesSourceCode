@@ -19,6 +19,8 @@ public:
   QString m_description;
   QString m_soldTime;
 
+  QString getCategory();
+
 private:
   //TODO declare variables private again?
 };
