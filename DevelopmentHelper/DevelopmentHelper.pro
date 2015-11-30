@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     BitbucketHelper.cpp \
     IterateOverContainer.cpp \
     FindInContainer.cpp \
-    ForLoopCreator.cpp
+    ForLoopCreator.cpp \
+    ConnectionHelper.cpp
 
 HEADERS  += DevelopmentHelper.h \
     LogFileViewer.h \
@@ -71,7 +72,8 @@ HEADERS  += DevelopmentHelper.h \
     BitbucketHelper.h \
     IterateOverContainer.h \
     FindInContainer.h \
-    ForLoopCreator.h
+    ForLoopCreator.h \
+    ConnectionHelper.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -102,4 +104,5 @@ FORMS    += DevelopmentHelper.ui \
     BitbucketHelper.ui \
     IterateOverContainer.ui \
     FindInContainer.ui \
-    ForLoopCreator.ui
+    ForLoopCreator.ui \
+    ConnectionHelper.ui
