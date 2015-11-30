@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     Rectangle.cpp \
     Circle.cpp \
     FilterMask.cpp \
-    ImageT.cpp \
     FreemanCode.cpp \
     PolyLine.cpp \
     Histogram.cpp \
@@ -33,11 +32,11 @@ HEADERS  += MainWindow.h \
     Rectangle.h \
     Circle.h \
     FilterMask.h \
-    ImageT.h \
     FreemanCode.h \
     PolyLine.h \
     Histogram.h \
-    LookUpTable.h
+    LookUpTable.h \
+    MatrixNew.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

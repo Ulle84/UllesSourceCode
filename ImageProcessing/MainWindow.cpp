@@ -1,9 +1,11 @@
+#include <QDebug>
+
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
 #include "Image.h"
-#include "ImageT.h"
 #include "ImageDisplay.h"
+#include "MatrixNew.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -50,14 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
   //imageDisplay->setImage(m_image);
 
 
-  // template test
-  /*ImageT<unsigned short> imageT(1, 65537);
-  imageT.setIncreasingPixelValues();
-  imageT.printToConsole("imageT");
-  std::cout << "size of one pixel in bytes: " << (int) imageT.sizeOfOnePixelInBytes() << std::endl;
-  std::cout << "max possible value: " << (unsigned long long) imageT.getMaximumValue() << std::endl;*/
-
-
   // freeman test
   /*QList<unsigned char> directions;
 
@@ -102,12 +96,21 @@ MainWindow::MainWindow(QWidget *parent) :
   imageDisplay->setImage(histogramTest);*/
 
   // LookUpTable test
-  LookUpTable lookUpTable;
+  /*LookUpTable lookUpTable;
 
   Image* lookUpTableTest = new Image(512, 100);
   lookUpTableTest->setIncreasingPixelValues();
   lookUpTableTest->applyLookUpTable(lookUpTable);
-  imageDisplay->setImage(lookUpTableTest);
+  imageDisplay->setImage(lookUpTableTest);*/
+
+  // Matrix-Test
+  MatrixNew<unsigned char> matrix;
+  matrix.test();
+
+  qDebug() << "width" << matrix.getWidth();
+  qDebug() << "height" << matrix.getHeight();
+  qDebug() << "depth" << matrix.getDepth();
+
 }
 
 MainWindow::~MainWindow()
