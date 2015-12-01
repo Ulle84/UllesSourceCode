@@ -38,3 +38,4 @@
 # Documentation
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible
 * Best approach of some hours of testing: Base Template Class (3d)Matrix + Derivations (ImageGray, ImageRGB, etc)
+* Matrix is template base class, all algorithms which are type-independent are defined here

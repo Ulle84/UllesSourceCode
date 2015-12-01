@@ -53,20 +53,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
   // freeman test
-  /*QList<unsigned char> directions;
+  std::list<unsigned char> directions;
 
   for (unsigned char i = 0; i < 8; i++)
   {
-    directions.append(i);
+    directions.push_back(i);
   }
 
   FreemanCode freemanCode;
-  freemanCode.setStartPoint(Point(10, 10));
+  freemanCode.setStartPoint(Point(10, 12));
   freemanCode.setDirections(directions);
 
   Image* freemanTest = new Image(20, 20);
   freemanTest->drawFreemanCode(freemanCode);
-  imageDisplay->setImage(freemanTest);*/
+  imageDisplay->setImage(freemanTest);
 
   // polyline test
   /*QList<Point> points;

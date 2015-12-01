@@ -1,7 +1,7 @@
 #ifndef FREEMANCODE_H
 #define FREEMANCODE_H
 
-#include <QList>
+#include <list>
 
 #include "Point.h"
 
@@ -11,11 +11,11 @@ public:
   FreemanCode();
 
   void setStartPoint(const Point& startPoint);
-  void setDirections(const QList<unsigned char>& directions);
+  void setDirections(const std::list<unsigned char>& directions);
 
 private:
   Point m_startPoint;
-  QList<unsigned char> m_directions;
+  std::list<unsigned char> m_directions;
 
   friend class Image;
 };
