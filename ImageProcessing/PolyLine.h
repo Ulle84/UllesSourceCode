@@ -1,7 +1,7 @@
 #ifndef POLYLINE_H
 #define POLYLINE_H
 
-#include <QList>
+#include <list>
 
 #include "Point.h"
 
@@ -10,10 +10,10 @@ class PolyLine
 public:
   PolyLine();
 
-  void setPoints(const QList<Point>& points);
+  void setPoints(const std::list<Point>& points);
 
 private:
-  QList<Point> m_points;
+  std::list<Point> m_points;
 
   friend class Image;
 };

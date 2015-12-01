@@ -594,7 +594,7 @@ void Image::drawFreemanCode(const FreemanCode &freemanCode)
 
 void Image::drawPolyLine(const PolyLine &polyLine)
 {
-  if (polyLine.m_points.length() < 2)
+  if (polyLine.m_points.size() < 2)
   {
     return;
   }

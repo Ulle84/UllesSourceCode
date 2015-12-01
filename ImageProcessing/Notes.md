@@ -1,28 +1,27 @@
-# ToDo
+# Bugs
+
+# ToDo (prioritised)
+* implement template Matrix
+* implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
+* ImageGray
+  * create class ImageGray which inherits from Matrix<unsigned char> -> test that move-constructor and move-operator of Matrix is used
+  * implement a converter to QImage
+* ImageRGB -> analog to ImageGray -> QImage::Format_RGB32 and QImage::Format_ARGB32
 * return reference to image at functions which change the image content, i. e. erode dialte etc.
-
-# Refactoring
-* ImageT -> Layer
-* Image -> map of layers: std::map<std::string, layer>
-* Image is friend of layer -> full access
-* ImageManager holds all instances of Image (friend) - display has a reference to ImageManager
-* Class ImageProcessing, which implements all the algorithms - Image is friend of ImageProcessing
-* Layer: member valid bits?
-* Movie: List of Images
-
-# Test
-* dispaly images in gray and rgb
-* display 12 bit images with range-slider
-* Convert Image to QImage with formats: QImage::Format_RGB32 and QImage::Format_ARGB32
+  * test that move-constructor and move-operator are used, otherwise this operations will be very "expensive"
+  * test: imageEroded = image.erode(blub);
+  * test: image = image.erode(blub);
 
 # Ideas
-* implement move-constructor and move-operator -> copy from cImage and remove afterwards
 * rectangle with orientation-angle
 * drawEllipse - circle is also an ellipse
 * polygon data type + drawFunction (polygon is a closed polyline) -> for filled polygons: Saatfül-Algorithmus
-* teachIn (circle, line, rectangle, polygon)
-* multi layer images
-* add type region -> bit-mask for mopholgical operations
+* interactive teachIn
+  * circle
+  * line
+  * rectangle
+  * polygon
+* add type region -> bit-mask for mopholgical operations -> instance of Matrix<bool>
 * crop image
 * add noise to image
 * look into Burger/Burge and implement some algorithms
@@ -34,6 +33,8 @@
 * rotate image with defined angle
 * labeling
 * blob analysis
+* ImageManager: holds references to Images - display has a reference to ImageManager
+* 16 bit images -> ImageViewer has a range-slider, where the displayed bits can be selected
 
 # Documentation
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible
