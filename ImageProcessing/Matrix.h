@@ -14,9 +14,11 @@ public:
   Matrix();
   Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers = 1);
   Matrix(const Matrix& rhs);
+  Matrix(Matrix&& rhs);
   virtual ~Matrix();
 
   Matrix& operator= (const Matrix& rhs);
+  Matrix& operator= (Matrix&& rhs);
 
   unsigned int getWidth();
   unsigned int getHeight();
@@ -65,6 +67,24 @@ Matrix<T>::Matrix(const Matrix &rhs)
   {
     memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
   }
+}
+
+template<typename T>
+Matrix<T>::Matrix(Matrix&& rhs)
+{
+  std::cout << "move constructor of matrix" << std::endl;
+  // TODO
+  /*
+m_height = rhs.m_height;
+  m_width = rhs.m_width;
+  m_pixels = rhs.m_pixels;
+  m_matrix = rhs.m_matrix;
+
+  rhs.m_height = 0;
+  rhs.m_width = 0;
+  rhs.m_pixels = nullptr;
+  rhs.m_matrix = nullptr;
+  */
 }
 
 template<typename T>
@@ -135,7 +155,7 @@ Matrix<T>::~Matrix()
 template<typename T>
 Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
 {
-  std::cout << "= operator of matrix" << std::endl;
+  std::cout << "asignment operator of matrix" << std::endl;
   if (&rhs != this)
   {
     if (m_width != rhs.m_width || m_height != rhs.m_height || m_qtyLayers != rhs.m_qtyLayers)
@@ -157,6 +177,31 @@ Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
   }
 
   return *this;
+}
+
+template<typename T>
+Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
+{
+  std::cout << "move asignment operator of matrix" << std::endl;
+
+  /*
+   * if (&rhs != this)
+  {
+    delete[] m_pixels;
+    delete[] m_matrix;
+
+    m_height = rhs.m_height;
+    m_width =  rhs.m_width;
+    m_pixels = rhs.m_pixels;
+    m_matrix = rhs.m_matrix;
+
+    rhs.m_height = 0;
+    rhs.m_width = 0;
+    rhs.m_pixels = nullptr;
+    rhs.m_matrix = nullptr;
+  }
+  return *this;*/
+
 }
 
 template<typename T>
