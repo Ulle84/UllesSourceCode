@@ -40,6 +40,7 @@ private:
   T** m_lines;
   void create();
   void destroy();
+  void move(Matrix&& rhs);
 };
 
 template<typename T>
@@ -56,7 +57,7 @@ Matrix<T>::Matrix() :
 template<typename T>
 Matrix<T>::Matrix(const Matrix &rhs)
 {
-  std::cout << "copy constructor of matrix" << std::endl;
+  std::cout << "Matrix: copy constructor" << std::endl;
   m_width = rhs.m_width;
   m_height = rhs.m_height;
   m_qtyLayers = rhs.m_qtyLayers;
@@ -72,19 +73,9 @@ Matrix<T>::Matrix(const Matrix &rhs)
 template<typename T>
 Matrix<T>::Matrix(Matrix&& rhs)
 {
-  std::cout << "move constructor of matrix" << std::endl;
-  // TODO
-  /*
-m_height = rhs.m_height;
-  m_width = rhs.m_width;
-  m_pixels = rhs.m_pixels;
-  m_matrix = rhs.m_matrix;
+  std::cout << "Matrix: move constructor" << std::endl;
 
-  rhs.m_height = 0;
-  rhs.m_width = 0;
-  rhs.m_pixels = nullptr;
-  rhs.m_matrix = nullptr;
-  */
+  move(rhs);
 }
 
 template<typename T>
@@ -93,7 +84,7 @@ Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayer
   m_height(height),
   m_qtyLayers(qtyLayers)
 {
-  std::cout << "value constructor of matrix" << std::endl;
+  std::cout << "Matrix: value constructor" << std::endl;
 
   if (m_width == 0)
   {
@@ -148,14 +139,14 @@ void Matrix<T>::destroy()
 template<typename T>
 Matrix<T>::~Matrix()
 {
-  std::cout << "destructor of matrix" << std::endl;
+  std::cout << "Matrix: destructor" << std::endl;
   destroy();
 }
 
 template<typename T>
 Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
 {
-  std::cout << "asignment operator of matrix" << std::endl;
+  std::cout << "Matrix: assignment operator" << std::endl;
   if (&rhs != this)
   {
     if (m_width != rhs.m_width || m_height != rhs.m_height || m_qtyLayers != rhs.m_qtyLayers)
@@ -182,26 +173,14 @@ Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
 template<typename T>
 Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
 {
-  std::cout << "move asignment operator of matrix" << std::endl;
+  std::cout << "Matrix: move assignment operator" << std::endl;
 
-  /*
-   * if (&rhs != this)
+  if (&rhs != this)
   {
-    delete[] m_pixels;
-    delete[] m_matrix;
-
-    m_height = rhs.m_height;
-    m_width =  rhs.m_width;
-    m_pixels = rhs.m_pixels;
-    m_matrix = rhs.m_matrix;
-
-    rhs.m_height = 0;
-    rhs.m_width = 0;
-    rhs.m_pixels = nullptr;
-    rhs.m_matrix = nullptr;
+    destroy();
+    move(rhs);
   }
-  return *this;*/
-
+  return *this;
 }
 
 template<typename T>
@@ -211,6 +190,22 @@ void Matrix<T>::clear()
   {
     memset(m_lines[z], 0, m_width * m_height * sizeof(T));
   }
+}
+
+template<typename T>
+void Matrix<T>::move(Matrix&& rhs)
+{
+  m_height = rhs.m_height;
+  m_width =  rhs.m_width;
+  m_qtyLayers = rhs.m_qtyLayers;
+  m_values = rhs.m_values;
+  m_lines = rhs.m_lines;
+
+  rhs.m_height = 0;
+  rhs.m_width = 0;
+  rhs.m_qtyLayers = 0;
+  rhs.m_values = 0; // nullptr
+  rhs.m_lines = 0; // nullptr
 }
 
 template<typename T>
