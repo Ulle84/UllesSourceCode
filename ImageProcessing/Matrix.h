@@ -2,6 +2,8 @@
 #define MATRIX_H
 
 #include <iostream>
+#include <typeinfo>
+#include <string>
 
 // TODO rename depth to qtyLayers
 
@@ -11,7 +13,10 @@ class Matrix
 public:
   Matrix();
   Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers = 1);
+  Matrix(const Matrix& rhs);
   virtual ~Matrix();
+
+  Matrix& operator= (const Matrix& rhs);
 
   unsigned int getWidth();
   unsigned int getHeight();
@@ -19,6 +24,9 @@ public:
 
   void printValues();
   void setIncreasingValues();
+  void clear();
+  void setAllValues(T value);
+  //unsigned char getBits
   
 protected:
   T*** m_values;
@@ -28,7 +36,8 @@ protected:
 
 private:
   T** m_lines;
-  void init();
+  void create();
+  void destroy();
 };
 
 template<typename T>
@@ -37,7 +46,25 @@ Matrix<T>::Matrix() :
   m_height(512),
   m_qtyLayers(1)
 {
-  init();
+  std::cout << "default constructor of matrix" << std::endl;
+  create();
+  clear();
+}
+
+template<typename T>
+Matrix<T>::Matrix(const Matrix &rhs)
+{
+  std::cout << "copy constructor of matrix" << std::endl;
+  m_width = rhs.m_width;
+  m_height = rhs.m_height;
+  m_qtyLayers = rhs.m_qtyLayers;
+
+  create();
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
+  }
 }
 
 template<typename T>
@@ -46,6 +73,8 @@ Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayer
   m_height(height),
   m_qtyLayers(qtyLayers)
 {
+  std::cout << "value constructor of matrix" << std::endl;
+
   if (m_width == 0)
   {
     m_width = 1;
@@ -61,11 +90,12 @@ Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayer
     m_qtyLayers = 1;
   }
 
-  init();
+  create();
+  clear();
 }
 
 template<typename T>
-void Matrix<T>::init()
+void Matrix<T>::create()
 {
   m_lines = new T*[m_qtyLayers];
   m_values = new T**[m_qtyLayers];
@@ -79,13 +109,11 @@ void Matrix<T>::init()
     {
       m_values[z][y] = &m_lines[z][y * m_width];
     }
-
-    memset(m_lines[z], 0, m_width * m_height * sizeof(T));
   }
 }
 
 template<typename T>
-Matrix<T>::~Matrix()
+void Matrix<T>::destroy()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
@@ -95,6 +123,64 @@ Matrix<T>::~Matrix()
 
   delete[] m_values;
   delete[] m_lines;
+}
+
+template<typename T>
+Matrix<T>::~Matrix()
+{
+  std::cout << "destructor of matrix" << std::endl;
+  destroy();
+}
+
+template<typename T>
+Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
+{
+  std::cout << "= operator of matrix" << std::endl;
+  if (&rhs != this)
+  {
+    if (m_width != rhs.m_width || m_height != rhs.m_height || m_qtyLayers != rhs.m_qtyLayers)
+    {
+      // TODO improve performance -> rearange buffer if sizes match
+      destroy();
+
+      m_width = rhs.m_width;
+      m_height = rhs.m_height;
+      m_qtyLayers = rhs.m_qtyLayers;
+
+      create();
+    }
+
+    for (unsigned int z = 0; z < m_qtyLayers; z++)
+    {
+      memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
+    }
+  }
+
+  return *this;
+}
+
+template<typename T>
+void Matrix<T>::clear()
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    memset(m_lines[z], 0, m_width * m_height * sizeof(T));
+  }
+}
+
+template<typename T>
+void Matrix<T>::setAllValues(T value)
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[z][y][x] = value;
+      }
+    }
+  }
 }
 
 template<typename T>
@@ -135,8 +221,15 @@ void Matrix<T>::printValues()
         {
           std::cout << " ";
         }
+        if (sizeof(T) > 1)
+        {
+          std::cout << m_values[z][y][x] << " ";
+        }
+        else
+        {
+          std::cout << (int) m_values[z][y][x] << " ";
+        }
 
-        std::cout << (int) m_values[z][y][x] << " ";
       }
 
       std::cout << std::endl;
