@@ -1,15 +1,15 @@
-#ifndef MATRIXNEW_H
-#define MATRIXNEW_H
+#ifndef MATRIX_H
+#define MATRIX_H
 
 #include <iostream>
 
 template<typename T>
-class MatrixNew
+class Matrix
 {
 public:
-  MatrixNew();
-  MatrixNew(unsigned int width, unsigned int height, unsigned int depth);
-  virtual ~MatrixNew();
+  Matrix();
+  Matrix(unsigned int width, unsigned int height, unsigned int depth);
+  virtual ~Matrix();
 
   unsigned int getWidth();
   unsigned int getHeight();
@@ -30,7 +30,7 @@ private:
 };
 
 template<typename T>
-MatrixNew<T>::MatrixNew() :
+Matrix<T>::Matrix() :
   m_width(512),
   m_height(512),
   m_depth(1)
@@ -39,7 +39,7 @@ MatrixNew<T>::MatrixNew() :
 }
 
 template<typename T>
-MatrixNew<T>::MatrixNew(unsigned int width, unsigned int height, unsigned int depth) :
+Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int depth) :
   m_width(width),
   m_height(height),
   m_depth(depth)
@@ -48,46 +48,7 @@ MatrixNew<T>::MatrixNew(unsigned int width, unsigned int height, unsigned int de
 }
 
 template<typename T>
-MatrixNew<T>::~MatrixNew()
-{
-  for (unsigned int d = 0; d < m_depth; d++)
-  {
-    for (unsigned int i = 0; i < m_height; i++)
-    {
-      delete[] m_values[d][i];
-    }
-    delete[] m_values[d];
-  }
-  delete[] m_values;
-}
-
-template<typename T>
-unsigned int MatrixNew<T>::getWidth()
-{
-  return m_width;
-}
-
-template<typename T>
-unsigned int MatrixNew<T>::getHeight()
-{
-  return m_height;
-}
-
-template<typename T>
-unsigned int MatrixNew<T>::getDepth()
-{
-  return m_depth;
-}
-
-template<typename T>
-void MatrixNew<T>::test()
-{
-  //[layer][line][colum]
-  //m_values[0][0][0] = 255;
-}
-
-template<typename T>
-void MatrixNew<T>::init()
+void Matrix<T>::init()
 {
   m_values = new T**[m_depth];
   m_lines = new T**[m_depth];
@@ -121,4 +82,43 @@ void MatrixNew<T>::init()
   }*/
 }
 
-#endif // MATRIXNEW_H
+template<typename T>
+Matrix<T>::~Matrix()
+{
+  /*for (unsigned int d = 0; d < m_depth; d++)
+  {
+    for (unsigned int i = 0; i < m_height; i++)
+    {
+      delete[] m_values[d][i];
+    }
+    delete[] m_values[d];
+  }
+  delete[] m_values;*/
+}
+
+template<typename T>
+unsigned int Matrix<T>::getWidth()
+{
+  return m_width;
+}
+
+template<typename T>
+unsigned int Matrix<T>::getHeight()
+{
+  return m_height;
+}
+
+template<typename T>
+unsigned int Matrix<T>::getDepth()
+{
+  return m_depth;
+}
+
+template<typename T>
+void Matrix<T>::test()
+{
+  //[layer][line][colum]
+  //m_values[0][0][0] = 255;
+}
+
+#endif // MATRIX_H

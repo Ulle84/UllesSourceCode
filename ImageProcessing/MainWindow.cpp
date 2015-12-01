@@ -5,7 +5,7 @@
 
 #include "Image.h"
 #include "ImageDisplay.h"
-#include "MatrixNew.h"
+#include "Matrix.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -104,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
   imageDisplay->setImage(lookUpTableTest);*/
 
   // Matrix-Test
-  MatrixNew<unsigned char> matrix;
+  Matrix<unsigned char> matrix;
   matrix.test();
 
   qDebug() << "width" << matrix.getWidth();

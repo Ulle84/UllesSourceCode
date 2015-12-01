@@ -3,6 +3,8 @@
 
 #include "Point.h"
 
+// TODO deviate from Matrix
+
 class FilterMask
 {
 public:

@@ -36,7 +36,7 @@ HEADERS  += MainWindow.h \
     PolyLine.h \
     Histogram.h \
     LookUpTable.h \
-    MatrixNew.h
+    Matrix.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
