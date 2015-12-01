@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
   //histogramTest();
   //lookUpTableTest();
   filterMaskTest();
-  //matrixTest();
+  matrixTest();
 }
 
 MainWindow::~MainWindow()
@@ -107,12 +107,9 @@ void MainWindow::lookUpTableTest()
 
 void MainWindow::matrixTest()
 {
-  Matrix<unsigned char> matrix;
-  matrix.test();
-
-  qDebug() << "width" << matrix.getWidth();
-  qDebug() << "height" << matrix.getHeight();
-  qDebug() << "depth" << matrix.getDepth();
+  Matrix<unsigned char> matrix(16, 20);
+  matrix.setIncreasingValues();
+  matrix.printValues();
 }
 
 void MainWindow::filterMaskTest()

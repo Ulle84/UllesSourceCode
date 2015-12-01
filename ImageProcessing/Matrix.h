@@ -3,29 +3,31 @@
 
 #include <iostream>
 
+// TODO rename depth to qtyLayers
+
 template<typename T>
 class Matrix
 {
 public:
   Matrix();
-  Matrix(unsigned int width, unsigned int height, unsigned int depth);
+  Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers = 1);
   virtual ~Matrix();
 
   unsigned int getWidth();
   unsigned int getHeight();
   unsigned int getDepth();
 
-  void test();
+  void printValues();
+  void setIncreasingValues();
   
 protected:
   T*** m_values;
   unsigned int m_width;
   unsigned int m_height;
-  unsigned int m_depth;
+  unsigned int m_qtyLayers;
 
 private:
-  T** m_buffers;
-  T*** m_lines;
+  T** m_lines;
   void init();
 };
 
@@ -33,67 +35,66 @@ template<typename T>
 Matrix<T>::Matrix() :
   m_width(512),
   m_height(512),
-  m_depth(1)
+  m_qtyLayers(1)
 {
   init();
 }
 
 template<typename T>
-Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int depth) :
+Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers) :
   m_width(width),
   m_height(height),
-  m_depth(depth)
+  m_qtyLayers(qtyLayers)
 {
+  if (m_width == 0)
+  {
+    m_width = 1;
+  }
+
+  if (m_height == 0)
+  {
+    m_height = 1;
+  }
+
+  if (m_qtyLayers == 0)
+  {
+    m_qtyLayers = 1;
+  }
+
   init();
 }
 
 template<typename T>
 void Matrix<T>::init()
 {
-  m_values = new T**[m_depth];
-  m_lines = new T**[m_depth];
-  m_buffers = new T*[m_depth];
+  m_lines = new T*[m_qtyLayers];
+  m_values = new T**[m_qtyLayers];
 
-  for (unsigned int d = 0; d < m_depth; d++)
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    m_buffers[d] = new T[m_width * m_height];
-    m_lines[d] = new T*[m_height];
+    m_lines[z] = new T[m_width * m_height];
+    m_values[z] = new T*[m_height];
 
-    for (unsigned int i = 0; i < m_height; i++)
+    for (unsigned int y = 0; y < m_height; y++)
     {
-      m_lines[d][i] = &m_buffers[d][i * m_width];
+      m_values[z][y] = &m_lines[z][y * m_width];
     }
 
-    memset(m_buffers[d], 0, m_width * m_height);
-
-    //m_values[d] = m_lines[d][0];
+    memset(m_lines[z], 0, m_width * m_height * sizeof(T));
   }
-
-  // allocate memory line by line
-  /*m_values = new T**[m_depth];
-
-  for (unsigned int d = 0; d < m_depth; d++)
-  {
-    m_values[d] = new T*[m_height];
-    for (unsigned int i = 0; i < m_height; i++)
-    {
-      m_values[d][i] = new T[m_width];
-    }
-  }*/
 }
 
 template<typename T>
 Matrix<T>::~Matrix()
 {
-  /*for (unsigned int d = 0; d < m_depth; d++)
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int i = 0; i < m_height; i++)
-    {
-      delete[] m_values[d][i];
-    }
-    delete[] m_values[d];
+    delete[] m_values[z];
+    delete[] m_lines[z];
   }
-  delete[] m_values;*/
+
+  delete[] m_values;
+  delete[] m_lines;
 }
 
 template<typename T>
@@ -111,14 +112,52 @@ unsigned int Matrix<T>::getHeight()
 template<typename T>
 unsigned int Matrix<T>::getDepth()
 {
-  return m_depth;
+  return m_qtyLayers;
 }
 
 template<typename T>
-void Matrix<T>::test()
+void Matrix<T>::printValues()
 {
-  //[layer][line][colum]
-  //m_values[0][0][0] = 255;
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    std::cout << "layer " << z << std::endl;
+
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[z][y][x] < 10)
+        {
+          std::cout << " ";
+        }
+
+        if (m_values[z][y][x] < 100)
+        {
+          std::cout << " ";
+        }
+
+        std::cout << (int) m_values[z][y][x] << " ";
+      }
+
+      std::cout << std::endl;
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::setIncreasingValues()
+{
+  T value = 0;
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[z][y][x] = value++;
+      }
+    }
+  }
 }
 
 #endif // MATRIX_H
