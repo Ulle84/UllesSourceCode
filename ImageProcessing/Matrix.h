@@ -5,7 +5,7 @@
 #include <typeinfo>
 #include <string>
 
-// TODO rename depth to qtyLayers
+// TODO move all type-independent functionality from Image to Matrix
 
 template<typename T>
 class Matrix
@@ -272,7 +272,6 @@ void Matrix<T>::printValues()
         {
           std::cout << (int) m_values[z][y][x] << " ";
         }
-
       }
 
       std::cout << std::endl;
