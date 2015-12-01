@@ -34,3 +34,7 @@
 * rotate image with defined angle
 * labeling
 * blob analysis
+
+# Documentation
+* vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible
+* Best approach of some hours of testing: Base Template Class (3d)Matrix + Derivations (ImageGray, ImageRGB, etc)
