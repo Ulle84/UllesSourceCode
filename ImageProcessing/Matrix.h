@@ -41,6 +41,7 @@ private:
   void create();
   void destroy();
   void move(Matrix&& rhs);
+  void copy(const Matrix&);
 };
 
 template<typename T>
@@ -63,11 +64,7 @@ Matrix<T>::Matrix(const Matrix &rhs)
   m_qtyLayers = rhs.m_qtyLayers;
 
   create();
-
-  for (unsigned int z = 0; z < m_qtyLayers; z++)
-  {
-    memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
-  }
+  copy(rhs);
 }
 
 template<typename T>
@@ -161,10 +158,7 @@ Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
       create();
     }
 
-    for (unsigned int z = 0; z < m_qtyLayers; z++)
-    {
-      memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
-    }
+    copy(rhs);
   }
 
   return *this;
@@ -206,6 +200,15 @@ void Matrix<T>::move(Matrix&& rhs)
   rhs.m_qtyLayers = 0;
   rhs.m_values = 0; // nullptr
   rhs.m_lines = 0; // nullptr
+}
+
+template<typename T>
+void Matrix<T>::copy(const Matrix& rhs)
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
+  }
 }
 
 template<typename T>
