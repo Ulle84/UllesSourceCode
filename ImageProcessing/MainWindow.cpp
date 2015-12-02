@@ -53,17 +53,6 @@ void MainWindow::freemanTest()
   m_imageDisplay->setMatrix(freemanTest);
 }
 
-void MainWindow::polarTransformationTest()
-{
-  for (unsigned int i = (m_size / 2) - 1; i > 0; i--)
-  {
-    m_image->drawCircle(Circle(Point(m_size / 2, m_size / 2), i), i * (512 / m_size), true);
-  }
-
-  Image* polarTransformed = m_image->doPolarTransformation(Circle(Point(m_size / 2, m_size / 2), (m_size / 2) - 1));
-  m_imageDisplay->setImage(polarTransformed);
-}
-
 void MainWindow::polyLineTest()
 {
   std::list<Point> points;
@@ -82,28 +71,6 @@ void MainWindow::polyLineTest()
   polyLineTest->drawPolyLine(255, polyLine);
   polyLineTest->invert();
   m_imageDisplay->setMatrix(polyLineTest);
-}
-
-void MainWindow::histogramTest()
-{
-  Image* histogramTest = new Image(512, 100);
-  histogramTest->setRandomPixelValues();
-
-  Histogram histogram = histogramTest->getHistogram();
-  histogramTest->drawHistogram(histogram);
-
-  m_imageDisplay->setImage(histogramTest);
-}
-
-void MainWindow::lookUpTableTest()
-{
-  LookUpTable lookUpTable;
-
-  Image* lookUpTableTest = new Image(512, 100);
-  lookUpTableTest->setIncreasingPixelValues();
-  lookUpTableTest->applyLookUpTable(lookUpTable);
-
-  m_imageDisplay->setImage(lookUpTableTest);
 }
 
 void MainWindow::matrixTest()
@@ -140,33 +107,11 @@ void MainWindow::matrixTest()
   matrix2->printValuesToConsole("double matrix");
 }
 
-void MainWindow::filterMaskTest()
-{
-  /*FilterMask filterMask(3, 3);
-
-  filterMask.m_matrix[0][0] = -1;
-  filterMask.m_matrix[0][1] = -1;
-  filterMask.m_matrix[0][2] = -1;
-
-  filterMask.m_matrix[2][0] =  1;
-  filterMask.m_matrix[2][1] =  1;
-  filterMask.m_matrix[2][2] =  1;*/
-
-  FilterMask filterMask(1, 3);
-
-  filterMask.m_matrix[0][0] = -1;
-  filterMask.m_matrix[2][0] =  1;
-
-  m_image->drawRectangle(Rectangle(Point(10, 10), 30, 40), 128);
-
-  m_image->filterWithMask(filterMask);
-
-  m_imageDisplay->setImage(m_image);
-}
-
 void MainWindow::colorDisplayTest()
 {
-  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(10, 10, 3);
-  matrix->setAllValues(255, 1);
-  m_imageDisplay->setColorMatrix(matrix);
+  // layerCount: 1 -> grey image
+  // layerCount: 3 -> 0 = Red, 1 = Green, 2 = Blue
+  // layerCount: 4 -> 0 = Red, 1 = Green, 2 = Blue, 3 = Alpha (0 = transparent, 255 = not transparent)
+  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(12, 12, 3);
+  m_imageDisplay->setMatrix(matrix);
 }

@@ -17,7 +17,6 @@ ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ImageDisplay),
   m_ctrlButtonIsPressed(false),
-  m_image(0),
   m_matrix(0)
 {
   ui->setupUi(this);
@@ -54,10 +53,6 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
       int x = mouseEvent->scenePos().rx();
       int y = mouseEvent->scenePos().ry();
       int value = 0;
-      if (m_image)
-      {
-        value = m_image->getPixelValue(x, y);
-      }
 
       if (m_matrix)
       {
@@ -102,39 +97,36 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
   return QWidget::eventFilter(target, event);
 }
 
-void ImageDisplay::setImage(const Image* image)
-{
-  // TODO refactor doubled code - see two functions below
-
-  m_image = image;
-
-  QImage qImage(image->getPixels(), image->getWidth(), image->getHeight(), QImage::Format_Indexed8);
-  QPixmap pixmap = QPixmap::fromImage(qImage);
-
-  m_scene->clear();
-  m_scene->addPixmap(pixmap);
-
-  ui->graphicsView->setScene(m_scene);
-}
-
 void ImageDisplay::setMatrix(const Matrix<unsigned char>* matrix)
 {
   m_matrix = matrix;
 
-  QImage qImage(matrix->getLayer(0), matrix->getWidth(), matrix->getHeight(), QImage::Format_Indexed8);
-  QPixmap pixmap = QPixmap::fromImage(qImage);
+  unsigned char* data = matrix->getLayer(0);
+  QImage::Format format = QImage::Format_Indexed8;
 
-  m_scene->clear();
-  m_scene->addPixmap(pixmap);
+  if (matrix->getDepth() == 3)
+  {
+    std::vector<unsigned int> layerIndices;
+    layerIndices.push_back(2);
+    layerIndices.push_back(1);
+    layerIndices.push_back(0);
+    layerIndices.push_back(0);
+    data = matrix->getSingleLayer(layerIndices);
+    format = QImage::Format_RGB32;
+  }
 
-  ui->graphicsView->setScene(m_scene);
-}
+  if (matrix->getDepth() == 4)
+  {
+    std::vector<unsigned int> layerIndices;
+    layerIndices.push_back(2);
+    layerIndices.push_back(1);
+    layerIndices.push_back(0);
+    layerIndices.push_back(3);
+    data = matrix->getSingleLayer(layerIndices);
+    format = QImage::Format_ARGB32;
+  }
 
-void ImageDisplay::setColorMatrix(const Matrix<unsigned char>* matrix)
-{
-  m_matrix = matrix;
-
-  QImage qImage(matrix->getColorLayer(), matrix->getWidth(), matrix->getHeight(), QImage::Format_RGB32);
+  QImage qImage(data, matrix->getWidth(), matrix->getHeight(), format);
   QPixmap pixmap = QPixmap::fromImage(qImage);
 
   m_scene->clear();

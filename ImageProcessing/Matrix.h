@@ -2,9 +2,10 @@
 #define MATRIX_H
 
 #include <iostream>
+#include <limits>
 #include <typeinfo>
 #include <string>
-#include <limits>
+#include <vector>
 
 #include <math.h>
 
@@ -16,6 +17,8 @@
 
 // TODO use const whereever possible
 // TODO sort public functions
+// TODO iterate over pointer instead using for-loop with index -> shuold have better performance
+// TODO check wrong z values everywhere
 
 template<typename T>
 class Matrix
@@ -44,7 +47,7 @@ public:
 
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
   T* getLayer(unsigned int z) const; // TODO define return value const, so the matrix values can not be changed!
-  T* getColorLayer() const; // TODO remove function - it's only a quick hack!
+  T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
 
   void setRandomValues();
   void binarize(T threshold);
@@ -254,6 +257,11 @@ void Matrix<T>::copy(const Matrix& rhs)
 template<typename T>
 void Matrix<T>::setAllValues(T value, unsigned int z)
 {
+  if (z >= m_qtyLayers)
+  {
+    return;
+  }
+
   if (sizeof(T) == 1)
   {
     memset(m_lines[z], value, m_width * m_height);
@@ -300,23 +308,24 @@ T* Matrix<T>::getLayer(unsigned int z) const
 }
 
 template<typename T>
-T* Matrix<T>::getColorLayer() const
+T* Matrix<T>::getSingleLayer(std::vector<unsigned int> layerIndices) const
 {
-  unsigned int bufferSize = m_height * m_width * 4;
-  T* colorLayer = new T[bufferSize];
-  memset(colorLayer, 0, bufferSize);
+  unsigned int qtyLayerIndices = layerIndices.size();
+  unsigned int bufferSize = m_height * m_width * qtyLayerIndices;
+  T* singleLayer = new T[bufferSize]; // TODO avoid memory leak -> recycle buffer if possible
 
   for (unsigned int y = 0; y < m_height; y++)
   {
     for (unsigned int x = 0; x < m_width; x++)
     {
-      for (unsigned int z = 0; z < m_qtyLayers; z++)
+      for (unsigned int z = 0; z < qtyLayerIndices; z++)
       {
-        colorLayer[(y * m_width + x) * 4 + z] = m_values[z][y][x] ;
+        singleLayer[(y * m_width + x) * qtyLayerIndices + z] = m_values[layerIndices[z]][y][x] ;
       }
     }
   }
-  return colorLayer;
+
+  return singleLayer;
 }
 
 template<typename T>

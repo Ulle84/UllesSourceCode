@@ -20,12 +20,8 @@ public:
 
 private:
   void freemanTest();
-  void polarTransformationTest();
   void polyLineTest();
-  void histogramTest();
-  void lookUpTableTest();
   void matrixTest();
-  void filterMaskTest();
   void colorDisplayTest();
 
   Ui::MainWindow *ui;

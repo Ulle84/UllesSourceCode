@@ -22,15 +22,12 @@ public:
   ~ImageDisplay();
   
   bool eventFilter(QObject *target, QEvent *event);
-  void setImage(const Image* image);
   void setMatrix(const Matrix<unsigned char>* matrix);
-  void setColorMatrix(const Matrix<unsigned char>* matrix);
 
 private:
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
   bool m_ctrlButtonIsPressed;
-  const Image* m_image;
   const Matrix<unsigned char>* m_matrix;
 };
 
