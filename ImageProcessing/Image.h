@@ -41,8 +41,19 @@ public:
   void spread();
   void clear();
 
-
   bool isPointInImage(const Point& point);
+
+  void markLine(unsigned int lineNumber, unsigned char value);
+  void markColumn(unsigned int columnNumber, unsigned char value);
+
+  void drawPoint(const Point& point, unsigned char value);
+  void drawRectangle(const Rectangle& rectangle, unsigned char value);
+  void drawLine(const Point& p1, const Point& p2, unsigned char value);
+
+  void drawCircle(const Circle& circle, unsigned char value, bool fill);
+  void drawFreemanCode(const FreemanCode& freemanCode);
+  void drawPolyLine(const PolyLine& polyLine);
+  void invert();
 
   // TODO move all possible functions below to Matrix
 
@@ -57,16 +68,6 @@ public:
 
   void filterWithMask(const FilterMask& filterMask);  
 
-  void markLine(unsigned int lineNumber, unsigned char value);
-  void markColumn(unsigned int columnNumber, unsigned char value);
-
-  void drawPoint(const Point& point, unsigned char value);
-  void drawRectangle(const Rectangle& rectangle, unsigned char value);
-  void drawCircle(const Circle& circle, unsigned char value, bool fill);
-  void drawLine(const Point& p1, const Point& p2, unsigned char value);
-  void drawFreemanCode(const FreemanCode& freemanCode);
-  void drawPolyLine(const PolyLine& polyLine);
-
   Image* doPolarTransformation(const Circle& circle);
 
   void mirrorOnHorizontalAxis();
@@ -74,8 +75,6 @@ public:
   void rotateBy90DegreeClockwise();
   void rotateBy90DegreeCounterClockwise();
   void rotateBy180Degree();
-
-  void invert();
   void applyLookUpTable(const LookUpTable& lookUpTable);
 
   friend bool operator== (const Image& image1, const Image& image2);

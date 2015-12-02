@@ -11,6 +11,7 @@
   * test that move-constructor and move-operator are used, otherwise this operations will be very "expensive"
   * test: imageEroded = image.erode(blub);
   * test: image = image.erode(blub);
+* define reference point for rotation with angle: top-left-corner vs. center
 
 # Ideas
 * rectangle with orientation-angle
@@ -39,6 +40,7 @@
   * create
   * read generated
   * test: change some pixels and try to read
+* type: line -> 2 points define a line: Alternative: start point, angle + length
 
 # Documentation
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible

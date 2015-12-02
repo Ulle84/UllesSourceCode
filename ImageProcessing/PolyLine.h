@@ -12,10 +12,7 @@ public:
 
   void setPoints(const std::list<Point>& points);
 
-private:
-  std::list<Point> m_points;
-
-  friend class Image;
+  std::list<Point> m_points; // TODO really public?
 };
 
 #endif // POLYLINE_H

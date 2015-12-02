@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
   //polyLineTest();
   //histogramTest();
   //lookUpTableTest();
-  filterMaskTest();
+  //filterMaskTest();
   matrixTest();
 }
 
@@ -47,9 +47,9 @@ void MainWindow::freemanTest()
   freemanCode.setStartPoint(Point(10, 12));
   freemanCode.setDirections(directions);
 
-  Image* freemanTest = new Image(20, 20);
-  freemanTest->drawFreemanCode(freemanCode);
-  m_imageDisplay->setImage(freemanTest);
+  Matrix<unsigned char>* freemanTest = new Matrix<unsigned char>(20, 20);
+  freemanTest->drawFreemanCode(255, freemanCode);
+  m_imageDisplay->setMatrix(freemanTest);
 }
 
 void MainWindow::polarTransformationTest()
@@ -77,10 +77,10 @@ void MainWindow::polyLineTest()
   PolyLine polyLine;
   polyLine.setPoints(points);
 
-  Image* polyLineTest = new Image(20, 20);
-  polyLineTest->drawPolyLine(polyLine);
+  Matrix<unsigned char>* polyLineTest = new Matrix<unsigned char>(20, 20);
+  polyLineTest->drawPolyLine(255, polyLine);
   polyLineTest->invert();
-  m_imageDisplay->setImage(polyLineTest);
+  m_imageDisplay->setMatrix(polyLineTest);
 }
 
 void MainWindow::histogramTest()
@@ -107,8 +107,22 @@ void MainWindow::lookUpTableTest()
 
 void MainWindow::matrixTest()
 {
-  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(8, 8, 2);
-  matrix->markLine(128, 1);
+  const unsigned int width = 20;
+  const unsigned int heigth = width;
+
+  Rectangle rectangle(Point(3, 3), 4, 5);
+  Point p1(1, 5);
+  Point p2(5, 5);
+  Point p3(200, 200);
+
+  Circle circle(p3, 180);
+
+
+
+  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(width, heigth, 2);
+  //matrix->drawCircle(1, circle, true);
+  //matrix->drawLine(1, p1, p2);
+  //matrix->spread();
   //matrix->setRandomValues();
   //matrix->binarize(128);
   std::cout << "minimum: " << (int)matrix->getMinimum() << std::endl;
@@ -116,8 +130,9 @@ void MainWindow::matrixTest()
 
   m_imageDisplay->setMatrix(matrix);
 
-  Matrix<double>* matrix2 = new Matrix<double>(8, 8, 2);
-  matrix2->markLine(128.4, 1);
+  Matrix<unsigned short>* matrix2 = new Matrix<unsigned short>(width, heigth, 1);
+  matrix2->setIncreasingValues();
+  matrix2->invert();
   matrix2->printValuesToConsole("double matrix");
 }
 

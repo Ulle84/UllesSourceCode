@@ -8,7 +8,11 @@
 
 #include <math.h>
 
+#include <Circle.h>
+#include <FreemanCode.h>
 #include <Point.h>
+#include <Rectangle.h>
+#include <PolyLine.h>
 
 // TODO use const whereever possible
 // TODO sort public functions
@@ -45,9 +49,19 @@ public:
   void binarize(T threshold);
   void spread();
 
-  bool isPointInImage(const Point& point);
+  bool isPointInImage(const Point& point); // TODO rename function
 
+  // TODO mark vs. draw vs. set -> one way to define
   void markLine(T value, unsigned int y, unsigned int z = 0);
+  void markColumn(T value, unsigned int x, unsigned int z = 0);
+
+  void drawPoint(T value, const Point& point, unsigned int z = 0);
+  void drawRectangle(T value, const Rectangle& rectangle, unsigned int z = 0); // TODO bool fill
+  void drawLine(T value, const Point& p1, const Point& p2, unsigned int z = 0);
+  void drawCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
+  void drawFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
+  void drawPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
+  void invert();
   
 protected:
   T*** m_values;
@@ -56,11 +70,16 @@ protected:
   unsigned int m_qtyLayers;
 
 private:
-  T** m_lines;
+  unsigned int minimum(unsigned int value1, unsigned int value2);
+  unsigned int maximum(unsigned int value1, unsigned int value2);
+
+
   void create();
   void destroy();
   void move(Matrix&& rhs);
   void copy(const Matrix&);
+
+  T** m_lines;
 };
 
 template<typename T>
@@ -364,6 +383,11 @@ bool Matrix<T>::isPointInImage(const Point &point)
 template<typename T>
 void Matrix<T>::markLine(T value, unsigned int y, unsigned int z)
 {
+  if (y >= m_height)
+  {
+    return;
+  }
+
   if (sizeof(T) == 1)
   {
     memset(m_values[z][y], value, m_width);
@@ -375,6 +399,291 @@ void Matrix<T>::markLine(T value, unsigned int y, unsigned int z)
       m_values[z][y][x] = value;
     }
   }
+}
+
+template<typename T>
+void Matrix<T>::markColumn(T value, unsigned int x, unsigned int z)
+{
+  if (x >= m_width)
+  {
+    return;
+  }
+
+  for (unsigned int y = 0; y < m_width; y++)
+  {
+    m_values[z][y][x] = value;
+  }
+}
+
+template<typename T>
+void Matrix<T>::drawPoint(T value, const Point &point, unsigned int z = 0)
+{
+  if (point.m_x >= m_width || point.m_y >= m_height)
+  {
+    return;
+  }
+  m_values[z][point.m_y][point.m_x] = value;
+}
+
+template<typename T>
+void Matrix<T>::drawRectangle(T value, const Rectangle &rectangle, unsigned int z)
+{
+  if ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) >= m_width)
+  {
+    return;
+  }
+
+  if ((rectangle.m_topLeftCorner.m_y + rectangle.m_height) >= m_height)
+  {
+    return;
+  }
+
+  for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
+  {
+    if (sizeof(T) == 1)
+    {
+      memset(&(m_values[z][y][rectangle.m_topLeftCorner.m_x]), value, rectangle.m_width);
+    }
+    else
+    {
+      for (unsigned int x = rectangle.m_topLeftCorner.m_x; x < (rectangle.m_topLeftCorner.m_x + rectangle.m_width); x++)
+      {
+        m_values[z][y][x] = value;
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::drawLine(T value, const Point &p1, const Point &p2, unsigned int z)
+{
+  if (!isPointInImage(p1) || !isPointInImage(p2))
+  {
+    return;
+  }
+
+  if (p1.m_x == p2.m_x)
+  {
+    // draw vertical line
+    unsigned int min = minimum(p1.m_y, p2.m_y);
+    unsigned int max = maximum(p1.m_y, p2.m_y);
+
+    for (unsigned int y = min; y <= max; y++)
+    {
+      m_values[z][y][p1.m_x] = value;
+    }
+
+    return;
+  }
+
+  if (p1.m_y == p2.m_y)
+  {
+    // draw horizontal line
+    unsigned int min = minimum(p1.m_x, p2.m_x);
+    unsigned int max = maximum(p1.m_x, p2.m_x);
+
+    // TODO memset if sizeof(T) == 1
+    for (unsigned int x = min; x <= max; x++)
+    {
+      m_values[z][p1.m_y][x] = value;
+    }
+
+    return;
+  }
+
+  // code below copied partially from
+  // https://de.wikipedia.org/wiki/Bresenham-Algorithmus#Kompakte_Variante
+
+  int x0 = p1.m_x;
+  int y0 = p1.m_y;
+  int x1 = p2.m_x;
+  int y1 = p2.m_y;
+
+  int dx =  abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+  int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+  int err = dx + dy, e2; /* error value e_xy */
+
+  while(1){
+    m_values[z][y0][x0] = value; //setPixel(x0,y0);
+    if (x0==x1 && y0==y1) break;
+    e2 = 2*err;
+    if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+    if (e2 < dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+  }
+}
+
+template<typename T>
+void Matrix<T>::drawCircle(T value, const Circle &circle, bool fill, unsigned int z)
+{
+  // code below copied partially from
+  // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+
+  int x = circle.m_radius;
+  int y = 0;
+  int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+
+  while(y <= x)
+  {
+    if (fill)
+    {
+      for (int xx = -x; xx <= x; xx++)
+      {
+        m_values[z][circle.m_center.m_y + y][circle.m_center.m_x + xx] = value; // Octant 1 + Octant 4
+        m_values[z][circle.m_center.m_y - y][circle.m_center.m_x + xx] = value; // Octant 5 + Octant 8
+      }
+
+      for (int yy = -y; yy <= y; yy++)
+      {
+        m_values[z][circle.m_center.m_y + x][circle.m_center.m_x + yy] = value; // Octant 2 + Octant 3
+        m_values[z][circle.m_center.m_y - x][circle.m_center.m_x + yy] = value; // Octant 6 + Octant 7
+      }
+
+      // TODO memset for sizeof(T) == 1
+      // TODO improve performance: memset is called "too often" for first/last line in Octant 2 + 3 and Octant 6 + 7
+      /*memset(&m_pixels[( y + circle.m_center.m_y) * m_width - x + circle.m_center.m_x], value, 2 * x + 1); //  Octant 1 + Octant 4
+      memset(&m_pixels[( x + circle.m_center.m_y) * m_width - y + circle.m_center.m_x], value, 2 * y + 1); //  Octant 2 + Octant 3
+
+      memset(&m_pixels[(-y + circle.m_center.m_y) * m_width - x + circle.m_center.m_x], value, 2 * x + 1); //  Octant 5 + Octant 8
+      memset(&m_pixels[(-x + circle.m_center.m_y) * m_width - y + circle.m_center.m_x], value, 2 * y + 1); //  Octant 6 + Octant 7*/
+    }
+    else
+    {
+      m_values[z][circle.m_center.m_y + y][circle.m_center.m_x + x] = value; // Octant 1
+      m_values[z][circle.m_center.m_y + x][circle.m_center.m_x + y] = value; // Octant 2
+      m_values[z][circle.m_center.m_y + x][circle.m_center.m_x - y] = value; // Octant 3
+      m_values[z][circle.m_center.m_y + y][circle.m_center.m_x - x] = value; // Octant 4
+
+      m_values[z][circle.m_center.m_y - y][circle.m_center.m_x - x] = value; // Octant 5
+      m_values[z][circle.m_center.m_y - x][circle.m_center.m_x - y] = value; // Octant 6
+      m_values[z][circle.m_center.m_y - x][circle.m_center.m_x + y] = value; // Octant 7
+      m_values[z][circle.m_center.m_y - y][circle.m_center.m_x + x] = value; // Octant 8
+    }
+
+    y++;
+
+    if (decisionOver2 <= 0)
+    {
+      decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+    }
+    else
+    {
+      x--;
+      decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::drawFreemanCode(T value, const FreemanCode &freemanCode, unsigned int z)
+{
+  drawPoint(value, freemanCode.m_startPoint, z);
+
+  unsigned int x = freemanCode.m_startPoint.m_x;
+  unsigned int y = freemanCode.m_startPoint.m_y;
+
+  for (auto it = freemanCode.m_directions.begin(); it != freemanCode.m_directions.end(); it++)
+  {
+    qDebug() << "code: " << *it;
+
+    /* 321
+     * 4*0
+     * 567 */
+
+    switch (*it)
+    {
+    case 0:
+      x++;
+      break;
+    case 1:
+      x++;
+      y--;
+      break;
+    case 2:
+      y--;
+      break;
+    case 3:
+      x--;
+      y--;
+      break;
+    case 4:
+      x--;
+      break;
+    case 5:
+      x--;
+      y++;
+      break;
+    case 6:
+      y++;
+      break;
+    case 7:
+      x++;
+      y++;
+      break;
+    default:
+      // should not happen
+      break;
+    }
+
+    drawPoint(value, Point(x, y), z);
+
+    //m_matrix[y][x] = 255;
+  }
+}
+
+template<typename T>
+void Matrix<T>::drawPolyLine(T value, const PolyLine &polyLine, unsigned int z)
+{
+  if (polyLine.m_points.size() < 2)
+  {
+    return;
+  }
+
+  auto itPrevious = polyLine.m_points.begin();
+  for (auto it = polyLine.m_points.begin(); it != polyLine.m_points.end(); it++)
+  {
+    if (it == polyLine.m_points.begin())
+    {
+      continue;
+    }
+
+    drawLine(value, *itPrevious, *it, z);
+
+    itPrevious = it;
+  }
+}
+
+template<typename T>
+void Matrix<T>::invert()
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (std::numeric_limits<T>::is_signed)
+        {
+          // TODO
+        }
+        else
+        {
+          m_values[z][y][x] = std::numeric_limits<T>::max() - m_values[z][y][x];
+        }
+      }
+    }
+  }
+}
+
+template<typename T>
+unsigned int Matrix<T>::minimum(unsigned int value1, unsigned int value2)
+{
+  return value1 < value2 ? value1 : value2;
+}
+
+template<typename T>
+unsigned int Matrix<T>::maximum(unsigned int value1, unsigned int value2)
+{
+  return value1 > value2 ? value1 : value2;
 }
 
 template<typename T>

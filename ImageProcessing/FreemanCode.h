@@ -10,14 +10,11 @@ class FreemanCode
 public:
   FreemanCode();
 
-  void setStartPoint(const Point& startPoint);
-  void setDirections(const std::list<unsigned char>& directions);
-
-private:
-  Point m_startPoint;
+  Point m_startPoint; // TODO really public?
   std::list<unsigned char> m_directions;
 
-  friend class Image;
+  void setStartPoint(const Point& startPoint);
+  void setDirections(const std::list<unsigned char>& directions);
 };
 
 #endif // FREEMANCODE_H
