@@ -107,15 +107,10 @@ void MainWindow::lookUpTableTest()
 
 void MainWindow::matrixTest()
 {
-  Matrix<double> matrix(4, 3);
-  matrix.setIncreasingValues();
+  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(8, 8, 2);
+  matrix->setIncreasingValues();
 
-  Matrix<double> matrix2(5, 4);
-  matrix2.setIncreasingValues();
-  matrix2.printValues();
-
-  matrix2 = matrix;
-  matrix2.printValues();
+  m_imageDisplay->setMatrix(matrix);
 }
 
 void MainWindow::filterMaskTest()

@@ -16,7 +16,9 @@
 ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ImageDisplay),
-  m_ctrlButtonIsPressed(false)
+  m_ctrlButtonIsPressed(false),
+  m_image(0),
+  m_matrix(0)
 {
   ui->setupUi(this);
 
@@ -51,7 +53,16 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
       QGraphicsSceneMouseEvent* mouseEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
       int x = mouseEvent->scenePos().rx();
       int y = mouseEvent->scenePos().ry();
-      int value = m_image->getPixelValue(x, y);
+      int value = 0;
+      if (m_image)
+      {
+        value = m_image->getPixelValue(x, y);
+      }
+
+      if (m_matrix)
+      {
+        value = m_matrix->getValue(x, y);
+      }
 
       ui->label->setText(QString("x: %1  y: %2  value: %3").arg(x).arg(y).arg(value));
     }
@@ -96,6 +107,19 @@ void ImageDisplay::setImage(const Image* image)
   m_image = image;
 
   QImage qImage(image->getPixels(), image->getWidth(), image->getHeight(), QImage::Format_Indexed8);
+  QPixmap pixmap = QPixmap::fromImage(qImage);
+
+  m_scene->clear();
+  m_scene->addPixmap(pixmap);
+
+  ui->graphicsView->setScene(m_scene);
+}
+
+void ImageDisplay::setMatrix(const Matrix<unsigned char>* matrix)
+{
+  m_matrix = matrix;
+
+  QImage qImage(matrix->getLayer(0), matrix->getWidth(), matrix->getHeight(), QImage::Format_Indexed8);
   QPixmap pixmap = QPixmap::fromImage(qImage);
 
   m_scene->clear();

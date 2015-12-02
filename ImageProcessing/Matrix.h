@@ -6,6 +6,7 @@
 #include <string>
 
 // TODO move all type-independent functionality from Image to Matrix
+// TODO use const whereever possible
 
 template<typename T>
 class Matrix
@@ -20,15 +21,18 @@ public:
   Matrix& operator= (const Matrix& rhs);
   Matrix& operator= (Matrix&& rhs);
 
-  unsigned int getWidth();
-  unsigned int getHeight();
-  unsigned int getDepth();
+  unsigned int getWidth() const;
+  unsigned int getHeight() const;
+  unsigned int getDepth() const;
 
   void printValues();
   void setIncreasingValues();
   void clear();
   void setAllValues(T value);
-  //unsigned char getBits
+  void setValue(T value, unsigned int x, unsigned int y, unsigned int z = 0);
+
+  T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
+  T* getLayer(unsigned int z) const; // TODO define return value const, so the matrix values can not be changed!
   
 protected:
   T*** m_values;
@@ -227,19 +231,47 @@ void Matrix<T>::setAllValues(T value)
 }
 
 template<typename T>
-unsigned int Matrix<T>::getWidth()
+void Matrix<T>::setValue(T value, unsigned int x, unsigned int y, unsigned int z)
+{
+  if (x < m_width && y < m_height && z < m_qtyLayers)
+  {
+    m_values[z][y][x] = value;
+  }
+}
+
+template<typename T>
+T Matrix<T>::getValue(unsigned int x, unsigned int y, unsigned int z) const
+{
+  if (x < m_width && y < m_height && z < m_qtyLayers)
+  {
+    return m_values[z][y][x];
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+template<typename T>
+T* Matrix<T>::getLayer(unsigned int z) const
+{
+  return *(m_values[z]);
+}
+
+template<typename T>
+unsigned int Matrix<T>::getWidth() const
 {
   return m_width;
 }
 
 template<typename T>
-unsigned int Matrix<T>::getHeight()
+unsigned int Matrix<T>::getHeight() const
 {
   return m_height;
 }
 
 template<typename T>
-unsigned int Matrix<T>::getDepth()
+unsigned int Matrix<T>::getDepth() const
 {
   return m_qtyLayers;
 }
