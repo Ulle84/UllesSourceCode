@@ -35,6 +35,10 @@
 * blob analysis
 * ImageManager: holds references to Images - display has a reference to ImageManager
 * 16 bit images -> ImageViewer has a range-slider, where the displayed bits can be selected
+* datamatrix code
+  * create
+  * read generated
+  * test: change some pixels and try to read
 
 # Documentation
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible

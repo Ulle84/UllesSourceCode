@@ -108,7 +108,13 @@ void MainWindow::lookUpTableTest()
 void MainWindow::matrixTest()
 {
   Matrix<unsigned char>* matrix = new Matrix<unsigned char>(8, 8, 2);
-  matrix->setIncreasingValues();
+  matrix->setValue(1, 0, 0);
+  matrix->setValue(2, 0, 1);
+  matrix->spread();
+  //matrix->setRandomValues();
+  //matrix->binarize(128);
+  std::cout << "minimum: " << (int)matrix->getMinimum() << std::endl;
+  std::cout << "maximum: " << (int)matrix->getMaximum() << std::endl;
 
   m_imageDisplay->setMatrix(matrix);
 }

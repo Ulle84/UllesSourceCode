@@ -4,9 +4,13 @@
 #include <iostream>
 #include <typeinfo>
 #include <string>
+#include <limits>
+
+#include <math.h>
 
 // TODO move all type-independent functionality from Image to Matrix
 // TODO use const whereever possible
+// TODO sort public functions
 
 template<typename T>
 class Matrix
@@ -24,8 +28,10 @@ public:
   unsigned int getWidth() const;
   unsigned int getHeight() const;
   unsigned int getDepth() const;
+  T getMinimum() const;
+  T getMaximum() const;
 
-  void printValues();
+  void printValuesToConsole(const std::string& description) const;
   void setIncreasingValues();
   void clear();
   void setAllValues(T value);
@@ -33,6 +39,10 @@ public:
 
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
   T* getLayer(unsigned int z) const; // TODO define return value const, so the matrix values can not be changed!
+
+  void setRandomValues();
+  void binarize(T threshold);
+  void spread();
   
 protected:
   T*** m_values;
@@ -220,11 +230,18 @@ void Matrix<T>::setAllValues(T value)
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    if (sizeof(T) == 1)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      memset(m_lines[z], T, m_width * m_height);
+    }
+    else
+    {
+      for (unsigned int y = 0; y < m_height; y++)
       {
-        m_values[z][y][x] = value;
+        for (unsigned int x = 0; x < m_width; x++)
+        {
+          m_values[z][y][x] = value;
+        }
       }
     }
   }
@@ -259,6 +276,80 @@ T* Matrix<T>::getLayer(unsigned int z) const
 }
 
 template<typename T>
+void Matrix<T>::setRandomValues()
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        // TODO better random generator
+        m_values[z][y][x] = rand();
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::binarize(T threshold)
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[z][y][x] < threshold)
+        {
+          m_values[z][y][x] = std::numeric_limits<T>::min();
+        }
+        else
+        {
+          m_values[z][y][x] = std::numeric_limits<T>::max();
+        }
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::spread()
+{
+  T maximum = getMaximum();
+  T minimum = getMinimum();
+
+  if ((maximum - minimum) == 0)
+  {
+    // avoid division by zero
+    // TODO set all values to max possible value?
+    return;
+  }
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (std::numeric_limits<T>::is_signed)
+        {
+          // TODO define spread-function for signed types
+        }
+        else
+        {
+          if (minimum != 0)
+          {
+            m_values[z][y][x] -=minimum;
+          }
+          m_values[z][y][x] = m_values[z][y][x] * std::numeric_limits<T>::max() / (maximum - minimum);
+        }
+      }
+    }
+  }
+}
+
+template<typename T>
 unsigned int Matrix<T>::getWidth() const
 {
   return m_width;
@@ -277,11 +368,53 @@ unsigned int Matrix<T>::getDepth() const
 }
 
 template<typename T>
-void Matrix<T>::printValues()
+T Matrix<T>::getMinimum() const
 {
+  T minimum = std::numeric_limits<T>::max();
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    std::cout << "layer " << z << std::endl;
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[z][y][x] < minimum)
+        {
+          minimum = m_values[z][y][x];
+        }
+      }
+    }
+  }
+  return minimum;
+}
+
+template<typename T>
+T Matrix<T>::getMaximum() const
+{
+  T maximum = std::numeric_limits<T>::min();
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[z][y][x] > maximum)
+        {
+          maximum = m_values[z][y][x];
+        }
+      }
+    }
+  }
+  return maximum;
+}
+
+template<typename T>
+void Matrix<T>::printValuesToConsole(const std::string& description) const
+{
+  std::cout << "--------------------------------------------------------------------------------" << std::endl;
+  std::cout << description << std::endl;
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    std::cout << std::endl << "layer " << z << std::endl;
 
     for (unsigned int y = 0; y < m_height; y++)
     {
