@@ -112,6 +112,9 @@ void MainWindow::colorDisplayTest()
   // layerCount: 1 -> grey image
   // layerCount: 3 -> 0 = Red, 1 = Green, 2 = Blue
   // layerCount: 4 -> 0 = Red, 1 = Green, 2 = Blue, 3 = Alpha (0 = transparent, 255 = not transparent)
-  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(12, 12, 3);
+  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(16, 16, 4);
+  matrix->setAllValues(255);
+  matrix->drawCircle(128, Circle(Point(6, 6), 5), true, 3);
+  //matrix->invert();
   m_imageDisplay->setMatrix(matrix);
 }

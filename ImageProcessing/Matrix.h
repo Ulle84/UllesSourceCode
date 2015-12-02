@@ -543,6 +543,11 @@ void Matrix<T>::drawLine(T value, const Point &p1, const Point &p2, unsigned int
 template<typename T>
 void Matrix<T>::drawCircle(T value, const Circle &circle, bool fill, unsigned int z)
 {
+  if (z >= m_qtyLayers)
+  {
+    return;
+  }
+
   // code below copied partially from
   // https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 
