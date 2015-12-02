@@ -8,7 +8,8 @@
 
 #include <math.h>
 
-// TODO move all type-independent functionality from Image to Matrix
+#include <Point.h>
+
 // TODO use const whereever possible
 // TODO sort public functions
 
@@ -43,6 +44,10 @@ public:
   void setRandomValues();
   void binarize(T threshold);
   void spread();
+
+  bool isPointInImage(const Point& point);
+
+  void markLine(T value, unsigned int y, unsigned int z = 0);
   
 protected:
   T*** m_values;
@@ -73,6 +78,7 @@ template<typename T>
 Matrix<T>::Matrix(const Matrix &rhs)
 {
   std::cout << "Matrix: copy constructor" << std::endl;
+
   m_width = rhs.m_width;
   m_height = rhs.m_height;
   m_qtyLayers = rhs.m_qtyLayers;
@@ -204,7 +210,7 @@ template<typename T>
 void Matrix<T>::move(Matrix&& rhs)
 {
   m_height = rhs.m_height;
-  m_width =  rhs.m_width;
+  m_width = rhs.m_width;
   m_qtyLayers = rhs.m_qtyLayers;
   m_values = rhs.m_values;
   m_lines = rhs.m_lines;
@@ -232,7 +238,7 @@ void Matrix<T>::setAllValues(T value)
   {
     if (sizeof(T) == 1)
     {
-      memset(m_lines[z], T, m_width * m_height);
+      memset(m_lines[z], value, m_width * m_height);
     }
     else
     {
@@ -345,6 +351,28 @@ void Matrix<T>::spread()
           m_values[z][y][x] = m_values[z][y][x] * std::numeric_limits<T>::max() / (maximum - minimum);
         }
       }
+    }
+  }
+}
+
+template<typename T>
+bool Matrix<T>::isPointInImage(const Point &point)
+{
+  return point.m_x < m_width && point.m_y < m_height;
+}
+
+template<typename T>
+void Matrix<T>::markLine(T value, unsigned int y, unsigned int z)
+{
+  if (sizeof(T) == 1)
+  {
+    memset(m_values[z][y], value, m_width);
+  }
+  else
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      m_values[z][y][x] = value;
     }
   }
 }

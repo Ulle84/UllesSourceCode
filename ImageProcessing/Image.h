@@ -32,13 +32,22 @@ public:
   unsigned char getMinimum() const;
   unsigned char getMaximum() const;
 
-  Histogram getHistogram();
-  void drawHistogram(const Histogram& histogram);
-
   void setAllPixelValues(unsigned char value);
   void setPixelValue(unsigned int x, unsigned int y, unsigned char value);
   void setIncreasingPixelValues();
   void setRandomPixelValues();
+
+  void binarize(unsigned char threshold);
+  void spread();
+  void clear();
+
+
+  bool isPointInImage(const Point& point);
+
+  // TODO move all possible functions below to Matrix
+
+  Histogram getHistogram();
+  void drawHistogram(const Histogram& histogram);
 
   void dilate(unsigned int filterSize);
   void erode(unsigned int filterSize);
@@ -46,13 +55,7 @@ public:
   void doClosing(unsigned int filterSize);
   void filterMean(unsigned int filterSize);
 
-  void filterWithMask(const FilterMask& filterMask);
-
-  void binarize(unsigned char threshold);
-  void spread();
-  void clear();
-
-  bool isPointInImage(const Point& point);
+  void filterWithMask(const FilterMask& filterMask);  
 
   void markLine(unsigned int lineNumber, unsigned char value);
   void markColumn(unsigned int columnNumber, unsigned char value);
