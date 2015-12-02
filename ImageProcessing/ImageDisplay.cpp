@@ -104,6 +104,8 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
 void ImageDisplay::setImage(const Image* image)
 {
+  // TODO refactor doubled code - see two functions below
+
   m_image = image;
 
   QImage qImage(image->getPixels(), image->getWidth(), image->getHeight(), QImage::Format_Indexed8);
@@ -120,6 +122,19 @@ void ImageDisplay::setMatrix(const Matrix<unsigned char>* matrix)
   m_matrix = matrix;
 
   QImage qImage(matrix->getLayer(0), matrix->getWidth(), matrix->getHeight(), QImage::Format_Indexed8);
+  QPixmap pixmap = QPixmap::fromImage(qImage);
+
+  m_scene->clear();
+  m_scene->addPixmap(pixmap);
+
+  ui->graphicsView->setScene(m_scene);
+}
+
+void ImageDisplay::setColorMatrix(const Matrix<unsigned char>* matrix)
+{
+  m_matrix = matrix;
+
+  QImage qImage(matrix->getColorLayer(), matrix->getWidth(), matrix->getHeight(), QImage::Format_RGB32);
   QPixmap pixmap = QPixmap::fromImage(qImage);
 
   m_scene->clear();

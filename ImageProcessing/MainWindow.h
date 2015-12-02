@@ -26,6 +26,7 @@ private:
   void lookUpTableTest();
   void matrixTest();
   void filterMaskTest();
+  void colorDisplayTest();
 
   Ui::MainWindow *ui;
   Image* m_image;

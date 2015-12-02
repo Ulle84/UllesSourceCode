@@ -32,18 +32,19 @@ public:
 
   unsigned int getWidth() const;
   unsigned int getHeight() const;
-  unsigned int getDepth() const;
+  unsigned int getDepth() const; // TODO rename getQtyLayers
   T getMinimum() const;
   T getMaximum() const;
 
   void printValuesToConsole(const std::string& description) const;
   void setIncreasingValues();
   void clear();
-  void setAllValues(T value);
+  void setAllValues(T value, unsigned int z = 0);
   void setValue(T value, unsigned int x, unsigned int y, unsigned int z = 0);
 
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
   T* getLayer(unsigned int z) const; // TODO define return value const, so the matrix values can not be changed!
+  T* getColorLayer() const; // TODO remove function - it's only a quick hack!
 
   void setRandomValues();
   void binarize(T threshold);
@@ -251,25 +252,23 @@ void Matrix<T>::copy(const Matrix& rhs)
 }
 
 template<typename T>
-void Matrix<T>::setAllValues(T value)
+void Matrix<T>::setAllValues(T value, unsigned int z)
 {
-  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  if (sizeof(T) == 1)
   {
-    if (sizeof(T) == 1)
+    memset(m_lines[z], value, m_width * m_height);
+  }
+  else
+  {
+    for (unsigned int y = 0; y < m_height; y++)
     {
-      memset(m_lines[z], value, m_width * m_height);
-    }
-    else
-    {
-      for (unsigned int y = 0; y < m_height; y++)
+      for (unsigned int x = 0; x < m_width; x++)
       {
-        for (unsigned int x = 0; x < m_width; x++)
-        {
-          m_values[z][y][x] = value;
-        }
+        m_values[z][y][x] = value;
       }
     }
   }
+
 }
 
 template<typename T>
@@ -298,6 +297,26 @@ template<typename T>
 T* Matrix<T>::getLayer(unsigned int z) const
 {
   return *(m_values[z]);
+}
+
+template<typename T>
+T* Matrix<T>::getColorLayer() const
+{
+  unsigned int bufferSize = m_height * m_width * 4;
+  T* colorLayer = new T[bufferSize];
+  memset(colorLayer, 0, bufferSize);
+
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      for (unsigned int z = 0; z < m_qtyLayers; z++)
+      {
+        colorLayer[(y * m_width + x) * 4 + z] = m_values[z][y][x] ;
+      }
+    }
+  }
+  return colorLayer;
 }
 
 template<typename T>
@@ -416,7 +435,7 @@ void Matrix<T>::markColumn(T value, unsigned int x, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::drawPoint(T value, const Point &point, unsigned int z = 0)
+void Matrix<T>::drawPoint(T value, const Point &point, unsigned int z)
 {
   if (point.m_x >= m_width || point.m_y >= m_height)
   {
@@ -583,8 +602,6 @@ void Matrix<T>::drawFreemanCode(T value, const FreemanCode &freemanCode, unsigne
 
   for (auto it = freemanCode.m_directions.begin(); it != freemanCode.m_directions.end(); it++)
   {
-    qDebug() << "code: " << *it;
-
     /* 321
      * 4*0
      * 567 */

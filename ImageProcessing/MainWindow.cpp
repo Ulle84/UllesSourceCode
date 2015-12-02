@@ -26,7 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //histogramTest();
   //lookUpTableTest();
   //filterMaskTest();
-  matrixTest();
+  //matrixTest();
+  colorDisplayTest();
 }
 
 MainWindow::~MainWindow()
@@ -107,8 +108,8 @@ void MainWindow::lookUpTableTest()
 
 void MainWindow::matrixTest()
 {
-  const unsigned int width = 20;
-  const unsigned int heigth = width;
+  unsigned int width = 400;
+  unsigned int heigth = width;
 
   Rectangle rectangle(Point(3, 3), 4, 5);
   Point p1(1, 5);
@@ -120,9 +121,9 @@ void MainWindow::matrixTest()
 
 
   Matrix<unsigned char>* matrix = new Matrix<unsigned char>(width, heigth, 2);
-  //matrix->drawCircle(1, circle, true);
+  matrix->drawCircle(1, circle, true);
   //matrix->drawLine(1, p1, p2);
-  //matrix->spread();
+  matrix->spread();
   //matrix->setRandomValues();
   //matrix->binarize(128);
   std::cout << "minimum: " << (int)matrix->getMinimum() << std::endl;
@@ -130,6 +131,9 @@ void MainWindow::matrixTest()
 
   m_imageDisplay->setMatrix(matrix);
 
+
+  width = 20;
+  heigth = 20;
   Matrix<unsigned short>* matrix2 = new Matrix<unsigned short>(width, heigth, 1);
   matrix2->setIncreasingValues();
   matrix2->invert();
@@ -158,4 +162,11 @@ void MainWindow::filterMaskTest()
   m_image->filterWithMask(filterMask);
 
   m_imageDisplay->setImage(m_image);
+}
+
+void MainWindow::colorDisplayTest()
+{
+  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(10, 10, 3);
+  matrix->setAllValues(255, 1);
+  m_imageDisplay->setColorMatrix(matrix);
 }

@@ -24,6 +24,7 @@ public:
   bool eventFilter(QObject *target, QEvent *event);
   void setImage(const Image* image);
   void setMatrix(const Matrix<unsigned char>* matrix);
+  void setColorMatrix(const Matrix<unsigned char>* matrix);
 
 private:
   Ui::ImageDisplay *ui;
