@@ -1,7 +1,8 @@
 # Bugs
 
 # ToDo (prioritised)
-* implement template Matrix
+* Display-Information: Decide between gray and color image
+* implement template Matrix -> move functionality from Image
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
 * ImageGray
   * create class ImageGray which inherits from Matrix<unsigned char> -> test that move-constructor and move-operator of Matrix is used
