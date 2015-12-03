@@ -48,6 +48,7 @@ public:
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
   T* getLayer(unsigned int z) const; // TODO define return value const, so the matrix values can not be changed!
   T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
+  void setFromBuffer(T* buffer, std::vector<unsigned int> layerIndices); // TODO rename?
 
   void setRandomValues();
   void binarize(T threshold);
@@ -85,6 +86,23 @@ private:
 
   T** m_lines;
 };
+
+template<typename T>
+void Matrix<T>::setFromBuffer( T* buffer, std::vector<unsigned int> layerIndices )
+{
+  unsigned int qtyLayerIndices = layerIndices.size();
+  
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      for (unsigned int z = 0; z < qtyLayerIndices; z++)
+      {
+        m_values[layerIndices[z]][y][x] = buffer[(y * m_width + x) * qtyLayerIndices + z];
+      }
+    }
+  }
+}
 
 template<typename T>
 Matrix<T>::Matrix() :

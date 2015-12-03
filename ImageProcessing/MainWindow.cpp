@@ -1,4 +1,8 @@
 #include <QDebug>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QString>
+#include <QImage>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -116,5 +120,60 @@ void MainWindow::colorDisplayTest()
   matrix->setAllValues(255);
   matrix->drawCircle(128, Circle(Point(6, 6), 5), true, 3);
   //matrix->invert();
+  m_imageDisplay->setMatrix(matrix);
+}
+
+void MainWindow::on_actionOpenImage_triggered(  )
+{
+  QStringList supportedFileFormats;
+  supportedFileFormats << "*.bmp" << "*.gif" << "*.jpg" << "*.jpeg" << "*.png" << "*.pbm" << "*.pgm" << "*.ppm" << "*.tif" << "*.tiff" << "*.xbm" << "*.xpm";
+
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Images (%1)").arg(supportedFileFormats.join(" ")));
+
+  if (fileName.isEmpty())
+  {
+    return;
+  }
+
+  QImage image(fileName);
+
+  if (image.isNull())
+  {
+    QMessageBox mb;
+    mb.setText(tr("Image could not be opened."));
+    mb.exec();
+    return;
+  }
+
+  std::vector<unsigned int> layerIndices;
+
+  // TODO create class FormatHelper and use also in class ImageDisplay
+  QImage::Format format = image.format();
+  switch(format)
+  {
+  case QImage::Format_Indexed8:
+    layerIndices.push_back(0);
+    break;
+
+  case QImage::Format_ARGB32:
+  case QImage::Format_RGB32:
+    layerIndices.push_back(2);
+    layerIndices.push_back(1);
+    layerIndices.push_back(0);
+    layerIndices.push_back(3);
+    break;
+  }
+
+  if (layerIndices.size() == 0)
+  {
+    QMessageBox mb;
+    mb.setText(tr("Image format could not be recognized."));
+    mb.exec();
+    return;
+  }
+
+  Matrix<unsigned char>* matrix = new Matrix<unsigned char>(image.width(), image.height(), layerIndices.size());
+
+  matrix->setFromBuffer(image.bits(), layerIndices);
   m_imageDisplay->setMatrix(matrix);
 }

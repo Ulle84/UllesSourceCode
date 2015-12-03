@@ -13,6 +13,7 @@
   * test: imageEroded = image.erode(blub);
   * test: image = image.erode(blub);
 * define reference point for rotation with angle: top-left-corner vs. center
+* Matrix: squeeze function -> delete all conversion-buffers, which are not needed anymore
 
 # Ideas
 * rectangle with orientation-angle
