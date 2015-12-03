@@ -88,13 +88,27 @@ void MainWindow::imageTest()
 {
   Rectangle rectangle(Point(4, 4), 16, 20);
 
-  Image* image = new Image(200, 400, 1);
-  image->setIncreasingValues();
-
-  Image* cropped = new Image(image->crop(rectangle));
+  Point point(100, 100);
 
 
-  //image->setRectangle(255, Rectangle(), true);
-  //image->rotateBy180Degree();
-  m_imageDisplay->setImage(cropped);
+  Image* image = new Image(200, 200, 1);
+
+  for (unsigned int i = 90; i > 0; i--)
+  {
+    image->setCircle(i, Circle(point, i));
+  }
+  image->spread();
+
+  std::vector<unsigned char> lookUpTable;
+
+  for (unsigned int i = 0; i < 256; i++)
+  {
+    lookUpTable.push_back(i * 10 % 256);
+  }
+
+  image->applyLookUpTable(lookUpTable);
+
+  Image* image2 = new Image(image->doPolarTransformation(Circle(point, 90)));
+
+  m_imageDisplay->setImage(image2);
 }

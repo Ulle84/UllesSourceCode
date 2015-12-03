@@ -60,6 +60,13 @@ public:
   void rotateBy90DegreeClockwise();
   void rotateBy90DegreeCounterClockwise();
   void rotateBy180Degree();
+  
+  Image* doPolarTransformation(const Circle& circle);
+  
+  void applyLookUpTable(const LookUpTable& lookUpTable);
+
+  friend bool operator== (const Image& image1, const Image& image2);
+  friend bool operator!= (const Image& image1, const Image& image2);
 
   // TODO move all possible functions below to Matrix
 
@@ -72,15 +79,7 @@ public:
   void doClosing(unsigned int filterSize);
   void filterMean(unsigned int filterSize);
 
-  void filterWithMask(const FilterMask& filterMask);  
-
-  Image* doPolarTransformation(const Circle& circle);
-
-  
-  void applyLookUpTable(const LookUpTable& lookUpTable);
-
-  friend bool operator== (const Image& image1, const Image& image2);
-  friend bool operator!= (const Image& image1, const Image& image2);
+  void filterWithMask(const FilterMask& filterMask);
 
 private:
   void initPixels();

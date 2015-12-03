@@ -15,6 +15,8 @@
 #include <Rectangle.h>
 #include <PolyLine.h>
 
+#define PI 3.14159265359
+
 // TODO use const wherever possible
 // TODO iterate over pointer instead using for-loop with index -> shuold have better performance
 // TODO check wrong z values everywhere
@@ -71,6 +73,9 @@ public:
   void rotateBy180Degree();
 
   Matrix<T> crop(const Rectangle &cropRegion);
+  Matrix<T> doPolarTransformation(const Circle& circle);
+
+  void applyLookUpTable(const std::vector<T> &lookUpTable);
 
   bool isPointInsideImage(const Point& point);
   bool isRectangleInsideImage(const Rectangle& rectangle);
@@ -96,6 +101,9 @@ private:
   void copy(const Matrix&);
 
   T** m_layers;
+
+  friend bool operator== (const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+  friend bool operator!= (const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 };
 
 template<typename T>
@@ -905,14 +913,83 @@ Matrix<T> Matrix<T>::crop(const Rectangle& cropRegion)
   {
     for (unsigned int y = 0; y < cropRegion.m_height; y++)
     {
-      std::cout << "x origin: " << cropRegion.m_topLeftCorner.m_x;
-      std::cout << " y origin: " << y+cropRegion.m_topLeftCorner.m_y << std::endl;
-
       memcpy(cropped.m_values[z][y], &m_values[z][y+cropRegion.m_topLeftCorner.m_y][cropRegion.m_topLeftCorner.m_x], cropRegion.m_width * sizeof(T));
     }
   }
 
   return cropped;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::doPolarTransformation(const Circle &circle)
+{
+  unsigned int circumference = circle.m_radius * 2 * 3.14159265359 + 0.5;
+
+  int width = circumference;
+
+  if (width % 4 != 0)
+  {
+    width += (4 - (width % 4)); // round up -> width % 4 needs to be zero!
+  }
+
+  Matrix<T> calculated(width, circle.m_radius, m_qtyLayers); // TODO correct sizes
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < circle.m_radius; y++) // radius
+    {
+      for (unsigned int x = 0; x < circumference; x++) // angle
+      {
+        // TODO improve performace -> avoid duplicated calculations -> avoid conversions
+
+        int angle = x * 360.0 / circumference;
+        int radius = y;
+
+        // x = radius * cos (angle)
+        // y = radius * sin (angle)
+
+        int xx = radius * cos ( angle * PI / 180.0 );
+        int yy = radius * sin ( angle * PI / 180.0 );
+
+        /*if (y == circle.m_radius - 1)
+        {
+          qDebug() << xx;
+        }*/
+
+        calculated.m_values[z][y][x] = m_values[z][yy + circle.m_center.m_y][xx + circle.m_center.m_x];
+      }
+    }
+  }
+
+  return calculated;
+}
+
+template<typename T>
+void Matrix<T>::applyLookUpTable(const std::vector<T>& lookUpTable)
+{
+  if (std::numeric_limits<T>::is_signed)
+  {
+    // TODO how to define a LUT for negative values?
+    return;
+  }
+
+  if (lookUpTable.size() < std::numeric_limits<T>::max() + 1)
+  {
+    // LUT not fully defined
+    std::cout << "LUT not fully defined" << std::endl;
+    return;
+  }
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[z][y][x] = lookUpTable[m_values[z][y][x]];
+      }
+    }
+  }
 }
 
 template<typename T>
@@ -1036,6 +1113,35 @@ void Matrix<T>::setIncreasingValues()
       }
     }
   }
+}
+
+template<typename T>
+bool operator== (const Matrix<T>& matrix1, const Matrix<T>& matrix2)
+{
+  // TODO this operator is not called - why???
+  std::cout << "== operator" << std::endl;
+
+  bool equal = true;
+
+  equal &= matrix1.m_width  == matrix2.m_width;
+  equal &= matrix1.m_height == matrix2.m_height;
+  equal &= matrix1.m_qtyLayers == matrix2.m_qtyLayers;
+
+  if (equal)
+  {
+    for (unsigned int z = 0; z < matrix1.m_qtyLayers; z++)
+    {
+      equal &= (memcmp(matrix1.m_layers[z], matrix2.m_layers[z], matrix1.m_width * matrix1.m_height * sizeof(T)) == 0);
+    }
+  }
+
+  return equal;
+}
+
+template<typename T>
+bool operator!= (const Matrix<T>& matrix1, const Matrix<T>& matrix2)
+{
+  return !(matrix1 == matrix2);
 }
 
 #endif // MATRIX_H
