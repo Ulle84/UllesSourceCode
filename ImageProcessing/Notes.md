@@ -1,6 +1,8 @@
 # Bugs
 
 # ToDo (prioritised)
+* remember directory of last file selection
+* Look at ToDos in Source-Code and change to // IP if appliable
 * Display-Information: Decide between gray and color image
 * implement template Matrix -> move functionality from Image
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
@@ -42,6 +44,12 @@
 * type: line -> 2 points define a line: Alternative: start point, angle + length
 
 # Documentation
+* Comments
+  * // IP -> improve performance
+  * // TODO -> ToDo
+  * // TBD -> to be discussed/decided/done
+  * // BUG -> Bug, which needs to be fixed
+  * // NTH -> nice to have
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible
 * Best approach of some hours of testing: Base Template Class (3d)Matrix + Derivations (ImageGray, ImageRGB, etc)
 * Matrix is template base class, all algorithms which are type-independent are defined here

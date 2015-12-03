@@ -63,6 +63,12 @@ public:
   void clear();
   void invert();
 
+  void mirrorOnHorizontalAxis();
+  void mirrorOnVerticalAxis();
+  void rotateBy90DegreeClockwise();
+  void rotateBy90DegreeCounterClockwise();
+  void rotateBy180Degree();
+
   bool isPointInsideImage(const Point& point);
 
   void printValuesToConsole(const std::string& description) const;
@@ -78,11 +84,15 @@ private:
   unsigned int maximum(unsigned int value1, unsigned int value2);
 
   void create();
+  void createRowBeginVector();
+  void createLayers();
   void destroy();
+  void destroyRowBeginVector();
+  void destroyLayers();
   void move(Matrix&& rhs);
   void copy(const Matrix&);
 
-  T** m_lines;
+  T** m_layers;
 };
 
 template<typename T>
@@ -164,17 +174,33 @@ Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayer
 template<typename T>
 void Matrix<T>::create()
 {
-  m_lines = new T*[m_qtyLayers];
+  createLayers();
+  createRowBeginVector();
+}
+
+template<typename T>
+void Matrix<T>::createLayers()
+{
+  m_layers = new T*[m_qtyLayers];
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    m_layers[z] = new T[m_width * m_height];
+  }
+}
+
+template<typename T>
+void Matrix<T>::createRowBeginVector()
+{
   m_values = new T**[m_qtyLayers];
 
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    m_lines[z] = new T[m_width * m_height];
     m_values[z] = new T*[m_height];
 
     for (unsigned int y = 0; y < m_height; y++)
     {
-      m_values[z][y] = &m_lines[z][y * m_width];
+      m_values[z][y] = &m_layers[z][y * m_width];
     }
   }
 }
@@ -182,14 +208,30 @@ void Matrix<T>::create()
 template<typename T>
 void Matrix<T>::destroy()
 {
+  destroyRowBeginVector();
+  destroyLayers();
+}
+
+template<typename T>
+void Matrix<T>::destroyLayers()
+{
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    delete[] m_layers[z];
+  }
+
+  delete[] m_layers;
+}
+
+template<typename T>
+void Matrix<T>::destroyRowBeginVector()
+{
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
     delete[] m_values[z];
-    delete[] m_lines[z];
   }
 
   delete[] m_values;
-  delete[] m_lines;
 }
 
 template<typename T>
@@ -241,7 +283,7 @@ void Matrix<T>::clear()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    memset(m_lines[z], 0, m_width * m_height * sizeof(T));
+    memset(m_layers[z], 0, m_width * m_height * sizeof(T));
   }
 }
 
@@ -252,13 +294,13 @@ void Matrix<T>::move(Matrix&& rhs)
   m_width = rhs.m_width;
   m_qtyLayers = rhs.m_qtyLayers;
   m_values = rhs.m_values;
-  m_lines = rhs.m_lines;
+  m_layers = rhs.m_layers;
 
   rhs.m_height = 0;
   rhs.m_width = 0;
   rhs.m_qtyLayers = 0;
   rhs.m_values = 0; // nullptr
-  rhs.m_lines = 0; // nullptr
+  rhs.m_layers = 0; // nullptr
 }
 
 template<typename T>
@@ -280,7 +322,7 @@ void Matrix<T>::setAllValues(T value, unsigned int z)
 
   if (sizeof(T) == 1)
   {
-    memset(m_lines[z], value, m_width * m_height);
+    memset(m_layers[z], value, m_width * m_height);
   }
   else
   {
@@ -292,7 +334,6 @@ void Matrix<T>::setAllValues(T value, unsigned int z)
       }
     }
   }
-
 }
 
 template<typename T>
@@ -353,7 +394,7 @@ void Matrix<T>::setRandomValues()
     {
       for (unsigned int x = 0; x < m_width; x++)
       {
-        // TODO better random generator
+        // NTH better random generator
         m_values[z][y][x] = rand();
       }
     }
@@ -391,7 +432,7 @@ void Matrix<T>::spread()
   if ((maximum - minimum) == 0)
   {
     // avoid division by zero
-    // TODO set all values to max possible value?
+    // TBD set all values to max possible value?
     return;
   }
 
@@ -513,7 +554,7 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, uns
       m_values[z][y][rectangle.m_topLeftCorner.m_x] = value;
       m_values[z][y][rectangle.m_topLeftCorner.m_x + rectangle.m_width - 1] = value;
     }
-  }  
+  }
 }
 
 template<typename T>
@@ -544,7 +585,7 @@ void Matrix<T>::setLine(T value, const Point &p1, const Point &p2, unsigned int 
     unsigned int min = minimum(p1.m_x, p2.m_x);
     unsigned int max = maximum(p1.m_x, p2.m_x);
 
-    // TODO memset if sizeof(T) == 1
+    // IP memset if sizeof(T) == 1
     for (unsigned int x = min; x <= max; x++)
     {
       m_values[z][p1.m_y][x] = value;
@@ -566,7 +607,7 @@ void Matrix<T>::setLine(T value, const Point &p1, const Point &p2, unsigned int 
   int err = dx + dy, e2; /* error value e_xy */
 
   while(1){
-    m_values[z][y0][x0] = value; //setPixel(x0,y0);
+    m_values[z][y0][x0] = value;
     if (x0==x1 && y0==y1) break;
     e2 = 2*err;
     if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
@@ -605,8 +646,8 @@ void Matrix<T>::setCircle(T value, const Circle &circle, bool fill, unsigned int
         m_values[z][circle.m_center.m_y - x][circle.m_center.m_x + yy] = value; // Octant 6 + Octant 7
       }
 
-      // TODO memset for sizeof(T) == 1
-      // TODO improve performance: memset is called "too often" for first/last line in Octant 2 + 3 and Octant 6 + 7
+      // IP memset for sizeof(T) == 1
+      // IP improve performance: memset is called "too often" for first/last line in Octant 2 + 3 and Octant 6 + 7
       /*memset(&m_pixels[( y + circle.m_center.m_y) * m_width - x + circle.m_center.m_x], value, 2 * x + 1); //  Octant 1 + Octant 4
       memset(&m_pixels[( x + circle.m_center.m_y) * m_width - y + circle.m_center.m_x], value, 2 * y + 1); //  Octant 2 + Octant 3
 
@@ -690,8 +731,6 @@ void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned
     }
 
     setPoint(value, Point(x, y), z);
-
-    //m_matrix[y][x] = 255;
   }
 }
 
@@ -734,6 +773,104 @@ void Matrix<T>::invert()
         {
           m_values[z][y][x] = std::numeric_limits<T>::max() - m_values[z][y][x];
         }
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::mirrorOnHorizontalAxis()
+{
+  Matrix<T> original(*this);
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      memcpy(&m_values[z][y][0], &(original.m_values[z][m_height - y - 1][0]), m_width * sizeof(T));
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::mirrorOnVerticalAxis()
+{
+  Matrix<T> original(*this);
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      for (unsigned int y = 0; y < m_height; y++)
+      {
+        m_values[z][y][x] = original.m_values[z][y][m_width - x - 1];
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::rotateBy90DegreeClockwise()
+{
+  Matrix<T> original(*this);
+
+  m_width = original.m_height;
+  m_height = original.m_width;
+
+  if (m_width != m_height)
+  {
+    destroyRowBeginVector();
+    createRowBeginVector();
+  }
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[z][y][x] = original.m_values[z][original.m_height - x - 1][y];
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::rotateBy90DegreeCounterClockwise()
+{
+  Matrix<T> original(*this);
+
+  m_width = original.m_height;
+  m_height = original.m_width;
+
+  if (m_width != m_height)
+  {
+    destroyRowBeginVector();
+    createRowBeginVector();
+  }
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[z][y][x] = original.m_values[z][x][original.m_width - y - 1];
+      }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::rotateBy180Degree()
+{
+  Matrix<T> original(*this);
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      for (unsigned int y = 0; y < m_height; y++)
+      {
+        m_values[z][y][x] = original.m_values[z][m_height - y - 1][m_width - x - 1];
       }
     }
   }

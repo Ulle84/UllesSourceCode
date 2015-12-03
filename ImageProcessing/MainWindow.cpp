@@ -80,12 +80,15 @@ void MainWindow::on_actionOpenImage_triggered()
   Image* image = new Image(qImage.width(), qImage.height(), layerIndices.size());
 
   image->setSingleLayer(qImage.bits(), layerIndices);
+  image->mirrorOnVerticalAxis();
   m_imageDisplay->setImage(image);
 }
 
 void MainWindow::imageTest()
 {
-  Image* image = new Image(12, 8, 1);
-  image->setRectangle(255, Rectangle(Point(1, 1), 4, 3), false);
+  Image* image = new Image(512, 400, 1);
+  image->setIncreasingValues();
+  image->setRectangle(255, Rectangle(Point(0, 0), 30, 20), true);
+  image->rotateBy180Degree();
   m_imageDisplay->setImage(image);
 }

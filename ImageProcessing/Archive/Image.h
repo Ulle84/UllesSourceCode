@@ -54,6 +54,12 @@ public:
   void drawFreemanCode(const FreemanCode& freemanCode);
   void drawPolyLine(const PolyLine& polyLine);
   void invert();
+  
+  void mirrorOnHorizontalAxis();
+  void mirrorOnVerticalAxis();
+  void rotateBy90DegreeClockwise();
+  void rotateBy90DegreeCounterClockwise();
+  void rotateBy180Degree();
 
   // TODO move all possible functions below to Matrix
 
@@ -70,11 +76,7 @@ public:
 
   Image* doPolarTransformation(const Circle& circle);
 
-  void mirrorOnHorizontalAxis();
-  void mirrorOnVerticalAxis();
-  void rotateBy90DegreeClockwise();
-  void rotateBy90DegreeCounterClockwise();
-  void rotateBy180Degree();
+  
   void applyLookUpTable(const LookUpTable& lookUpTable);
 
   friend bool operator== (const Image& image1, const Image& image2);

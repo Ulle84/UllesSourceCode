@@ -42,7 +42,4 @@ FORMS    += MainWindow.ui \
     ImageDisplay.ui
 
 OTHER_FILES += \
-    ToDo.txt
-
-DISTFILES += \
     Notes.md
