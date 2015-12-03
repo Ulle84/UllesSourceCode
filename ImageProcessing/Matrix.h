@@ -15,8 +15,7 @@
 #include <Rectangle.h>
 #include <PolyLine.h>
 
-// TODO use const whereever possible
-// TODO sort public functions
+// TODO use const wherever possible
 // TODO iterate over pointer instead using for-loop with index -> shuold have better performance
 // TODO check wrong z values everywhere
 // TODO WriteMutex
@@ -37,6 +36,7 @@ public:
   unsigned int getWidth() const;
   unsigned int getHeight() const;
   unsigned int getQtyLayers() const;
+  
   T getMinimum() const;
   T getMaximum() const;
 
@@ -44,28 +44,28 @@ public:
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
 
-  void printValuesToConsole(const std::string& description) const;  
-
   void setIncreasingValues();
+  void setRandomValues();
   void setAllValues(T value, unsigned int z = 0);
   void setValue(T value, unsigned int x, unsigned int y, unsigned int z = 0);
-  void setFromBuffer(T* buffer, std::vector<unsigned int> layerIndices); // TODO rename?
+  void setSingleLayer(T* buffer, std::vector<unsigned int> layerIndices);
   void setRow(T value, unsigned int y, unsigned int z = 0);
   void setColumn(T value, unsigned int x, unsigned int z = 0);
   void setPoint(T value, const Point& point, unsigned int z = 0);
-  void setRectangle(T value, const Rectangle& rectangle, unsigned int z = 0); // TODO bool fill
+  void setRectangle(T value, const Rectangle& rectangle, bool fill = true, unsigned int z = 0);
   void setLine(T value, const Point& p1, const Point& p2, unsigned int z = 0);
   void setCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
 
-  void setRandomValues();
   void binarize(T threshold);
   void spread();
   void clear();
   void invert();
 
-  bool isPointInsideImage(const Point& point);  
+  bool isPointInsideImage(const Point& point);
+
+  void printValuesToConsole(const std::string& description) const;
   
 protected:
   T*** m_values;
@@ -86,7 +86,7 @@ private:
 };
 
 template<typename T>
-void Matrix<T>::setFromBuffer( T* buffer, std::vector<unsigned int> layerIndices )
+void Matrix<T>::setSingleLayer( T* buffer, std::vector<unsigned int> layerIndices )
 {
   unsigned int qtyLayerIndices = layerIndices.size();
   
@@ -470,7 +470,7 @@ void Matrix<T>::setPoint(T value, const Point &point, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, unsigned int z)
+void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, unsigned int z)
 {
   if ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) >= m_width)
   {
@@ -482,20 +482,38 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, unsigned int z
     return;
   }
 
-  for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
+  if (fill)
   {
-    if (sizeof(T) == 1)
+    for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
     {
-      memset(&(m_values[z][y][rectangle.m_topLeftCorner.m_x]), value, rectangle.m_width);
-    }
-    else
-    {
-      for (unsigned int x = rectangle.m_topLeftCorner.m_x; x < (rectangle.m_topLeftCorner.m_x + rectangle.m_width); x++)
+      if (sizeof(T) == 1)
       {
-        m_values[z][y][x] = value;
+        memset(&(m_values[z][y][rectangle.m_topLeftCorner.m_x]), value, rectangle.m_width);
+      }
+      else
+      {
+        for (unsigned int x = rectangle.m_topLeftCorner.m_x; x < (rectangle.m_topLeftCorner.m_x + rectangle.m_width); x++)
+        {
+          m_values[z][y][x] = value;
+        }
       }
     }
   }
+  else
+  {
+    for (unsigned int x = rectangle.m_topLeftCorner.m_x; x < (rectangle.m_topLeftCorner.m_x + rectangle.m_width); x++)
+    {
+      // TODO use memset if sizeof(T) == 1
+      m_values[z][rectangle.m_topLeftCorner.m_y][x] = value;
+      m_values[z][rectangle.m_topLeftCorner.m_y + rectangle.m_height - 1][x] = value;
+    }
+    
+    for (unsigned int y = rectangle.m_topLeftCorner.m_y + 1; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height - 1); y++)
+    {
+      m_values[z][y][rectangle.m_topLeftCorner.m_x] = value;
+      m_values[z][y][rectangle.m_topLeftCorner.m_x + rectangle.m_width - 1] = value;
+    }
+  }  
 }
 
 template<typename T>

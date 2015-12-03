@@ -79,12 +79,13 @@ void MainWindow::on_actionOpenImage_triggered()
 
   Image* image = new Image(qImage.width(), qImage.height(), layerIndices.size());
 
-  image->setFromBuffer(qImage.bits(), layerIndices);
+  image->setSingleLayer(qImage.bits(), layerIndices);
   m_imageDisplay->setImage(image);
 }
 
 void MainWindow::imageTest()
 {
   Image* image = new Image(12, 8, 1);
+  image->setRectangle(255, Rectangle(Point(1, 1), 4, 3), false);
   m_imageDisplay->setImage(image);
 }
