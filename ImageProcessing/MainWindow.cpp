@@ -7,7 +7,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "Image.h"
 #include "ImageDisplay.h"
 #include "Matrix.h"
 
@@ -21,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
-
-  m_image = new Image(m_size, m_size); // width % 4 needs to be zero!
 
   //polarTransformationTest();
   //freemanTest();

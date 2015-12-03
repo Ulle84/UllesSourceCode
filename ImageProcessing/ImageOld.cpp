@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#include "Image.h"
+#include "ImageOld.h"
 
 #include <math.h>
 

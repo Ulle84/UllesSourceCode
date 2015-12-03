@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    Image.cpp \
     ImageDisplay.cpp \
     Point.cpp \
     Rectangle.cpp \
@@ -26,7 +25,6 @@ SOURCES += main.cpp\
     LookUpTable.cpp
 
 HEADERS  += MainWindow.h \
-    Image.h \
     ImageDisplay.h \
     Point.h \
     Rectangle.h \

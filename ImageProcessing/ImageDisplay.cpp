@@ -11,8 +11,6 @@
 #include "ImageDisplay.h"
 #include "ui_ImageDisplay.h"
 
-#include "Image.h"
-
 ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ImageDisplay),
