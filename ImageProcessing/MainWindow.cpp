@@ -28,7 +28,7 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void MainWindow::on_actionOpenImage_triggered(  )
+void MainWindow::on_actionOpenImage_triggered()
 {
   QStringList supportedFileFormats;
   supportedFileFormats << "*.bmp" << "*.gif" << "*.jpg" << "*.jpeg" << "*.png" << "*.pbm" << "*.pgm" << "*.ppm" << "*.tif" << "*.tiff" << "*.xbm" << "*.xpm";
@@ -85,6 +85,6 @@ void MainWindow::on_actionOpenImage_triggered(  )
 
 void MainWindow::imageTest()
 {
-  Image* image = new Image(12, 8, 3);
+  Image* image = new Image(12, 8, 1);
   m_imageDisplay->setImage(image);
 }

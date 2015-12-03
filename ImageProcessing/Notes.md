@@ -4,10 +4,8 @@
 * Display-Information: Decide between gray and color image
 * implement template Matrix -> move functionality from Image
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
-* ImageGray
-  * create class ImageGray which inherits from Matrix<unsigned char> -> test that move-constructor and move-operator of Matrix is used
-  * implement a converter to QImage
-* ImageRGB -> analog to ImageGray -> QImage::Format_RGB32 and QImage::Format_ARGB32
+* Image
+  * create class Image which inherits from Matrix<unsigned char> -> test that move-constructor and move-operator of Matrix is used
 * return reference to image at functions which change the image content, i. e. erode dialte etc.
   * test that move-constructor and move-operator are used, otherwise this operations will be very "expensive"
   * test: imageEroded = image.erode(blub);
@@ -30,7 +28,6 @@
 * look into Burger/Burge and implement some algorithms
 * test openCV, generate converter for openCV
 * contour tracing with pavlidis -> https://github.com/UnilVision/visionbase/blob/master/binary/contour%20tracing/Pavlidis/Pavlidis/pavlidis.c
-* read from file
 * write to file
 * run length code
 * rotate image with defined angle

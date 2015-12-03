@@ -52,14 +52,29 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
       QGraphicsSceneMouseEvent* mouseEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
       int x = mouseEvent->scenePos().rx();
       int y = mouseEvent->scenePos().ry();
-      int value = 0;
+
+      QString pixelInformation;
 
       if (m_image)
       {
-        value = m_image->getValue(x, y);
+        unsigned int qtyLayers = m_image->getQtyLayers();
+
+        if (qtyLayers == 1)
+        {
+          pixelInformation = tr("gray value: %1").arg(m_image->getValue(x, y));
+        }
+        else if (qtyLayers == 3 || qtyLayers == 4)
+        {
+          pixelInformation = tr("red: %1  green: %2  blue: %3").arg(m_image->getValue(x, y, 0)).arg(m_image->getValue(x, y, 1)).arg(m_image->getValue(x, y, 2));
+
+          if (qtyLayers == 4)
+          {
+            pixelInformation.append(tr("  alpha: %1").arg(m_image->getValue(x, y, 3)));
+          }
+        }
       }
 
-      ui->label->setText(QString("x: %1  y: %2  value: %3").arg(x).arg(y).arg(value));
+      ui->label->setText(QString("x: %1  y: %2  %3").arg(x).arg(y).arg(pixelInformation));
     }
   }
 
@@ -101,10 +116,10 @@ void ImageDisplay::setImage(Image* image)
 {
   m_image = image;
 
-  unsigned char* data = m_image->getLayer(0);
+  const unsigned char* data = m_image->getLayer(0);
   QImage::Format format = QImage::Format_Indexed8;
 
-  if (image->getDepth() == 3)
+  if (image->getQtyLayers() == 3)
   {
     std::vector<unsigned int> layerIndices;
     layerIndices.push_back(2);
@@ -115,7 +130,7 @@ void ImageDisplay::setImage(Image* image)
     format = QImage::Format_RGB32;
   }
 
-  if (image->getDepth() == 4)
+  if (image->getQtyLayers() == 4)
   {
     std::vector<unsigned int> layerIndices;
     layerIndices.push_back(2);

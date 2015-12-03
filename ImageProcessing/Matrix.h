@@ -19,6 +19,7 @@
 // TODO sort public functions
 // TODO iterate over pointer instead using for-loop with index -> shuold have better performance
 // TODO check wrong z values everywhere
+// TODO WriteMutex
 
 template<typename T>
 class Matrix
@@ -35,38 +36,36 @@ public:
 
   unsigned int getWidth() const;
   unsigned int getHeight() const;
-  unsigned int getDepth() const; // TODO rename getQtyLayers
+  unsigned int getQtyLayers() const;
   T getMinimum() const;
   T getMaximum() const;
 
-  void printValuesToConsole(const std::string& description) const;
+  T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
+  const T* getLayer(unsigned int z) const;
+  const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
+
+  void printValuesToConsole(const std::string& description) const;  
+
   void setIncreasingValues();
-  void clear();
   void setAllValues(T value, unsigned int z = 0);
   void setValue(T value, unsigned int x, unsigned int y, unsigned int z = 0);
-
-  T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
-  T* getLayer(unsigned int z) const; // TODO define return value const, so the matrix values can not be changed!
-  T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
   void setFromBuffer(T* buffer, std::vector<unsigned int> layerIndices); // TODO rename?
+  void setRow(T value, unsigned int y, unsigned int z = 0);
+  void setColumn(T value, unsigned int x, unsigned int z = 0);
+  void setPoint(T value, const Point& point, unsigned int z = 0);
+  void setRectangle(T value, const Rectangle& rectangle, unsigned int z = 0); // TODO bool fill
+  void setLine(T value, const Point& p1, const Point& p2, unsigned int z = 0);
+  void setCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
+  void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
+  void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
 
   void setRandomValues();
   void binarize(T threshold);
   void spread();
-
-  bool isPointInImage(const Point& point); // TODO rename function
-
-  // TODO mark vs. draw vs. set -> one way to define
-  void markRow(T value, unsigned int y, unsigned int z = 0);
-  void markColumn(T value, unsigned int x, unsigned int z = 0);
-
-  void drawPoint(T value, const Point& point, unsigned int z = 0);
-  void drawRectangle(T value, const Rectangle& rectangle, unsigned int z = 0); // TODO bool fill
-  void drawLine(T value, const Point& p1, const Point& p2, unsigned int z = 0);
-  void drawCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
-  void drawFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
-  void drawPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
+  void clear();
   void invert();
+
+  bool isPointInsideImage(const Point& point);  
   
 protected:
   T*** m_values;
@@ -77,7 +76,6 @@ protected:
 private:
   unsigned int minimum(unsigned int value1, unsigned int value2);
   unsigned int maximum(unsigned int value1, unsigned int value2);
-
 
   void create();
   void destroy();
@@ -320,13 +318,13 @@ T Matrix<T>::getValue(unsigned int x, unsigned int y, unsigned int z) const
 }
 
 template<typename T>
-T* Matrix<T>::getLayer(unsigned int z) const
+const T* Matrix<T>::getLayer(unsigned int z) const
 {
   return *(m_values[z]);
 }
 
 template<typename T>
-T* Matrix<T>::getSingleLayer(std::vector<unsigned int> layerIndices) const
+const T* Matrix<T>::getSingleLayer(std::vector<unsigned int> layerIndices) const
 {
   unsigned int qtyLayerIndices = layerIndices.size();
   unsigned int bufferSize = m_height * m_width * qtyLayerIndices;
@@ -421,13 +419,13 @@ void Matrix<T>::spread()
 }
 
 template<typename T>
-bool Matrix<T>::isPointInImage(const Point &point)
+bool Matrix<T>::isPointInsideImage(const Point &point)
 {
   return point.m_x < m_width && point.m_y < m_height;
 }
 
 template<typename T>
-void Matrix<T>::markRow(T value, unsigned int y, unsigned int z)
+void Matrix<T>::setRow(T value, unsigned int y, unsigned int z)
 {
   if (y >= m_height)
   {
@@ -448,7 +446,7 @@ void Matrix<T>::markRow(T value, unsigned int y, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::markColumn(T value, unsigned int x, unsigned int z)
+void Matrix<T>::setColumn(T value, unsigned int x, unsigned int z)
 {
   if (x >= m_width)
   {
@@ -462,7 +460,7 @@ void Matrix<T>::markColumn(T value, unsigned int x, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::drawPoint(T value, const Point &point, unsigned int z)
+void Matrix<T>::setPoint(T value, const Point &point, unsigned int z)
 {
   if (point.m_x >= m_width || point.m_y >= m_height)
   {
@@ -472,7 +470,7 @@ void Matrix<T>::drawPoint(T value, const Point &point, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::drawRectangle(T value, const Rectangle &rectangle, unsigned int z)
+void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, unsigned int z)
 {
   if ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) >= m_width)
   {
@@ -501,9 +499,9 @@ void Matrix<T>::drawRectangle(T value, const Rectangle &rectangle, unsigned int 
 }
 
 template<typename T>
-void Matrix<T>::drawLine(T value, const Point &p1, const Point &p2, unsigned int z)
+void Matrix<T>::setLine(T value, const Point &p1, const Point &p2, unsigned int z)
 {
-  if (!isPointInImage(p1) || !isPointInImage(p2))
+  if (!isPointInsideImage(p1) || !isPointInsideImage(p2))
   {
     return;
   }
@@ -559,7 +557,7 @@ void Matrix<T>::drawLine(T value, const Point &p1, const Point &p2, unsigned int
 }
 
 template<typename T>
-void Matrix<T>::drawCircle(T value, const Circle &circle, bool fill, unsigned int z)
+void Matrix<T>::setCircle(T value, const Circle &circle, bool fill, unsigned int z)
 {
   if (z >= m_qtyLayers)
   {
@@ -625,9 +623,9 @@ void Matrix<T>::drawCircle(T value, const Circle &circle, bool fill, unsigned in
 }
 
 template<typename T>
-void Matrix<T>::drawFreemanCode(T value, const FreemanCode &freemanCode, unsigned int z)
+void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned int z)
 {
-  drawPoint(value, freemanCode.m_startPoint, z);
+  setPoint(value, freemanCode.m_startPoint, z);
 
   unsigned int x = freemanCode.m_startPoint.m_x;
   unsigned int y = freemanCode.m_startPoint.m_y;
@@ -673,14 +671,14 @@ void Matrix<T>::drawFreemanCode(T value, const FreemanCode &freemanCode, unsigne
       break;
     }
 
-    drawPoint(value, Point(x, y), z);
+    setPoint(value, Point(x, y), z);
 
     //m_matrix[y][x] = 255;
   }
 }
 
 template<typename T>
-void Matrix<T>::drawPolyLine(T value, const PolyLine &polyLine, unsigned int z)
+void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 {
   if (polyLine.m_points.size() < 2)
   {
@@ -695,7 +693,7 @@ void Matrix<T>::drawPolyLine(T value, const PolyLine &polyLine, unsigned int z)
       continue;
     }
 
-    drawLine(value, *itPrevious, *it, z);
+    setLine(value, *itPrevious, *it, z);
 
     itPrevious = it;
   }
@@ -748,7 +746,7 @@ unsigned int Matrix<T>::getHeight() const
 }
 
 template<typename T>
-unsigned int Matrix<T>::getDepth() const
+unsigned int Matrix<T>::getQtyLayers() const
 {
   return m_qtyLayers;
 }
