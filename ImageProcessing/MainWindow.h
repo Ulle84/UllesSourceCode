@@ -22,16 +22,11 @@ private slots:
   void on_actionOpenImage_triggered();
 
 private:
-  void freemanTest();
-  void polyLineTest();
-  void matrixTest();
-  void colorDisplayTest();
   void imageTest();
 
-  Ui::MainWindow *ui;
+  Ui::MainWindow* ui;
   Image* m_image;
   ImageDisplay* m_imageDisplay;
-  int m_size;
 };
 
 #endif // MAINWINDOW_H
