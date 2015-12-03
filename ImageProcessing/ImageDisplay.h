@@ -3,9 +3,6 @@
 
 #include <QWidget>
 #include <QGraphicsScene>
-#include "Matrix.h"
-
-// TODO decide between Matrix and Image
 
 class Image;
 
@@ -22,13 +19,13 @@ public:
   ~ImageDisplay();
   
   bool eventFilter(QObject *target, QEvent *event);
-  void setMatrix(const Matrix<unsigned char>* matrix);
+  void setImage(Image* image);
 
 private:
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
   bool m_ctrlButtonIsPressed;
-  const Matrix<unsigned char>* m_matrix;
+  Image* m_image;
 };
 
 #endif // IMAGEDISPLAY_H

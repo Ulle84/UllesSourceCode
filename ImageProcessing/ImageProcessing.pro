@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     FreemanCode.cpp \
     PolyLine.cpp \
     Histogram.cpp \
-    LookUpTable.cpp
+    LookUpTable.cpp \
+    Image.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -34,7 +35,8 @@ HEADERS  += MainWindow.h \
     PolyLine.h \
     Histogram.h \
     LookUpTable.h \
-    Matrix.h
+    Matrix.h \
+    Image.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

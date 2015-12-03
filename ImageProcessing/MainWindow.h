@@ -26,6 +26,7 @@ private:
   void polyLineTest();
   void matrixTest();
   void colorDisplayTest();
+  void imageTest();
 
   Ui::MainWindow *ui;
   Image* m_image;

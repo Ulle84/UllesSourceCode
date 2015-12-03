@@ -8,6 +8,8 @@
 #include <QScrollBar>
 #include <QWheelEvent>
 
+#include "Image.h"
+
 #include "ImageDisplay.h"
 #include "ui_ImageDisplay.h"
 
@@ -15,7 +17,7 @@ ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ImageDisplay),
   m_ctrlButtonIsPressed(false),
-  m_matrix(0)
+  m_image(0)
 {
   ui->setupUi(this);
 
@@ -52,9 +54,9 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
       int y = mouseEvent->scenePos().ry();
       int value = 0;
 
-      if (m_matrix)
+      if (m_image)
       {
-        value = m_matrix->getValue(x, y);
+        value = m_image->getValue(x, y);
       }
 
       ui->label->setText(QString("x: %1  y: %2  value: %3").arg(x).arg(y).arg(value));
@@ -95,36 +97,36 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
   return QWidget::eventFilter(target, event);
 }
 
-void ImageDisplay::setMatrix(const Matrix<unsigned char>* matrix)
+void ImageDisplay::setImage(Image* image)
 {
-  m_matrix = matrix;
+  m_image = image;
 
-  unsigned char* data = matrix->getLayer(0);
+  unsigned char* data = m_image->getLayer(0);
   QImage::Format format = QImage::Format_Indexed8;
 
-  if (matrix->getDepth() == 3)
+  if (image->getDepth() == 3)
   {
     std::vector<unsigned int> layerIndices;
     layerIndices.push_back(2);
     layerIndices.push_back(1);
     layerIndices.push_back(0);
     layerIndices.push_back(0);
-    data = matrix->getSingleLayer(layerIndices);
+    data = m_image->getSingleLayer(layerIndices);
     format = QImage::Format_RGB32;
   }
 
-  if (matrix->getDepth() == 4)
+  if (image->getDepth() == 4)
   {
     std::vector<unsigned int> layerIndices;
     layerIndices.push_back(2);
     layerIndices.push_back(1);
     layerIndices.push_back(0);
     layerIndices.push_back(3);
-    data = matrix->getSingleLayer(layerIndices);
+    data = m_image->getSingleLayer(layerIndices);
     format = QImage::Format_ARGB32;
   }
 
-  QImage qImage(data, matrix->getWidth(), matrix->getHeight(), format);
+  QImage qImage(data, image->getWidth(), image->getHeight(), format);
   QPixmap pixmap = QPixmap::fromImage(qImage);
 
   m_scene->clear();
