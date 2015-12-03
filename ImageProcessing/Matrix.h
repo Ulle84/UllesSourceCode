@@ -56,7 +56,7 @@ public:
   bool isPointInImage(const Point& point); // TODO rename function
 
   // TODO mark vs. draw vs. set -> one way to define
-  void markLine(T value, unsigned int y, unsigned int z = 0);
+  void markRow(T value, unsigned int y, unsigned int z = 0);
   void markColumn(T value, unsigned int x, unsigned int z = 0);
 
   void drawPoint(T value, const Point& point, unsigned int z = 0);
@@ -409,7 +409,7 @@ bool Matrix<T>::isPointInImage(const Point &point)
 }
 
 template<typename T>
-void Matrix<T>::markLine(T value, unsigned int y, unsigned int z)
+void Matrix<T>::markRow(T value, unsigned int y, unsigned int z)
 {
   if (y >= m_height)
   {

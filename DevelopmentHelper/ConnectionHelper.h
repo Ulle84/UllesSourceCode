@@ -22,6 +22,8 @@ private slots:
   void on_lineEditSlot_returnPressed();
   void on_checkBox_stateChanged(int arg1);
 
+  void on_comboBox_currentIndexChanged(int index);
+
 private:
   void createCode();
 

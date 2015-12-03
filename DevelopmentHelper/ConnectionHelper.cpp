@@ -38,7 +38,7 @@ void ConnectionHelper::on_lineEditSlot_returnPressed()
 
 void ConnectionHelper::createCode()
 {
-  QString code = QString("connect(%1, SIGNAL(%2), %3, SLOT(%4));").arg(ui->lineEditSender->text()).arg(ui->lineEditSignal->text()).arg(ui->lineEditReceiver->text()).arg(ui->lineEditSlot->text());
+  QString code = QString("connect(%1, SIGNAL(%2), %3, %4(%5));").arg(ui->lineEditSender->text()).arg(ui->lineEditSignal->text()).arg(ui->lineEditReceiver->text()).arg(ui->comboBox->currentText()).arg(ui->lineEditSlot->text());
   if (ui->checkBox->isChecked())
   {
     code.prepend("bool connected = ");
@@ -47,6 +47,11 @@ void ConnectionHelper::createCode()
 }
 
 void ConnectionHelper::on_checkBox_stateChanged(int arg1)
+{
+  createCode();
+}
+
+void ConnectionHelper::on_comboBox_currentIndexChanged(int index)
 {
   createCode();
 }
