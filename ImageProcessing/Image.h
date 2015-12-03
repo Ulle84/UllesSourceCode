@@ -7,6 +7,7 @@ class Image : public Matrix<unsigned char>
 {
 public:
   Image();
+  Image(Matrix<unsigned char> matrix);
   Image(unsigned int width, unsigned int height, unsigned int qtyLayers = 1);
 };
 

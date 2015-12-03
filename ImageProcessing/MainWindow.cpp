@@ -86,9 +86,15 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
-  Image* image = new Image(512, 400, 1);
+  Rectangle rectangle(Point(4, 4), 16, 20);
+
+  Image* image = new Image(200, 400, 1);
   image->setIncreasingValues();
-  image->setRectangle(255, Rectangle(Point(0, 0), 30, 20), true);
-  image->rotateBy180Degree();
-  m_imageDisplay->setImage(image);
+
+  Image* cropped = new Image(image->crop(rectangle));
+
+
+  //image->setRectangle(255, Rectangle(), true);
+  //image->rotateBy180Degree();
+  m_imageDisplay->setImage(cropped);
 }

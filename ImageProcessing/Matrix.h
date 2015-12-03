@@ -19,6 +19,7 @@
 // TODO iterate over pointer instead using for-loop with index -> shuold have better performance
 // TODO check wrong z values everywhere
 // TODO WriteMutex
+// TODO with % 4 !== 0
 
 template<typename T>
 class Matrix
@@ -69,7 +70,10 @@ public:
   void rotateBy90DegreeCounterClockwise();
   void rotateBy180Degree();
 
+  Matrix<T> crop(const Rectangle &cropRegion);
+
   bool isPointInsideImage(const Point& point);
+  bool isRectangleInsideImage(const Rectangle& rectangle);
 
   void printValuesToConsole(const std::string& description) const;
   
@@ -89,7 +93,6 @@ private:
   void destroy();
   void destroyRowBeginVector();
   void destroyLayers();
-  void move(Matrix&& rhs);
   void copy(const Matrix&);
 
   T** m_layers;
@@ -141,7 +144,17 @@ Matrix<T>::Matrix(Matrix&& rhs)
 {
   std::cout << "Matrix: move constructor" << std::endl;
 
-  move(rhs);
+  m_height = rhs.m_height;
+  m_width = rhs.m_width;
+  m_qtyLayers = rhs.m_qtyLayers;
+  m_values = rhs.m_values;
+  m_layers = rhs.m_layers;
+
+  rhs.m_height = 0;
+  rhs.m_width = 0;
+  rhs.m_qtyLayers = 0;
+  rhs.m_values = 0; // nullptr
+  rhs.m_layers = 0; // nullptr
 }
 
 template<typename T>
@@ -273,7 +286,18 @@ Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
   if (&rhs != this)
   {
     destroy();
-    move(rhs);
+
+    m_height = rhs.m_height;
+    m_width = rhs.m_width;
+    m_qtyLayers = rhs.m_qtyLayers;
+    m_values = rhs.m_values;
+    m_layers = rhs.m_layers;
+
+    rhs.m_height = 0;
+    rhs.m_width = 0;
+    rhs.m_qtyLayers = 0;
+    rhs.m_values = 0; // nullptr
+    rhs.m_layers = 0; // nullptr
   }
   return *this;
 }
@@ -285,22 +309,6 @@ void Matrix<T>::clear()
   {
     memset(m_layers[z], 0, m_width * m_height * sizeof(T));
   }
-}
-
-template<typename T>
-void Matrix<T>::move(Matrix&& rhs)
-{
-  m_height = rhs.m_height;
-  m_width = rhs.m_width;
-  m_qtyLayers = rhs.m_qtyLayers;
-  m_values = rhs.m_values;
-  m_layers = rhs.m_layers;
-
-  rhs.m_height = 0;
-  rhs.m_width = 0;
-  rhs.m_qtyLayers = 0;
-  rhs.m_values = 0; // nullptr
-  rhs.m_layers = 0; // nullptr
 }
 
 template<typename T>
@@ -466,6 +474,17 @@ bool Matrix<T>::isPointInsideImage(const Point &point)
 }
 
 template<typename T>
+bool Matrix<T>::isRectangleInsideImage(const Rectangle& rectangle)
+{
+  bool rectangleInImage = true;
+
+  rectangleInImage &= ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) < m_width);
+  rectangleInImage &= ((rectangle.m_topLeftCorner.m_y + rectangle.m_height) < m_height);
+
+  return rectangleInImage;
+}
+
+template<typename T>
 void Matrix<T>::setRow(T value, unsigned int y, unsigned int z)
 {
   if (y >= m_height)
@@ -513,12 +532,7 @@ void Matrix<T>::setPoint(T value, const Point &point, unsigned int z)
 template<typename T>
 void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, unsigned int z)
 {
-  if ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) >= m_width)
-  {
-    return;
-  }
-
-  if ((rectangle.m_topLeftCorner.m_y + rectangle.m_height) >= m_height)
+  if (!isRectangleInsideImage(rectangle))
   {
     return;
   }
@@ -874,6 +888,31 @@ void Matrix<T>::rotateBy180Degree()
       }
     }
   }
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::crop(const Rectangle& cropRegion)
+{
+  if (!isRectangleInsideImage(cropRegion))
+  {
+    return Matrix<T>();
+  }
+
+  Matrix<T> cropped(cropRegion.m_width, cropRegion.m_height, m_qtyLayers);
+
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < cropRegion.m_height; y++)
+    {
+      std::cout << "x origin: " << cropRegion.m_topLeftCorner.m_x;
+      std::cout << " y origin: " << y+cropRegion.m_topLeftCorner.m_y << std::endl;
+
+      memcpy(cropped.m_values[z][y], &m_values[z][y+cropRegion.m_topLeftCorner.m_y][cropRegion.m_topLeftCorner.m_x], cropRegion.m_width * sizeof(T));
+    }
+  }
+
+  return cropped;
 }
 
 template<typename T>
