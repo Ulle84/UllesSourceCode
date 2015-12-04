@@ -86,10 +86,19 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
-  Rectangle rectangle(Point(4, 4), 16, 20);
+  Image* image = new Image(256, 256);
+  image->setAllValues(120);
 
+  std::vector<unsigned long long> histogram = image->getHistogram();
+  Image* image2 = new Image(256, 256);
+  image2->setHistogram(histogram);
+
+  m_imageDisplay->setImage(image2);
+}
+
+void MainWindow::doPolarTransformationTest()
+{
   Point point(100, 100);
-
 
   Image* image = new Image(200, 200, 1);
 
@@ -98,15 +107,6 @@ void MainWindow::imageTest()
     image->setCircle(i, Circle(point, i));
   }
   image->spread();
-
-  std::vector<unsigned char> lookUpTable;
-
-  for (unsigned int i = 0; i < 256; i++)
-  {
-    lookUpTable.push_back(i * 10 % 256);
-  }
-
-  image->applyLookUpTable(lookUpTable);
 
   Image* image2 = new Image(image->doPolarTransformation(Circle(point, 90)));
 

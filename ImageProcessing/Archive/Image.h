@@ -64,14 +64,19 @@ public:
   Image* doPolarTransformation(const Circle& circle);
   
   void applyLookUpTable(const LookUpTable& lookUpTable);
+  
+  Histogram getHistogram();
+    void drawHistogram(const Histogram& histogram);
 
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);
+  
+  
 
   // TODO move all possible functions below to Matrix
 
-  Histogram getHistogram();
-  void drawHistogram(const Histogram& histogram);
+
+
 
   void dilate(unsigned int filterSize);
   void erode(unsigned int filterSize);

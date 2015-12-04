@@ -46,6 +46,7 @@ public:
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
+  std::vector<unsigned long long> getHistogram();
 
   void setIncreasingValues();
   void setRandomValues();
@@ -60,6 +61,7 @@ public:
   void setCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
+  void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
   void binarize(T threshold);
   void spread();
@@ -399,6 +401,34 @@ const T* Matrix<T>::getSingleLayer(std::vector<unsigned int> layerIndices) const
   }
 
   return singleLayer;
+}
+
+template<typename T>
+std::vector<unsigned long long> Matrix<T>::getHistogram()
+{
+  if (std::numeric_limits<T>::is_signed)
+  {
+    // TODO how to implement negative values?
+    return std::vector<unsigned long long>(0);
+  }
+
+  // TODO do not accept T to be floating point value
+
+  std::vector<unsigned long long> histogram(std::numeric_limits<T>::max() + 1); // TODO verify for big data types like long etc.
+  std::fill(histogram.begin(), histogram.end(), 0);
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        histogram[m_values[z][y][x]]++;
+      }
+    }
+  }
+
+  return histogram;
 }
 
 template<typename T>
@@ -775,6 +805,34 @@ void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
     setLine(value, *itPrevious, *it, z);
 
     itPrevious = it;
+  }
+}
+
+template<typename T>
+void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, unsigned int z)
+{
+  clear();
+
+  unsigned int barWidth = m_width / histogram.size();
+
+  unsigned long long maxValue = std::numeric_limits<unsigned long long>::min();
+
+  // IP use iterator
+  for (unsigned long long i = 0; i < histogram.size(); i++)
+  {
+    if (histogram[i] > maxValue)
+    {
+      maxValue = histogram[i];
+    }
+  }
+
+  for (unsigned long long i = 0; i < histogram.size(); i++)
+  {
+    unsigned int barHeight = histogram[i] * m_height * 1.0 / maxValue;
+    for (unsigned int j = 0; j < barWidth; j++)
+    {
+      setLine(std::numeric_limits<unsigned long long>::max(), Point(i * barWidth + j, m_height - 1), Point(i * barWidth + j, m_height - barHeight), z);
+    }
   }
 }
 

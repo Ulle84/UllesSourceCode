@@ -21,8 +21,6 @@ SOURCES += main.cpp\
     FilterMask.cpp \
     FreemanCode.cpp \
     PolyLine.cpp \
-    Histogram.cpp \
-    LookUpTable.cpp \
     Image.cpp
 
 HEADERS  += MainWindow.h \
@@ -33,8 +31,6 @@ HEADERS  += MainWindow.h \
     FilterMask.h \
     FreemanCode.h \
     PolyLine.h \
-    Histogram.h \
-    LookUpTable.h \
     Matrix.h \
     Image.h
 

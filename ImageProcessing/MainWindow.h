@@ -23,6 +23,7 @@ private slots:
 
 private:
   void imageTest();
+  void doPolarTransformationTest();
 
   Ui::MainWindow* ui;
   Image* m_image;
