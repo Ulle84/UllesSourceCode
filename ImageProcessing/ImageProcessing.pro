@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     Point.cpp \
     Rectangle.cpp \
     Circle.cpp \
-    FilterMask.cpp \
     FreemanCode.cpp \
     PolyLine.cpp \
     Image.cpp
@@ -28,7 +27,6 @@ HEADERS  += MainWindow.h \
     Point.h \
     Rectangle.h \
     Circle.h \
-    FilterMask.h \
     FreemanCode.h \
     PolyLine.h \
     Matrix.h \

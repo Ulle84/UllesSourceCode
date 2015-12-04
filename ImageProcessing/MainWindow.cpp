@@ -86,17 +86,21 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
+  filterTest();
+}
+
+void MainWindow::histogramTest()
+{
   Image* image = new Image(256, 256);
   image->setAllValues(120);
 
-  std::vector<unsigned long long> histogram = image->getHistogram();
   Image* image2 = new Image(256, 256);
-  image2->setHistogram(histogram);
+  image2->setHistogram(image->getHistogram());
 
   m_imageDisplay->setImage(image2);
 }
 
-void MainWindow::doPolarTransformationTest()
+void MainWindow::polarTransformationTest()
 {
   Point point(100, 100);
 
@@ -111,4 +115,25 @@ void MainWindow::doPolarTransformationTest()
   Image* image2 = new Image(image->doPolarTransformation(Circle(point, 90)));
 
   m_imageDisplay->setImage(image2);
+}
+
+void MainWindow::filterTest()
+{
+  Point referencePoint(1, 1);
+  unsigned int filterSize = 3;
+  Filter* filter = new Filter(filterSize, filterSize);
+  filter->setReferencePoint(referencePoint);
+  filter->setAllValues(1);
+  filter->setPreFactor(1.0 / 9);
+
+  Rectangle rectangle(Point(2, 2), 8, 8);
+
+  Image* image = new Image(12, 12);
+
+  image->setRectangle(128, rectangle);
+  image->applyFilter(filter);
+  //image->setRectangle(255, rectangle);
+
+  m_imageDisplay->setImage(image);
+
 }

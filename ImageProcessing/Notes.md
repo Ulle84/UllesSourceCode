@@ -42,8 +42,11 @@
   * read generated
   * test: change some pixels and try to read
 * type: line -> 2 points define a line: Alternative: start point, angle + length
+* setInterpolationMode: nearestNeighbor, bilinearInterpolation, ...?
+* setNeighborhood: neighborhood4, neighborhood8
 
 # Documentation
+## General
 * Comments
   * // IP -> improve performance
   * // TODO -> ToDo
@@ -53,3 +56,19 @@
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible
 * Best approach of some hours of testing: Base Template Class (3d)Matrix + Derivations (ImageGray, ImageRGB, etc)
 * Matrix is template base class, all algorithms which are type-independent are defined here
+
+## Goals (ordered)
+* correctnes
+* no code duplication
+* clearance
+* high performanace
+* low memory consumption
+
+## Matrix and FilterMask
+* FilterMask should inherit from Matrix
+* code duplication should be avoided
+* FilterMask as friend of Matrix is not possible
+* template <typename FT, typename MT> class FilterMask : Matrix<FT> -> not possible - error-message: cannot cast FilterMask<int, unsigend char> to its private base class Matrix<int>
+* template <typename T> class FilterMask : Matrix<double> with function void apply(Matrix<T>* matrix); -> also not possible
+* template<typename F, typename M> void filterMatrix(Matrix<M>* matrix, Matrix<F>* filter, const Point& referencePoint, double preFactor = 1.0, unsigned z = 0) -> also not possible: no matching fucntion for call to filterMatrix
+* template<typename T> void filterMatrix(Matrix<T>* matrix, FilterMask* filter, double preFactor = 1.0, unsigned z = 0) : no matching fucntion for call to filterMatrix

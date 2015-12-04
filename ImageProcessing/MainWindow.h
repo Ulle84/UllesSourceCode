@@ -23,7 +23,9 @@ private slots:
 
 private:
   void imageTest();
-  void doPolarTransformationTest();
+  void histogramTest();
+  void polarTransformationTest();
+  void filterTest();
 
   Ui::MainWindow* ui;
   Image* m_image;

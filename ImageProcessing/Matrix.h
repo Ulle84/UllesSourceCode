@@ -22,6 +22,9 @@
 // TODO check wrong z values everywhere
 // TODO WriteMutex
 // TODO with % 4 !== 0
+// TODO m_referencePoint?
+
+class Filter;
 
 template<typename T>
 class Matrix
@@ -44,6 +47,7 @@ public:
   T getMaximum() const;
 
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
+  T*** getValues() const; // TODO const, so the pointer-adress can not be changed
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
   std::vector<unsigned long long> getHistogram();
@@ -63,6 +67,8 @@ public:
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
   void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
+  //void applyFilter(const Matrix<double>* filter, const Point &referencePoint, double preFactor = 1.0, unsigned int z = 0);
+  void applyFilter(const Filter* filter, unsigned int z = 0);
   void binarize(T threshold);
   void spread();
   void clear();
@@ -78,9 +84,11 @@ public:
   Matrix<T> doPolarTransformation(const Circle& circle);
 
   void applyLookUpTable(const std::vector<T> &lookUpTable);
+  //void filter(const FilterMask& filterMask);
 
   bool isPointInsideImage(const Point& point);
   bool isRectangleInsideImage(const Rectangle& rectangle);
+  bool isCircleInsideImage(const Circle& circle);
 
   void printValuesToConsole(const std::string& description) const;
   
@@ -106,6 +114,25 @@ private:
 
   friend bool operator== (const Matrix<T>& matrix1, const Matrix<T>& matrix2);
   friend bool operator!= (const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+};
+
+// TBD type short?
+class Filter : public Matrix<short>
+{
+public:
+  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
+
+  void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
+  Point getReferencePoint() const {return m_referencePoint;}
+
+  void setPreFactor(double preFactor) {m_preFactor = preFactor;}
+  double getPreFactor() const {return m_preFactor;}
+
+private:
+  Filter(){}
+
+  double m_preFactor;
+  Point m_referencePoint;
 };
 
 template<typename T>
@@ -377,6 +404,12 @@ T Matrix<T>::getValue(unsigned int x, unsigned int y, unsigned int z) const
 }
 
 template<typename T>
+T ***Matrix<T>::getValues() const
+{
+  return m_values;
+}
+
+template<typename T>
 const T* Matrix<T>::getLayer(unsigned int z) const
 {
   return *(m_values[z]);
@@ -520,6 +553,20 @@ bool Matrix<T>::isRectangleInsideImage(const Rectangle& rectangle)
   rectangleInImage &= ((rectangle.m_topLeftCorner.m_y + rectangle.m_height) < m_height);
 
   return rectangleInImage;
+}
+
+template<typename T>
+bool Matrix<T>::isCircleInsideImage(const Circle &circle)
+{
+  bool circleInImage = true;
+
+  circleInImage &= ((circle.m_center.m_x - circle.m_radius) >=  0);
+  circleInImage &= ((circle.m_center.m_y - circle.m_radius) >=  0);
+
+  circleInImage &= ((circle.m_center.m_x + circle.m_radius) <  m_width);
+  circleInImage &= ((circle.m_center.m_y + circle.m_radius) <  m_height);
+
+  return circleInImage;
 }
 
 template<typename T>
@@ -837,6 +884,40 @@ void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, u
 }
 
 template<typename T>
+void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
+{
+  printValuesToConsole("image");
+
+  Matrix<T> original(*this);
+
+  Matrix<double> calculatedValues(m_width, m_height, m_qtyLayers);
+
+  short*** filterValues = filter->getValues();
+  unsigned int offset = filter->getWidth() / 2; // TODO offsetXLeft offsetXRight offsetYTop offsetYBottom
+
+  unsigned int refX = filter->getReferencePoint().m_x;
+  unsigned int refY = filter->getReferencePoint().m_y;
+
+  double calculatedValue;
+
+  for (unsigned int y = offset; y < (m_height - offset); y++)
+  {
+    for (unsigned int x = offset; x < (m_width - offset); x++)
+    {
+      calculatedValue = 0;
+      for (unsigned int fy = 0; fy < filter->getHeight(); fy++)
+      {
+        for (unsigned int fx = 0; fx < filter->getWidth(); fx++)
+        {
+          calculatedValue += original.m_values[z][y + fy - offset][x + fx - offset] * filterValues[0][fy][fx];
+        }
+      }
+      m_values[z][y][x] = (calculatedValue * filter->getPreFactor()) + 0.5;
+    }
+  }
+}
+
+template<typename T>
 void Matrix<T>::invert()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
@@ -981,6 +1062,11 @@ Matrix<T> Matrix<T>::crop(const Rectangle& cropRegion)
 template<typename T>
 Matrix<T> Matrix<T>::doPolarTransformation(const Circle &circle)
 {
+  if (!isCircleInsideImage(circle))
+  {
+    return Matrix<T>(1, 1);
+  }
+
   unsigned int circumference = circle.m_radius * 2 * 3.14159265359 + 0.5;
 
   int width = circumference;
@@ -1003,16 +1089,8 @@ Matrix<T> Matrix<T>::doPolarTransformation(const Circle &circle)
         int angle = x * 360.0 / circumference;
         int radius = y;
 
-        // x = radius * cos (angle)
-        // y = radius * sin (angle)
-
-        int xx = radius * cos ( angle * PI / 180.0 );
-        int yy = radius * sin ( angle * PI / 180.0 );
-
-        /*if (y == circle.m_radius - 1)
-        {
-          qDebug() << xx;
-        }*/
+        int xx = radius * cos(angle * PI / 180.0);
+        int yy = radius * sin(angle * PI / 180.0);
 
         calculated.m_values[z][y][x] = m_values[z][yy + circle.m_center.m_y][xx + circle.m_center.m_x];
       }
@@ -1049,6 +1127,12 @@ void Matrix<T>::applyLookUpTable(const std::vector<T>& lookUpTable)
     }
   }
 }
+
+/*template<typename T>
+void Matrix<T>::filter(const FilterMask &filterMask)
+{
+
+}*/
 
 template<typename T>
 unsigned int Matrix<T>::minimum(unsigned int value1, unsigned int value2)
@@ -1142,6 +1226,10 @@ void Matrix<T>::printValuesToConsole(const std::string& description) const
         {
           std::cout << " ";
         }
+        if (m_values[z][y][x] < 1000)
+        {
+          std::cout << " ";
+        }
         if (sizeof(T) > 1)
         {
           std::cout << m_values[z][y][x] << " ";
@@ -1201,5 +1289,21 @@ bool operator!= (const Matrix<T>& matrix1, const Matrix<T>& matrix2)
 {
   return !(matrix1 == matrix2);
 }
+
+// implement function below, if you need all permutations of filter-type and image-type
+/*template<typename F, typename M>
+void filterMatrix(Matrix<M>* matrix, Matrix<F>* filter, const Point& referencePoint, double preFactor = 1.0, unsigned z = 0)
+{
+  M*** m = matrix->getValues();
+  F*** f = filter->getValues();
+
+  for (unsigned int y = 0; y < matrix->getHeight(); y++)
+  {
+    for (unsigned int x = 0; x < matrix->getWidth(); x++)
+    {
+      m[z][y][x] = f[0][referencePoint.m_y][referencePoint.m_x];
+    }
+  }
+}*/
 
 #endif // MATRIX_H
