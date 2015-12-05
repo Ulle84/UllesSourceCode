@@ -124,7 +124,7 @@ private:
 class Filter : public Matrix<short>
 {
 public:
-  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 0.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
+  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 1.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}

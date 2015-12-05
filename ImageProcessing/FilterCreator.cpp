@@ -42,3 +42,38 @@ Filter FilterCreator::binomial(unsigned int width, unsigned int height)
 
   return filter;
 }
+
+Filter FilterCreator::laplacian()
+{
+  Filter filter(3, 3);
+
+  filter.setValue(-1, 1, 0);
+  filter.setValue(-1, 0, 1);
+  filter.setValue( 4, 1, 1);
+  filter.setValue(-1, 2, 1);
+  filter.setValue(-1, 1, 2);
+
+  return filter;
+}
+
+Filter FilterCreator::laplacianBig()
+{
+  Filter filter(9, 9);
+
+  // TODO set values
+
+  filter.printValuesToConsole("laplacianBig");
+
+  return filter;
+}
+
+Filter FilterCreator::laplacian2()
+{
+  Filter filter(3, 3);
+  filter.setAllValues(-1);
+  filter.setValue(8, 1, 1);
+
+  filter.printValuesToConsole("laplacian2");
+
+  return filter;
+}

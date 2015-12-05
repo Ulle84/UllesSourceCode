@@ -93,8 +93,8 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  Filter smooth = FilterCreator::binomial(15, 15);
-  image->applyFilter(&smooth);
+  Filter filter = FilterCreator::laplacian2();
+  image->applyFilter(&filter);
 
 
   m_imageDisplay->setImage(image);
