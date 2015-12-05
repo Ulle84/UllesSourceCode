@@ -14,6 +14,7 @@ public:
   static Filter laplacianBig();
   static Filter laplacian2();
   static Filter sobelHorizontal();
+  static Filter sobelVertical();
 };
 
 #endif // FILTERCREATOR_H

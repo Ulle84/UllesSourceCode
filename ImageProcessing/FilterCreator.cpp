@@ -84,14 +84,19 @@ Filter FilterCreator::laplacian2()
   return filter;
 }
 
-Filter FilterCreator::sobelHorizontal()
+Filter FilterCreator::sobelVertical()
 {
   Filter filter (3, 3);
   filter.setValue(-1, 0, 0); filter.setValue(1, 2, 0);
   filter.setValue(-2, 0, 1); filter.setValue(2, 2, 1);
   filter.setValue(-1, 0, 2); filter.setValue(1, 2, 2);
 
-  filter.printValuesToConsole("sobel horizonatl");
+  return filter;
+}
 
+Filter FilterCreator::sobelHorizontal()
+{
+  Filter filter = sobelVertical();
+  filter.rotateBy90DegreeClockwise();
   return filter;
 }
