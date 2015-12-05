@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QString>
 #include <QImage>
+#include <QSettings>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -18,6 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  m_settings = new QSettings("Ulle", "ImageProcessing", this);
+
+  if (m_settings->contains("lastSelectedFile"))
+  {
+    m_lastSelectedFile = m_settings->value("lastSelectedFile").toString();
+  }
+
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
 
@@ -26,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+  m_settings->setValue("lastSelectedFile", m_lastSelectedFile);
   delete ui;
 }
 
@@ -34,12 +43,14 @@ void MainWindow::on_actionOpenImage_triggered()
   QStringList supportedFileFormats;
   supportedFileFormats << "*.bmp" << "*.gif" << "*.jpg" << "*.jpeg" << "*.png" << "*.pbm" << "*.pgm" << "*.ppm" << "*.tif" << "*.tiff" << "*.xbm" << "*.xpm";
 
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Images (%1)").arg(supportedFileFormats.join(" ")));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), m_lastSelectedFile, tr("Images (%1)").arg(supportedFileFormats.join(" ")));
 
   if (fileName.isEmpty())
   {
     return;
   }
+
+  m_lastSelectedFile = fileName;
 
   QImage qImage(fileName);
 
@@ -81,13 +92,17 @@ void MainWindow::on_actionOpenImage_triggered()
   Image* image = new Image(qImage.width(), qImage.height(), layerIndices.size());
 
   image->setSingleLayer(qImage.bits(), layerIndices);
-  image->mirrorOnVerticalAxis();
+
+  Filter smooth = FilterCreator::binomial(15, 15);
+  image->applyFilter(&smooth);
+
+
   m_imageDisplay->setImage(image);
 }
 
 void MainWindow::imageTest()
 {
-  filterTest();
+  binomialFilterTest();
 }
 
 void MainWindow::histogramTest()
@@ -132,12 +147,26 @@ void MainWindow::filterTest()
   Image* image = new Image(12, 12);
 
   Filter filterMean = FilterCreator::mean(5, 5);
+  Filter filterGaussian = FilterCreator::binomial(5, 5);
 
   image->setRectangle(128, rectangle);
   //image->applyFilter(filter);
-  image->applyFilter(&filterMean);
+  image->applyFilter(&filterGaussian);
   //image->setRectangle(255, rectangle);
 
   m_imageDisplay->setImage(image);
 
+}
+
+void MainWindow::binomialFilterTest()
+{
+  Image* image = new Image(12, 12);
+  Filter filterGaussian = FilterCreator::binomial(5, 5);
+
+  Rectangle rectangle(Point(2, 2), 8, 8);
+
+  image->setRectangle(128, rectangle);
+  image->applyFilter(&filterGaussian);
+
+  m_imageDisplay->setImage(image);
 }

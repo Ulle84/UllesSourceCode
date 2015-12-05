@@ -48,12 +48,15 @@ public:
 
   T getValue(unsigned int x, unsigned int y, unsigned int z = 0) const;
   T*** getValues() const; // TODO const, so the pointer-adress can not be changed
+  double getSumOfAllValues(unsigned int z = 0) const;
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
   std::vector<unsigned long long> getHistogram();
 
   void setIncreasingValues();
   void setRandomValues();
+  void setGaussianValues(unsigned int z = 0);
+  void setBinomialValues(unsigned int z = 0);
   void setAllValues(T value, unsigned int z = 0);
   void setValue(T value, unsigned int x, unsigned int y, unsigned int z = 0);
   void setSingleLayer(T* buffer, std::vector<unsigned int> layerIndices);
@@ -101,6 +104,7 @@ protected:
 private:
   unsigned int minimum(unsigned int value1, unsigned int value2);
   unsigned int maximum(unsigned int value1, unsigned int value2);
+  unsigned int calculateBinomialCoefficient(unsigned int n, unsigned int k);
 
   void create();
   void createRowBeginVector();
@@ -410,6 +414,22 @@ T ***Matrix<T>::getValues() const
 }
 
 template<typename T>
+double Matrix<T>::getSumOfAllValues(unsigned int z) const
+{
+  double sum = 0.0;
+
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      sum += m_values[z][y][x];
+    }
+  }
+
+  return sum;
+}
+
+template<typename T>
 const T* Matrix<T>::getLayer(unsigned int z) const
 {
   return *(m_values[z]);
@@ -476,6 +496,28 @@ void Matrix<T>::setRandomValues()
         // NTH better random generator
         m_values[z][y][x] = rand();
       }
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::setGaussianValues(unsigned int z)
+{
+  // TODO
+}
+
+/* 1 2 1
+ * 2 4 2
+ * 1 2 1 */
+
+template<typename T>
+void Matrix<T>::setBinomialValues(unsigned int z)
+{
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      m_values[z][y][x] = calculateBinomialCoefficient(m_width - 1, x) * calculateBinomialCoefficient(m_height - 1, y);
     }
   }
 }
@@ -886,8 +928,6 @@ void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, u
 template<typename T>
 void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 {
-  printValuesToConsole("image");
-
   Matrix<T> original(*this);
 
   Matrix<double> calculatedValues(m_width, m_height, m_qtyLayers);
@@ -896,10 +936,8 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 
   unsigned int offsetLeft = filter->getReferencePoint().m_x;
   unsigned int offsetTop = filter->getReferencePoint().m_y;
-  unsigned int offsetRight = filter->getWidth() - offsetLeft- 1;
-  unsigned int offsetBottom = filter->getHeight() - offsetTop - 1;;
-
-  std::cout << "preFactor: " << filter->getPreFactor() << std::endl;
+  unsigned int offsetRight = filter->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = filter->getHeight() - offsetTop - 1;
 
   double calculatedValue;
   for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
@@ -918,8 +956,6 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
       calculatedValues.setValue(calculatedValue, x, y);
     }
   }
-
-  calculatedValues.printValuesToConsole("calculated values");
 }
 
 template<typename T>
@@ -1152,6 +1188,25 @@ unsigned int Matrix<T>::maximum(unsigned int value1, unsigned int value2)
 }
 
 template<typename T>
+unsigned int Matrix<T>::calculateBinomialCoefficient(unsigned int n, unsigned int k)
+{
+  if (k > n)
+  {
+    return 0;
+  }
+
+  // calculate n over k
+  double binomialCoefficient = 1;
+
+  for (unsigned int i = 1; i <= k; i++)
+  {
+    binomialCoefficient *= ((n + 1.0 - i) / i);
+  }
+
+  return binomialCoefficient;
+}
+
+template<typename T>
 unsigned int Matrix<T>::getWidth() const
 {
   return m_width;
@@ -1310,5 +1365,18 @@ void filterMatrix(Matrix<M>* matrix, Matrix<F>* filter, const Point& referencePo
     }
   }
 }*/
+
+/* iterate over all values
+for (unsigned int z = 0; z < m_qtyLayers; z++)
+{
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      m_values[z][y][x] = ;
+    }
+  }
+}
+*/
 
 #endif // MATRIX_H

@@ -9,6 +9,7 @@ public:
   FilterCreator();
 
   static Filter mean(unsigned int width, unsigned int height = 0);
+  static Filter binomial(unsigned int width, unsigned int height = 0);
 };
 
 #endif // FILTERCREATOR_H

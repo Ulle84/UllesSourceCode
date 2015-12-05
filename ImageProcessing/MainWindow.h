@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class QSettings;
+
 class Image;
 class ImageDisplay;
 
@@ -26,10 +28,14 @@ private:
   void histogramTest();
   void polarTransformationTest();
   void filterTest();
+  void binomialFilterTest();
 
   Ui::MainWindow* ui;
   Image* m_image;
   ImageDisplay* m_imageDisplay;
+
+  QString m_lastSelectedFile;
+  QSettings* m_settings;
 };
 
 #endif // MAINWINDOW_H
