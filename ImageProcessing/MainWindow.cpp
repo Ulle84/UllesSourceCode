@@ -119,7 +119,7 @@ void MainWindow::polarTransformationTest()
 
 void MainWindow::filterTest()
 {
-  Point referencePoint(1, 1);
+  Point referencePoint(0, 0);
   unsigned int filterSize = 3;
   Filter* filter = new Filter(filterSize, filterSize);
   filter->setReferencePoint(referencePoint);

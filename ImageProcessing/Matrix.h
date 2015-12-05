@@ -893,28 +893,31 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
   Matrix<double> calculatedValues(m_width, m_height, m_qtyLayers);
 
   short*** filterValues = filter->getValues();
-  unsigned int offset = filter->getWidth() / 2; // TODO offsetXLeft offsetXRight offsetYTop offsetYBottom
 
-  unsigned int refX = filter->getReferencePoint().m_x;
-  unsigned int refY = filter->getReferencePoint().m_y;
+  unsigned int offsetLeft = filter->getReferencePoint().m_x;
+  unsigned int offsetTop = filter->getReferencePoint().m_y;
+  unsigned int offsetRight = filter->getWidth() - offsetLeft- 1;
+  unsigned int offsetBottom = filter->getHeight() - offsetTop - 1;;
 
   double calculatedValue;
-
-  for (unsigned int y = offset; y < (m_height - offset); y++)
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
   {
-    for (unsigned int x = offset; x < (m_width - offset); x++)
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
     {
       calculatedValue = 0;
       for (unsigned int fy = 0; fy < filter->getHeight(); fy++)
       {
         for (unsigned int fx = 0; fx < filter->getWidth(); fx++)
         {
-          calculatedValue += original.m_values[z][y + fy - offset][x + fx - offset] * filterValues[0][fy][fx];
+          calculatedValue += original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] * filterValues[0][fy][fx];
         }
       }
       m_values[z][y][x] = (calculatedValue * filter->getPreFactor()) + 0.5;
+      calculatedValues.setValue(calculatedValue, x, y);
     }
   }
+
+  calculatedValues.printValuesToConsole("calculated values");
 }
 
 template<typename T>
