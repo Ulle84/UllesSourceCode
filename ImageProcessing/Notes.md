@@ -1,6 +1,7 @@
 # Bugs
 
 # ToDo (prioritised)
+* shiftValues -> parameter of filtermask?
 * remember directory of last file selection
 * Look at ToDos in Source-Code and change to // IP if appliable
 * Display-Information: Decide between gray and color image
@@ -15,6 +16,7 @@
 * define reference point for rotation with angle: top-left-corner vs. center
 * Matrix: squeeze function -> delete all conversion-buffers, which are not needed anymore
 * convolution of two matrices / vectors
+* edge detection
 
 # Ideas
 * rectangle with orientation-angle

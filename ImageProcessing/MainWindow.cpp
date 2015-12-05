@@ -93,16 +93,16 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  Filter filter = FilterCreator::laplacian2();
+  Filter filter = FilterCreator::laplacianBig();
   image->applyFilter(&filter);
-
+  image->spread();
 
   m_imageDisplay->setImage(image);
 }
 
 void MainWindow::imageTest()
 {
-  binomialFilterTest();
+  filterTest();
 }
 
 void MainWindow::histogramTest()
@@ -135,24 +135,15 @@ void MainWindow::polarTransformationTest()
 
 void MainWindow::filterTest()
 {
-  Point referencePoint(0, 0);
-  unsigned int filterSize = 3;
-  Filter* filter = new Filter(filterSize, filterSize);
-  filter->setReferencePoint(referencePoint);
-  filter->setAllValues(1);
-  filter->setPreFactor(1.0 / 9);
-
   Rectangle rectangle(Point(2, 2), 8, 8);
 
   Image* image = new Image(12, 12);
+  image->setAllValues(100);
 
-  Filter filterMean = FilterCreator::mean(5, 5);
-  Filter filterGaussian = FilterCreator::binomial(5, 5);
+  Filter filter = FilterCreator::sobelHorizontal();
 
-  image->setRectangle(128, rectangle);
-  //image->applyFilter(filter);
-  image->applyFilter(&filterGaussian);
-  //image->setRectangle(255, rectangle);
+  image->setRectangle(200, rectangle);
+  image->applyFilter(&filter, true);
 
   m_imageDisplay->setImage(image);
 

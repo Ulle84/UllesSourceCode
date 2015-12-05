@@ -11,7 +11,9 @@ public:
   static Filter mean(unsigned int width, unsigned int height = 0);
   static Filter binomial(unsigned int width, unsigned int height = 0);
   static Filter laplacian();
+  static Filter laplacianBig();
   static Filter laplacian2();
+  static Filter sobelHorizontal();
 };
 
 #endif // FILTERCREATOR_H

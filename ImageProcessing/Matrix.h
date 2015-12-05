@@ -71,7 +71,7 @@ public:
   void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
   //void applyFilter(const Matrix<double>* filter, const Point &referencePoint, double preFactor = 1.0, unsigned int z = 0);
-  void applyFilter(const Filter* filter, unsigned int z = 0);
+  void applyFilter(const Filter* filter, bool shiftValues = false, unsigned int z = 0);
   void binarize(T threshold);
   void spread();
   void clear();
@@ -926,11 +926,9 @@ void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, u
 }
 
 template<typename T>
-void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
+void Matrix<T>::applyFilter(const Filter *filter, bool shiftValues, unsigned int z)
 {
   Matrix<T> original(*this);
-
-  Matrix<double> calculatedValues(m_width, m_height, m_qtyLayers);
 
   short*** filterValues = filter->getValues();
 
@@ -952,8 +950,25 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
           calculatedValue += original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] * filterValues[0][fy][fx];
         }
       }
-      m_values[z][y][x] = (calculatedValue * filter->getPreFactor()) + 0.5;
-      calculatedValues.setValue(calculatedValue, x, y);
+      calculatedValue *= filter->getPreFactor();
+      calculatedValue > 0 ? calculatedValue += 0.5 : calculatedValue -= 0.5;
+
+      if (shiftValues)
+      {
+        calculatedValue += ((std::numeric_limits<T>::max() - std::numeric_limits<T>::min()) / 2);
+      }
+
+      if (calculatedValue < std::numeric_limits<T>::min())
+      {
+        calculatedValue = std::numeric_limits<T>::min();
+      }
+
+      if (calculatedValue > std::numeric_limits<T>::max())
+      {
+        calculatedValue = std::numeric_limits<T>::max();
+      }
+
+      m_values[z][y][x] = calculatedValue;
     }
   }
 }
