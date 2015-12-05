@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     Circle.cpp \
     FreemanCode.cpp \
     PolyLine.cpp \
-    Image.cpp
+    Image.cpp \
+    FilterCreator.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -30,7 +31,8 @@ HEADERS  += MainWindow.h \
     FreemanCode.h \
     PolyLine.h \
     Matrix.h \
-    Image.h
+    Image.h \
+    FilterCreator.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

@@ -120,7 +120,7 @@ private:
 class Filter : public Matrix<short>
 {
 public:
-  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
+  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 0.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
@@ -898,6 +898,8 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
   unsigned int offsetTop = filter->getReferencePoint().m_y;
   unsigned int offsetRight = filter->getWidth() - offsetLeft- 1;
   unsigned int offsetBottom = filter->getHeight() - offsetTop - 1;;
+
+  std::cout << "preFactor: " << filter->getPreFactor() << std::endl;
 
   double calculatedValue;
   for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)

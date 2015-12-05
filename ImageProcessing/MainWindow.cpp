@@ -10,6 +10,7 @@
 #include "ImageDisplay.h"
 #include "Matrix.h"
 #include "Image.h"
+#include "FilterCreator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -130,8 +131,11 @@ void MainWindow::filterTest()
 
   Image* image = new Image(12, 12);
 
+  Filter filterMean = FilterCreator::mean(5, 5);
+
   image->setRectangle(128, rectangle);
-  image->applyFilter(filter);
+  //image->applyFilter(filter);
+  image->applyFilter(&filterMean);
   //image->setRectangle(255, rectangle);
 
   m_imageDisplay->setImage(image);
