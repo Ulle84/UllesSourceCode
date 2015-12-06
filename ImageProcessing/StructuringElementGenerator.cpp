@@ -7,7 +7,6 @@ StructuringElementGenerator::StructuringElementGenerator()
 StructuringElement StructuringElementGenerator::neighborhood4()
 {
   StructuringElement structuringElement(3, 3);
-  structuringElement.setAllValues(true);
 
   structuringElement.setValue(false, 0, 0);
   structuringElement.setValue(false, 2, 0);
@@ -20,6 +19,14 @@ StructuringElement StructuringElementGenerator::neighborhood4()
 StructuringElement StructuringElementGenerator::neighborhood8()
 {
   StructuringElement structuringElement(3, 3);
-  structuringElement.setAllValues(true);
+  return structuringElement;
+}
+
+StructuringElement StructuringElementGenerator::circle(unsigned int radius)
+{
+  unsigned int size = radius * 2 + 1;
+  StructuringElement structuringElement(size, size);
+  structuringElement.setCircle(true, Circle(structuringElement.getReferencePoint(), radius));
+
   return structuringElement;
 }

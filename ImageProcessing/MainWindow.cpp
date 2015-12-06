@@ -165,15 +165,15 @@ void MainWindow::binomialFilterTest()
 
 void MainWindow::morphologyTest()
 {
-  Rectangle rectangle(Point(2, 2), 8, 8);
+  Rectangle rectangle(Point(3, 3), 4, 4);
 
   Image* image = new Image(12, 12);
-  image->setAllValues(255);
 
-  StructuringElement structuringElement = StructuringElementGenerator::neighborhood8();
+  StructuringElement structuringElement = StructuringElementGenerator::neighborhood4();
 
-  image->setRectangle(0, rectangle, false);
-  image->applyMinimumFilter(&structuringElement);
+  //image->setPoint(255, Point(127, 127));
+  image->setRectangle(255, rectangle, false);
+  image->close(&structuringElement);
   image->setRectangle(128, rectangle, false);
   //image->applyFilter(&filter);
 

@@ -3,6 +3,8 @@
 
 #include "Matrix.h"
 
+// TODO hold references of generated StructuringElement -> implement singleton which holds the references and deletes them in destructor
+
 class StructuringElementGenerator
 {
 public:
@@ -10,6 +12,7 @@ public:
 
   static StructuringElement neighborhood4();
   static StructuringElement neighborhood8();
+  static StructuringElement circle(unsigned int radius = 2);
 };
 
 #endif // STRUCTURINGELEMENTGENERATOR_H

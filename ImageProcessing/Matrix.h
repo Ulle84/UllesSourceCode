@@ -73,11 +73,16 @@ public:
   void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
   void applyFilter(const Filter* filter, unsigned int z = 0);
-  void applyMinimumFilter(const StructuringElement* structuringElement, unsigned int z = 0);
   void binarize(T threshold);
   void spread();
   void clear();
   void invert();
+
+  // morphology
+  void erode(const StructuringElement* structuringElement, unsigned int z = 0);
+  void dilate(const StructuringElement* structuringElement, unsigned int z = 0);
+  void open(const StructuringElement* structuringElement, unsigned int z = 0);
+  void close(const StructuringElement* structuringElement, unsigned int z = 0);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
@@ -152,7 +157,7 @@ private:
 class StructuringElement : public Matrix<bool>
 {
 public:
-  StructuringElement(unsigned width, unsigned height) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
+  StructuringElement(unsigned width, unsigned height) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; setAllValues(true);}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
@@ -1006,7 +1011,7 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::applyMinimumFilter(const StructuringElement *structuringElement, unsigned int z)
+void Matrix<T>::erode(const StructuringElement *structuringElement, unsigned int z)
 {
   Matrix<T> original(*this);
 
@@ -1034,10 +1039,58 @@ void Matrix<T>::applyMinimumFilter(const StructuringElement *structuringElement,
           }
         }
       }
-
       m_values[z][y][x] = minimum;
     }
   }
+}
+
+template<typename T>
+void Matrix<T>::dilate(const StructuringElement *structuringElement, unsigned int z)
+{
+  Matrix<T> original(*this);
+
+  bool*** structuringElementValues = structuringElement->getValues();
+
+  unsigned int offsetLeft = structuringElement->getReferencePoint().m_x;
+  unsigned int offsetTop = structuringElement->getReferencePoint().m_y;
+  unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
+
+  T maximum;
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
+  {
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
+    {
+      maximum = std::numeric_limits<T>::min();
+
+      for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+      {
+        for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+        {
+          if (structuringElementValues[0][fy][fx] && original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] > maximum)
+          {
+            maximum = original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft];
+          }
+        }
+      }
+
+      m_values[z][y][x] = maximum;
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::open(const StructuringElement *structuringElement, unsigned int z)
+{
+  erode(structuringElement, z);
+  dilate(structuringElement, z);
+}
+
+template<typename T>
+void Matrix<T>::close(const StructuringElement *structuringElement, unsigned int z)
+{
+  dilate(structuringElement, z);
+  erode(structuringElement, z);
 }
 
 template<typename T>

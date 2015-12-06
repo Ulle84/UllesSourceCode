@@ -1,9 +1,10 @@
 # Bugs
 
 # ToDo (prioritised)
-* add type StructuringElement -> bit-mask for mopholgical operations -> instance of Matrix<bool>
+* verify opening/closing
+* buttons for display zoom to use disply with one hand
+* auto-zoom on show image
 * Conservative Smoothing Filter with any filter mask: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
-* Minimum and Maximum with any filter mask
 * Median with any filter mask
 * Median with Huang-Algorithm (if filter mask is "closed")
 * Look at ToDos in Source-Code and change to // IP if appliable
