@@ -1,11 +1,12 @@
 # Bugs
 
 # ToDo (prioritised)
-* shiftValues -> parameter of filtermask?
-* remember directory of last file selection
+* add type region -> bit-mask for mopholgical operations -> instance of Matrix<bool>
+* Conservative Smoothing Filter with any filter mask: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
+* Minimum and Maximum with any filter mask
+* Median with any filter mask
+* Median with Huang-Algorithm (if filter mask is "closed")
 * Look at ToDos in Source-Code and change to // IP if appliable
-* Display-Information: Decide between gray and color image
-* implement template Matrix -> move functionality from Image
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
 * Image
   * create class Image which inherits from Matrix<unsigned char> -> test that move-constructor and move-operator of Matrix is used
@@ -27,7 +28,6 @@
   * line
   * rectangle
   * polygon
-* add type region -> bit-mask for mopholgical operations -> instance of Matrix<bool>
 * crop image
 * add noise to image
 * look into Burger/Burge and implement some algorithms
