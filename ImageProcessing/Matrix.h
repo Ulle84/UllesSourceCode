@@ -83,6 +83,7 @@ public:
   void dilate(const StructuringElement* structuringElement, unsigned int z = 0);
   void open(const StructuringElement* structuringElement, unsigned int z = 0);
   void close(const StructuringElement* structuringElement, unsigned int z = 0);
+  void applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z = 0);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
@@ -1006,6 +1007,73 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
       }
 
       m_values[z][y][x] = calculatedValue;
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z)
+{
+  // look all values in structuringElement (except for reference point)
+  // define minimum and maximum
+  // if value at reference point is smaller than the minimum, the value is set to the minimum
+  // if value at reference point is bigger than the maximum, the value is set to the maximum
+  // see: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
+
+  Matrix<T> original(*this);
+
+  bool*** structuringElementValues = structuringElement->getValues();
+
+  unsigned int offsetLeft = structuringElement->getReferencePoint().m_x;
+  unsigned int offsetTop = structuringElement->getReferencePoint().m_y;
+  unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
+
+  T minimum;
+  T maximum;
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
+  {
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
+    {
+      minimum = std::numeric_limits<T>::max();
+      maximum = std::numeric_limits<T>::min();
+
+      if (x == 3 && y == 3)
+      {
+
+        std::cout << "minimum: " << (int)minimum << std::endl;
+        std::cout << "maximum: " << (int)maximum << std::endl;
+      }
+
+      for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+      {
+        for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+        {
+          bool onReferencePoint = (fx == offsetLeft && fy == offsetTop);
+
+          if (structuringElementValues[0][fy][fx] && !onReferencePoint)
+          {
+            if (original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] < minimum)
+            {
+              minimum = original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft];
+            }
+            if (original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] > maximum)
+            {
+              maximum = original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft];
+            }
+          }
+        }
+      }
+
+      if (original.m_values[z][y][x] < minimum)
+      {
+        m_values[z][y][x] = minimum;
+      }
+
+      if (original.m_values[z][y][x] > maximum)
+      {
+        m_values[z][y][x] = maximum;
+      }
     }
   }
 }

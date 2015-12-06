@@ -169,12 +169,11 @@ void MainWindow::morphologyTest()
 
   Image* image = new Image(12, 12);
 
-  StructuringElement structuringElement = StructuringElementGenerator::neighborhood4();
+  StructuringElement structuringElement = StructuringElementGenerator::neighborhood8();
 
   //image->setPoint(255, Point(127, 127));
   image->setRectangle(255, rectangle, false);
-  image->close(&structuringElement);
-  image->setRectangle(128, rectangle, false);
+  image->applyConservativeSmoothingFilter(&structuringElement);
   //image->applyFilter(&filter);
 
   m_imageDisplay->setImage(image);

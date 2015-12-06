@@ -1,7 +1,6 @@
 # Bugs
 
 # ToDo (prioritised)
-* verify opening/closing
 * buttons for display zoom to use disply with one hand
 * auto-zoom on show image
 * Conservative Smoothing Filter with any filter mask: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
