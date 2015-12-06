@@ -1,7 +1,15 @@
 # Bugs
 
 # ToDo (prioritised)
-* TimeMeasurement
+* Huang
+  * compare results of median (self calculated) and median huang -> use == operator!
+  * adopt median to circle sturcturing elements -> add method isCompact to StrucutringElement
+  * compare time consumption for big filter-masks
+  * make huang algorithm work with Template paraemter, call 'traditional' version of necessary
+  * minimum and maximum filters -> huang-algorithm if T is applicable (must be unsigned, no floting point, histogram must be creatable!)
+* operators + += etc. see pic.h/cpp
+* bool writeRAW(char* name);
+* bool readRAW(char* name);
 * buttons for display zoom to use disply with one hand
 * auto-zoom on show image
 * Median with Huang-Algorithm (if filter mask is "closed")

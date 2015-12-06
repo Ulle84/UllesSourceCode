@@ -20,6 +20,14 @@
 // TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
 // TODO iterate over pointer instead using for-loop with index -> shuold have better performance
+/* example
+  unsigned char* z1 = pixels;
+    unsigned char* z2 = p.pixels;
+
+    for (unsigned int i = 0; i < width * height; i++) {
+        *z1++ = *z2++;
+    }
+    */
 // TODO check wrong z values everywhere
 // TODO WriteMutex
 // TODO with % 4 !== 0
@@ -114,6 +122,7 @@ private:
   unsigned int minimum(unsigned int value1, unsigned int value2);
   unsigned int maximum(unsigned int value1, unsigned int value2);
   unsigned int calculateBinomialCoefficient(unsigned int n, unsigned int k);
+  void filterQuantilHuang(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
 
   void create();
   void createRowBeginVector();
@@ -1013,6 +1022,114 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 }
 
 template<typename T>
+void Matrix<T>::filterQuantilHuang(const StructuringElement* structuringElement, double quantil, unsigned int z)
+{
+  // TODO use T consequently!!
+
+  if (quantil < 0.0 || quantil > 1.0)
+  {
+    return;
+  }
+
+  Matrix<T> original(*this);
+
+  unsigned int offsetLeft = structuringElement->getReferencePoint().m_x;
+  unsigned int offsetTop = structuringElement->getReferencePoint().m_y;
+  unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
+
+  unsigned int filterWidth = structuringElement->getWidth();
+  unsigned int filterHeight = structuringElement->getHeight();
+
+  int histogram[256];
+  unsigned char median = 0;
+  int lessThanMedian = 0;
+
+  int threshold = 0;
+  if (quantil < 1.0)
+  {
+    threshold = (int) filterWidth * filterHeight * quantil;
+  }
+  else
+  {
+    threshold = filterWidth * filterHeight - 1;
+  }
+
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
+  {
+    memset(histogram, 0, sizeof(histogram));
+
+    // Set up histogram for the first window (in every line)
+    for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+    {
+      for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+      {
+        histogram[original.m_values[z][y + fy - offsetTop][fx]]++;
+      }
+    }
+
+    // find median by moving through the histogram bins
+    int sum = 0;
+    for (int i = 0; i < 256; i++)
+    {
+      sum += histogram[i];
+      if (sum > threshold)
+      {
+        median = i;
+        lessThanMedian = sum - histogram[i];
+        i = 256; // aus der Schleife aussteigen! -> TODO use break?
+      }
+    }
+
+    m_values[z][y][offsetLeft] = median;
+
+    for (unsigned int x = offsetLeft + 1; x < (m_width - offsetRight); x++)
+    {
+      // update histogram
+      for (unsigned int i = 0; i < filterHeight; i++)
+      {
+        T value = original.m_values[z][y - offsetTop + i][x - offsetLeft - 1];
+        histogram[value]--; // remove entry of left side
+        if (value < median)
+        {
+          lessThanMedian--;
+        }
+
+        value = original.m_values[z][y - offsetTop + i][x + offsetLeft];
+        histogram[value]++; // add entry of right side
+
+        if (value < median)
+        {
+          lessThanMedian++;
+        }
+      }
+
+      // find median
+      if (lessThanMedian > threshold)
+      {
+        // the median in the current window is smaller than
+        // the one in the previous window
+        while (lessThanMedian > threshold)
+        {
+          median--;
+          lessThanMedian -= histogram[median];
+        }
+      }
+      else
+      {
+        while(lessThanMedian + histogram[median] <= threshold)
+        {
+          lessThanMedian += histogram[median];
+          median++;
+        }
+      }
+
+      m_values[z][y][x] = median;
+    }
+  }
+}
+
+template<typename T>
 void Matrix<T>::applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z)
 {
   // look all values in structuringElement (except for reference point)
@@ -1165,6 +1282,10 @@ void Matrix<T>::close(const StructuringElement *structuringElement, unsigned int
 template<typename T>
 void Matrix<T>::applyMedianFilter(const StructuringElement *structuringElement, unsigned int z)
 {
+  // TODO call only in special cases
+  //filterQuantilHuang(structuringElement, 0.5);
+  //return;
+
   // IP implement Huang algorithm
   // IP for bool-images -> counting instead of sorting
 
@@ -1420,12 +1541,6 @@ void Matrix<T>::applyLookUpTable(const std::vector<T>& lookUpTable)
   }
 }
 
-/*template<typename T>
-void Matrix<T>::filter(const FilterMask &filterMask)
-{
-
-}*/
-
 template<typename T>
 unsigned int Matrix<T>::minimum(unsigned int value1, unsigned int value2)
 {
@@ -1456,6 +1571,8 @@ unsigned int Matrix<T>::calculateBinomialCoefficient(unsigned int n, unsigned in
 
   return binomialCoefficient;
 }
+
+
 
 template<typename T>
 unsigned int Matrix<T>::getWidth() const

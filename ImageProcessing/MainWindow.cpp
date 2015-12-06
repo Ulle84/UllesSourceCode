@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QElapsedTimer>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QString>
@@ -94,9 +95,16 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  StructuringElement structuringElement = StructuringElementGenerator::circle(5);
+  StructuringElement structuringElement = StructuringElementGenerator::neighborhood8();
+
+  QElapsedTimer timer;
+  timer.start();
 
   image->applyMedianFilter(&structuringElement);
+
+  qDebug() << "The median filter took" << timer.elapsed() << "milliseconds";
+
+
 
   m_imageDisplay->setImage(image);
 }

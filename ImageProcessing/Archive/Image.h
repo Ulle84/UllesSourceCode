@@ -71,6 +71,14 @@ public:
   friend bool operator== (const Image& image1, const Image& image2);
   friend bool operator!= (const Image& image1, const Image& image2);
   
+   void dilate(unsigned int filterSize);
+  void erode(unsigned int filterSize);
+  void doOpening(unsigned int filterSize);
+  void doClosing(unsigned int filterSize);
+  void filterMean(unsigned int filterSize);
+
+  void filterWithMask(const FilterMask& filterMask);
+  
   
 
   // TODO move all possible functions below to Matrix
@@ -78,13 +86,7 @@ public:
 
 
 
-  void dilate(unsigned int filterSize);
-  void erode(unsigned int filterSize);
-  void doOpening(unsigned int filterSize);
-  void doClosing(unsigned int filterSize);
-  void filterMean(unsigned int filterSize);
-
-  void filterWithMask(const FilterMask& filterMask);
+ 
 
 private:
   void initPixels();
