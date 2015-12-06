@@ -70,8 +70,7 @@ public:
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
   void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
-  //void applyFilter(const Matrix<double>* filter, const Point &referencePoint, double preFactor = 1.0, unsigned int z = 0);
-  void applyFilter(const Filter* filter, bool shiftValues = false, unsigned int z = 0);
+  void applyFilter(const Filter* filter, unsigned int z = 0);
   void binarize(T threshold);
   void spread();
   void clear();
@@ -124,7 +123,7 @@ private:
 class Filter : public Matrix<short>
 {
 public:
-  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 1.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
+  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 1.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; m_shiftResultValues = false; m_invertNegativeResultValues;}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
@@ -132,9 +131,14 @@ public:
   void setPreFactor(double preFactor) {m_preFactor = preFactor;}
   double getPreFactor() const {return m_preFactor;}
 
+  bool getShiftResultValues() const {return m_shiftResultValues;}
+  bool getInvertNegativeResultValues() const {return m_invertNegativeResultValues;}
+
 private:
   Filter(){}
 
+  bool m_shiftResultValues;
+  bool m_invertNegativeResultValues;
   double m_preFactor;
   Point m_referencePoint;
 };
@@ -926,7 +930,7 @@ void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, u
 }
 
 template<typename T>
-void Matrix<T>::applyFilter(const Filter *filter, bool shiftValues, unsigned int z)
+void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 {
   Matrix<T> original(*this);
 
@@ -953,9 +957,17 @@ void Matrix<T>::applyFilter(const Filter *filter, bool shiftValues, unsigned int
       calculatedValue *= filter->getPreFactor();
       calculatedValue > 0 ? calculatedValue += 0.5 : calculatedValue -= 0.5;
 
-      if (shiftValues)
+      if (filter->getShiftResultValues())
       {
         calculatedValue += ((std::numeric_limits<T>::max() - std::numeric_limits<T>::min()) / 2);
+      }
+
+      if (filter->getInvertNegativeResultValues())
+      {
+        if (calculatedValue < 0)
+        {
+          calculatedValue *= -1;
+        }
       }
 
       if (calculatedValue < std::numeric_limits<T>::min())
