@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     FreemanCode.cpp \
     PolyLine.cpp \
     Image.cpp \
-    FilterCreator.cpp
+    FilterGenerator.cpp \
+    StructuringElementGenerator.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -32,7 +33,8 @@ HEADERS  += MainWindow.h \
     PolyLine.h \
     Matrix.h \
     Image.h \
-    FilterCreator.h
+    FilterGenerator.h \
+    StructuringElementGenerator.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

@@ -1,12 +1,12 @@
-#ifndef FILTERCREATOR_H
-#define FILTERCREATOR_H
+#ifndef FILTERGENERATOR_H
+#define FILTERGENERATOR_H
 
 #include "Matrix.h"
 
-class FilterCreator
+class FilterGenerator
 {
 public:
-  FilterCreator();
+  FilterGenerator();
 
   static Filter mean(unsigned int width, unsigned int height = 0);
   static Filter binomial(unsigned int width, unsigned int height = 0);
@@ -17,4 +17,4 @@ public:
   static Filter sobelVertical();
 };
 
-#endif // FILTERCREATOR_H
+#endif // FILTERGENERATOR_H

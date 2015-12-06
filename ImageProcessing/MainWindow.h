@@ -29,6 +29,7 @@ private:
   void polarTransformationTest();
   void filterTest();
   void binomialFilterTest();
+  void morphologyTest();
 
   Ui::MainWindow* ui;
   Image* m_image;

@@ -1,10 +1,10 @@
-#include "FilterCreator.h"
+#include "FilterGenerator.h"
 
-FilterCreator::FilterCreator()
+FilterGenerator::FilterGenerator()
 {
 }
 
-Filter FilterCreator::mean(unsigned int width, unsigned int height)
+Filter FilterGenerator::mean(unsigned int width, unsigned int height)
 {
   if (height == 0)
   {
@@ -19,7 +19,7 @@ Filter FilterCreator::mean(unsigned int width, unsigned int height)
   return filter;
 }
 
-Filter FilterCreator::binomial(unsigned int width, unsigned int height)
+Filter FilterGenerator::binomial(unsigned int width, unsigned int height)
 {
   if (height == 0)
   {
@@ -43,7 +43,7 @@ Filter FilterCreator::binomial(unsigned int width, unsigned int height)
   return filter;
 }
 
-Filter FilterCreator::laplacian()
+Filter FilterGenerator::laplacian()
 {
   Filter filter(3, 3);
 
@@ -56,7 +56,7 @@ Filter FilterCreator::laplacian()
   return filter;
 }
 
-Filter FilterCreator::laplacianBig()
+Filter FilterGenerator::laplacianBig()
 {
   Filter filter(9, 9);
 
@@ -73,7 +73,7 @@ Filter FilterCreator::laplacianBig()
   return filter;
 }
 
-Filter FilterCreator::laplacian2()
+Filter FilterGenerator::laplacian2()
 {
   Filter filter(3, 3);
   filter.setAllValues(-1);
@@ -84,7 +84,7 @@ Filter FilterCreator::laplacian2()
   return filter;
 }
 
-Filter FilterCreator::sobelVertical()
+Filter FilterGenerator::sobelVertical()
 {
   Filter filter (3, 3);
   filter.setValue(-1, 0, 0); filter.setValue(1, 2, 0);
@@ -96,7 +96,7 @@ Filter FilterCreator::sobelVertical()
   return filter;
 }
 
-Filter FilterCreator::sobelHorizontal()
+Filter FilterGenerator::sobelHorizontal()
 {
   Filter filter = sobelVertical();
   filter.rotateBy90DegreeClockwise();

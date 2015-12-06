@@ -11,7 +11,8 @@
 #include "ImageDisplay.h"
 #include "Matrix.h"
 #include "Image.h"
-#include "FilterCreator.h"
+#include "FilterGenerator.h"
+#include "StructuringElementGenerator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -93,7 +94,7 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  Filter filter = FilterCreator::laplacianBig();
+  Filter filter = FilterGenerator::laplacianBig();
   image->applyFilter(&filter);
   image->spread();
 
@@ -102,7 +103,7 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
-  filterTest();
+  morphologyTest();
 }
 
 void MainWindow::histogramTest()
@@ -140,7 +141,7 @@ void MainWindow::filterTest()
   Image* image = new Image(12, 12);
   image->setAllValues(100);
 
-  Filter filter = FilterCreator::sobelHorizontal();
+  Filter filter = FilterGenerator::sobelHorizontal();
 
   image->setRectangle(200, rectangle);
   image->applyFilter(&filter);
@@ -152,12 +153,29 @@ void MainWindow::filterTest()
 void MainWindow::binomialFilterTest()
 {
   Image* image = new Image(12, 12);
-  Filter filterGaussian = FilterCreator::binomial(5, 5);
+  Filter filterGaussian = FilterGenerator::binomial(5, 5);
 
   Rectangle rectangle(Point(2, 2), 8, 8);
 
   image->setRectangle(128, rectangle);
   image->applyFilter(&filterGaussian);
+
+  m_imageDisplay->setImage(image);
+}
+
+void MainWindow::morphologyTest()
+{
+  Rectangle rectangle(Point(2, 2), 8, 8);
+
+  Image* image = new Image(12, 12);
+  image->setAllValues(255);
+
+  StructuringElement structuringElement = StructuringElementGenerator::neighborhood8();
+
+  image->setRectangle(0, rectangle, false);
+  image->applyMinimumFilter(&structuringElement);
+  image->setRectangle(128, rectangle, false);
+  //image->applyFilter(&filter);
 
   m_imageDisplay->setImage(image);
 }

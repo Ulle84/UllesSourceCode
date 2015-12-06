@@ -17,6 +17,7 @@
 
 #define PI 3.14159265359
 
+// TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
 // TODO iterate over pointer instead using for-loop with index -> shuold have better performance
 // TODO check wrong z values everywhere
@@ -25,6 +26,7 @@
 // TODO m_referencePoint?
 
 class Filter;
+class StructuringElement;
 
 template<typename T>
 class Matrix
@@ -71,6 +73,7 @@ public:
   void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
   void applyFilter(const Filter* filter, unsigned int z = 0);
+  void applyMinimumFilter(const StructuringElement* structuringElement, unsigned int z = 0);
   void binarize(T threshold);
   void spread();
   void clear();
@@ -143,6 +146,20 @@ private:
   bool m_shiftResultValues;
   bool m_invertNegativeResultValues;
   double m_preFactor;
+  Point m_referencePoint;
+};
+
+class StructuringElement : public Matrix<bool>
+{
+public:
+  StructuringElement(unsigned width, unsigned height) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2;}
+
+  void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
+  Point getReferencePoint() const {return m_referencePoint;}
+
+private:
+  StructuringElement(){}
+
   Point m_referencePoint;
 };
 
@@ -984,6 +1001,41 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
       }
 
       m_values[z][y][x] = calculatedValue;
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::applyMinimumFilter(const StructuringElement *structuringElement, unsigned int z)
+{
+  Matrix<T> original(*this);
+
+  bool*** structuringElementValues = structuringElement->getValues();
+
+  unsigned int offsetLeft = structuringElement->getReferencePoint().m_x;
+  unsigned int offsetTop = structuringElement->getReferencePoint().m_y;
+  unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
+
+  T minimum;
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
+  {
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
+    {
+      minimum = std::numeric_limits<T>::max();
+
+      for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+      {
+        for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+        {
+          if (structuringElementValues[0][fy][fx] && original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] < minimum)
+          {
+            minimum = original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft];
+          }
+        }
+      }
+
+      m_values[z][y][x] = minimum;
     }
   }
 }

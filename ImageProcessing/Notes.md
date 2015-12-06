@@ -1,7 +1,7 @@
 # Bugs
 
 # ToDo (prioritised)
-* add type region -> bit-mask for mopholgical operations -> instance of Matrix<bool>
+* add type StructuringElement -> bit-mask for mopholgical operations -> instance of Matrix<bool>
 * Conservative Smoothing Filter with any filter mask: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
 * Minimum and Maximum with any filter mask
 * Median with any filter mask
@@ -29,7 +29,7 @@
   * rectangle
   * polygon
 * crop image
-* add noise to image
+* add noise to image (salt and pepper, standard-deviation noise)
 * look into Burger/Burge and implement some algorithms
 * test openCV, generate converter for openCV
 * contour tracing with pavlidis -> https://github.com/UnilVision/visionbase/blob/master/binary/contour%20tracing/Pavlidis/Pavlidis/pavlidis.c
@@ -38,7 +38,7 @@
 * rotate image with defined angle
 * labeling
 * blob analysis
-* ImageManager: holds references to Images - display has a reference to ImageManager
+* ImageManager: holds references to Images - display has a reference to ImageManager -> own Application with shared memory
 * 16 bit images -> ImageViewer has a range-slider, where the displayed bits can be selected
 * datamatrix code
   * create
@@ -47,6 +47,8 @@
 * type: line -> 2 points define a line: Alternative: start point, angle + length
 * setInterpolationMode: nearestNeighbor, bilinearInterpolation, ...?
 * setNeighborhood: neighborhood4, neighborhood8
+* patter matching
+* statistics on objects (mean value etc)
 
 # Documentation
 ## General
@@ -75,3 +77,4 @@
 * template <typename T> class FilterMask : Matrix<double> with function void apply(Matrix<T>* matrix); -> also not possible
 * template<typename F, typename M> void filterMatrix(Matrix<M>* matrix, Matrix<F>* filter, const Point& referencePoint, double preFactor = 1.0, unsigned z = 0) -> also not possible: no matching fucntion for call to filterMatrix
 * template<typename T> void filterMatrix(Matrix<T>* matrix, FilterMask* filter, double preFactor = 1.0, unsigned z = 0) : no matching fucntion for call to filterMatrix
+* Solution FilterMask is defined in Matrix and inherits from Matrix<short>
