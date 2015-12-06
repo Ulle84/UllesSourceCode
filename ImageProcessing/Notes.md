@@ -1,10 +1,9 @@
 # Bugs
 
 # ToDo (prioritised)
+* TimeMeasurement
 * buttons for display zoom to use disply with one hand
 * auto-zoom on show image
-* Conservative Smoothing Filter with any filter mask: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
-* Median with any filter mask
 * Median with Huang-Algorithm (if filter mask is "closed")
 * Look at ToDos in Source-Code and change to // IP if appliable
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible

@@ -83,6 +83,7 @@ public:
   void dilate(const StructuringElement* structuringElement, unsigned int z = 0);
   void open(const StructuringElement* structuringElement, unsigned int z = 0);
   void close(const StructuringElement* structuringElement, unsigned int z = 0);
+  void applyMedianFilter(const StructuringElement *structuringElement, unsigned int z = 0);
   void applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z = 0);
 
   void mirrorOnHorizontalAxis();
@@ -1159,6 +1160,53 @@ void Matrix<T>::close(const StructuringElement *structuringElement, unsigned int
 {
   dilate(structuringElement, z);
   erode(structuringElement, z);
+}
+
+template<typename T>
+void Matrix<T>::applyMedianFilter(const StructuringElement *structuringElement, unsigned int z)
+{
+  // IP implement Huang algorithm
+  // IP for bool-images -> counting instead of sorting
+
+  Matrix<T> original(*this);
+
+  bool*** structuringElementValues = structuringElement->getValues();
+
+  unsigned int offsetLeft = structuringElement->getReferencePoint().m_x;
+  unsigned int offsetTop = structuringElement->getReferencePoint().m_y;
+  unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
+
+  std::vector<T> values;
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
+  {
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
+    {
+      for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+      {
+        for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+        {
+          if (structuringElementValues[0][fy][fx])
+          {
+            values.push_back(original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft]);
+          }
+        }
+      }
+
+      std::sort(values.begin(), values.end());
+
+      if (values.size() % 2 == 0)
+      {
+        m_values[z][y][x] = ((double)values[values.size() / 2 - 1] + values[values.size() / 2]) / 2 + 0.5; // TODO correct implemenation for negative values
+      }
+      else
+      {
+        m_values[z][y][x] = values[values.size() / 2];
+      }
+
+      values.clear();
+    }
+  }
 }
 
 template<typename T>

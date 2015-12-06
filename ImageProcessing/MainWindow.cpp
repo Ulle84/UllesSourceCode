@@ -94,9 +94,9 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  Filter filter = FilterGenerator::laplacianBig();
-  image->applyFilter(&filter);
-  image->spread();
+  StructuringElement structuringElement = StructuringElementGenerator::circle(5);
+
+  image->applyMedianFilter(&structuringElement);
 
   m_imageDisplay->setImage(image);
 }
@@ -165,7 +165,7 @@ void MainWindow::binomialFilterTest()
 
 void MainWindow::morphologyTest()
 {
-  Rectangle rectangle(Point(3, 3), 4, 4);
+  Rectangle rectangle(Point(2, 2), 4, 4);
 
   Image* image = new Image(12, 12);
 
@@ -173,7 +173,7 @@ void MainWindow::morphologyTest()
 
   //image->setPoint(255, Point(127, 127));
   image->setRectangle(255, rectangle, false);
-  image->applyConservativeSmoothingFilter(&structuringElement);
+  image->applyMedianFilter(&structuringElement);
   //image->applyFilter(&filter);
 
   m_imageDisplay->setImage(image);
