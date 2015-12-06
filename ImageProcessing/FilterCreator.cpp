@@ -91,7 +91,7 @@ Filter FilterCreator::sobelVertical()
   filter.setValue(-2, 0, 1); filter.setValue(2, 2, 1);
   filter.setValue(-1, 0, 2); filter.setValue(1, 2, 2);
 
-  // TODO filter set shift and invertNegative
+  filter.setInvertNegativeResultValues(true);
 
   return filter;
 }

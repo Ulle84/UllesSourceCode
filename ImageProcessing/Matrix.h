@@ -132,7 +132,10 @@ public:
   double getPreFactor() const {return m_preFactor;}
 
   bool getShiftResultValues() const {return m_shiftResultValues;}
+  void setShiftResultValues(bool shiftResultValues) {m_shiftResultValues = shiftResultValues;}
+
   bool getInvertNegativeResultValues() const {return m_invertNegativeResultValues;}
+  void setInvertNegativeResultValues(bool invertNegativeResultValues) {m_invertNegativeResultValues = invertNegativeResultValues;}
 
 private:
   Filter(){}

@@ -140,10 +140,10 @@ void MainWindow::filterTest()
   Image* image = new Image(12, 12);
   image->setAllValues(100);
 
-  Filter filter = FilterCreator::sobelVertical();
+  Filter filter = FilterCreator::sobelHorizontal();
 
   image->setRectangle(200, rectangle);
-  image->applyFilter(&filter, true);
+  image->applyFilter(&filter);
 
   m_imageDisplay->setImage(image);
 
