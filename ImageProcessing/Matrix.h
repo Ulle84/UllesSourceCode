@@ -48,6 +48,8 @@ public:
 
   Matrix& operator= (const Matrix& rhs);
   Matrix& operator= (Matrix&& rhs);
+  bool operator== (const Matrix& rhs);
+  bool operator!= (const Matrix& rhs);
 
   unsigned int getWidth() const;
   unsigned int getHeight() const;
@@ -65,7 +67,6 @@ public:
 
   void setIncreasingValues();
   void setRandomValues();
-  void setGaussianValues(unsigned int z = 0);
   void setBinomialValues(unsigned int z = 0);
   void setAllValues(T value, unsigned int z = 0);
   void setValue(T value, unsigned int x, unsigned int y, unsigned int z = 0);
@@ -133,9 +134,6 @@ private:
   void copy(const Matrix&);
 
   T** m_layers;
-
-  friend bool operator== (const Matrix<T>& matrix1, const Matrix<T>& matrix2);
-  friend bool operator!= (const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 };
 
 // TBD type short?
@@ -202,7 +200,7 @@ Matrix<T>::Matrix() :
   m_height(512),
   m_qtyLayers(1)
 {
-  std::cout << "default constructor of matrix" << std::endl;
+  std::cout << "Matrix: default constructor" << std::endl;
   create();
   clear();
 }
@@ -384,6 +382,36 @@ Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
 }
 
 template<typename T>
+bool Matrix<T>::operator==(const Matrix& rhs)
+{
+  std::cout << "Matrix: == operator" << std::endl;
+
+  bool equal = true;
+
+  equal &= m_width  == rhs.m_width;
+  equal &= m_height == rhs.m_height;
+  equal &= m_qtyLayers == rhs.m_qtyLayers;
+
+  if (equal)
+  {
+    for (unsigned int z = 0; z < m_qtyLayers; z++)
+    {
+      equal &= (memcmp(m_layers[z], rhs.m_layers[z], m_width * m_height * sizeof(T)) == 0);
+    }
+  }
+
+  return equal;
+}
+
+template<typename T>
+bool Matrix<T>::operator!=(const Matrix& rhs)
+{
+  std::cout << "Matrix: != operator" << std::endl;
+
+  return !(operator==(rhs)); // TODO is this correct?
+}
+
+template<typename T>
 void Matrix<T>::clear()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
@@ -539,16 +567,6 @@ void Matrix<T>::setRandomValues()
     }
   }
 }
-
-template<typename T>
-void Matrix<T>::setGaussianValues(unsigned int z)
-{
-  // TODO
-}
-
-/* 1 2 1
- * 2 4 2
- * 1 2 1 */
 
 template<typename T>
 void Matrix<T>::setBinomialValues(unsigned int z)
@@ -1156,13 +1174,6 @@ void Matrix<T>::applyConservativeSmoothingFilter(const StructuringElement *struc
       minimum = std::numeric_limits<T>::max();
       maximum = std::numeric_limits<T>::min();
 
-      if (x == 3 && y == 3)
-      {
-
-        std::cout << "minimum: " << (int)minimum << std::endl;
-        std::cout << "maximum: " << (int)maximum << std::endl;
-      }
-
       for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
       {
         for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
@@ -1687,35 +1698,6 @@ void Matrix<T>::setIncreasingValues()
       }
     }
   }
-}
-
-template<typename T>
-bool operator== (const Matrix<T>& matrix1, const Matrix<T>& matrix2)
-{
-  // TODO this operator is not called - why???
-  std::cout << "== operator" << std::endl;
-
-  bool equal = true;
-
-  equal &= matrix1.m_width  == matrix2.m_width;
-  equal &= matrix1.m_height == matrix2.m_height;
-  equal &= matrix1.m_qtyLayers == matrix2.m_qtyLayers;
-
-  if (equal)
-  {
-    for (unsigned int z = 0; z < matrix1.m_qtyLayers; z++)
-    {
-      equal &= (memcmp(matrix1.m_layers[z], matrix2.m_layers[z], matrix1.m_width * matrix1.m_height * sizeof(T)) == 0);
-    }
-  }
-
-  return equal;
-}
-
-template<typename T>
-bool operator!= (const Matrix<T>& matrix1, const Matrix<T>& matrix2)
-{
-  return !(matrix1 == matrix2);
 }
 
 // implement function below, if you need all permutations of filter-type and image-type

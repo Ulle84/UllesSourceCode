@@ -7,6 +7,7 @@
   * compare time consumption for big filter-masks
   * make huang algorithm work with Template paraemter, call 'traditional' version of necessary
   * minimum and maximum filters -> huang-algorithm if T is applicable (must be unsigned, no floting point, histogram must be creatable!)
+* invert operator (!) for StructuringElements
 * operators + += etc. see pic.h/cpp
 * bool writeRAW(char* name);
 * bool readRAW(char* name);
