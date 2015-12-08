@@ -111,7 +111,7 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
-  morphologyTest();
+
 }
 
 void MainWindow::histogramTest()
