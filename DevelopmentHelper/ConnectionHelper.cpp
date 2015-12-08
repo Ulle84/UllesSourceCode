@@ -21,24 +21,9 @@ void ConnectionHelper::on_lineEditSender_returnPressed()
   createCode();
 }
 
-void ConnectionHelper::on_lineEditSignal_returnPressed()
-{
-  createCode();
-}
-
-void ConnectionHelper::on_lineEditReceiver_returnPressed()
-{
-  createCode();
-}
-
-void ConnectionHelper::on_lineEditSlot_returnPressed()
-{
-  createCode();
-}
-
 void ConnectionHelper::createCode()
 {
-  QString code = QString("connect(%1, SIGNAL(%2), %3, %4(%5));").arg(ui->lineEditSender->text()).arg(ui->lineEditSignal->text()).arg(ui->lineEditReceiver->text()).arg(ui->comboBox->currentText()).arg(ui->lineEditSlot->text());
+  QString code = QString("connect(%1, SIGNAL(%2), %3, %4(%5));").arg(ui->lineEditSender->text()).arg(ui->comboBoxSignal->currentText()).arg(ui->lineEditReceiver->text()).arg(ui->comboBoxReceiverType->currentText()).arg(ui->comboBoxSlot->currentText());
   if (ui->checkBox->isChecked())
   {
     code.prepend("bool connected = ");
@@ -51,7 +36,22 @@ void ConnectionHelper::on_checkBox_stateChanged(int arg1)
   createCode();
 }
 
-void ConnectionHelper::on_comboBox_currentIndexChanged(int index)
+void ConnectionHelper::on_comboBoxReceiverType_currentIndexChanged(int index)
+{
+  createCode();
+}
+
+void ConnectionHelper::on_comboBoxSignal_currentTextChanged(const QString &arg1)
+{
+  createCode();
+}
+
+void ConnectionHelper::on_lineEditReceiver_returnPressed()
+{
+  createCode();
+}
+
+void ConnectionHelper::on_comboBoxSlot_currentTextChanged(const QString &arg1)
 {
   createCode();
 }

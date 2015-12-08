@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ForLoopCreator</class>
- <widget class="QWidget" name="ForLoopCreator">
+ <class>EnumHelper</class>
+ <widget class="QWidget" name="EnumHelper">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>274</width>
-    <height>99</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,30 +29,43 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>for loop</string>
+      <string>enum helper</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>end variable</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEditForLoopEnd"/>
-      </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>iterator variable</string>
+         <string>name of enum</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEditForLoopIterator">
+       <widget class="QLineEdit" name="lineEditEnum"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>i</string>
+         <string>possible values</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPlainTextEdit" name="plainTextEditValues"/>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButtonCreateCodeEnum">
+        <property name="text">
+         <string>create enum code</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButtonCreateCodeSwitch">
+        <property name="text">
+         <string>create switch statement</string>
         </property>
        </widget>
       </item>
@@ -61,10 +74,6 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>lineEditForLoopIterator</tabstop>
-  <tabstop>lineEditForLoopEnd</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

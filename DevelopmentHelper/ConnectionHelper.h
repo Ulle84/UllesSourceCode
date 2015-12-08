@@ -17,12 +17,11 @@ public:
 
 private slots:
   void on_lineEditSender_returnPressed();
-  void on_lineEditSignal_returnPressed();
   void on_lineEditReceiver_returnPressed();
-  void on_lineEditSlot_returnPressed();
+  void on_comboBoxReceiverType_currentIndexChanged(int index);
+  void on_comboBoxSignal_currentTextChanged(const QString &arg1);
+  void on_comboBoxSlot_currentTextChanged(const QString &arg1);
   void on_checkBox_stateChanged(int arg1);
-
-  void on_comboBox_currentIndexChanged(int index);
 
 private:
   void createCode();

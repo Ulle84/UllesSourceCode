@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     IterateOverContainer.cpp \
     FindInContainer.cpp \
     ForLoopCreator.cpp \
-    ConnectionHelper.cpp
+    ConnectionHelper.cpp \
+    EnumHelper.cpp
 
 HEADERS  += DevelopmentHelper.h \
     LogFileViewer.h \
@@ -73,7 +74,8 @@ HEADERS  += DevelopmentHelper.h \
     IterateOverContainer.h \
     FindInContainer.h \
     ForLoopCreator.h \
-    ConnectionHelper.h
+    ConnectionHelper.h \
+    EnumHelper.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -105,4 +107,5 @@ FORMS    += DevelopmentHelper.ui \
     IterateOverContainer.ui \
     FindInContainer.ui \
     ForLoopCreator.ui \
-    ConnectionHelper.ui
+    ConnectionHelper.ui \
+    EnumHelper.ui
