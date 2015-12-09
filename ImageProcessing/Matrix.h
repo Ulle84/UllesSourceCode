@@ -6,6 +6,7 @@
 #include <typeinfo>
 #include <string>
 #include <vector>
+#include <list>
 
 #include <math.h>
 
@@ -14,8 +15,6 @@
 #include <Point.h>
 #include <Rectangle.h>
 #include <PolyLine.h>
-
-#define PI 3.14159265359
 
 // TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
@@ -33,8 +32,19 @@
 // TODO with % 4 !== 0
 // TODO m_referencePoint?
 
+#define PI 3.14159265359
+
 class Filter;
 class StructuringElement;
+
+class RunLength
+{
+public:
+  RunLength(const Point& point, unsigned int length) : m_startPoint(point), m_length(length) {}
+  Point m_startPoint;
+  unsigned int m_length;
+};
+typedef std::list<RunLength> RunLengthCode;
 
 template<typename T>
 class Matrix
@@ -79,7 +89,8 @@ public:
   void setCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
-  void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
+  void setRunLengthCode(T value, const RunLengthCode& runLengthCode, unsigned int z = 0);
+  void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);  
 
   void applyFilter(const Filter* filter, unsigned int z = 0);
   void binarize(T threshold);
@@ -94,6 +105,7 @@ public:
   void close(const StructuringElement* structuringElement, unsigned int z = 0);
   void applyMedianFilter(const StructuringElement *structuringElement, unsigned int z = 0);
   void applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z = 0);
+  void filterQuantilHuang(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
@@ -123,7 +135,6 @@ private:
   unsigned int minimum(unsigned int value1, unsigned int value2);
   unsigned int maximum(unsigned int value1, unsigned int value2);
   unsigned int calculateBinomialCoefficient(unsigned int n, unsigned int k);
-  void filterQuantilHuang(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
 
   void create();
   void createRowBeginVector();
@@ -132,6 +143,7 @@ private:
   void destroyRowBeginVector();
   void destroyLayers();
   void copy(const Matrix&);
+  void print(const std::string& message);
 
   T** m_layers;
 };
@@ -171,11 +183,52 @@ public:
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
 
+  RunLengthCode convertToRunLengthCode()
+  {
+    RunLengthCode runLengthCode;
+    unsigned int length = 0;
+    bool createCode = false;
+
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      length = 0;
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[0][y][x])
+        {
+          length++;
+          if (x == m_width - 1) // reached end of row?
+          {
+            createCode = true;
+          }
+        }
+        else
+        {
+          if (length > 0)
+          {
+            createCode = true;
+          }
+        }
+
+        if (createCode)
+        {
+          RunLength runLength(Point(x - length + 1, y), length);
+          runLengthCode.push_back(runLength);
+          length = 0;
+          createCode = false;
+        }
+      }
+    }
+    return runLengthCode;
+  }
+
 private:
   StructuringElement(){}
 
   Point m_referencePoint;
 };
+
+/**/
 
 template<typename T>
 void Matrix<T>::setSingleLayer( T* buffer, std::vector<unsigned int> layerIndices )
@@ -200,7 +253,7 @@ Matrix<T>::Matrix() :
   m_height(512),
   m_qtyLayers(1)
 {
-  std::cout << "Matrix: default constructor" << std::endl;
+  print("Matrix: default constructor");
   create();
   clear();
 }
@@ -208,7 +261,7 @@ Matrix<T>::Matrix() :
 template<typename T>
 Matrix<T>::Matrix(const Matrix &rhs)
 {
-  std::cout << "Matrix: copy constructor" << std::endl;
+  print("Matrix: copy constructor");
 
   m_width = rhs.m_width;
   m_height = rhs.m_height;
@@ -221,7 +274,7 @@ Matrix<T>::Matrix(const Matrix &rhs)
 template<typename T>
 Matrix<T>::Matrix(Matrix&& rhs)
 {
-  std::cout << "Matrix: move constructor" << std::endl;
+  print("Matrix: move constructor");
 
   m_height = rhs.m_height;
   m_width = rhs.m_width;
@@ -242,7 +295,7 @@ Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayer
   m_height(height),
   m_qtyLayers(qtyLayers)
 {
-  std::cout << "Matrix: value constructor" << std::endl;
+  print("value constructor");
 
   if (m_width == 0)
   {
@@ -329,14 +382,14 @@ void Matrix<T>::destroyRowBeginVector()
 template<typename T>
 Matrix<T>::~Matrix()
 {
-  std::cout << "Matrix: destructor" << std::endl;
+  print("destructor");
   destroy();
 }
 
 template<typename T>
 Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
 {
-  std::cout << "Matrix: assignment operator" << std::endl;
+  print("assignment operator");
   if (&rhs != this)
   {
     if (m_width != rhs.m_width || m_height != rhs.m_height || m_qtyLayers != rhs.m_qtyLayers)
@@ -360,7 +413,7 @@ Matrix<T>& Matrix<T>::operator=(const Matrix& rhs)
 template<typename T>
 Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
 {
-  std::cout << "Matrix: move assignment operator" << std::endl;
+  print("move assignment operator");
 
   if (&rhs != this)
   {
@@ -384,7 +437,7 @@ Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
 template<typename T>
 bool Matrix<T>::operator==(const Matrix& rhs)
 {
-  std::cout << "Matrix: == operator" << std::endl;
+  print("== operator");
 
   bool equal = true;
 
@@ -406,9 +459,8 @@ bool Matrix<T>::operator==(const Matrix& rhs)
 template<typename T>
 bool Matrix<T>::operator!=(const Matrix& rhs)
 {
-  std::cout << "Matrix: != operator" << std::endl;
-
-  return !(operator==(rhs)); // TODO is this correct?
+  print("!= operator");
+  return !(this == rhs);
 }
 
 template<typename T>
@@ -427,6 +479,12 @@ void Matrix<T>::copy(const Matrix& rhs)
   {
     memcpy(m_values[z][0], rhs.m_values[z][0], m_width * m_height * sizeof(T));
   }
+}
+
+template<typename T>
+void Matrix<T>::print(const std::string &message)
+{
+  //std::cout << "Matrix: " << message << std::endl;
 }
 
 template<typename T>
@@ -984,6 +1042,15 @@ void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, u
 }
 
 template<typename T>
+void Matrix<T>::setRunLengthCode(T value, const RunLengthCode &runLengthCode, unsigned int z)
+{
+  for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
+  {
+    setLine(value, it->m_startPoint, Point(it->m_startPoint.m_x + it->m_length - 1, it->m_startPoint.m_y), z);
+  }
+}
+
+template<typename T>
 void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 {
   Matrix<T> original(*this);
@@ -1293,6 +1360,8 @@ void Matrix<T>::close(const StructuringElement *structuringElement, unsigned int
 template<typename T>
 void Matrix<T>::applyMedianFilter(const StructuringElement *structuringElement, unsigned int z)
 {
+  // TODO remove parameter useHuang
+
   // TODO call only in special cases
   //filterQuantilHuang(structuringElement, 0.5);
   //return;
@@ -1536,7 +1605,6 @@ void Matrix<T>::applyLookUpTable(const std::vector<T>& lookUpTable)
   if (lookUpTable.size() < std::numeric_limits<T>::max() + 1)
   {
     // LUT not fully defined
-    std::cout << "LUT not fully defined" << std::endl;
     return;
   }
 

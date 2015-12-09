@@ -1,23 +1,22 @@
 # Bugs
 
 # ToDo (prioritised)
+* Debugger must be usable!!!
 * Huang
-  * compare results of median (self calculated) and median huang -> use == operator!
-  * adopt median to circle sturcturing elements -> add method isCompact to StrucutringElement
+  * create new class RunLenghtCode
+  * adopt median to circle sturcturing elements -> add method toRunLengthCode to StrucutringElement
   * compare time consumption for big filter-masks
   * make huang algorithm work with Template paraemter, call 'traditional' version of necessary
   * minimum and maximum filters -> huang-algorithm if T is applicable (must be unsigned, no floting point, histogram must be creatable!)
+* std::string getDifference(matrix) -> check if there are differences and give back first difference as a string
 * invert operator (!) for StructuringElements
 * operators + += etc. see pic.h/cpp
-* bool writeRAW(char* name);
-* bool readRAW(char* name);
+* use exceptions?
+* serialization of matrix
 * buttons for display zoom to use disply with one hand
 * auto-zoom on show image
-* Median with Huang-Algorithm (if filter mask is "closed")
 * Look at ToDos in Source-Code and change to // IP if appliable
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
-* Image
-  * create class Image which inherits from Matrix<unsigned char> -> test that move-constructor and move-operator of Matrix is used
 * return reference to image at functions which change the image content, i. e. erode dialte etc.
   * test that move-constructor and move-operator are used, otherwise this operations will be very "expensive"
   * test: imageEroded = image.erode(blub);
@@ -57,6 +56,8 @@
 * setNeighborhood: neighborhood4, neighborhood8
 * patter matching
 * statistics on objects (mean value etc)
+* floodFill: https://de.wikipedia.org/wiki/Floodfill
+* implement more filters: http://homepages.inf.ed.ac.uk/rbf/HIPR2/filtops.htm
 
 # Documentation
 ## General
@@ -76,6 +77,17 @@
 * clearance
 * high performanace
 * low memory consumption
+
+## Mindestanforderungen BV Software
+* Morphologie (Binär und Grauwert)
+* Faltung oder alternativ Sobel-, Laplace- und Gauss-Filter
+* Kantendetektoren z. B. Canny
+* Bildarithmetik
+* Fouriertransformation
+* Labeling
+* Statistische Features (Mittelwert, Varianz etc.)
+* Einfache Segmentierung (Thresholding, Wasserscheide etc.)
+* Ein Klassifikator
 
 ## Matrix and FilterMask
 * FilterMask should inherit from Matrix

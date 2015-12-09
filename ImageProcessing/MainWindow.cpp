@@ -111,7 +111,22 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
+  Image* image = new Image(16, 16);
 
+  StructuringElement se(5,5);
+
+  RunLengthCode runLengthCode = se.convertToRunLengthCode();
+
+  int counter = 0;
+  std:: cout << "run length code" << std::endl;
+  for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
+  {
+    std::cout << counter++ << " x: " << it->m_startPoint.m_x << " y: " << it->m_startPoint.m_x << " length: " << it->m_length << std::endl;
+  }
+
+  image->setRunLengthCode(255, runLengthCode);
+
+  m_imageDisplay->setImage(image);
 }
 
 void MainWindow::histogramTest()
