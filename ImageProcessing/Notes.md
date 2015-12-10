@@ -3,7 +3,6 @@
 # ToDo (prioritised)
 * Debugger must be usable!!!
 * Huang
-  * create new class RunLenghtCode
   * adopt median to circle sturcturing elements -> add method toRunLengthCode to StrucutringElement
   * compare time consumption for big filter-masks
   * make huang algorithm work with Template paraemter, call 'traditional' version of necessary

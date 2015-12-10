@@ -113,15 +113,20 @@ void MainWindow::imageTest()
 {
   Image* image = new Image(16, 16);
 
-  StructuringElement se(5,5);
+  StructuringElement se = StructuringElementGenerator::circle(3);
+  se.setValue(true, 6, 0);
+  se.setValue(true, 1, 6);
+  se.printValuesToConsole("structure element");
+
 
   RunLengthCode runLengthCode = se.convertToRunLengthCode();
+
 
   int counter = 0;
   std:: cout << "run length code" << std::endl;
   for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
   {
-    std::cout << counter++ << " x: " << it->m_startPoint.m_x << " y: " << it->m_startPoint.m_x << " length: " << it->m_length << std::endl;
+    std::cout << counter++ << " x: " << it->m_startPoint.m_x << " y: " << it->m_startPoint.m_y << " length: " << it->m_length << std::endl;
   }
 
   image->setRunLengthCode(255, runLengthCode);

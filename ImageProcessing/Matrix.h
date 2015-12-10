@@ -199,23 +199,17 @@ public:
           length++;
           if (x == m_width - 1) // reached end of row?
           {
-            createCode = true;
+            runLengthCode.push_back(RunLength(Point(x - length + 1, y), length));
+            length = 0;
           }
         }
         else
         {
           if (length > 0)
           {
-            createCode = true;
+            runLengthCode.push_back(RunLength(Point(x - length, y), length));
+            length = 0;
           }
-        }
-
-        if (createCode)
-        {
-          RunLength runLength(Point(x - length + 1, y), length);
-          runLengthCode.push_back(runLength);
-          length = 0;
-          createCode = false;
         }
       }
     }

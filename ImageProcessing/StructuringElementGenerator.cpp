@@ -26,6 +26,7 @@ StructuringElement StructuringElementGenerator::circle(unsigned int radius)
 {
   unsigned int size = radius * 2 + 1;
   StructuringElement structuringElement(size, size);
+  structuringElement.setAllValues(false);
   structuringElement.setCircle(true, Circle(structuringElement.getReferencePoint(), radius));
 
   return structuringElement;
