@@ -5,6 +5,8 @@
 
 #include "Point.h"
 
+// TODO typedef std::list<Point> PolyLine?
+
 class PolyLine
 {
 public:

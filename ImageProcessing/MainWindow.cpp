@@ -100,7 +100,7 @@ void MainWindow::on_actionOpenImage_triggered()
   QElapsedTimer timer;
   timer.start();
 
-  image->applyMedianFilter(&structuringElement);
+  image->filterMedian(&structuringElement);
 
   qDebug() << "The median filter took" << timer.elapsed() << "milliseconds";
 
@@ -111,10 +111,12 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
-  Image* image = new Image(16, 16);
+  Image* image = new Image(200, 800);
 
-  StructuringElement se = StructuringElementGenerator::circle(3);
-  se.setValue(true, 6, 0);
+  StructuringElement se = StructuringElementGenerator::circle(15);
+  //se.setPoint(false, Point(2, 2));
+  //StructuringElement se = StructuringElementGenerator::neighborhood8();
+  /*se.setValue(true, 6, 0);
   se.setValue(true, 1, 6);
   se.printValuesToConsole("structure element");
 
@@ -129,9 +131,33 @@ void MainWindow::imageTest()
     std::cout << counter++ << " x: " << it->m_startPoint.m_x << " y: " << it->m_startPoint.m_y << " length: " << it->m_length << std::endl;
   }
 
-  image->setRunLengthCode(255, runLengthCode);
+  image->setRunLengthCode(255, runLengthCode);*/
 
-  m_imageDisplay->setImage(image);
+  unsigned int width = 800;
+  unsigned int height = 800;
+
+  Image* image1 = new Image(width, height);
+  image1->setIncreasingValues();
+
+  QElapsedTimer timer;
+  timer.start();
+
+  image1->erode(&se);
+
+  qDebug() << "The filter took" << timer.elapsed() << "milliseconds";
+
+  Image* image2 = new Image(width, height);
+  image2->setIncreasingValues();
+
+  timer.restart();
+
+  image2->filterQuantil(&se, 1.0);
+
+  qDebug() << "The filter (with Huang) took" << timer.elapsed() << "milliseconds";
+
+  image1->printDifference(*image2);
+
+  m_imageDisplay->setImage(image1);
 }
 
 void MainWindow::histogramTest()
@@ -140,7 +166,7 @@ void MainWindow::histogramTest()
   image->setAllValues(120);
 
   Image* image2 = new Image(256, 256);
-  image2->setHistogram(image->getHistogram());
+  image2->setHistogram(image->getHistogram(0));
 
   m_imageDisplay->setImage(image2);
 }
@@ -172,7 +198,7 @@ void MainWindow::filterTest()
   Filter filter = FilterGenerator::sobelHorizontal();
 
   image->setRectangle(200, rectangle);
-  image->applyFilter(&filter);
+  image->filter(&filter);
 
   m_imageDisplay->setImage(image);
 
@@ -186,7 +212,7 @@ void MainWindow::binomialFilterTest()
   Rectangle rectangle(Point(2, 2), 8, 8);
 
   image->setRectangle(128, rectangle);
-  image->applyFilter(&filterGaussian);
+  image->filter(&filterGaussian);
 
   m_imageDisplay->setImage(image);
 }
@@ -201,7 +227,7 @@ void MainWindow::morphologyTest()
 
   //image->setPoint(255, Point(127, 127));
   image->setRectangle(255, rectangle, false);
-  image->applyMedianFilter(&structuringElement);
+  image->filterMedian(&structuringElement);
   //image->applyFilter(&filter);
 
   m_imageDisplay->setImage(image);

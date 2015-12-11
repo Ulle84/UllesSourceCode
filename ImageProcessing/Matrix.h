@@ -73,7 +73,7 @@ public:
   double getSumOfAllValues(unsigned int z = 0) const;
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
-  std::vector<unsigned long long> getHistogram();
+  std::vector<unsigned long long> getHistogram(unsigned int z);
 
   void setIncreasingValues();
   void setRandomValues();
@@ -90,9 +90,13 @@ public:
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
   void setRunLengthCode(T value, const RunLengthCode& runLengthCode, unsigned int z = 0);
-  void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);  
+  void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
 
-  void applyFilter(const Filter* filter, unsigned int z = 0);
+  void filter(const Filter* filter, unsigned int z = 0);
+  void filterQuantil(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
+  void filterMedian(const StructuringElement *structuringElement, unsigned int z = 0);
+  void filterConservativeSmoothing(const StructuringElement *structuringElement, unsigned int z = 0);
+
   void binarize(T threshold);
   void spread();
   void clear();
@@ -103,9 +107,6 @@ public:
   void dilate(const StructuringElement* structuringElement, unsigned int z = 0);
   void open(const StructuringElement* structuringElement, unsigned int z = 0);
   void close(const StructuringElement* structuringElement, unsigned int z = 0);
-  void applyMedianFilter(const StructuringElement *structuringElement, unsigned int z = 0);
-  void applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z = 0);
-  void filterQuantilHuang(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
 
   void mirrorOnHorizontalAxis();
   void mirrorOnVerticalAxis();
@@ -117,13 +118,13 @@ public:
   Matrix<T> doPolarTransformation(const Circle& circle);
 
   void applyLookUpTable(const std::vector<T> &lookUpTable);
-  //void filter(const FilterMask& filterMask);
 
   bool isPointInsideImage(const Point& point);
   bool isRectangleInsideImage(const Rectangle& rectangle);
   bool isCircleInsideImage(const Circle& circle);
 
   void printValuesToConsole(const std::string& description) const;
+  void printDifference(const Matrix& rhs) const;
   
 protected:
   T*** m_values;
@@ -178,12 +179,30 @@ private:
 class StructuringElement : public Matrix<bool>
 {
 public:
-  StructuringElement(unsigned width, unsigned height) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; setAllValues(true);}
+  StructuringElement(unsigned int width, unsigned int height) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; setAllValues(true);}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
 
-  RunLengthCode convertToRunLengthCode()
+  bool isValueSet(unsigned int x, unsigned int y) const {return m_values[0][y][x];}
+
+  unsigned int getSumOfSetValues() const
+  {
+    unsigned int sum = 0;
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[0][y][x])
+        {
+          sum++;
+        }
+      }
+    }
+    return sum;
+  }
+
+  RunLengthCode getRunLengthCode() const
   {
     RunLengthCode runLengthCode;
     unsigned int length = 0;
@@ -577,27 +596,22 @@ const T* Matrix<T>::getSingleLayer(std::vector<unsigned int> layerIndices) const
 }
 
 template<typename T>
-std::vector<unsigned long long> Matrix<T>::getHistogram()
+std::vector<unsigned long long> Matrix<T>::getHistogram(unsigned int z)
 {
-  if (std::numeric_limits<T>::is_signed)
+  if (std::numeric_limits<T>::is_signed && !std::numeric_limits<T>::is_integer)
   {
     // TODO how to implement negative values?
     return std::vector<unsigned long long>(0);
   }
 
-  // TODO do not accept T to be floating point value
-
   std::vector<unsigned long long> histogram(std::numeric_limits<T>::max() + 1); // TODO verify for big data types like long etc.
   std::fill(histogram.begin(), histogram.end(), 0);
 
-  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  for (unsigned int y = 0; y < m_height; y++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    for (unsigned int x = 0; x < m_width; x++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
-      {
-        histogram[m_values[z][y][x]]++;
-      }
+      histogram[m_values[z][y][x]]++;
     }
   }
 
@@ -836,10 +850,16 @@ void Matrix<T>::setLine(T value, const Point &p1, const Point &p2, unsigned int 
     unsigned int min = minimum(p1.m_x, p2.m_x);
     unsigned int max = maximum(p1.m_x, p2.m_x);
 
-    // IP memset if sizeof(T) == 1
-    for (unsigned int x = min; x <= max; x++)
+    if (sizeof(T) == 1)
     {
-      m_values[z][p1.m_y][x] = value;
+      memset(&m_values[z][p1.m_y][min], value, max - min + 1);
+    }
+    else
+    {
+      for (unsigned int x = min; x <= max; x++)
+      {
+        m_values[z][p1.m_y][x] = value;
+      }
     }
 
     return;
@@ -1045,7 +1065,7 @@ void Matrix<T>::setRunLengthCode(T value, const RunLengthCode &runLengthCode, un
 }
 
 template<typename T>
-void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
+void Matrix<T>::filter(const Filter *filter, unsigned int z)
 {
   Matrix<T> original(*this);
 
@@ -1101,9 +1121,12 @@ void Matrix<T>::applyFilter(const Filter *filter, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::filterQuantilHuang(const StructuringElement* structuringElement, double quantil, unsigned int z)
+void Matrix<T>::filterQuantil(const StructuringElement* structuringElement, double quantil, unsigned int z)
 {
-  // TODO use T consequently!!
+  if (std::numeric_limits<T>::is_signed || !std::numeric_limits<T>::is_integer)
+  {
+    return; // TODO throw exception ?
+  }
 
   if (quantil < 0.0 || quantil > 1.0)
   {
@@ -1117,99 +1140,120 @@ void Matrix<T>::filterQuantilHuang(const StructuringElement* structuringElement,
   unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
   unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
 
-  unsigned int filterWidth = structuringElement->getWidth();
-  unsigned int filterHeight = structuringElement->getHeight();
+  unsigned long long histogram[sizeof(T) * 256];
+  T median = 0;
+  unsigned int lessThanMedian = 0;
+  unsigned int sumOfSetValues = structuringElement->getSumOfSetValues();
 
-  int histogram[256];
-  unsigned char median = 0;
-  int lessThanMedian = 0;
+  unsigned int threshold = quantil * sumOfSetValues;
+  if (threshold > structuringElement->getSumOfSetValues() - 1)
+  {
+    threshold = structuringElement->getSumOfSetValues() - 1;
+  }
 
-  int threshold = 0;
-  if (quantil < 1.0)
-  {
-    threshold = (int) filterWidth * filterHeight * quantil;
-  }
-  else
-  {
-    threshold = filterWidth * filterHeight - 1;
-  }
+  RunLengthCode runLengthCode = structuringElement->getRunLengthCode();
 
   for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
   {
-    memset(histogram, 0, sizeof(histogram));
-
-    // Set up histogram for the first window (in every line)
-    for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
     {
-      for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+      if (x == offsetLeft)
       {
-        histogram[original.m_values[z][y + fy - offsetTop][fx]]++;
-      }
-    }
+        // Set up histogram for the first window (in every line)
+        memset(histogram, 0, sizeof(histogram));
 
-    // find median by moving through the histogram bins
-    int sum = 0;
-    for (int i = 0; i < 256; i++)
-    {
-      sum += histogram[i];
-      if (sum > threshold)
-      {
-        median = i;
-        lessThanMedian = sum - histogram[i];
-        i = 256; // aus der Schleife aussteigen! -> TODO use break?
-      }
-    }
-
-    m_values[z][y][offsetLeft] = median;
-
-    for (unsigned int x = offsetLeft + 1; x < (m_width - offsetRight); x++)
-    {
-      // update histogram
-      for (unsigned int i = 0; i < filterHeight; i++)
-      {
-        T value = original.m_values[z][y - offsetTop + i][x - offsetLeft - 1];
-        histogram[value]--; // remove entry of left side
-        if (value < median)
+        for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
         {
-          lessThanMedian--;
+          for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+          {
+            if (structuringElement->isValueSet(fx, fy))
+            {
+              histogram[original.m_values[z][y + fy - offsetTop][fx]]++;
+            }
+          }
         }
 
-        value = original.m_values[z][y - offsetTop + i][x + offsetLeft];
-        histogram[value]++; // add entry of right side
-
-        if (value < median)
+        // find median by moving through the histogram bins
+        int sum = 0;
+        for (int i = 0; i < 256; i++)
         {
-          lessThanMedian++;
-        }
-      }
-
-      // find median
-      if (lessThanMedian > threshold)
-      {
-        // the median in the current window is smaller than
-        // the one in the previous window
-        while (lessThanMedian > threshold)
-        {
-          median--;
-          lessThanMedian -= histogram[median];
+          sum += histogram[i];
+          if (sum > threshold)
+          {
+            median = i;
+            lessThanMedian = sum - histogram[i];
+            break;
+          }
         }
       }
       else
       {
-        while(lessThanMedian + histogram[median] <= threshold)
+        // update histogram
+        for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
         {
-          lessThanMedian += histogram[median];
-          median++;
+          unsigned int dx = x - offsetLeft + it->m_startPoint.m_x - 1;
+
+          // remove entry of left side
+          T value = original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx];
+          histogram[value]--;
+          if (value < median)
+          {
+            lessThanMedian--;
+          }
+
+          // add entry of right side
+          value = original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx + it->m_length];
+          histogram[value]++;
+          if (value < median)
+          {
+            lessThanMedian++;
+          }
+        }
+
+        // find median
+        if (lessThanMedian > threshold)
+        {
+          // the median in the current window is smaller than
+          // the one in the previous window
+          while (lessThanMedian > threshold)
+          {
+            median--;
+            lessThanMedian -= histogram[median];
+          }
+        }
+        else
+        {
+          while(lessThanMedian + histogram[median] <= threshold)
+          {
+            lessThanMedian += histogram[median];
+            median++;
+          }
         }
       }
 
-      m_values[z][y][x] = median;
+      if (sumOfSetValues % 2 == 1 || quantil != 0.5) // TODO verify, is that correct?
+      {
+        m_values[z][y][x] = median;
+      }
+      else
+      {
+        T medianCopy = median;
+        unsigned int lessThanMedianCopy = lessThanMedian;
+
+        while (lessThanMedianCopy > threshold - 1)
+        {
+          medianCopy--;
+          lessThanMedianCopy -= histogram[medianCopy];
+        }
+
+        m_values[z][y][x] = ((double) median + medianCopy) / 2 + 0.5;
+      }
     }
   }
 }
 
 template<typename T>
-void Matrix<T>::applyConservativeSmoothingFilter(const StructuringElement *structuringElement, unsigned int z)
+void Matrix<T>::filterConservativeSmoothing(const StructuringElement *structuringElement, unsigned int z)
 {
   // look all values in structuringElement (except for reference point)
   // define minimum and maximum
@@ -1271,6 +1315,12 @@ void Matrix<T>::applyConservativeSmoothingFilter(const StructuringElement *struc
 template<typename T>
 void Matrix<T>::erode(const StructuringElement *structuringElement, unsigned int z)
 {
+  if (!std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer)
+  {
+    filterQuantil(structuringElement, 1.0, z);
+    return;
+  }
+
   Matrix<T> original(*this);
 
   bool*** structuringElementValues = structuringElement->getValues();
@@ -1305,6 +1355,12 @@ void Matrix<T>::erode(const StructuringElement *structuringElement, unsigned int
 template<typename T>
 void Matrix<T>::dilate(const StructuringElement *structuringElement, unsigned int z)
 {
+  if (!std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer)
+  {
+    filterQuantil(structuringElement, 0.0, z);
+    return;
+  }
+
   Matrix<T> original(*this);
 
   bool*** structuringElementValues = structuringElement->getValues();
@@ -1352,16 +1408,13 @@ void Matrix<T>::close(const StructuringElement *structuringElement, unsigned int
 }
 
 template<typename T>
-void Matrix<T>::applyMedianFilter(const StructuringElement *structuringElement, unsigned int z)
+void Matrix<T>::filterMedian(const StructuringElement *structuringElement, unsigned int z)
 {
-  // TODO remove parameter useHuang
-
-  // TODO call only in special cases
-  //filterQuantilHuang(structuringElement, 0.5);
-  //return;
-
-  // IP implement Huang algorithm
-  // IP for bool-images -> counting instead of sorting
+  if (!std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer)
+  {
+    filterQuantil(structuringElement, 0.5, z);
+    return;
+  }
 
   Matrix<T> original(*this);
 
@@ -1645,8 +1698,6 @@ unsigned int Matrix<T>::calculateBinomialCoefficient(unsigned int n, unsigned in
   return binomialCoefficient;
 }
 
-
-
 template<typename T>
 unsigned int Matrix<T>::getWidth() const
 {
@@ -1744,6 +1795,45 @@ void Matrix<T>::printValuesToConsole(const std::string& description) const
       std::cout << std::endl;
     }
   }
+}
+
+template<typename T>
+void Matrix<T>::printDifference(const Matrix &rhs) const
+{
+  if (m_width  != rhs.m_width)
+  {
+    std::cout << "m_width is different" << std::endl;
+    return;
+  }
+
+  if (m_height != rhs.m_height)
+  {
+    std::cout << "m_height is different" << std::endl;
+    return;
+  }
+
+  if (m_qtyLayers != rhs.m_qtyLayers)
+  {
+    std::cout << "m_qtyLayers is different" << std::endl;
+    return;
+  }
+
+  for (unsigned int z = 0; z < m_qtyLayers; z++)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        if (m_values[z][y][x] != rhs.m_values[z][y][x])
+        {
+          std::cout << "m_values[" << z << "][" << y << "][" << x << "]: " << (int) m_values[z][y][x] << " is different to " << (int) rhs.m_values[z][y][x] << std::endl;
+          return;
+        }
+      }
+    }
+  }
+
+  std::cout << "no difference" << std::endl;
 }
 
 template<typename T>

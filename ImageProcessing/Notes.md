@@ -2,12 +2,7 @@
 
 # ToDo (prioritised)
 * Debugger must be usable!!!
-* Huang
-  * adopt median to circle sturcturing elements -> add method toRunLengthCode to StrucutringElement
-  * compare time consumption for big filter-masks
-  * make huang algorithm work with Template paraemter, call 'traditional' version of necessary
-  * minimum and maximum filters -> huang-algorithm if T is applicable (must be unsigned, no floting point, histogram must be creatable!)
-* std::string getDifference(matrix) -> check if there are differences and give back first difference as a string
+* specialize template functions for bool: minimum, maximum, filterQuantil
 * invert operator (!) for StructuringElements
 * operators + += etc. see pic.h/cpp
 * use exceptions?
