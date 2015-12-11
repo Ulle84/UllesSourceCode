@@ -95,7 +95,7 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  StructuringElement structuringElement = StructuringElementGenerator::neighborhood8();
+  StructuringElement structuringElement = StructuringElementGenerator::circle(7);
 
   QElapsedTimer timer;
   timer.start();
@@ -111,56 +111,20 @@ void MainWindow::on_actionOpenImage_triggered()
 
 void MainWindow::imageTest()
 {
-  Image* image = new Image(200, 800);
+  StructuringElement se = StructuringElementGenerator::circle(20);
 
-  StructuringElement se = StructuringElementGenerator::circle(15);
-  //se.setPoint(false, Point(2, 2));
-  //StructuringElement se = StructuringElementGenerator::neighborhood8();
-  /*se.setValue(true, 6, 0);
-  se.setValue(true, 1, 6);
-  se.printValuesToConsole("structure element");
-
-
-  RunLengthCode runLengthCode = se.convertToRunLengthCode();
-
-
-  int counter = 0;
-  std:: cout << "run length code" << std::endl;
-  for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
-  {
-    std::cout << counter++ << " x: " << it->m_startPoint.m_x << " y: " << it->m_startPoint.m_y << " length: " << it->m_length << std::endl;
-  }
-
-  image->setRunLengthCode(255, runLengthCode);*/
-
-  unsigned int width = 800;
-  unsigned int height = 800;
+  unsigned int width = 4000;
+  unsigned int height = 4000;
 
   Matrix<bool> bitImage(width, height);
-  bitImage.erode(&se);
-
-  Image* image1 = new Image(width, height);
-  image1->setIncreasingValues();
+  bitImage.setRectangle(true, Rectangle(Point(2, 2), 4, 4), false);
 
   QElapsedTimer timer;
   timer.start();
 
-  image1->erode(&se);
+  bitImage.filterMedian(&se);
 
-  qDebug() << "The filter took" << timer.elapsed() << "milliseconds";
-
-  Image* image2 = new Image(width, height);
-  image2->setIncreasingValues();
-
-  timer.restart();
-
-  image2->filterQuantil(&se, 1.0);
-
-  qDebug() << "The filter (with Huang) took" << timer.elapsed() << "milliseconds";
-
-  image1->printDifference(*image2);
-
-  m_imageDisplay->setImage(image1);
+  qDebug() << "The median filter took" << timer.elapsed() << "milliseconds";
 }
 
 void MainWindow::histogramTest()

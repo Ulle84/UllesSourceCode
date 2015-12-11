@@ -146,7 +146,7 @@ private:
   void copy(const Matrix&);
   void print(const std::string& message);
 
-  void erodeBool(const StructuringElement* structuringElement, unsigned int z = 0);
+  void filterQuantilBool(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
 
   T** m_layers;
 };
@@ -1123,16 +1123,87 @@ void Matrix<T>::filter(const Filter *filter, unsigned int z)
 }
 
 template<typename T>
+void Matrix<T>::filterQuantilBool(const StructuringElement* structuringElement, double quantil, unsigned int z)
+{
+  Matrix<T> original(*this);
+
+  unsigned int offsetLeft = structuringElement->getReferencePoint().m_x;
+  unsigned int offsetTop = structuringElement->getReferencePoint().m_y;
+  unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
+  unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
+
+  unsigned int sumOfSetValues = structuringElement->getSumOfSetValues();
+  unsigned int sum = 0;
+
+  unsigned int threshold = quantil * sumOfSetValues;
+  if (threshold > structuringElement->getSumOfSetValues() - 1)
+  {
+    threshold = structuringElement->getSumOfSetValues() - 1;
+  }
+
+  RunLengthCode runLengthCode = structuringElement->getRunLengthCode();
+
+  for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
+  {
+    for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
+    {
+      if (x == offsetLeft)
+      {
+        sum = 0;
+
+        for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+        {
+          for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+          {
+            if (structuringElement->isValueSet(fx, fy) && original.m_values[z][y + fy - offsetTop][fx])
+            {
+              sum++;
+            }
+          }
+        }
+      }
+      else
+      {
+        for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
+        {
+          unsigned int dx = x - offsetLeft + it->m_startPoint.m_x - 1;
+
+          // remove entry of left side
+          if (original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx])
+          {
+            sum--;
+          }
+
+          // add entry of right side
+          if (original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx + it->m_length])
+          {
+            sum++;
+          }
+        }
+      }
+
+      m_values[z][y][x] = (sum > threshold);
+    }
+  }
+}
+
+template<typename T>
 void Matrix<T>::filterQuantil(const StructuringElement* structuringElement, double quantil, unsigned int z)
 {
-  if (std::numeric_limits<T>::is_signed || !std::numeric_limits<T>::is_integer)
+  if (quantil < 0.0 || quantil > 1.0)
   {
     return; // TODO throw exception ?
   }
 
-  if (quantil < 0.0 || quantil > 1.0)
+  if (typeid(bool) == typeid(T))
   {
+    filterQuantilBool(structuringElement, quantil, z);
     return;
+  }
+
+  if (std::numeric_limits<T>::is_signed || !std::numeric_limits<T>::is_integer)
+  {
+    return; // TODO throw exception ?
   }
 
   Matrix<T> original(*this);
@@ -1380,7 +1451,9 @@ void Matrix<T>::erode(const StructuringElement *structuringElement, unsigned int
 template<typename T>
 void Matrix<T>::dilate(const StructuringElement *structuringElement, unsigned int z)
 {
-  if (!std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer)
+  bool typeIsBool = (typeid(bool) == typeid(T));
+
+  if (!typeIsBool && !std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer)
   {
     filterQuantil(structuringElement, 0.0, z);
     return;
@@ -1395,25 +1468,46 @@ void Matrix<T>::dilate(const StructuringElement *structuringElement, unsigned in
   unsigned int offsetRight = structuringElement->getWidth() - offsetLeft - 1;
   unsigned int offsetBottom = structuringElement->getHeight() - offsetTop - 1;
 
-  T maximum;
   for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
   {
     for (unsigned int x = offsetLeft; x < (m_width - offsetRight); x++)
     {
-      maximum = std::numeric_limits<T>::min();
-
-      for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+      if (typeIsBool)
       {
-        for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+        bool bitSet = false;
+        for (unsigned int fy = 0; fy < structuringElement->getHeight() && !bitSet; fy++)
         {
-          if (structuringElementValues[0][fy][fx] && original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] > maximum)
+          for (unsigned int fx = 0; fx < structuringElement->getWidth() && !bitSet; fx++)
           {
-            maximum = original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft];
+            if (structuringElementValues[0][fy][fx] && original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft])
+            {
+              m_values[z][y][x] = true;
+              bitSet = true;
+            }
           }
         }
+        if (!bitSet)
+        {
+          m_values[z][y][x] = false;
+        }
       }
+      else
+      {
+        T maximum = std::numeric_limits<T>::min();
 
-      m_values[z][y][x] = maximum;
+        for (unsigned int fy = 0; fy < structuringElement->getHeight(); fy++)
+        {
+          for (unsigned int fx = 0; fx < structuringElement->getWidth(); fx++)
+          {
+            if (structuringElementValues[0][fy][fx] && original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft] > maximum)
+            {
+              maximum = original.m_values[z][y + fy - offsetTop][x + fx - offsetLeft];
+            }
+          }
+        }
+
+        m_values[z][y][x] = maximum;
+      }
     }
   }
 }
