@@ -136,6 +136,9 @@ void MainWindow::imageTest()
   unsigned int width = 800;
   unsigned int height = 800;
 
+  Matrix<bool> bitImage(width, height);
+  bitImage.erode(&se);
+
   Image* image1 = new Image(width, height);
   image1->setIncreasingValues();
 
