@@ -73,7 +73,7 @@ public:
   double getSumOfAllValues(unsigned int z = 0) const;
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
-  std::vector<unsigned long long> getHistogram(unsigned int z);
+  std::vector<unsigned int> getHistogram(unsigned int z);
 
   void setIncreasingValues();
   void setRandomValues();
@@ -90,7 +90,7 @@ public:
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
   void setRunLengthCode(T value, const RunLengthCode& runLengthCode, unsigned int z = 0);
-  void setHistogram(const std::vector<unsigned long long>& histogram, unsigned int z = 0);
+  void setHistogram(const std::vector<unsigned int>& histogram, unsigned int z = 0);
 
   void filter(const Filter* filter, unsigned int z = 0);
   void filterQuantil(const StructuringElement *structuringElement, double quantil, unsigned int z = 0);
@@ -125,6 +125,8 @@ public:
 
   void printValuesToConsole(const std::string& description) const;
   void printDifference(const Matrix& rhs) const;
+
+  void performanceTest(unsigned int mode);
   
 protected:
   T*** m_values;
@@ -155,7 +157,7 @@ private:
 class Filter : public Matrix<short>
 {
 public:
-  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 1.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; m_shiftResultValues = false; m_invertNegativeResultValues;}
+  Filter(unsigned width, unsigned height) : Matrix<short>(width, height){m_preFactor = 1.0; m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; m_shiftResultValues = false; m_invertNegativeResultValues = false;}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
@@ -598,15 +600,15 @@ const T* Matrix<T>::getSingleLayer(std::vector<unsigned int> layerIndices) const
 }
 
 template<typename T>
-std::vector<unsigned long long> Matrix<T>::getHistogram(unsigned int z)
+std::vector<unsigned int> Matrix<T>::getHistogram(unsigned int z)
 {
   if (std::numeric_limits<T>::is_signed && !std::numeric_limits<T>::is_integer)
   {
     // TODO how to implement negative values?
-    return std::vector<unsigned long long>(0);
+    return std::vector<unsigned int>(0);
   }
 
-  std::vector<unsigned long long> histogram(std::numeric_limits<T>::max() + 1); // TODO verify for big data types like long etc.
+  std::vector<unsigned int> histogram(std::numeric_limits<T>::max() + 1); // TODO verify for big data types like long etc.
   std::fill(histogram.begin(), histogram.end(), 0);
 
   for (unsigned int y = 0; y < m_height; y++)
@@ -1030,16 +1032,16 @@ void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 }
 
 template<typename T>
-void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, unsigned int z)
+void Matrix<T>::setHistogram(const std::vector<unsigned int> &histogram, unsigned int z)
 {
   clear();
 
   unsigned int barWidth = m_width / histogram.size();
 
-  unsigned long long maxValue = std::numeric_limits<unsigned long long>::min();
+  unsigned int maxValue = std::numeric_limits<unsigned int>::min();
 
   // IP use iterator
-  for (unsigned long long i = 0; i < histogram.size(); i++)
+  for (unsigned int i = 0; i < histogram.size(); i++)
   {
     if (histogram[i] > maxValue)
     {
@@ -1047,12 +1049,12 @@ void Matrix<T>::setHistogram(const std::vector<unsigned long long> &histogram, u
     }
   }
 
-  for (unsigned long long i = 0; i < histogram.size(); i++)
+  for (unsigned int i = 0; i < histogram.size(); i++)
   {
     unsigned int barHeight = histogram[i] * m_height * 1.0 / maxValue;
     for (unsigned int j = 0; j < barWidth; j++)
     {
-      setLine(std::numeric_limits<unsigned long long>::max(), Point(i * barWidth + j, m_height - 1), Point(i * barWidth + j, m_height - barHeight), z);
+      setLine(std::numeric_limits<T>::max(), Point(i * barWidth + j, m_height - 1), Point(i * barWidth + j, m_height - barHeight), z);
     }
   }
 }
@@ -1183,6 +1185,87 @@ void Matrix<T>::filterQuantilBool(const StructuringElement* structuringElement, 
       }
 
       m_values[z][y][x] = (sum > threshold);
+    }
+  }
+}
+
+template<typename T>
+void Matrix<T>::performanceTest(unsigned int mode)
+{
+  /*
+    Mac OS 10.11.3 - Qt 5.2.0 clang 64bit
+    method 0 took 2050 milliseconds
+    method 1 took 2098 milliseconds
+    method 2 took 1058 milliseconds
+    method 3 took 113 milliseconds
+    method 4 took 110 milliseconds
+    method 5 took 113 milliseconds
+    method 6 took 911 milliseconds
+  */
+
+  if (mode == 0)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[0][y][x] = 255;
+      }
+    }
+  }
+  else if (mode == 1)
+  {
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        m_values[0][0][y * m_width + x] = 255;
+      }
+    }
+  }
+  else if (mode == 2)
+  {
+    T* it = m_values[0][0];
+    for (unsigned int y = 0; y < m_height; y++)
+    {
+      for (unsigned int x = 0; x < m_width; x++)
+      {
+        *it++ = 255;
+      }
+    }
+  }
+  else if (mode == 3)
+  {
+    T* it = m_values[0][0];
+    unsigned int size = m_height * m_width;
+    for (unsigned int y = 0; y < size; y++)
+    {
+      *it++ = 255;
+    }
+  }
+  else if (mode == 4)
+  {
+    memset(m_values[0][0], 255, m_height * m_width);
+  }
+  else if (mode == 5)
+  {
+    T* it = m_values[0][0];
+    T* stop = &m_values[0][0][m_width * m_height - 1];
+
+    while (it != stop)
+    {
+      *it++ = 255;
+    }
+    *it = 255;
+  }
+  else if (mode == 6)
+  {
+    T* it = m_values[0][0];
+    T* stop = &m_values[0][0][m_width * m_height - 1];
+
+    while (it <= stop)
+    {
+      *it++ = 255;
     }
   }
 }
@@ -1333,6 +1416,11 @@ void Matrix<T>::filterConservativeSmoothing(const StructuringElement *structurin
   // if value at reference point is smaller than the minimum, the value is set to the minimum
   // if value at reference point is bigger than the maximum, the value is set to the maximum
   // see: http://homepages.inf.ed.ac.uk/rbf/HIPR2/csmooth.htm
+
+  if (typeid(bool) == typeid(T))
+  {
+    return; // nothing to do
+  }
 
   Matrix<T> original(*this);
 

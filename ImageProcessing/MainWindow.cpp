@@ -113,18 +113,27 @@ void MainWindow::imageTest()
 {
   StructuringElement se = StructuringElementGenerator::circle(20);
 
-  unsigned int width = 4000;
-  unsigned int height = 4000;
+  unsigned int width = 65535;
+  unsigned int height = width;
 
-  Matrix<bool> bitImage(width, height);
-  bitImage.setRectangle(true, Rectangle(Point(2, 2), 4, 4), false);
 
-  QElapsedTimer timer;
-  timer.start();
+  unsigned int size = width * height;
+  std::cout << size << std::endl;
+  std::cout << std::numeric_limits<unsigned int>::max() << std::endl;
 
-  bitImage.filterMedian(&se);
+  Matrix<unsigned char> image(width, height);
 
-  qDebug() << "The median filter took" << timer.elapsed() << "milliseconds";
+  for (unsigned int i = 0; i <= 6; i++)
+  {
+    QElapsedTimer timer;
+    timer.start();
+
+    image.performanceTest(i);
+
+    qDebug() << "method" << i << "took" << timer.elapsed() << "milliseconds";
+  }
+
+
 }
 
 void MainWindow::histogramTest()

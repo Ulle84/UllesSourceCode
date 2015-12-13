@@ -1,8 +1,43 @@
 # Bugs
 
 # ToDo (prioritised)
+* check that (double) with * height < 2 ^ sizeof(unsigned int) - 1
+* performace test: iterate over pointer, access with [y * width + x], acces with [y][x] -> copy huge image, modes
+  * test on windows qt crator
+  * test on widwos with visual studio
+  * decistion: best choice + implemenatation
 * Debugger must be usable!!!
-* specialize template functions for bool: minimum, maximum, filterQuantil
+* replace(T currentValue, T newValue, ...)
+* edge detection -> first horizontal, then vertical, then with any angle
+  * input
+    * vector (startpoint, direction, length)
+    * filterWidth for smoothing
+    * Pixel-Abstand für die Differenzbildung
+    * minimum contrast
+    * edge type (bright,dark,any)
+  * idea
+    * Linie definieren
+    * länge der linie (in Anzahl Pixeln) bestimmen -> buffer anlegen
+    * entlang der Linie für jeden Punkt
+      * die Senkrechte bilden
+      * symmetrisch um den Punkt entlang der senkrechten den mittelwert bilden -> Mittelwertslinie
+    * entlang der Mittelwertslinie Differenzen bilden (mit Pixel-Abstand für die Differenzbildung)
+    * schuen welche Differenzen die Kontastvorgaben (Wert, Typ) erfüllen
+    * Ergebnis-Vektor mit Kanten zurückgeben, ggf. gefunden Kanten markieren
+  * class Point -> startPoint x and y -> double
+  * Class Vector -> startPoint, direction, length (may be negative!)
+  * Class Edge derived from Vector - as long as there are no differences between vetor and edge -> typedef
+  * Matrix: double getAverageAlongLine(const Line& line)
+  * Class: Edges
+    * list of edges
+    * getFirstEdge(edgeType: bright,dark,any)
+    * getLastEdge(edgeType: bright,dark,any)
+    * getEdgePairs ???
+  * line fit -> input: points - output: line - take care of special cases (link vertical line)
+* calculate statistics for runLengthCode or wohle image if nullptr
+* Polygon-Filling -> see handwritten notes of 2015-12-13
+* Hole-Filling -> see handwritten notes of 2015-12-13
+* Matrix::setStructureElement(T value, Point (where the reference point of the structureElement is placed) ...)
 * invert operator (!) for StructuringElements
 * operators + += etc. see pic.h/cpp
 * use exceptions?
@@ -18,7 +53,6 @@
 * define reference point for rotation with angle: top-left-corner vs. center
 * Matrix: squeeze function -> delete all conversion-buffers, which are not needed anymore
 * convolution of two matrices / vectors
-* edge detection
 
 # Ideas
 * rectangle with orientation-angle
@@ -29,13 +63,11 @@
   * line
   * rectangle
   * polygon
-* crop image
 * add noise to image (salt and pepper, standard-deviation noise)
 * look into Burger/Burge and implement some algorithms
 * test openCV, generate converter for openCV
 * contour tracing with pavlidis -> https://github.com/UnilVision/visionbase/blob/master/binary/contour%20tracing/Pavlidis/Pavlidis/pavlidis.c
 * write to file
-* run length code
 * rotate image with defined angle
 * labeling
 * blob analysis
@@ -52,6 +84,19 @@
 * statistics on objects (mean value etc)
 * floodFill: https://de.wikipedia.org/wiki/Floodfill
 * implement more filters: http://homepages.inf.ed.ac.uk/rbf/HIPR2/filtops.htm
+* hough transformation
+* fourier transformation
+* rectification -> 4 Points given -> check that no point is in triangle of other 3 points -> rectify
+* classification
+* print text inside image
+* convex hull
+
+# Applications
+* Count Eyes of Dice
+* detect gap between stopper and vial
+* Homogenitätsanalyse ->
+* find circle countour and fit circle
+* count coins, analyse coins and calculate value
 
 # Documentation
 ## General
