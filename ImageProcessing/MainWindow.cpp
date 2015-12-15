@@ -31,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
 
-  imageTest();
+  //imageTest();
+  polyLineTest();
 }
 
 MainWindow::~MainWindow()
@@ -207,4 +208,15 @@ void MainWindow::morphologyTest()
   //image->applyFilter(&filter);
 
   m_imageDisplay->setImage(image);
+}
+
+void MainWindow::polyLineTest()
+{
+  for (unsigned int i = 0; i < 8; i++)
+  {
+    StructuringElement se = StructuringElementGenerator::polyLineFillTest(i);
+    se.printValuesToConsole("before fill");
+    se.fill();
+    se.printValuesToConsole("after fill");
+  }
 }

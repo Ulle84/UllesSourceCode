@@ -30,6 +30,7 @@ private:
   void filterTest();
   void binomialFilterTest();
   void morphologyTest();
+  void polyLineTest();
 
   Ui::MainWindow* ui;
   Image* m_image;

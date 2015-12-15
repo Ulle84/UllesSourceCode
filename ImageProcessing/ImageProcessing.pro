@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     PolyLine.cpp \
     Image.cpp \
     FilterGenerator.cpp \
-    StructuringElementGenerator.cpp
+    StructuringElementGenerator.cpp \
+    RunLengthCode.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -34,7 +35,8 @@ HEADERS  += MainWindow.h \
     Matrix.h \
     Image.h \
     FilterGenerator.h \
-    StructuringElementGenerator.h
+    StructuringElementGenerator.h \
+    RunLengthCode.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

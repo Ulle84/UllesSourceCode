@@ -6,6 +6,10 @@
   * test on windows qt crator
   * test on widwos with visual studio
   * decistion: best choice + implemenatation
+* Polygon-Filling -> see handwritten notes of 2015-12-13
+  * StructuringElement::toImage
+  * define test image
+* Matrix::Matrix(... bool setDefault = true, T default = 0) -> also for StructuringElement
 * Debugger must be usable!!!
 * replace(T currentValue, T newValue, ...)
 * edge detection -> first horizontal, then vertical, then with any angle
@@ -35,7 +39,6 @@
     * getEdgePairs ???
   * line fit -> input: points - output: line - take care of special cases (link vertical line)
 * calculate statistics for runLengthCode or wohle image if nullptr
-* Polygon-Filling -> see handwritten notes of 2015-12-13
 * Hole-Filling -> see handwritten notes of 2015-12-13
 * Matrix::setStructureElement(T value, Point (where the reference point of the structureElement is placed) ...)
 * invert operator (!) for StructuringElements

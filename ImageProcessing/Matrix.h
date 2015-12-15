@@ -15,6 +15,7 @@
 #include <Point.h>
 #include <Rectangle.h>
 #include <PolyLine.h>
+#include <RunLengthCode.h>
 
 // TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
@@ -36,15 +37,6 @@
 
 class Filter;
 class StructuringElement;
-
-class RunLength
-{
-public:
-  RunLength(const Point& point, unsigned int length) : m_startPoint(point), m_length(length) {}
-  Point m_startPoint;
-  unsigned int m_length;
-};
-typedef std::list<RunLength> RunLengthCode;
 
 template<typename T>
 class Matrix
@@ -101,6 +93,7 @@ public:
   void spread();
   void clear();
   void invert();
+  void fill(unsigned int z = 0);
 
   // morphology
   void erode(const StructuringElement* structuringElement, unsigned int z = 0);
@@ -183,7 +176,7 @@ private:
 class StructuringElement : public Matrix<bool>
 {
 public:
-  StructuringElement(unsigned int width, unsigned int height) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; setAllValues(true);}
+  StructuringElement(unsigned int width, unsigned int height, bool defaultValue = true) : Matrix<bool>(width, height){m_referencePoint.m_x = width / 2; m_referencePoint.m_y = height / 2; setAllValues(defaultValue);}
 
   void setReferencePoint(const Point& referencePoint) {m_referencePoint = referencePoint;}
   Point getReferencePoint() const {return m_referencePoint;}
@@ -1012,6 +1005,9 @@ void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned
 template<typename T>
 void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 {
+  std::cout << "setPolyLine" << std::endl;
+  std::cout << "size: " << polyLine.m_points.size() << std::endl;
+
   if (polyLine.m_points.size() < 2)
   {
     return;
@@ -1687,6 +1683,119 @@ void Matrix<T>::invert()
 }
 
 template<typename T>
+void Matrix<T>::fill(unsigned int z)
+{
+  if (typeid(T) != typeid(bool))
+  {
+    return; // not applicable
+  }
+
+  bool insideObject;
+  unsigned int xStart;
+
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    insideObject = false;
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      // count bottom pixels
+      unsigned int setBottomPixels = 0;
+      if (y < m_height - 1)
+      {
+        // bottom left
+        if (x != 0)
+        {
+          if (m_values[z][y+1][x-1])
+          {
+            setBottomPixels++;
+          }
+        }
+
+        // bottom middle
+        if(m_values[z][y+1][x])
+        {
+          setBottomPixels++;
+        }
+
+        // bottom right
+        if (x < m_width - 1)
+        {
+          if (m_values[z][y+1][x+1])
+          {
+            setBottomPixels++;
+          }
+        }
+      }
+
+      // count top pixels
+      unsigned int setTopPixels = 0;
+      if (y != 0)
+      {
+        // top left
+        if (x != 0)
+        {
+          if (m_values[z][y-1][x-1])
+          {
+            setTopPixels++;
+          }
+        }
+
+        // top middle
+        if(m_values[z][y-1][x])
+        {
+          setTopPixels++;
+        }
+
+        // top right
+        if (x < m_width - 1)
+        {
+          if (m_values[z][y-1][x+1])
+          {
+            setTopPixels++;
+          }
+        }
+      }
+
+      if (setBottomPixels == 2 && setTopPixels == 0)
+      {
+        continue;
+      }
+
+      if (setTopPixels == 2 && setBottomPixels == 0)
+      {
+        continue;
+      }
+
+      if (m_values[z][y][x])
+      {
+        if (insideObject)
+        {
+          if (x != 0)
+          {
+            /*if (m_values[z][y][x-1])
+            {
+              // we are on a horizontal line
+              continue;
+            }*/
+          }
+
+          for (unsigned int xMark = xStart; xMark < x; xMark++)
+          {
+            m_values[z][y][xMark] = true;
+            insideObject = false;
+          }
+        }
+        else
+        {
+          xStart = x;
+          insideObject = true;
+        }
+      }
+    }
+  }
+}
+
+template<typename T>
 void Matrix<T>::mirrorOnHorizontalAxis()
 {
   Matrix<T> original(*this);
@@ -1976,30 +2085,43 @@ void Matrix<T>::printValuesToConsole(const std::string& description) const
     {
       for (unsigned int x = 0; x < m_width; x++)
       {
-        if (m_values[z][y][x] < 10)
+        if (typeid(bool) == typeid(T))
         {
-          std::cout << " ";
-        }
-
-        if (m_values[z][y][x] < 100)
-        {
-          std::cout << " ";
-        }
-        if (m_values[z][y][x] < 1000)
-        {
-          std::cout << " ";
-        }
-        if (sizeof(T) > 1)
-        {
-          std::cout << m_values[z][y][x] << " ";
+          if (m_values[z][y][x])
+          {
+            std::cout << "*";
+          }
+          else
+          {
+            std::cout << " ";
+          }
         }
         else
         {
-          std::cout << (int) m_values[z][y][x] << " ";
+          if (m_values[z][y][x] < 10)
+          {
+            std::cout << " ";
+          }
+
+          if (m_values[z][y][x] < 100)
+          {
+            std::cout << " ";
+          }
+          if (m_values[z][y][x] < 1000)
+          {
+            std::cout << " ";
+          }
+          if (sizeof(T) > 1)
+          {
+            std::cout << m_values[z][y][x] << " ";
+          }
+          else
+          {
+            std::cout << (int) m_values[z][y][x] << " ";
+          }
         }
       }
-
-      std::cout << std::endl;
+      std::cout << "|" << std::endl;
     }
   }
 }
