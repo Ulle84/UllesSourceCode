@@ -212,7 +212,7 @@ void MainWindow::morphologyTest()
 
 void MainWindow::polyLineTest()
 {
-  for (unsigned int i = 0; i < 8; i++)
+  for (unsigned int i = 8; i < 9; i++)
   {
     StructuringElement se = StructuringElementGenerator::polyLineFillTest(i);
     se.printValuesToConsole("before fill");

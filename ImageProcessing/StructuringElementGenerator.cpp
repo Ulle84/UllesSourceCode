@@ -117,6 +117,18 @@ StructuringElement StructuringElementGenerator::polyLineFillTest(unsigned int ty
     polyLine.appendPoint(Point(1, 3));
 
     break;
+
+  case 8:
+    width = 9;
+    height = 7;
+    polyLine.appendPoint(Point(1, 1));
+    polyLine.appendPoint(Point(4, 4));
+    polyLine.appendPoint(Point(7, 1));
+    polyLine.appendPoint(Point(7, 5));
+    polyLine.appendPoint(Point(1, 5));
+    polyLine.appendPoint(Point(1, 1));
+
+    break;
   }
 
   StructuringElement structuringElement(width, height, false);

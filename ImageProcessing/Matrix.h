@@ -1005,9 +1005,6 @@ void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned
 template<typename T>
 void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 {
-  std::cout << "setPolyLine" << std::endl;
-  std::cout << "size: " << polyLine.m_points.size() << std::endl;
-
   if (polyLine.m_points.size() < 2)
   {
     return;
@@ -1685,6 +1682,8 @@ void Matrix<T>::invert()
 template<typename T>
 void Matrix<T>::fill(unsigned int z)
 {
+  // alternative idea: floodfill on background with 4-neighborhood -> result inverted image + original contour
+
   if (typeid(T) != typeid(bool))
   {
     return; // not applicable
@@ -1693,107 +1692,85 @@ void Matrix<T>::fill(unsigned int z)
   bool insideObject;
   unsigned int xStart;
 
+  std::vector<bool> neighbors(8);
+
+  /* neighbors are set like freeman-code style
+     321
+     4*0
+     567
+  */
+
   for (unsigned int y = 0; y < m_height; y++)
   {
     insideObject = false;
     for (unsigned int x = 0; x < m_width; x++)
     {
-      // count bottom pixels
-      unsigned int setBottomPixels = 0;
-      if (y < m_height - 1)
-      {
-        // bottom left
-        if (x != 0)
-        {
-          if (m_values[z][y+1][x-1])
-          {
-            setBottomPixels++;
-          }
-        }
-
-        // bottom middle
-        if(m_values[z][y+1][x])
-        {
-          setBottomPixels++;
-        }
-
-        // bottom right
-        if (x < m_width - 1)
-        {
-          if (m_values[z][y+1][x+1])
-          {
-            setBottomPixels++;
-          }
-        }
-      }
-
-      // count top pixels
-      unsigned int setTopPixels = 0;
-      if (y != 0)
-      {
-        // top left
-        if (x != 0)
-        {
-          if (m_values[z][y-1][x-1])
-          {
-            setTopPixels++;
-          }
-        }
-
-        // top middle
-        if(m_values[z][y-1][x])
-        {
-          setTopPixels++;
-        }
-
-        // top right
-        if (x < m_width - 1)
-        {
-          if (m_values[z][y-1][x+1])
-          {
-            setTopPixels++;
-          }
-        }
-      }
-
-      if (setBottomPixels == 2 && setTopPixels == 0)
+      if (!m_values[z][y][x])
       {
         continue;
       }
 
-      if (setTopPixels == 2 && setBottomPixels == 0)
+      std::cout << "y: " << y << " x: " << x;
+
+      neighbors[0] = (x == m_width - 1                      ? false : m_values[z][y  ][x+1]);
+      neighbors[1] = (x == m_width - 1 || y == 0            ? false : m_values[z][y-1][x+1]);
+      neighbors[2] = (                    y == 0            ? false : m_values[z][y-1][x  ]);
+      neighbors[3] = (x == 0           || y == 0            ? false : m_values[z][y-1][x-1]);
+      neighbors[4] = (x == 0                                ? false : m_values[z][y  ][x-1]);
+      neighbors[5] = (x == 0           || y == m_height - 1 ? false : m_values[z][y+1][x-1]);
+      neighbors[6] = (                    y == m_height - 1 ? false : m_values[z][y+1][x  ]);
+      neighbors[7] = (x == m_width - 1 || y == m_height - 1 ? false : m_values[z][y+1][x+1]);
+
+      unsigned int qtyBottomNeighbors = 0;
+      qtyBottomNeighbors += neighbors[5];
+      qtyBottomNeighbors += neighbors[6];
+      qtyBottomNeighbors += neighbors[7];
+
+      unsigned int qtyTopNeighbors = 0;
+      qtyBottomNeighbors += neighbors[1];
+      qtyBottomNeighbors += neighbors[2];
+      qtyBottomNeighbors += neighbors[3];
+
+      if (!insideObject && !neighbors[0] && !neighbors[4] && qtyBottomNeighbors >= 2)
       {
+        // edge pointing up
+        std::cout << " skipping edge pointing up" << std::endl;
         continue;
       }
 
-      if (m_values[z][y][x])
+      if (insideObject && !neighbors[0] && !neighbors[4] && qtyTopNeighbors >= 2)
       {
-        if (insideObject)
-        {
-          if (x != 0)
-          {
-            /*if (m_values[z][y][x-1])
-            {
-              // we are on a horizontal line
-              continue;
-            }*/
-          }
+        // edge pointing down
+        std::cout << " skipping edge pointing down" << std::endl;
+        continue;
+      }
 
-          for (unsigned int xMark = xStart; xMark < x; xMark++)
-          {
-            m_values[z][y][xMark] = true;
-            insideObject = false;
-          }
-        }
-        else
+      if (neighbors[4] && (neighbors[0] || neighbors[1]))
+      {
+        // on horizontal line
+        std::cout << " skipping horizontal line point" << std::endl;
+        continue;
+      }
+
+      if (insideObject)
+      {
+        for (unsigned int xMark = xStart; xMark < x; xMark++)
         {
-          xStart = x;
-          insideObject = true;
+          m_values[z][y][xMark] = true;
+          insideObject = false;
         }
+        std::cout << " found end of line" << std::endl;
+      }
+      else
+      {
+        xStart = x;
+        insideObject = true;
+        std::cout << " found begin of line" << std::endl;
       }
     }
   }
 }
+
 
 template<typename T>
 void Matrix<T>::mirrorOnHorizontalAxis()
