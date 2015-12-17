@@ -31,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
 
-  //imageTest();
-  polyLineTest();
+  imageTest();
+  //polyLineTest();
 }
 
 MainWindow::~MainWindow()
@@ -114,7 +114,7 @@ void MainWindow::imageTest()
 {
   StructuringElement se = StructuringElementGenerator::circle(20);
 
-  unsigned int width = 65535;
+  unsigned int width = 30000;//65535;
   unsigned int height = width;
 
 
@@ -129,7 +129,7 @@ void MainWindow::imageTest()
     QElapsedTimer timer;
     timer.start();
 
-    image.performanceTest(i);
+    image.performanceTestAccessPixels(i);
 
     qDebug() << "method" << i << "took" << timer.elapsed() << "milliseconds";
   }
