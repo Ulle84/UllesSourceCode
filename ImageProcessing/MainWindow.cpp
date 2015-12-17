@@ -31,8 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
 
-  imageTest();
-  //polyLineTest();
+  polyLineTest();
 }
 
 MainWindow::~MainWindow()
@@ -215,8 +214,8 @@ void MainWindow::polyLineTest()
   for (unsigned int i = 8; i < 9; i++)
   {
     StructuringElement se = StructuringElementGenerator::polyLineFillTest(i);
-    se.printValuesToConsole("before fill");
-    se.fill();
-    se.printValuesToConsole("after fill");
+    se.printValuesToConsole("before background fill");
+    se.fillBackground(false, true);
+    se.printValuesToConsole("after background fill");
   }
 }

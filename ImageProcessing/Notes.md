@@ -1,6 +1,7 @@
 # Bugs
 
 # ToDo (prioritised)
+* furhter implementaion of Matrix::backgroundFill
 * check that (double) with * height < 2 ^ sizeof(unsigned int) - 1
 * performace test: iterate over pointer, access with [y * width + x], acces with [y][x] -> copy huge image, modes
   * test on windows qt crator

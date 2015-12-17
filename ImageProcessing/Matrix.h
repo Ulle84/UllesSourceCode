@@ -66,6 +66,7 @@ public:
   const T* getLayer(unsigned int z) const;
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
   std::vector<unsigned int> getHistogram(unsigned int z);
+  RunLengthCode getRunLengthCode(T value, unsigned int z = 0) const;
 
   void setIncreasingValues();
   void setRandomValues();
@@ -93,7 +94,7 @@ public:
   void spread();
   void clear();
   void invert();
-  void fill(unsigned int z = 0);
+  void fillBackground(T backgroundValue, T fillValue, unsigned int z = 0);
 
   // morphology
   void erode(const StructuringElement* structuringElement, unsigned int z = 0);
@@ -183,6 +184,7 @@ public:
 
   bool isValueSet(unsigned int x, unsigned int y) const {return m_values[0][y][x];}
 
+  // TODO is this function really needed?
   unsigned int getSumOfSetValues() const
   {
     unsigned int sum = 0;
@@ -197,39 +199,6 @@ public:
       }
     }
     return sum;
-  }
-
-  RunLengthCode getRunLengthCode() const
-  {
-    RunLengthCode runLengthCode;
-    unsigned int length = 0;
-    bool createCode = false;
-
-    for (unsigned int y = 0; y < m_height; y++)
-    {
-      length = 0;
-      for (unsigned int x = 0; x < m_width; x++)
-      {
-        if (m_values[0][y][x])
-        {
-          length++;
-          if (x == m_width - 1) // reached end of row?
-          {
-            runLengthCode.push_back(RunLength(Point(x - length + 1, y), length));
-            length = 0;
-          }
-        }
-        else
-        {
-          if (length > 0)
-          {
-            runLengthCode.push_back(RunLength(Point(x - length, y), length));
-            length = 0;
-          }
-        }
-      }
-    }
-    return runLengthCode;
   }
 
 private:
@@ -613,6 +582,39 @@ std::vector<unsigned int> Matrix<T>::getHistogram(unsigned int z)
   }
 
   return histogram;
+}
+
+template<typename T>
+RunLengthCode Matrix<T>::getRunLengthCode(T value, unsigned int z) const
+{
+  RunLengthCode runLengthCode;
+  unsigned int length = 0;
+
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    length = 0;
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      if (m_values[z][y][x] == value)
+      {
+        length++;
+        if (x == m_width - 1) // reached end of row?
+        {
+          runLengthCode.push_back(RunLength(Point(x - length + 1, y), length));
+          length = 0;
+        }
+      }
+      else
+      {
+        if (length > 0)
+        {
+          runLengthCode.push_back(RunLength(Point(x - length, y), length));
+          length = 0;
+        }
+      }
+    }
+  }
+  return runLengthCode;
 }
 
 template<typename T>
@@ -1136,7 +1138,7 @@ void Matrix<T>::filterQuantilBool(const StructuringElement* structuringElement, 
     threshold = structuringElement->getSumOfSetValues() - 1;
   }
 
-  RunLengthCode runLengthCode = structuringElement->getRunLengthCode();
+  RunLengthCode runLengthCode = structuringElement->getRunLengthCode(true);
 
   for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
   {
@@ -1314,7 +1316,7 @@ void Matrix<T>::filterQuantil(const StructuringElement* structuringElement, doub
     threshold = structuringElement->getSumOfSetValues() - 1;
   }
 
-  RunLengthCode runLengthCode = structuringElement->getRunLengthCode();
+  RunLengthCode runLengthCode = structuringElement->getRunLengthCode(true);
 
   for (unsigned int y = offsetTop; y < (m_height - offsetBottom); y++)
   {
@@ -1694,127 +1696,94 @@ void Matrix<T>::invert()
 }
 
 template<typename T>
-void Matrix<T>::fill(unsigned int z)
+void Matrix<T>::fillBackground(T backgroundValue, T fillValue, unsigned int z)
 {
-  /* perfect test region:
+  bool backgroundPixelFound = false;
+  unsigned int xStart;
+  unsigned int yStart;
 
-   *     *
-   **   **
-   * * * *
-   *  *  *
-   *******
-
-  */
-
-  // it's not enough to watch at 8er neighborhood!
-
-  /* alternative idea
-   * if type == bool -> create copy with unsigned char
-   * go around edges of image -> find a pixel which is not set (if all edge pixels are set -> set all pixels in matrix)
-   * floodfill on background with 4-neighborhood
-   * everything which has not the floodfill value belongs to our object
-   * TODO: ::fill(T value, ...) ?
-   */
-
-  if (typeid(T) != typeid(bool))
+  // view in first line
+  for (unsigned int x = 0; x < m_width; x++)
   {
-    return; // not applicable
+    /*std::cout << "x: " << x << std::endl;
+
+    if (m_values[z][0][x])
+    {
+      std::cout << "pixel set" << std::endl;
+    }
+    else
+    {
+      std::cout << "pixel not set" << std::endl;
+    }
+
+    if (m_values[z][0][x] == backgroundValue)
+    {
+      std::cout << "pixel set to backgroundValue" << std::endl;
+    }*/
+
+    if (m_values[z][0][x] == backgroundValue)
+    {
+      xStart = x;
+      yStart = 0;
+      backgroundPixelFound = true;
+      break;
+    }
   }
 
-  bool insideObject;
-  unsigned int xStart;
-  unsigned int xLastEdgePoint;
-
-  std::vector<bool> neighbors(8);
-
-  /* neighbors are set like freeman-code style
-     321
-     4*0
-     567
-  */
-
-  for (unsigned int y = 0; y < m_height; y++)
+  // view in first colum
+  if (!backgroundPixelFound)
   {
-    insideObject = false;
-    for (unsigned int x = 0; x < m_width; x++)
+    for (unsigned int y = 1; y < m_height; y++)
     {
-      if (m_values[z][y][x])
+      if (m_values[z][y][0] == backgroundValue)
       {
-        xLastEdgePoint = x;
-
-        std::cout << "y: " << y << " x: " << x;
-
-        neighbors[0] = (x == m_width - 1                      ? false : m_values[z][y  ][x+1]);
-        neighbors[1] = (x == m_width - 1 || y == 0            ? false : m_values[z][y-1][x+1]);
-        neighbors[2] = (                    y == 0            ? false : m_values[z][y-1][x  ]);
-        neighbors[3] = (x == 0           || y == 0            ? false : m_values[z][y-1][x-1]);
-        neighbors[4] = (x == 0                                ? false : m_values[z][y  ][x-1]);
-        neighbors[5] = (x == 0           || y == m_height - 1 ? false : m_values[z][y+1][x-1]);
-        neighbors[6] = (                    y == m_height - 1 ? false : m_values[z][y+1][x  ]);
-        neighbors[7] = (x == m_width - 1 || y == m_height - 1 ? false : m_values[z][y+1][x+1]);
-
-        if (neighbors[4] && (neighbors[0] || neighbors[1]|| neighbors[2] || neighbors[3]))
-        {
-          // on horizontal line
-          std::cout << " skipping horizontal line point" << std::endl;
-          continue;
-        }
-
-        unsigned int qtyBottomNeighbors = 0;
-        qtyBottomNeighbors += neighbors[5];
-        qtyBottomNeighbors += neighbors[6];
-        qtyBottomNeighbors += neighbors[7];
-
-        unsigned int qtyTopNeighbors = 0;
-        qtyTopNeighbors += neighbors[1];
-        qtyTopNeighbors += neighbors[2];
-        qtyTopNeighbors += neighbors[3];
-
-        if (!insideObject && !neighbors[0] && !neighbors[4] && qtyBottomNeighbors >= 2)
-        {
-          // edge pointing up
-          std::cout << " skipping edge pointing up" << std::endl;
-          continue;
-        }
-
-        if (insideObject && !neighbors[0] && !neighbors[4] && qtyTopNeighbors >= 2)
-        {
-          // edge pointing down
-          std::cout << " skipping edge pointing down" << std::endl;
-          continue;
-        }
-
-        if (insideObject)
-        {
-          for (unsigned int xMark = xStart; xMark < x; xMark++)
-          {
-            m_values[z][y][xMark] = true;
-            insideObject = false;
-          }
-          std::cout << " found end of line" << std::endl;
-        }
-        else
-        {
-          xStart = x;
-          insideObject = true;
-          std::cout << " found begin of line" << std::endl;
-        }
-      }
-
-      if (x == m_width - 1 && insideObject)
-      {
-        // end of line and still inside object -> moving back to last edge -> and draw line
-        for (unsigned int xMark = xStart; xMark < xLastEdgePoint; xMark++)
-        {
-          m_values[z][y][xMark] = true;
-          insideObject = false;
-          std::cout << " end of line marked from " << xStart << " to " << xLastEdgePoint << std::endl;
-        }
+        xStart = 0;
+        yStart = y;
+        backgroundPixelFound = true;
+        break;
       }
     }
   }
-}
 
+  // view in last colum
+  if (!backgroundPixelFound)
+  {
+    for (unsigned int y = 1; y < m_height; y++)
+    {
+      if (m_values[z][y][m_width - 1] == backgroundValue)
+      {
+        xStart = m_width - 1;
+        yStart = y;
+        backgroundPixelFound = true;
+        break;
+      }
+    }
+  }
+
+  // view in last line
+  if (!backgroundPixelFound)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      if (m_values[z][m_height - 1][x] == backgroundValue)
+      {
+        xStart = x;
+        yStart = m_height - 1;
+        backgroundPixelFound = true;
+        break;
+      }
+    }
+  }
+
+  if (!backgroundPixelFound)
+  {
+    // nothing to do
+    std::cout << "no background pixel found" << std::endl;
+    return;
+  }
+
+  std::cout << "found backgroundpixel at position x: " << xStart << " y: " << yStart << std::endl;
+}
 
 template<typename T>
 void Matrix<T>::mirrorOnHorizontalAxis()
