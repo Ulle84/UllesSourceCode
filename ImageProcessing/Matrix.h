@@ -95,6 +95,7 @@ public:
   void clear();
   void invert();
   void fillBackground(T backgroundValue, T fillValue, unsigned int z = 0);
+  void replace(T currentValue, T newValue, unsigned int z = 0);
 
   // morphology
   void erode(const StructuringElement* structuringElement, unsigned int z = 0);
@@ -1698,91 +1699,131 @@ void Matrix<T>::invert()
 template<typename T>
 void Matrix<T>::fillBackground(T backgroundValue, T fillValue, unsigned int z)
 {
-  bool backgroundPixelFound = false;
-  unsigned int xStart;
-  unsigned int yStart;
+
+  if (m_height < 3 || m_width < 3)
+  {
+    replace(backgroundValue, fillValue, z);
+    return;
+  }
+
+  // set edge points
+  m_values[z][0][0] = fillValue;
+  m_values[z][0][m_width-1] = fillValue;
+  m_values[z][m_height-1][0] = fillValue;
+  m_values[z][m_height-1][m_width-1] = fillValue;
+
+
+
+  // TODO walk around edges and find floodPoints
+
+
+  std::list<Point> floodPoints;
 
   // view in first line
-  for (unsigned int x = 0; x < m_width; x++)
+  for (unsigned int x = 1; x < m_width - 1; x++)
   {
-    /*std::cout << "x: " << x << std::endl;
-
-    if (m_values[z][0][x])
-    {
-      std::cout << "pixel set" << std::endl;
-    }
-    else
-    {
-      std::cout << "pixel not set" << std::endl;
-    }
-
     if (m_values[z][0][x] == backgroundValue)
     {
-      std::cout << "pixel set to backgroundValue" << std::endl;
-    }*/
-
-    if (m_values[z][0][x] == backgroundValue)
-    {
-      xStart = x;
-      yStart = 0;
-      backgroundPixelFound = true;
-      break;
+      m_values[z][0][x] = fillValue;
+      if (m_values[z][1][x] == backgroundValue)
+      {
+        floodPoints.push_back(Point(x, 1));
+      }
     }
   }
 
   // view in first colum
-  if (!backgroundPixelFound)
+  for (unsigned int y = 1; y < m_height - 1; y++)
   {
-    for (unsigned int y = 1; y < m_height; y++)
+    if (m_values[z][y][0] == backgroundValue)
     {
-      if (m_values[z][y][0] == backgroundValue)
+      m_values[z][y][0] = fillValue;
+      if (m_values[z][y][1] == backgroundValue)
       {
-        xStart = 0;
-        yStart = y;
-        backgroundPixelFound = true;
-        break;
+        floodPoints.push_back(Point(1, y));
       }
     }
   }
 
   // view in last colum
-  if (!backgroundPixelFound)
+  for (unsigned int y = 1; y < m_height - 1; y++)
   {
-    for (unsigned int y = 1; y < m_height; y++)
+    if (m_values[z][y][m_width - 1] == backgroundValue)
     {
-      if (m_values[z][y][m_width - 1] == backgroundValue)
+      m_values[z][y][m_width - 1] = fillValue;
+      if (m_values[z][y][m_width - 2] == backgroundValue)
       {
-        xStart = m_width - 1;
-        yStart = y;
-        backgroundPixelFound = true;
-        break;
+        floodPoints.push_back(Point(m_width - 2, y));
       }
     }
   }
 
   // view in last line
-  if (!backgroundPixelFound)
+  for (unsigned int x = 1; x < m_width - 1; x++)
   {
-    for (unsigned int x = 0; x < m_width; x++)
+    if (m_values[z][m_height - 1][x] == backgroundValue)
     {
-      if (m_values[z][m_height - 1][x] == backgroundValue)
+      m_values[z][m_height - 1][x] = fillValue;
+      if (m_values[z][m_height - 2][x] == backgroundValue)
       {
-        xStart = x;
-        yStart = m_height - 1;
-        backgroundPixelFound = true;
-        break;
+        floodPoints.push_back(Point(x, m_height - 2));
       }
     }
   }
 
-  if (!backgroundPixelFound)
-  {
-    // nothing to do
-    std::cout << "no background pixel found" << std::endl;
-    return;
-  }
+  std::cout << floodPoints.size() << std::endl;
 
-  std::cout << "found backgroundpixel at position x: " << xStart << " y: " << yStart << std::endl;
+  unsigned int x;
+  unsigned int y;
+
+  while(!floodPoints.empty())
+  {
+    x = floodPoints.front().m_x;
+    y = floodPoints.front().m_y;
+
+    m_values[z][y][x] = fillValue;
+
+    // look left
+    if (m_values[z][y][x-1] == backgroundValue)
+    {
+      floodPoints.push_back(Point(x-1, y));
+    }
+
+    // look up
+    if (m_values[z][y-1][x] == backgroundValue)
+    {
+      floodPoints.push_back(Point(x, y-1));
+    }
+
+    // look down
+    if (m_values[z][y+1][x] == backgroundValue)
+    {
+      floodPoints.push_back(Point(x, y+1));
+    }
+
+    // look right
+    if (m_values[z][y][x+1] == backgroundValue)
+    {
+      floodPoints.push_back(Point(x+1, y));
+    }
+
+    floodPoints.pop_front();
+  }
+}
+
+template<typename T>
+void Matrix<T>::replace(T currentValue, T newValue, unsigned int z)
+{
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      if (m_values[z][y][x] == currentValue)
+      {
+        m_values[z][y][x] = newValue;
+      }
+    }
+  }
 }
 
 template<typename T>

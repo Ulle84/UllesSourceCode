@@ -12,7 +12,6 @@
   * define test image
 * Matrix::Matrix(... bool setDefault = true, T default = 0) -> also for StructuringElement
 * Debugger must be usable!!!
-* replace(T currentValue, T newValue, ...)
 * edge detection -> first horizontal, then vertical, then with any angle
   * input
     * vector (startpoint, direction, length)
