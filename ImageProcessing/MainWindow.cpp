@@ -213,9 +213,7 @@ void MainWindow::polyLineTest()
 {
   for (unsigned int i = 0; i < 9; i++)
   {
-    StructuringElement se = StructuringElementGenerator::polyLineFillTest(i);
-    se.printValuesToConsole("before background fill");
-    se.fillBackground(false, true);
-    se.printValuesToConsole("after background fill");
+    StructuringElementGenerator::polyLineFillTest(i, false).printValuesToConsole("unfilled");
+    //StructuringElementGenerator::polyLineFillTest(i, true).printValuesToConsole("filled");
   }
 }

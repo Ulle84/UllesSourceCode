@@ -1683,13 +1683,20 @@ void Matrix<T>::invert()
     {
       for (unsigned int x = 0; x < m_width; x++)
       {
-        if (std::numeric_limits<T>::is_signed)
+        if (typeid(T) == typeid(bool))
         {
-          // TODO
+          m_values[z][y][x] = !m_values[z][y][x];
         }
         else
         {
-          m_values[z][y][x] = std::numeric_limits<T>::max() - m_values[z][y][x];
+          if (std::numeric_limits<T>::is_signed)
+          {
+            // TODO
+          }
+          else
+          {
+            m_values[z][y][x] = std::numeric_limits<T>::max() - m_values[z][y][x];
+          }
         }
       }
     }

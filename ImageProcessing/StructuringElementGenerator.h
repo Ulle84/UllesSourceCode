@@ -13,7 +13,7 @@ public:
   static StructuringElement neighborhood4();
   static StructuringElement neighborhood8();
   static StructuringElement circle(unsigned int radius = 2);
-  static StructuringElement polyLineFillTest(unsigned int type);
+  static StructuringElement polyLineFillTest(unsigned int type, bool fill);
 };
 
 #endif // STRUCTURINGELEMENTGENERATOR_H

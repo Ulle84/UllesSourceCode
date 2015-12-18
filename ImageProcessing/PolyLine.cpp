@@ -18,6 +18,36 @@ void PolyLine::appendPoint(const Point &point)
   m_points.push_back(point);
 }
 
+
+void PolyLine::updateMinMavValues()
+{
+  m_xMin = std::numeric_limits<unsigned int>::max();
+  m_xMax = std::numeric_limits<unsigned int>::min();
+  m_yMin = std::numeric_limits<unsigned int>::max();
+  m_yMax = std::numeric_limits<unsigned int>::min();
+
+  for (auto it = m_points.begin(); it != m_points.end(); it++)
+  {
+    if (it->m_x < m_xMin)
+    {
+      m_xMin = it->m_x;
+    }
+    else if (it->m_x > m_xMax)
+    {
+      m_xMax = it->m_x;
+    }
+
+    if (it->m_y < m_yMin)
+    {
+      m_yMin = it->m_y;
+    }
+    else if (it->m_y > m_yMax)
+    {
+      m_yMax = it->m_y;
+    }
+  }
+}
+
 Rectangle PolyLine::getBoundingRectangle()
 {
   if (m_points.empty())
@@ -25,55 +55,38 @@ Rectangle PolyLine::getBoundingRectangle()
     // TODO throw exception?
   }
 
-  unsigned int xMin = std::numeric_limits<unsigned int>::max();
-  unsigned int xMax = std::numeric_limits<unsigned int>::min();
-  unsigned int yMin = std::numeric_limits<unsigned int>::max();
-  unsigned int yMax = std::numeric_limits<unsigned int>::min();
+  updateMinMavValues();
 
-  for (auto it = m_points.begin(); it != m_points.end(); it++)
-  {
-    if (it->m_x < xMin)
-    {
-      xMin = it->m_x;
-    }
-    else if (it->m_x > xMax)
-    {
-      xMax = it->m_x;
-    }
-
-    if (it->m_y < yMin)
-    {
-      yMin = it->m_y;
-    }
-    else if (it->m_y > yMax)
-    {
-      yMax = it->m_y;
-    }
-  }
-
-  return Rectangle(Point(xMin, yMin), xMax - xMin + 1, yMax - yMin + 1);
+  return Rectangle(Point(m_xMin, m_yMin), m_xMax - m_xMin + 1, m_yMax - m_yMin + 1);
 }
 
 RunLengthCode PolyLine::toRunLengthCode()
 {
-  // TODO furhter implemenation after testing the Matrix::fill function
+  updateMinMavValues();
 
-  /*Rectangle rectangle = getBoundingRectangle();
+  PolyLine converted = *this;
 
-  StructuringElement structuringElement(rectangle.m_width, rectangle.m_height, false);*/
+  for (auto it = converted.m_points.begin(); it != converted.m_points.end(); it++)
+  {
+     it->m_x -= m_xMin;
+     it->m_y -= m_yMin;
+  }
 
-  // TODO use correct dimensions see uncommented code above
+  Rectangle rectangle = getBoundingRectangle();
 
-  /*StructuringElement structuringElement(12, 12, false);
+  StructuringElement structuringElement(rectangle.m_width, rectangle.m_height, false);
+  structuringElement.setPolyLine(true, converted);
+  structuringElement.fillBackground(false, true);
+  structuringElement.invert();
+  structuringElement.setPolyLine(true, converted);x
 
-  structuringElement.setPolyLine(true, *this);
+  RunLengthCode runLengthCode = structuringElement.getRunLengthCode(true);
 
-  structuringElement.printValuesToConsole("structuring element");*/
-
-
-  RunLengthCode runLengthCode;
-
-
+  for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
+  {
+    it->m_startPoint.m_x += m_xMin;
+    it->m_startPoint.m_y += m_yMin;
+  }
 
   return runLengthCode;
 }

@@ -22,6 +22,15 @@ public:
   RunLengthCode toRunLengthCode();
 
   std::list<Point> m_points; // TODO really public?
+
+private:
+  void updateMinMavValues();
+
+  unsigned int m_xMin;
+  unsigned int m_xMax;
+  unsigned int m_yMin;
+  unsigned int m_yMax;
+
 };
 
 #endif // POLYLINE_H

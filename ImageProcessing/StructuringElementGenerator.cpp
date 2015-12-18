@@ -33,7 +33,7 @@ StructuringElement StructuringElementGenerator::circle(unsigned int radius)
   return structuringElement;
 }
 
-StructuringElement StructuringElementGenerator::polyLineFillTest(unsigned int type)
+StructuringElement StructuringElementGenerator::polyLineFillTest(unsigned int type, bool fill)
 {
   unsigned int width = 15;
   unsigned int height = 15;
@@ -131,7 +131,17 @@ StructuringElement StructuringElementGenerator::polyLineFillTest(unsigned int ty
     break;
   }
 
+  polyLine.toRunLengthCode();
+
   StructuringElement structuringElement(width, height, false);
   structuringElement.setPolyLine(true, polyLine);
+
+  if (fill)
+  {
+    structuringElement.fillBackground(false, true);
+    structuringElement.invert();
+    structuringElement.setPolyLine(true, polyLine);
+  }
+
   return structuringElement;
 }
