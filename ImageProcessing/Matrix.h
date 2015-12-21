@@ -127,6 +127,7 @@ protected:
   T*** m_values;
   unsigned int m_width;
   unsigned int m_height;
+  unsigned int m_size;
   unsigned int m_qtyLayers;
 
 private:
@@ -208,8 +209,6 @@ private:
   Point m_referencePoint;
 };
 
-/**/
-
 template<typename T>
 void Matrix<T>::setSingleLayer( T* buffer, std::vector<unsigned int> layerIndices )
 {
@@ -258,12 +257,14 @@ Matrix<T>::Matrix(Matrix&& rhs)
 
   m_height = rhs.m_height;
   m_width = rhs.m_width;
+  m_size = rhs.m_size;
   m_qtyLayers = rhs.m_qtyLayers;
   m_values = rhs.m_values;
   m_layers = rhs.m_layers;
 
   rhs.m_height = 0;
   rhs.m_width = 0;
+  rhs.m_size = 0;
   rhs.m_qtyLayers = 0;
   rhs.m_values = 0; // nullptr
   rhs.m_layers = 0; // nullptr
@@ -308,9 +309,11 @@ void Matrix<T>::createLayers()
 {
   m_layers = new T*[m_qtyLayers];
 
+  m_size = m_width * m_height;
+
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    m_layers[z] = new T[m_width * m_height];
+    m_layers[z] = new T[m_size];
   }
 }
 
@@ -401,12 +404,14 @@ Matrix<T>& Matrix<T>::operator=(Matrix&& rhs)
 
     m_height = rhs.m_height;
     m_width = rhs.m_width;
+    m_size = rhs.m_size;
     m_qtyLayers = rhs.m_qtyLayers;
     m_values = rhs.m_values;
     m_layers = rhs.m_layers;
 
     rhs.m_height = 0;
     rhs.m_width = 0;
+    rhs.m_size = 0;
     rhs.m_qtyLayers = 0;
     rhs.m_values = 0; // nullptr
     rhs.m_layers = 0; // nullptr
@@ -481,12 +486,10 @@ void Matrix<T>::setAllValues(T value, unsigned int z)
   }
   else
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
-      {
-        m_values[z][y][x] = value;
-      }
+      *it++ = value;
     }
   }
 }
@@ -524,12 +527,10 @@ double Matrix<T>::getSumOfAllValues(unsigned int z) const
 {
   double sum = 0.0;
 
-  for (unsigned int y = 0; y < m_height; y++)
+  T* it = m_values[z][0];
+  for (unsigned int i = 0; i < m_size; i++)
   {
-    for (unsigned int x = 0; x < m_width; x++)
-    {
-      sum += m_values[z][y][x];
-    }
+    sum += *it++;
   }
 
   return sum;
@@ -574,12 +575,10 @@ std::vector<unsigned int> Matrix<T>::getHistogram(unsigned int z)
   std::vector<unsigned int> histogram(std::numeric_limits<T>::max() + 1); // TODO verify for big data types like long etc.
   std::fill(histogram.begin(), histogram.end(), 0);
 
-  for (unsigned int y = 0; y < m_height; y++)
+  T* it = m_values[z][0];
+  for (unsigned int i = 0; i < m_size; i++)
   {
-    for (unsigned int x = 0; x < m_width; x++)
-    {
-      histogram[m_values[z][y][x]]++;
-    }
+    histogram[*it++]++;
   }
 
   return histogram;
@@ -623,13 +622,10 @@ void Matrix<T>::setRandomValues()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
-      {
-        // NTH better random generator
-        m_values[z][y][x] = rand();
-      }
+      *it++ = rand();
     }
   }
 }
@@ -651,19 +647,18 @@ void Matrix<T>::binarize(T threshold)
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      if (*it < threshold)
       {
-        if (m_values[z][y][x] < threshold)
-        {
-          m_values[z][y][x] = std::numeric_limits<T>::min();
-        }
-        else
-        {
-          m_values[z][y][x] = std::numeric_limits<T>::max();
-        }
+        *it = std::numeric_limits<T>::min();
       }
+      else
+      {
+        *it = std::numeric_limits<T>::max();
+      }
+      it++;
     }
   }
 }

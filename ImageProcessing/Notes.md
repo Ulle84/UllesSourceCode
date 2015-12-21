@@ -1,15 +1,7 @@
 # Bugs
 
 # ToDo (prioritised)
-* furhter implementaion of Matrix::backgroundFill
-* check that (double) with * height < 2 ^ sizeof(unsigned int) - 1
-* performace test: iterate over pointer, access with [y * width + x], acces with [y][x] -> copy huge image, modes
-  * test on windows qt crator
-  * test on widwos with visual studio
-  * decistion: best choice + implemenatation
-* Polygon-Filling -> see handwritten notes of 2015-12-13
-  * StructuringElement::toImage
-  * define test image
+* pixel access performance improvment - continue at: Matrix::spread
 * Matrix::Matrix(... bool setDefault = true, T default = 0) -> also for StructuringElement
 * Debugger must be usable!!!
 * edge detection -> first horizontal, then vertical, then with any angle
@@ -140,3 +132,6 @@
 * template<typename F, typename M> void filterMatrix(Matrix<M>* matrix, Matrix<F>* filter, const Point& referencePoint, double preFactor = 1.0, unsigned z = 0) -> also not possible: no matching fucntion for call to filterMatrix
 * template<typename T> void filterMatrix(Matrix<T>* matrix, FilterMask* filter, double preFactor = 1.0, unsigned z = 0) : no matching fucntion for call to filterMatrix
 * Solution FilterMask is defined in Matrix and inherits from Matrix<short>
+
+## Restrictions
+* m_height * m_width must be smaller than max possible value of unsigned int

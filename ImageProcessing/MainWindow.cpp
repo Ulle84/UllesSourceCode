@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
 
+
   polyLineTest();
 }
 

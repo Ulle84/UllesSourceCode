@@ -78,7 +78,7 @@ RunLengthCode PolyLine::toRunLengthCode()
   structuringElement.setPolyLine(true, converted);
   structuringElement.fillBackground(false, true);
   structuringElement.invert();
-  structuringElement.setPolyLine(true, converted);x
+  structuringElement.setPolyLine(true, converted);
 
   RunLengthCode runLengthCode = structuringElement.getRunLengthCode(true);
 
