@@ -678,22 +678,21 @@ void Matrix<T>::spread()
 
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      if (std::numeric_limits<T>::is_signed)
       {
-        if (std::numeric_limits<T>::is_signed)
+        // TODO define spread-function for signed types
+      }
+      else
+      {
+        if (minimum != 0)
         {
-          // TODO define spread-function for signed types
+          *it -= minimum;
         }
-        else
-        {
-          if (minimum != 0)
-          {
-            m_values[z][y][x] -=minimum;
-          }
-          m_values[z][y][x] = m_values[z][y][x] * std::numeric_limits<T>::max() / (maximum - minimum);
-        }
+
+        *it *= std::numeric_limits<T>::max() / (maximum - minimum);
       }
     }
   }
@@ -1674,26 +1673,25 @@ void Matrix<T>::invert()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      if (typeid(T) == typeid(bool))
       {
-        if (typeid(T) == typeid(bool))
+        *it = !(*it);
+      }
+      else
+      {
+        if (std::numeric_limits<T>::is_signed)
         {
-          m_values[z][y][x] = !m_values[z][y][x];
+          // TODO
         }
         else
         {
-          if (std::numeric_limits<T>::is_signed)
-          {
-            // TODO
-          }
-          else
-          {
-            m_values[z][y][x] = std::numeric_limits<T>::max() - m_values[z][y][x];
-          }
+          *it = std::numeric_limits<T>::max() - *it;
         }
       }
+      it++;
     }
   }
 }
@@ -1713,11 +1711,6 @@ void Matrix<T>::fillBackground(T backgroundValue, T fillValue, unsigned int z)
   m_values[z][0][m_width-1] = fillValue;
   m_values[z][m_height-1][0] = fillValue;
   m_values[z][m_height-1][m_width-1] = fillValue;
-
-
-
-  // TODO walk around edges and find floodPoints
-
 
   std::list<Point> floodPoints;
 
@@ -1773,8 +1766,6 @@ void Matrix<T>::fillBackground(T backgroundValue, T fillValue, unsigned int z)
     }
   }
 
-  std::cout << floodPoints.size() << std::endl;
-
   unsigned int x;
   unsigned int y;
 
@@ -1816,14 +1807,12 @@ void Matrix<T>::fillBackground(T backgroundValue, T fillValue, unsigned int z)
 template<typename T>
 void Matrix<T>::replace(T currentValue, T newValue, unsigned int z)
 {
-  for (unsigned int y = 0; y < m_height; y++)
+  T* it = m_values[z][0];
+  for (unsigned int i = 0; i < m_size; i++, it++)
   {
-    for (unsigned int x = 0; x < m_width; x++)
+    if (*it == currentValue)
     {
-      if (m_values[z][y][x] == currentValue)
-      {
-        m_values[z][y][x] = newValue;
-      }
+      *it = newValue;
     }
   }
 }
@@ -2006,12 +1995,10 @@ void Matrix<T>::applyLookUpTable(const std::vector<T>& lookUpTable)
 
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++, it++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
-      {
-        m_values[z][y][x] = lookUpTable[m_values[z][y][x]];
-      }
+      *it = lookUpTable[*it];
     }
   }
 }
@@ -2071,14 +2058,12 @@ T Matrix<T>::getMinimum() const
   T minimum = std::numeric_limits<T>::max();
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++, it++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      if (*it < minimum)
       {
-        if (m_values[z][y][x] < minimum)
-        {
-          minimum = m_values[z][y][x];
-        }
+        minimum = *it;
       }
     }
   }
@@ -2091,14 +2076,12 @@ T Matrix<T>::getMaximum() const
   T maximum = std::numeric_limits<T>::min();
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++, it++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      if (*it > maximum)
       {
-        if (m_values[z][y][x] > maximum)
-        {
-          maximum = m_values[z][y][x];
-        }
+        maximum = *it;
       }
     }
   }
@@ -2114,48 +2097,51 @@ void Matrix<T>::printValuesToConsole(const std::string& description) const
   {
     std::cout << std::endl << "layer " << z << std::endl;
 
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++, it++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
+      if (typeid(bool) == typeid(T))
       {
-        if (typeid(bool) == typeid(T))
+        if (*it)
         {
-          if (m_values[z][y][x])
-          {
-            std::cout << "*";
-          }
-          else
-          {
-            std::cout << " ";
-          }
+          std::cout << "*";
         }
         else
         {
-          if (m_values[z][y][x] < 10)
-          {
-            std::cout << " ";
-          }
-
-          if (m_values[z][y][x] < 100)
-          {
-            std::cout << " ";
-          }
-          if (m_values[z][y][x] < 1000)
-          {
-            std::cout << " ";
-          }
-          if (sizeof(T) > 1)
-          {
-            std::cout << m_values[z][y][x] << " ";
-          }
-          else
-          {
-            std::cout << (int) m_values[z][y][x] << " ";
-          }
+          std::cout << " ";
         }
       }
-      std::cout << "|" << std::endl;
+      else
+      {
+        if (*it < 10)
+        {
+          std::cout << " ";
+        }
+
+        if (*it < 100)
+        {
+          std::cout << " ";
+        }
+        if (*it < 1000)
+        {
+          std::cout << " ";
+        }
+        if (sizeof(T) > 1)
+        {
+          std::cout << *it << " ";
+        }
+        else
+        {
+          std::cout << (int) *it << " ";
+        }
+      }
+
+      if (i % m_width == m_width - 1)
+      {
+        std::cout << "|" << std::endl;
+      }
     }
+
   }
 }
 
@@ -2204,12 +2190,10 @@ void Matrix<T>::setIncreasingValues()
   T value = 0;
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
-    for (unsigned int y = 0; y < m_height; y++)
+    T* it = m_values[z][0];
+    for (unsigned int i = 0; i < m_size; i++, it++)
     {
-      for (unsigned int x = 0; x < m_width; x++)
-      {
-        m_values[z][y][x] = value++;
-      }
+      *it = value++;
     }
   }
 }
@@ -2233,12 +2217,10 @@ void filterMatrix(Matrix<M>* matrix, Matrix<F>* filter, const Point& referencePo
 /* iterate over all values
 for (unsigned int z = 0; z < m_qtyLayers; z++)
 {
-  for (unsigned int y = 0; y < m_height; y++)
+  T* it = m_values[z][0];
+  for (unsigned int i = 0; i < m_size; i++, it++)
   {
-    for (unsigned int x = 0; x < m_width; x++)
-    {
-      m_values[z][y][x] = ;
-    }
+    *it = ;
   }
 }
 */
