@@ -43,7 +43,7 @@ class Matrix
 {
 public:
   Matrix();
-  Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers = 1);
+  Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers = 1, bool setDefaultValue = true, T defaultValue = 0);
   Matrix(const Matrix& rhs);
   Matrix(Matrix&& rhs);
   virtual ~Matrix();
@@ -271,7 +271,7 @@ Matrix<T>::Matrix(Matrix&& rhs)
 }
 
 template<typename T>
-Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers) :
+Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayers, bool setDefaultValue, T defaultValue) :
   m_width(width),
   m_height(height),
   m_qtyLayers(qtyLayers)
@@ -294,7 +294,14 @@ Matrix<T>::Matrix(unsigned int width, unsigned int height, unsigned int qtyLayer
   }
 
   create();
-  clear();
+
+  if (setDefaultValue)
+  {
+    for (unsigned int z = 0; z < qtyLayers; z++)
+    {
+      setAllValues(defaultValue, z);
+    }
+  }
 }
 
 template<typename T>

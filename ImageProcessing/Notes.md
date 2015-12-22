@@ -1,8 +1,6 @@
 # Bugs
 
 # ToDo (prioritised)
-* pixel access performance improvment - continue at: Matrix::spread
-* Matrix::Matrix(... bool setDefault = true, T default = 0) -> also for StructuringElement
 * Debugger must be usable!!!
 * edge detection -> first horizontal, then vertical, then with any angle
   * input
