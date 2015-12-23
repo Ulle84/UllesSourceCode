@@ -23,7 +23,10 @@ SOURCES += main.cpp\
     Image.cpp \
     FilterGenerator.cpp \
     StructuringElementGenerator.cpp \
-    RunLengthCode.cpp
+    RunLengthCode.cpp \
+    Edge.cpp \
+    Line.cpp \
+    MathHelper.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -36,7 +39,10 @@ HEADERS  += MainWindow.h \
     Image.h \
     FilterGenerator.h \
     StructuringElementGenerator.h \
-    RunLengthCode.h
+    RunLengthCode.h \
+    Edge.h \
+    Line.h \
+    MathHelper.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

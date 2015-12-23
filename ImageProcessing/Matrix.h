@@ -10,12 +10,16 @@
 
 #include <math.h>
 
+#include "MathHelper.h"
+
 #include <Circle.h>
 #include <FreemanCode.h>
 #include <Point.h>
 #include <Rectangle.h>
 #include <PolyLine.h>
 #include <RunLengthCode.h>
+#include <Line.h>
+#include <Edge.h>
 
 // TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
@@ -32,8 +36,6 @@
 // TODO WriteMutex
 // TODO with % 4 !== 0
 // TODO m_referencePoint?
-
-#define PI 3.14159265359
 
 class Filter;
 class StructuringElement;
@@ -67,6 +69,7 @@ public:
   const T* getSingleLayer(std::vector<unsigned int> layerIndices) const;
   std::vector<unsigned int> getHistogram(unsigned int z);
   RunLengthCode getRunLengthCode(T value, unsigned int z = 0) const;
+  double getAverageAlongLine(const Line& line, unsigned int z = 0) const;
 
   void setIncreasingValues();
   void setRandomValues();
@@ -78,7 +81,7 @@ public:
   void setColumn(T value, unsigned int x, unsigned int z = 0);
   void setPoint(T value, const Point& point, unsigned int z = 0);
   void setRectangle(T value, const Rectangle& rectangle, bool fill = true, unsigned int z = 0);
-  void setLine(T value, const Point& p1, const Point& p2, unsigned int z = 0);
+  void setLine(T value, const Line& line, unsigned int z = 0);
   void setCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
@@ -96,6 +99,8 @@ public:
   void invert();
   void fillBackground(T backgroundValue, T fillValue, unsigned int z = 0);
   void replace(T currentValue, T newValue, unsigned int z = 0);
+
+  Edges findEdges(const Line& line, float minContrast, unsigned int smoothingWidth = 1, unsigned int z = 0);
 
   // morphology
   void erode(const StructuringElement* structuringElement, unsigned int z = 0);
@@ -625,6 +630,23 @@ RunLengthCode Matrix<T>::getRunLengthCode(T value, unsigned int z) const
 }
 
 template<typename T>
+double Matrix<T>::getAverageAlongLine(const Line &line, unsigned int z) const
+{
+  double average = 0.0;
+
+  Points points = line.getPointsAlongLine();
+
+  for (auto it = points.begin(); it != points.end(); it++)
+  {
+    average += m_values[z][it->m_y][it->m_x];
+  }
+
+  average /= points.size();
+
+  return average;
+}
+
+template<typename T>
 void Matrix<T>::setRandomValues()
 {
   for (unsigned int z = 0; z < m_qtyLayers; z++)
@@ -824,8 +846,11 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, uns
 }
 
 template<typename T>
-void Matrix<T>::setLine(T value, const Point &p1, const Point &p2, unsigned int z)
+void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
 {
+  Point p1 = line.getStartPoint();
+  Point p2 = line.getEndPoint();
+
   if (!isPointInsideImage(p1) || !isPointInsideImage(p2))
   {
     return;
@@ -1022,7 +1047,7 @@ void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
       continue;
     }
 
-    setLine(value, *itPrevious, *it, z);
+    setLine(value, Line(*itPrevious, *it), z);
 
     itPrevious = it;
   }
@@ -1051,7 +1076,7 @@ void Matrix<T>::setHistogram(const std::vector<unsigned int> &histogram, unsigne
     unsigned int barHeight = histogram[i] * m_height * 1.0 / maxValue;
     for (unsigned int j = 0; j < barWidth; j++)
     {
-      setLine(std::numeric_limits<T>::max(), Point(i * barWidth + j, m_height - 1), Point(i * barWidth + j, m_height - barHeight), z);
+      setLine(std::numeric_limits<T>::max(), Line(Point(i * barWidth + j, m_height - 1), Point(i * barWidth + j, m_height - barHeight)), z);
     }
   }
 }
@@ -1822,6 +1847,44 @@ void Matrix<T>::replace(T currentValue, T newValue, unsigned int z)
       *it = newValue;
     }
   }
+}
+
+template<typename T>
+Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smoothingWidth, unsigned int z)
+{
+  Edges edges;
+
+  Points points = line.getPointsAlongLine();
+
+  unsigned int stepSize = 1;
+
+  std::list<double> averages;
+
+  for (auto it = points.begin(); it != points.end(); it++)
+  {
+    Point p1 = MathHelper::calcEndPoint(*it, line.getAngle() - 90, smoothingWidth);
+    Point p2 = MathHelper::calcEndPoint(*it, line.getAngle() + 90, smoothingWidth);
+
+    Line verticalLine(p1, p2);
+
+    averages.push_back(getAverageAlongLine(verticalLine, z));
+
+    if (averages.size() > stepSize)
+    {
+      double difference = averages.back() - averages.front();
+
+      if (difference > minContrast || difference < -minContrast)
+      {
+        edges.push_back(Edge(*it, line.getAngle(), difference));
+        std::cout << "difference: " << difference << std::endl;
+        setPoint(255, *it);
+      }
+
+      averages.pop_front();
+    }
+  }
+
+  return edges;
 }
 
 template<typename T>

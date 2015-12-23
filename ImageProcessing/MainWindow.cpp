@@ -14,6 +14,7 @@
 #include "Image.h"
 #include "FilterGenerator.h"
 #include "StructuringElementGenerator.h"
+#include "Line.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -31,8 +32,8 @@ MainWindow::MainWindow(QWidget *parent) :
   m_imageDisplay = new ImageDisplay(this);
   setCentralWidget(m_imageDisplay);
 
-
-  polyLineTest();
+  //polyLineTest();
+  lineTest();
 }
 
 MainWindow::~MainWindow()
@@ -215,6 +216,21 @@ void MainWindow::polyLineTest()
   for (unsigned int i = 0; i < 9; i++)
   {
     StructuringElementGenerator::polyLineFillTest(i, false).printValuesToConsole("unfilled");
-    //StructuringElementGenerator::polyLineFillTest(i, true).printValuesToConsole("filled");
+    StructuringElementGenerator::polyLineFillTest(i, true).printValuesToConsole("filled");
   }
+}
+
+void MainWindow::lineTest()
+{
+  Point p1(10, 1);
+  Point p2(4, 16);
+
+  Line line(p1, p2);
+
+  Image* image = new Image(20, 20);
+  image->setRectangle(128, Rectangle(Point(4, 4), 10, 10));
+
+  Edges edges = image->findEdges(line, 52, 2);
+
+  m_imageDisplay->setImage(image);
 }

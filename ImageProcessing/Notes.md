@@ -2,32 +2,13 @@
 
 # ToDo (prioritised)
 * Debugger must be usable!!!
-* edge detection -> first horizontal, then vertical, then with any angle
-  * input
-    * vector (startpoint, direction, length)
-    * filterWidth for smoothing
-    * Pixel-Abstand für die Differenzbildung
-    * minimum contrast
-    * edge type (bright,dark,any)
-  * idea
-    * Linie definieren
-    * länge der linie (in Anzahl Pixeln) bestimmen -> buffer anlegen
-    * entlang der Linie für jeden Punkt
-      * die Senkrechte bilden
-      * symmetrisch um den Punkt entlang der senkrechten den mittelwert bilden -> Mittelwertslinie
-    * entlang der Mittelwertslinie Differenzen bilden (mit Pixel-Abstand für die Differenzbildung)
-    * schuen welche Differenzen die Kontastvorgaben (Wert, Typ) erfüllen
-    * Ergebnis-Vektor mit Kanten zurückgeben, ggf. gefunden Kanten markieren
-  * class Point -> startPoint x and y -> double
-  * Class Vector -> startPoint, direction, length (may be negative!)
-  * Class Edge derived from Vector - as long as there are no differences between vetor and edge -> typedef
-  * Matrix: double getAverageAlongLine(const Line& line)
+* edge detection
   * Class: Edges
     * list of edges
     * getFirstEdge(edgeType: bright,dark,any)
     * getLastEdge(edgeType: bright,dark,any)
     * getEdgePairs ???
-  * line fit -> input: points - output: line - take care of special cases (link vertical line)
+* line fit -> input: points - output: line - take care of special cases (link vertical line)
 * calculate statistics for runLengthCode or wohle image if nullptr
 * Hole-Filling -> see handwritten notes of 2015-12-13
 * Matrix::setStructureElement(T value, Point (where the reference point of the structureElement is placed) ...)
@@ -83,6 +64,7 @@
 * classification
 * print text inside image
 * convex hull
+* image viewer as MDI - with many dockable viewers -> must be highly customizable!
 
 # Applications
 * Count Eyes of Dice
@@ -102,6 +84,10 @@
 * vector of mixed types is not possible, so a vector of a template with different initialisations is also not possible -> Image with different Layers (int, double, bool) is currently not possible
 * Best approach of some hours of testing: Base Template Class (3d)Matrix + Derivations (ImageGray, ImageRGB, etc)
 * Matrix is template base class, all algorithms which are type-independent are defined here
+* angles are always declared in deg
+* reference point is always the top left corner
+* edges are always searched in x-direction
+* angles are defined counter clockwise (mathematically)
 
 ## Goals (ordered)
 * correctnes
