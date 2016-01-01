@@ -1,18 +1,16 @@
 # Bugs
 
 # ToDo (prioritised)
-* Debugger must be usable!!!
-* edge detection
-  * Class: Edges
-    * list of edges
-    * getFirstEdge(edgeType: bright,dark,any)
-    * getLastEdge(edgeType: bright,dark,any)
-    * getEdgePairs ???
-* line fit -> input: points - output: line - take care of special cases (link vertical line)
+* edgeDetection filterWith -> not half filter width
 * calculate statistics for runLengthCode or wohle image if nullptr
+* EdgeExtractor
+  * getFirstEdge(edgeType: bright,dark,any)
+  * getLastEdge(edgeType: bright,dark,any)
+  * getEdgePairs ???
+* Debugger must be usable!!!
+* line fit -> input: points - output: line - take care of special cases (link vertical line)
 * Hole-Filling -> see handwritten notes of 2015-12-13
 * Matrix::setStructureElement(T value, Point (where the reference point of the structureElement is placed) ...)
-* invert operator (!) for StructuringElements
 * operators + += etc. see pic.h/cpp
 * use exceptions?
 * serialization of matrix
@@ -51,12 +49,10 @@
   * create
   * read generated
   * test: change some pixels and try to read
-* type: line -> 2 points define a line: Alternative: start point, angle + length
 * setInterpolationMode: nearestNeighbor, bilinearInterpolation, ...?
 * setNeighborhood: neighborhood4, neighborhood8
 * patter matching
 * statistics on objects (mean value etc)
-* floodFill: https://de.wikipedia.org/wiki/Floodfill
 * implement more filters: http://homepages.inf.ed.ac.uk/rbf/HIPR2/filtops.htm
 * hough transformation
 * fourier transformation
@@ -87,7 +83,10 @@
 * angles are always declared in deg
 * reference point is always the top left corner
 * edges are always searched in x-direction
-* angles are defined counter clockwise (mathematically)
+* angles are defined in y-direction (mathematically)
+  * attention: y direction is pointing up, not down, so the angle is going clockwise
+  * under the horizontal line ->   0 ...  90 ... 180 degree
+  * above the horizontal line -> 180 ... -90 ...   0 degree
 
 ## Goals (ordered)
 * correctnes

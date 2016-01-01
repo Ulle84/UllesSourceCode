@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
   setCentralWidget(m_imageDisplay);
 
   //polyLineTest();
-  lineTest();
+  //edgeDetectionTest();
+  lineDirectionTest();
 }
 
 MainWindow::~MainWindow()
@@ -220,7 +221,7 @@ void MainWindow::polyLineTest()
   }
 }
 
-void MainWindow::lineTest()
+void MainWindow::edgeDetectionTest()
 {
   Point p1(10, 1);
   Point p2(4, 16);
@@ -233,4 +234,16 @@ void MainWindow::lineTest()
   Edges edges = image->findEdges(line, 52, 2);
 
   m_imageDisplay->setImage(image);
+}
+
+void MainWindow::lineDirectionTest()
+{
+  unsigned int width = 3;
+
+  Point c(width / 2, width / 2);
+
+  for (int x = -135; x <= 180; x += 45)
+  {
+    Line(c, x, x % 90 == 0 ? 1.0 : 1.41);
+  }
 }

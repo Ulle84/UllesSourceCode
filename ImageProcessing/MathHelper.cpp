@@ -1,3 +1,4 @@
+//#include <iostream>
 #include <math.h>
 
 #include "MathHelper.h"
@@ -17,16 +18,20 @@ Point MathHelper::calcEndPoint(const Point &startPoint, float angle, float lengt
   Point endPoint;
 
   endPoint.m_x = startPoint.m_x + length * cos(rad(angle)) + 0.5;
-  endPoint.m_y = startPoint.m_y - length * sin(rad(angle)) + 0.5; // TODO keep the minus sign?
+  endPoint.m_y = startPoint.m_y + length * sin(rad(angle)) + 0.5;
+
+  //std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
 
   return endPoint;
 }
 
 void MathHelper::calcAngleAndLength(const Point &startPoint, const Point &endPoint, float &angle, float &length)
 {
-  short x =   endPoint.m_x - startPoint.m_x;
-  short y = -(endPoint.m_y - startPoint.m_y); // TODO keep the minus sign?
+  short x = endPoint.m_x - startPoint.m_x;
+  short y = endPoint.m_y - startPoint.m_y;
 
   length = sqrt(x * x + y * y);
   angle = deg(atan2(y, x));
+
+  //std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
 }

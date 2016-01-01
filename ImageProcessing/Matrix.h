@@ -1862,12 +1862,22 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
 
   for (auto it = points.begin(); it != points.end(); it++)
   {
-    Point p1 = MathHelper::calcEndPoint(*it, line.getAngle() - 90, smoothingWidth);
-    Point p2 = MathHelper::calcEndPoint(*it, line.getAngle() + 90, smoothingWidth);
+    if (smoothingWidth > 1)
+    {
+      // TODO calculate correct smoothingWidth - angle corrected
 
-    Line verticalLine(p1, p2);
+      Point p1 = MathHelper::calcEndPoint(*it, line.getAngle() - 90, smoothingWidth);
+      Point p2 = MathHelper::calcEndPoint(*it, line.getAngle() + 90, smoothingWidth);
 
-    averages.push_back(getAverageAlongLine(verticalLine, z));
+      Line verticalLine(p1, p2);
+
+      averages.push_back(getAverageAlongLine(verticalLine, z));
+    }
+    else
+    {
+      averages.push_back(m_values[z][it->m_y][it->m_x]);
+    }
+
 
     if (averages.size() > stepSize)
     {
