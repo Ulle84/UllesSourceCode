@@ -20,6 +20,7 @@
 #include <RunLengthCode.h>
 #include <Line.h>
 #include <Edge.h>
+#include <Statistics.h>
 
 // TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
@@ -70,6 +71,7 @@ public:
   std::vector<unsigned int> getHistogram(unsigned int z);
   RunLengthCode getRunLengthCode(T value, unsigned int z = 0) const;
   double getAverageAlongLine(const Line& line, unsigned int z = 0) const;
+  Statistics<T> getStatistics(const RunLengthCode& runLengthCode, unsigned int z = 0);
 
   void setIncreasingValues();
   void setRandomValues();
@@ -644,6 +646,43 @@ double Matrix<T>::getAverageAlongLine(const Line &line, unsigned int z) const
   average /= points.size();
 
   return average;
+}
+
+template<typename T>
+Statistics<T> Matrix<T>::getStatistics(const RunLengthCode& runLengthCode, unsigned int z)
+{
+  Statistics<T> statistics;
+
+  unsigned int qtyPixels = 0;
+  double sumOfPixels = 0.0;
+
+  for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
+  {
+    qtyPixels += it->m_length;
+
+    T* ptr = &m_values[z][it->m_startPoint.m_y][it->m_startPoint.m_x];
+    for (unsigned int i = 0; i < it->m_length; i++, ptr++)
+    {
+      if (*ptr < statistics.minimum)
+      {
+        statistics.minimum = *ptr;
+      }
+
+      if (*ptr > statistics.maximum)
+      {
+        statistics.maximum = *ptr;
+      }
+
+      sumOfPixels += *ptr;
+    }
+  }
+
+  if (qtyPixels > 0)
+  {
+    statistics.meanValue = sumOfPixels / qtyPixels;
+  }
+
+  return statistics;
 }
 
 template<typename T>
@@ -1860,16 +1899,46 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
 
   std::list<double> averages;
 
+  // 3 - 1
+  // 4 - 2
+
+  float distance1 = smoothingWidth / 2;
+  float distance2 = smoothingWidth / 2;
+
+  if (smoothingWidth % 2 == 0)
+  {
+    distance2--;
+  }
+
+  if (smoothingWidth > 1)
+  {
+    double d1 = sin(MathHelper::rad(line.getAngle()));
+    double d2 = cos(MathHelper::rad(line.getAngle()));
+
+    /*std::cout << "d1: " << d1 << std::endl;
+    std::cout << "d2: " << d2 << std::endl;*/
+
+    double lengthCorrection = d1 + d2; // TODO does not seem to be perfect
+
+    //std::cout << "d1 + d2: " << lengthCorrection << std::endl;
+
+    distance1 *= lengthCorrection;
+    distance2 *= lengthCorrection;
+  }
+
   for (auto it = points.begin(); it != points.end(); it++)
   {
     if (smoothingWidth > 1)
     {
-      // TODO calculate correct smoothingWidth - angle corrected
-
-      Point p1 = MathHelper::calcEndPoint(*it, line.getAngle() - 90, smoothingWidth);
-      Point p2 = MathHelper::calcEndPoint(*it, line.getAngle() + 90, smoothingWidth);
+      Point p1 = MathHelper::calcEndPoint(*it, line.getAngle() - 90, distance1);
+      Point p2 = MathHelper::calcEndPoint(*it, line.getAngle() + 90, distance2);
 
       Line verticalLine(p1, p2);
+
+      /*if (it == points.begin())
+      {
+        setLine(255, verticalLine);
+      }*/
 
       averages.push_back(getAverageAlongLine(verticalLine, z));
     }
@@ -1886,7 +1955,7 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
       if (difference > minContrast || difference < -minContrast)
       {
         edges.push_back(Edge(*it, line.getAngle(), difference));
-        std::cout << "difference: " << difference << std::endl;
+        //std::cout << "difference: " << difference << std::endl;
         setPoint(255, *it);
       }
 

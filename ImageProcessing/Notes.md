@@ -1,7 +1,6 @@
 # Bugs
 
 # ToDo (prioritised)
-* edgeDetection filterWith -> not half filter width
 * calculate statistics for runLengthCode or wohle image if nullptr
 * EdgeExtractor
   * getFirstEdge(edgeType: bright,dark,any)
@@ -29,7 +28,6 @@
 # Ideas
 * rectangle with orientation-angle
 * drawEllipse - circle is also an ellipse
-* polygon data type + drawFunction (polygon is a closed polyline) -> for filled polygons: Saatfül-Algorithmus
 * interactive teachIn
   * circle
   * line

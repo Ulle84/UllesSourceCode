@@ -148,4 +148,16 @@ void ImageDisplay::setImage(Image* image)
   m_scene->addPixmap(pixmap);
 
   ui->graphicsView->setScene(m_scene);
+
+  //ui->graphicsView->fitInView( m_scene->sceneRect(), Qt::KeepAspectRatio );
+}
+
+void ImageDisplay::on_pushButtonZoomIn_clicked()
+{
+  ui->graphicsView->scale(1.25, 1.25);
+}
+
+void ImageDisplay::on_pushButtonZoomOut_clicked()
+{
+ui->graphicsView->scale(0.8, 0.8);
 }

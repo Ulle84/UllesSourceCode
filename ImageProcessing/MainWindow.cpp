@@ -34,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //polyLineTest();
   //edgeDetectionTest();
-  lineDirectionTest();
+  //lineDirectionTest();
+  statisticsTest();
 }
 
 MainWindow::~MainWindow()
@@ -223,15 +224,15 @@ void MainWindow::polyLineTest()
 
 void MainWindow::edgeDetectionTest()
 {
-  Point p1(10, 1);
-  Point p2(4, 16);
+  Point p1(5, 5);
+  Point p2(20, 20);
 
   Line line(p1, p2);
 
-  Image* image = new Image(20, 20);
-  image->setRectangle(128, Rectangle(Point(4, 4), 10, 10));
+  Image* image = new Image(40, 40);
+  image->setRectangle(128, Rectangle(Point(9, 9), 20, 20));
 
-  Edges edges = image->findEdges(line, 52, 2);
+  Edges edges = image->findEdges(line, 20, 3);
 
   m_imageDisplay->setImage(image);
 }
@@ -246,4 +247,31 @@ void MainWindow::lineDirectionTest()
   {
     Line(c, x, x % 90 == 0 ? 1.0 : 1.41);
   }
+}
+
+void MainWindow::statisticsTest()
+{
+  unsigned int width = 5120;
+  unsigned int height = 5120;
+
+  Image* image = new Image(width, height);
+  image->setIncreasingValues();
+
+  RunLengthCode runLenghtCode;
+  //runLenghtCode.push_back(RunLength(Point(0, 0), 2));
+
+  for (unsigned int y = 0; y < height; y++)
+  {
+    runLenghtCode.push_back(RunLength(Point(0, y), width));
+  }
+
+  //runLenghtCode.push_back(RunLength());
+
+  Statistics<unsigned char> statistics = image->getStatistics(runLenghtCode);
+
+  std::cout << "minimum: " << (int) statistics.minimum << std::endl;
+  std::cout << "maximum: " << (int) statistics.maximum << std::endl;
+  std::cout << "meanValue: " << statistics.meanValue << std::endl;
+
+  m_imageDisplay->setImage(image);
 }

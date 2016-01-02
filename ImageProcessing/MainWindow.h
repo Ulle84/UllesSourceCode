@@ -33,6 +33,7 @@ private:
   void polyLineTest();
   void edgeDetectionTest();
   void lineDirectionTest();
+  void statisticsTest();
 
   Ui::MainWindow* ui;
   Image* m_image;

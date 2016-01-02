@@ -42,7 +42,8 @@ HEADERS  += MainWindow.h \
     RunLengthCode.h \
     Edge.h \
     Line.h \
-    MathHelper.h
+    MathHelper.h \
+    Statistics.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

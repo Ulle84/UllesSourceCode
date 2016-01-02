@@ -21,6 +21,11 @@ public:
   bool eventFilter(QObject *target, QEvent *event);
   void setImage(Image* image);
 
+private slots:
+  void on_pushButtonZoomIn_clicked();
+
+  void on_pushButtonZoomOut_clicked();
+
 private:
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
