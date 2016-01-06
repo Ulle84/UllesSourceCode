@@ -3,11 +3,10 @@
 
 #include <list>
 
-#include "Rectangle.h"
 #include "Point.h"
 #include "RunLengthCode.h"
 
-// TODO typedef std::list<Point> PolyLine?
+class Rectangle;
 
 class PolyLine
 {

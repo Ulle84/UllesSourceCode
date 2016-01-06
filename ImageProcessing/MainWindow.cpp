@@ -35,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //polyLineTest();
   //edgeDetectionTest();
   //lineDirectionTest();
-  statisticsTest();
+  //statisticsTest();
+  rotatedRectangleTest();
 }
 
 MainWindow::~MainWindow()
@@ -272,6 +273,19 @@ void MainWindow::statisticsTest()
   std::cout << "minimum: " << (int) statistics.minimum << std::endl;
   std::cout << "maximum: " << (int) statistics.maximum << std::endl;
   std::cout << "meanValue: " << statistics.meanValue << std::endl;
+
+  m_imageDisplay->setImage(image);
+}
+
+void MainWindow::rotatedRectangleTest()
+{
+  unsigned int width = 256;
+  unsigned int height = 256;
+
+  Image* image = new Image(width, height);
+
+  Rectangle rectangle(Point(0, 0), 30, 20, 1);
+  image->setRectangle(255, rectangle, true);
 
   m_imageDisplay->setImage(image);
 }

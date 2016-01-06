@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     RunLengthCode.cpp \
     Edge.cpp \
     Line.cpp \
-    MathHelper.cpp
+    MathHelper.cpp \
+    Converter.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -43,7 +44,8 @@ HEADERS  += MainWindow.h \
     Edge.h \
     Line.h \
     MathHelper.h \
-    Statistics.h
+    Statistics.h \
+    Converter.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

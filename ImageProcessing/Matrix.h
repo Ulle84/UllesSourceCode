@@ -3,24 +3,23 @@
 
 #include <iostream>
 #include <limits>
-#include <typeinfo>
-#include <string>
-#include <vector>
 #include <list>
-
 #include <math.h>
+#include <string>
+#include <typeinfo>
+#include <vector>
 
+#include "Circle.h"
+#include "Converter.h"
+#include "Edge.h"
+#include "FreemanCode.h"
+#include "Line.h"
 #include "MathHelper.h"
-
-#include <Circle.h>
-#include <FreemanCode.h>
-#include <Point.h>
-#include <Rectangle.h>
-#include <PolyLine.h>
-#include <RunLengthCode.h>
-#include <Line.h>
-#include <Edge.h>
-#include <Statistics.h>
+#include "Point.h"
+#include "PolyLine.h"
+#include "Rectangle.h"
+#include "RunLengthCode.h"
+#include "Statistics.h"
 
 // TODO rename this header to Base.h? Here ist not only Matrix defined anymore
 // TODO use const wherever possible
@@ -640,7 +639,7 @@ double Matrix<T>::getAverageAlongLine(const Line &line, unsigned int z) const
 
   for (auto it = points.begin(); it != points.end(); it++)
   {
-    average += m_values[z][it->m_y][it->m_x];
+    average += m_values[z][Converter::toUInt(it->m_y)][Converter::toUInt(it->m_x)];
   }
 
   average /= points.size();
@@ -660,7 +659,7 @@ Statistics<T> Matrix<T>::getStatistics(const RunLengthCode& runLengthCode, unsig
   {
     qtyPixels += it->m_length;
 
-    T* ptr = &m_values[z][it->m_startPoint.m_y][it->m_startPoint.m_x];
+    T* ptr = &m_values[z][Converter::toUInt(it->m_startPoint.m_y)][Converter::toUInt(it->m_startPoint.m_x)];
     for (unsigned int i = 0; i < it->m_length; i++, ptr++)
     {
       if (*ptr < statistics.minimum)
@@ -769,7 +768,7 @@ void Matrix<T>::spread()
 template<typename T>
 bool Matrix<T>::isPointInsideImage(const Point &point)
 {
-  return point.m_x < m_width && point.m_y < m_height;
+  return point.m_x > 0.0 && point.m_y > 0.0 && Converter::toUInt(point.m_x) < m_width && Converter::toUInt(point.m_y) < m_height;
 }
 
 template<typename T>
@@ -777,8 +776,12 @@ bool Matrix<T>::isRectangleInsideImage(const Rectangle& rectangle)
 {
   bool rectangleInImage = true;
 
-  rectangleInImage &= ((rectangle.m_topLeftCorner.m_x + rectangle.m_width) < m_width);
-  rectangleInImage &= ((rectangle.m_topLeftCorner.m_y + rectangle.m_height) < m_height);
+  Points edgePoints = rectangle.getEdgePoints();
+
+  for (auto it = edgePoints.begin(); it != edgePoints.end(); it++)
+  {
+    rectangleInImage &= isPointInsideImage(*it);
+  }
 
   return rectangleInImage;
 }
@@ -839,7 +842,7 @@ void Matrix<T>::setPoint(T value, const Point &point, unsigned int z)
   {
     return;
   }
-  m_values[z][point.m_y][point.m_x] = value;
+  m_values[z][Converter::toUInt(point.m_y)][Converter::toUInt(point.m_x)] = value;
 }
 
 template<typename T>
@@ -850,36 +853,57 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, uns
     return;
   }
 
-  if (fill)
+  if (rectangle.m_angle == 0)
   {
-    for (unsigned int y = rectangle.m_topLeftCorner.m_y; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height); y++)
+    if (fill)
     {
-      if (sizeof(T) == 1)
+      for (unsigned int y = rectangle.m_origin.m_y; y < (rectangle.m_origin.m_y + rectangle.m_height); y++)
       {
-        memset(&(m_values[z][y][rectangle.m_topLeftCorner.m_x]), value, rectangle.m_width);
-      }
-      else
-      {
-        for (unsigned int x = rectangle.m_topLeftCorner.m_x; x < (rectangle.m_topLeftCorner.m_x + rectangle.m_width); x++)
+        if (sizeof(T) == 1)
         {
-          m_values[z][y][x] = value;
+          memset(&(m_values[z][y][Converter::toUInt(rectangle.m_origin.m_x)]), value, rectangle.m_width);
         }
+        else
+        {
+          for (unsigned int x = rectangle.m_origin.m_x; x < (Converter::toUInt(rectangle.m_origin.m_x) + rectangle.m_width); x++)
+          {
+            m_values[z][y][x] = value;
+          }
+        }
+      }
+    }
+    else
+    {
+      for (unsigned int x = rectangle.m_origin.m_x; x < (rectangle.m_origin.m_x + rectangle.m_width); x++)
+      {
+        // TODO use memset if sizeof(T) == 1
+        m_values[z][Converter::toUInt(rectangle.m_origin.m_y)][x] = value;
+        m_values[z][Converter::toUInt(rectangle.m_origin.m_y) + rectangle.m_height - 1][x] = value;
+      }
+
+      for (unsigned int y = rectangle.m_origin.m_y + 1; y < (rectangle.m_origin.m_y + rectangle.m_height - 1); y++)
+      {
+        m_values[z][y][Converter::toUInt(rectangle.m_origin.m_x)] = value;
+        m_values[z][y][Converter::toUInt(rectangle.m_origin.m_x) + rectangle.m_width - 1] = value;
       }
     }
   }
   else
   {
-    for (unsigned int x = rectangle.m_topLeftCorner.m_x; x < (rectangle.m_topLeftCorner.m_x + rectangle.m_width); x++)
+    Points points = rectangle.toPolyLine().m_points;
+
+    for (auto it = points.begin(); it != points.end(); it++)
     {
-      // TODO use memset if sizeof(T) == 1
-      m_values[z][rectangle.m_topLeftCorner.m_y][x] = value;
-      m_values[z][rectangle.m_topLeftCorner.m_y + rectangle.m_height - 1][x] = value;
+      std::cout << "x: " << it->m_x << " y: " << it->m_y << std::endl;
     }
-    
-    for (unsigned int y = rectangle.m_topLeftCorner.m_y + 1; y < (rectangle.m_topLeftCorner.m_y + rectangle.m_height - 1); y++)
+
+    if (fill)
     {
-      m_values[z][y][rectangle.m_topLeftCorner.m_x] = value;
-      m_values[z][y][rectangle.m_topLeftCorner.m_x + rectangle.m_width - 1] = value;
+      setRunLengthCode(value, rectangle.toPolyLine().toRunLengthCode(), z);
+    }
+    else
+    {
+      setPolyLine(value, rectangle.toPolyLine(), z);
     }
   }
 }
@@ -903,7 +927,7 @@ void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
 
     for (unsigned int y = min; y <= max; y++)
     {
-      m_values[z][y][p1.m_x] = value;
+      m_values[z][y][Converter::toUInt(p1.m_x)] = value;
     }
 
     return;
@@ -917,13 +941,13 @@ void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
 
     if (sizeof(T) == 1)
     {
-      memset(&m_values[z][p1.m_y][min], value, max - min + 1);
+      memset(&m_values[z][Converter::toUInt(p1.m_y)][min], value, max - min + 1);
     }
     else
     {
       for (unsigned int x = min; x <= max; x++)
       {
-        m_values[z][p1.m_y][x] = value;
+        m_values[z][Converter::toUInt(p1.m_y)][x] = value;
       }
     }
 
@@ -933,10 +957,10 @@ void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
   // code below copied partially from
   // https://de.wikipedia.org/wiki/Bresenham-Algorithmus#Kompakte_Variante
 
-  int x0 = p1.m_x;
-  int y0 = p1.m_y;
-  int x1 = p2.m_x;
-  int y1 = p2.m_y;
+  int x0 = Converter::toUInt(p1.m_x);
+  int y0 = Converter::toUInt(p1.m_y);
+  int x1 = Converter::toUInt(p2.m_x);
+  int y1 = Converter::toUInt(p2.m_y);
 
   int dx =  abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
   int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
@@ -972,14 +996,14 @@ void Matrix<T>::setCircle(T value, const Circle &circle, bool fill, unsigned int
     {
       for (int xx = -x; xx <= x; xx++)
       {
-        m_values[z][circle.m_center.m_y + y][circle.m_center.m_x + xx] = value; // Octant 1 + Octant 4
-        m_values[z][circle.m_center.m_y - y][circle.m_center.m_x + xx] = value; // Octant 5 + Octant 8
+        m_values[z][Converter::toUInt(circle.m_center.m_y) + y][Converter::toUInt(circle.m_center.m_x) + xx] = value; // Octant 1 + Octant 4
+        m_values[z][Converter::toUInt(circle.m_center.m_y) - y][Converter::toUInt(circle.m_center.m_x) + xx] = value; // Octant 5 + Octant 8
       }
 
       for (int yy = -y; yy <= y; yy++)
       {
-        m_values[z][circle.m_center.m_y + x][circle.m_center.m_x + yy] = value; // Octant 2 + Octant 3
-        m_values[z][circle.m_center.m_y - x][circle.m_center.m_x + yy] = value; // Octant 6 + Octant 7
+        m_values[z][Converter::toUInt(circle.m_center.m_y) + x][Converter::toUInt(circle.m_center.m_x) + yy] = value; // Octant 2 + Octant 3
+        m_values[z][Converter::toUInt(circle.m_center.m_y) - x][Converter::toUInt(circle.m_center.m_x) + yy] = value; // Octant 6 + Octant 7
       }
 
       // IP memset for sizeof(T) == 1
@@ -992,15 +1016,15 @@ void Matrix<T>::setCircle(T value, const Circle &circle, bool fill, unsigned int
     }
     else
     {
-      m_values[z][circle.m_center.m_y + y][circle.m_center.m_x + x] = value; // Octant 1
-      m_values[z][circle.m_center.m_y + x][circle.m_center.m_x + y] = value; // Octant 2
-      m_values[z][circle.m_center.m_y + x][circle.m_center.m_x - y] = value; // Octant 3
-      m_values[z][circle.m_center.m_y + y][circle.m_center.m_x - x] = value; // Octant 4
+      m_values[z][Converter::toUInt(circle.m_center.m_y) + y][Converter::toUInt(circle.m_center.m_x) + x] = value; // Octant 1
+      m_values[z][Converter::toUInt(circle.m_center.m_y) + x][Converter::toUInt(circle.m_center.m_x) + y] = value; // Octant 2
+      m_values[z][Converter::toUInt(circle.m_center.m_y) + x][Converter::toUInt(circle.m_center.m_x) - y] = value; // Octant 3
+      m_values[z][Converter::toUInt(circle.m_center.m_y) + y][Converter::toUInt(circle.m_center.m_x) - x] = value; // Octant 4
 
-      m_values[z][circle.m_center.m_y - y][circle.m_center.m_x - x] = value; // Octant 5
-      m_values[z][circle.m_center.m_y - x][circle.m_center.m_x - y] = value; // Octant 6
-      m_values[z][circle.m_center.m_y - x][circle.m_center.m_x + y] = value; // Octant 7
-      m_values[z][circle.m_center.m_y - y][circle.m_center.m_x + x] = value; // Octant 8
+      m_values[z][Converter::toUInt(circle.m_center.m_y) - y][Converter::toUInt(circle.m_center.m_x) - x] = value; // Octant 5
+      m_values[z][Converter::toUInt(circle.m_center.m_y) - x][Converter::toUInt(circle.m_center.m_x) - y] = value; // Octant 6
+      m_values[z][Converter::toUInt(circle.m_center.m_y) - x][Converter::toUInt(circle.m_center.m_x) + y] = value; // Octant 7
+      m_values[z][Converter::toUInt(circle.m_center.m_y) - y][Converter::toUInt(circle.m_center.m_x) + x] = value; // Octant 8
     }
 
     y++;
@@ -1125,7 +1149,7 @@ void Matrix<T>::setRunLengthCode(T value, const RunLengthCode &runLengthCode, un
 {
   for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
   {
-    setLine(value, it->m_startPoint, Point(it->m_startPoint.m_x + it->m_length - 1, it->m_startPoint.m_y), z);
+    setLine(value, Line(it->m_startPoint, Point(it->m_startPoint.m_x + it->m_length - 1, it->m_startPoint.m_y)), z);
   }
 }
 
@@ -1232,13 +1256,13 @@ void Matrix<T>::filterQuantilBool(const StructuringElement* structuringElement, 
           unsigned int dx = x - offsetLeft + it->m_startPoint.m_x - 1;
 
           // remove entry of left side
-          if (original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx])
+          if (original.m_values[z][y - offsetTop + Converter::toUInt(it->m_startPoint.m_y)][dx])
           {
             sum--;
           }
 
           // add entry of right side
-          if (original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx + it->m_length])
+          if (original.m_values[z][y - offsetTop + Converter::toUInt(it->m_startPoint.m_y)][dx + it->m_length])
           {
             sum++;
           }
@@ -1425,7 +1449,7 @@ void Matrix<T>::filterQuantil(const StructuringElement* structuringElement, doub
           unsigned int dx = x - offsetLeft + it->m_startPoint.m_x - 1;
 
           // remove entry of left side
-          T value = original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx];
+          T value = original.m_values[z][y - offsetTop + Converter::toUInt(it->m_startPoint.m_y)][dx];
           histogram[value]--;
           if (value < median)
           {
@@ -1433,7 +1457,7 @@ void Matrix<T>::filterQuantil(const StructuringElement* structuringElement, doub
           }
 
           // add entry of right side
-          value = original.m_values[z][y - offsetTop + it->m_startPoint.m_y][dx + it->m_length];
+          value = original.m_values[z][y - offsetTop + Converter::toUInt(it->m_startPoint.m_y)][dx + it->m_length];
           histogram[value]++;
           if (value < median)
           {
@@ -1944,7 +1968,7 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
     }
     else
     {
-      averages.push_back(m_values[z][it->m_y][it->m_x]);
+      averages.push_back(m_values[z][Converter::toUInt(it->m_y)][Converter::toUInt(it->m_x)]);
     }
 
 
@@ -2074,12 +2098,13 @@ Matrix<T> Matrix<T>::crop(const Rectangle& cropRegion)
 
   Matrix<T> cropped(cropRegion.m_width, cropRegion.m_height, m_qtyLayers);
 
+  // TODO what about rotated rectangles?
 
   for (unsigned int z = 0; z < m_qtyLayers; z++)
   {
     for (unsigned int y = 0; y < cropRegion.m_height; y++)
     {
-      memcpy(cropped.m_values[z][y], &m_values[z][y+cropRegion.m_topLeftCorner.m_y][cropRegion.m_topLeftCorner.m_x], cropRegion.m_width * sizeof(T));
+      memcpy(cropped.m_values[z][y], &m_values[z][y+cropRegion.m_origin.m_y][cropRegion.m_origin.m_x], cropRegion.m_width * sizeof(T));
     }
   }
 
@@ -2119,7 +2144,7 @@ Matrix<T> Matrix<T>::doPolarTransformation(const Circle &circle)
         int xx = radius * cos(angle * PI / 180.0);
         int yy = radius * sin(angle * PI / 180.0);
 
-        calculated.m_values[z][y][x] = m_values[z][yy + circle.m_center.m_y][xx + circle.m_center.m_x];
+        calculated.m_values[z][y][x] = m_values[z][yy + Converter::toUInt(circle.m_center.m_y)][xx + Converter::toUInt(circle.m_center.m_x)];
       }
     }
   }

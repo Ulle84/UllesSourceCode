@@ -1,7 +1,7 @@
 # Bugs
 
 # ToDo (prioritised)
-* calculate statistics for runLengthCode or wohle image if nullptr
+* draw line with small arrows
 * EdgeExtractor
   * getFirstEdge(edgeType: bright,dark,any)
   * getLastEdge(edgeType: bright,dark,any)
@@ -13,7 +13,6 @@
 * operators + += etc. see pic.h/cpp
 * use exceptions?
 * serialization of matrix
-* buttons for display zoom to use disply with one hand
 * auto-zoom on show image
 * Look at ToDos in Source-Code and change to // IP if appliable
 * implement move-constructor and move-operator -> copy from cImage and remove afterwards -> test, that the move-constructor and move-operator are called, when possible
@@ -24,9 +23,12 @@
 * define reference point for rotation with angle: top-left-corner vs. center
 * Matrix: squeeze function -> delete all conversion-buffers, which are not needed anymore
 * convolution of two matrices / vectors
+* setPolyLine etc -> class should know how to draw on Matrix -> Interface Drawable
+* Interface: Translatable
+* Interface: Rotatable
+* Kombination of Interfaces Drawable, Translatable, Rotatable, Zoomable -> Shape, Geometry
 
 # Ideas
-* rectangle with orientation-angle
 * drawEllipse - circle is also an ellipse
 * interactive teachIn
   * circle

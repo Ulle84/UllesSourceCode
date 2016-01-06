@@ -2,6 +2,7 @@
 
 #include "PolyLine.h"
 #include "Matrix.h"
+#include "Rectangle.h"
 
 PolyLine::PolyLine()
 {

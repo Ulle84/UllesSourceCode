@@ -7,10 +7,10 @@ class Point
 {
 public:
   Point();
-  Point(unsigned int x, unsigned int y);
+  Point(float x, float y);
 
-  unsigned int m_x; // TODO float?
-  unsigned int m_y;
+  float m_x;
+  float m_y;
 };
 
 typedef std::list<Point> Points;

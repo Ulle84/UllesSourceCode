@@ -34,6 +34,7 @@ private:
   void edgeDetectionTest();
   void lineDirectionTest();
   void statisticsTest();
+  void rotatedRectangleTest();
 
   Ui::MainWindow* ui;
   Image* m_image;
