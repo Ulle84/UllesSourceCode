@@ -1,7 +1,6 @@
 # Bugs
 
 # ToDo (prioritised)
-* draw line with small arrows
 * EdgeExtractor
   * getFirstEdge(edgeType: bright,dark,any)
   * getLastEdge(edgeType: bright,dark,any)

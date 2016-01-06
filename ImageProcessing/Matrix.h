@@ -82,7 +82,7 @@ public:
   void setColumn(T value, unsigned int x, unsigned int z = 0);
   void setPoint(T value, const Point& point, unsigned int z = 0);
   void setRectangle(T value, const Rectangle& rectangle, bool fill = true, unsigned int z = 0);
-  void setLine(T value, const Line& line, unsigned int z = 0);
+  void setLine(T value, const Line& line, bool drawArrow = false, unsigned int z = 0);
   void setCircle(T value, const Circle& circle, bool fill = true, unsigned int z = 0);
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
@@ -909,7 +909,7 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, uns
 }
 
 template<typename T>
-void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
+void Matrix<T>::setLine(T value, const Line & line, bool drawArrow, unsigned int z)
 {
   Point p1 = line.getStartPoint();
   Point p2 = line.getEndPoint();
@@ -929,11 +929,8 @@ void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
     {
       m_values[z][y][Converter::toUInt(p1.m_x)] = value;
     }
-
-    return;
   }
-
-  if (p1.m_y == p2.m_y)
+  else if (p1.m_y == p2.m_y)
   {
     // draw horizontal line
     unsigned int min = minimum(p1.m_x, p2.m_x);
@@ -950,28 +947,53 @@ void Matrix<T>::setLine(T value, const Line & line, unsigned int z)
         m_values[z][Converter::toUInt(p1.m_y)][x] = value;
       }
     }
+  }
+  else
+  {
+    // code below copied partially from
+    // https://de.wikipedia.org/wiki/Bresenham-Algorithmus#Kompakte_Variante
 
-    return;
+    int x0 = Converter::toUInt(p1.m_x);
+    int y0 = Converter::toUInt(p1.m_y);
+    int x1 = Converter::toUInt(p2.m_x);
+    int y1 = Converter::toUInt(p2.m_y);
+
+    int dx =  abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy, e2; /* error value e_xy */
+
+    while (true)
+    {
+      m_values[z][y0][x0] = value;
+
+      if (x0 == x1 && y0 == y1)
+      {
+        break;
+      }
+
+      e2 = 2*err;
+
+      if (e2 > dy)
+      {
+        err += dy;
+        x0 += sx;
+      }
+
+      if (e2 < dx)
+      {
+        err += dx;
+        y0 += sy;
+      }
+    }
   }
 
-  // code below copied partially from
-  // https://de.wikipedia.org/wiki/Bresenham-Algorithmus#Kompakte_Variante
+  if (drawArrow)
+  {
+    float arrowLength = 3;
+    float arrowAngle = 135;
 
-  int x0 = Converter::toUInt(p1.m_x);
-  int y0 = Converter::toUInt(p1.m_y);
-  int x1 = Converter::toUInt(p2.m_x);
-  int y1 = Converter::toUInt(p2.m_y);
-
-  int dx =  abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-  int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-  int err = dx + dy, e2; /* error value e_xy */
-
-  while(1){
-    m_values[z][y0][x0] = value;
-    if (x0==x1 && y0==y1) break;
-    e2 = 2*err;
-    if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
-    if (e2 < dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+    setLine(value, Line(line.getEndPoint(), line.getAngle() + arrowAngle, arrowLength));
+    setLine(value, Line(line.getEndPoint(), line.getAngle() - arrowAngle, arrowLength));
   }
 }
 

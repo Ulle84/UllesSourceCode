@@ -35,6 +35,7 @@ private:
   void lineDirectionTest();
   void statisticsTest();
   void rotatedRectangleTest();
+  void setLineTest();
 
   Ui::MainWindow* ui;
   Image* m_image;

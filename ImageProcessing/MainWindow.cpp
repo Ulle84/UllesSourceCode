@@ -36,7 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //edgeDetectionTest();
   //lineDirectionTest();
   //statisticsTest();
-  rotatedRectangleTest();
+  //rotatedRectangleTest();
+  setLineTest();
 }
 
 MainWindow::~MainWindow()
@@ -286,6 +287,23 @@ void MainWindow::rotatedRectangleTest()
 
   Rectangle rectangle(Point(0, 0), 30, 20, 1);
   image->setRectangle(255, rectangle, true);
+
+  m_imageDisplay->setImage(image);
+}
+
+void MainWindow::setLineTest()
+{
+  unsigned int width = 256;
+  unsigned int height = 256;
+
+  Image* image = new Image(width, height);
+
+  for (float angle = 0.0; angle < 360.0; angle += 10.0)
+  {
+    image->setLine(255, Line(Point(128, 128), angle, 100), true);
+  }
+
+  //image->setLine(255, Line(Point(128, 128), 0, 100), true);
 
   m_imageDisplay->setImage(image);
 }
