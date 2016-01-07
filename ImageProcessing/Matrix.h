@@ -770,7 +770,7 @@ void Matrix<T>::spread()
 template<typename T>
 bool Matrix<T>::isPointInsideImage(const Point &point)
 {
-  return point.m_x > 0.0 && point.m_y > 0.0 && Converter::toUInt(point.m_x) < m_width && Converter::toUInt(point.m_y) < m_height;
+  return point.m_x >= 0.0 && point.m_y >= 0.0 && Converter::toUInt(point.m_x) <= m_width && Converter::toUInt(point.m_y) <= m_height;
 }
 
 template<typename T>
@@ -1127,19 +1127,14 @@ void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned
 template<typename T>
 void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 {
-  std::cout << "set polyline" << std::endl;
-
   if (polyLine.m_points.size() < 2)
   {
-    std::cout << "polyLine.m_points.size() < 2" << std::endl;
     return;
   }
 
   auto itPrevious = polyLine.m_points.begin();
   for (auto it = polyLine.m_points.begin(); it != polyLine.m_points.end(); it++)
   {
-    std::cout << "Point - y: " << it->m_y << " x: " << it->m_x << std::endl;
-
     if (it == polyLine.m_points.begin())
     {
       continue;
@@ -1147,17 +1142,9 @@ void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 
     Line line(*itPrevious, *it);
 
-    std::cout << "Line StartPoint - y: " << line.getStartPoint().m_y << " x: " << line.getStartPoint().m_x << std::endl;
-    std::cout << "Line EndPoint   - y: " << line.getEndPoint().m_y << " x: " << line.getEndPoint().m_x << std::endl;
-
     if (isLineInsideImage(line))
     {
-      std::cout << "set line" << std::endl;
       setLine(value, line, z);
-    }
-    else
-    {
-      std::cout << "line outside image" << std::endl;
     }
 
     itPrevious = it;
@@ -1230,10 +1217,6 @@ void Matrix<T>::setStructureElement(T value, const StructuringElement *structuri
 
   unsigned int dx = referencePointPosition.m_x - structuringElement->getReferencePoint().m_x;
   unsigned int dy = referencePointPosition.m_y - structuringElement->getReferencePoint().m_y;
-
-  std::cout << "dx: " << dx << std::endl;
-  std::cout << "dy: " << dy << std::endl;
-
 
   for (unsigned int x = 0; x < structuringElement->getWidth(); x++)
   {
