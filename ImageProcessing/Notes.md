@@ -8,7 +8,6 @@
 * Debugger must be usable!!!
 * line fit -> input: points - output: line - take care of special cases (link vertical line)
 * Hole-Filling -> see handwritten notes of 2015-12-13
-* Matrix::setStructureElement(T value, Point (where the reference point of the structureElement is placed) ...)
 * operators + += etc. see pic.h/cpp
 * use exceptions?
 * serialization of matrix
@@ -19,7 +18,6 @@
   * test that move-constructor and move-operator are used, otherwise this operations will be very "expensive"
   * test: imageEroded = image.erode(blub);
   * test: image = image.erode(blub);
-* define reference point for rotation with angle: top-left-corner vs. center
 * Matrix: squeeze function -> delete all conversion-buffers, which are not needed anymore
 * convolution of two matrices / vectors
 * setPolyLine etc -> class should know how to draw on Matrix -> Interface Drawable
@@ -80,7 +78,7 @@
 * Best approach of some hours of testing: Base Template Class (3d)Matrix + Derivations (ImageGray, ImageRGB, etc)
 * Matrix is template base class, all algorithms which are type-independent are defined here
 * angles are always declared in deg
-* reference point is always the top left corner
+* reference point is always the top left corner (origin)
 * edges are always searched in x-direction
 * angles are defined in y-direction (mathematically)
   * attention: y direction is pointing up, not down, so the angle is going clockwise

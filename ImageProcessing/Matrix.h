@@ -87,6 +87,7 @@ public:
   void setFreemanCode(T value, const FreemanCode& freemanCode, unsigned int z = 0);
   void setPolyLine(T value, const PolyLine& polyLine, unsigned int z = 0);
   void setRunLengthCode(T value, const RunLengthCode& runLengthCode, unsigned int z = 0);
+  void setStructureElement(T value, const StructuringElement *structuringElement, const Point& referencePointPosition, unsigned int z = 0);
   void setHistogram(const std::vector<unsigned int>& histogram, unsigned int z = 0);
 
   void filter(const Filter* filter, unsigned int z = 0);
@@ -123,6 +124,7 @@ public:
   bool isPointInsideImage(const Point& point);
   bool isRectangleInsideImage(const Rectangle& rectangle);
   bool isCircleInsideImage(const Circle& circle);
+  bool isLineInsideImage(const Line& line);
 
   void printValuesToConsole(const std::string& description) const;
   void printDifference(const Matrix& rhs) const;
@@ -801,6 +803,12 @@ bool Matrix<T>::isCircleInsideImage(const Circle &circle)
 }
 
 template<typename T>
+bool Matrix<T>::isLineInsideImage(const Line &line)
+{
+  return isPointInsideImage(line.getStartPoint()) && isPointInsideImage(line.getEndPoint());
+}
+
+template<typename T>
 void Matrix<T>::setRow(T value, unsigned int y, unsigned int z)
 {
   if (y >= m_height)
@@ -1119,20 +1127,38 @@ void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned
 template<typename T>
 void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 {
+  std::cout << "set polyline" << std::endl;
+
   if (polyLine.m_points.size() < 2)
   {
+    std::cout << "polyLine.m_points.size() < 2" << std::endl;
     return;
   }
 
   auto itPrevious = polyLine.m_points.begin();
   for (auto it = polyLine.m_points.begin(); it != polyLine.m_points.end(); it++)
   {
+    std::cout << "Point - y: " << it->m_y << " x: " << it->m_x << std::endl;
+
     if (it == polyLine.m_points.begin())
     {
       continue;
     }
 
-    setLine(value, Line(*itPrevious, *it), z);
+    Line line(*itPrevious, *it);
+
+    std::cout << "Line StartPoint - y: " << line.getStartPoint().m_y << " x: " << line.getStartPoint().m_x << std::endl;
+    std::cout << "Line EndPoint   - y: " << line.getEndPoint().m_y << " x: " << line.getEndPoint().m_x << std::endl;
+
+    if (isLineInsideImage(line))
+    {
+      std::cout << "set line" << std::endl;
+      setLine(value, line, z);
+    }
+    else
+    {
+      std::cout << "line outside image" << std::endl;
+    }
 
     itPrevious = it;
   }
@@ -1172,6 +1198,52 @@ void Matrix<T>::setRunLengthCode(T value, const RunLengthCode &runLengthCode, un
   for (auto it = runLengthCode.begin(); it != runLengthCode.end(); it++)
   {
     setLine(value, Line(it->m_startPoint, Point(it->m_startPoint.m_x + it->m_length - 1, it->m_startPoint.m_y)), z);
+  }
+}
+
+template<typename T>
+void Matrix<T>::setStructureElement(T value, const StructuringElement *structuringElement, const Point &referencePointPosition, unsigned int z)
+{
+  // check top
+  if (Converter::toUInt(structuringElement->getReferencePoint().m_y) > Converter::toUInt(referencePointPosition.m_y))
+  {
+    return;
+  }
+
+  // check bottom
+  if ((structuringElement->getHeight() - Converter::toUInt(structuringElement->getReferencePoint().m_y)) > (m_height - Converter::toUInt(referencePointPosition.m_y)))
+  {
+    return;
+  }
+
+  // check left
+  if (Converter::toUInt(structuringElement->getReferencePoint().m_x) > Converter::toUInt(referencePointPosition.m_x))
+  {
+    return;
+  }
+
+  // check right
+  if ((structuringElement->getWidth() - Converter::toUInt(structuringElement->getReferencePoint().m_x)) > (m_width - Converter::toUInt(referencePointPosition.m_x)))
+  {
+    return;
+  }
+
+  unsigned int dx = referencePointPosition.m_x - structuringElement->getReferencePoint().m_x;
+  unsigned int dy = referencePointPosition.m_y - structuringElement->getReferencePoint().m_y;
+
+  std::cout << "dx: " << dx << std::endl;
+  std::cout << "dy: " << dy << std::endl;
+
+
+  for (unsigned int x = 0; x < structuringElement->getWidth(); x++)
+  {
+    for (unsigned int y = 0; y < structuringElement->getHeight(); y++)
+    {
+      if (structuringElement->getValue(x, y))
+      {
+        m_values[z][y + dy][x + dx] = value;
+      }
+    }
   }
 }
 

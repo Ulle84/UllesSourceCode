@@ -36,6 +36,7 @@ private:
   void statisticsTest();
   void rotatedRectangleTest();
   void setLineTest();
+  void setStructuringElementTest();
 
   Ui::MainWindow* ui;
   Image* m_image;

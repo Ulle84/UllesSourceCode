@@ -37,7 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //lineDirectionTest();
   //statisticsTest();
   //rotatedRectangleTest();
-  setLineTest();
+  //setLineTest();
+  setStructuringElementTest();
 }
 
 MainWindow::~MainWindow()
@@ -304,6 +305,43 @@ void MainWindow::setLineTest()
   }
 
   //image->setLine(255, Line(Point(128, 128), 0, 100), true);
+
+  m_imageDisplay->setImage(image);
+}
+
+void MainWindow::setStructuringElementTest()
+{
+  unsigned int width = 256;
+  unsigned int height = 256;
+
+  Image* image = new Image(width, height);
+
+  Points points;
+  points.push_back(Point(0, 0));
+  points.push_back(Point(2, 2));
+  points.push_back(Point(4, 0));
+  points.push_back(Point(4, 4));
+  points.push_back(Point(0, 4));
+  points.push_back(Point(0, 0));
+
+  for (auto it = points.begin(); it != points.end(); it++)
+  {
+    if (!image->isPointInsideImage(*it))
+    {
+      std::cout << "se test - point outside image - y : " << it->m_y << " x: " << it->m_x << std::endl;
+      // TODO why are the points outside the image???
+    }
+  }
+
+  PolyLine polyLine;
+  polyLine.setPoints(points);
+
+  StructuringElement se(5, 5, false);
+  se.setPolyLine(true, polyLine);
+
+  se.printValuesToConsole("se");
+
+  image->setStructureElement(255, &se, Point(2, 2));
 
   m_imageDisplay->setImage(image);
 }
