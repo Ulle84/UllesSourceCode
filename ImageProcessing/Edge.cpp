@@ -6,3 +6,8 @@ Edge::Edge(const Point& position, float direction, float strength) :
   m_strength(strength)
 {
 }
+
+Point Edge::getPosition()
+{
+  return m_position;
+}

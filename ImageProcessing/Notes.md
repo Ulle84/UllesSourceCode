@@ -20,7 +20,7 @@
   * test: image = image.erode(blub);
 * Matrix: squeeze function -> delete all conversion-buffers, which are not needed anymore
 * convolution of two matrices / vectors
-* setPolyLine etc -> class should know how to draw on Matrix -> Interface Drawable
+* setPolyLine etc -> class should know how to draw on Matrix -> Interface Drawable -> there may be problems with template parameters
 * Interface: Translatable
 * Interface: Rotatable
 * Kombination of Interfaces Drawable, Translatable, Rotatable, Zoomable -> Shape, Geometry
@@ -49,7 +49,6 @@
 * setInterpolationMode: nearestNeighbor, bilinearInterpolation, ...?
 * setNeighborhood: neighborhood4, neighborhood8
 * patter matching
-* statistics on objects (mean value etc)
 * implement more filters: http://homepages.inf.ed.ac.uk/rbf/HIPR2/filtops.htm
 * hough transformation
 * fourier transformation

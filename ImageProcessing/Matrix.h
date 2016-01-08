@@ -2000,9 +2000,6 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
 
   std::list<double> averages;
 
-  // 3 - 1
-  // 4 - 2
-
   float distance1 = smoothingWidth / 2;
   float distance2 = smoothingWidth / 2;
 

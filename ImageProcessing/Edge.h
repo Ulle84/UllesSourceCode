@@ -9,6 +9,8 @@ class Edge
 public:
   Edge(const Point& position, float direction, float strength);
 
+  Point getPosition();
+
 private:
   Point m_position;
   float m_direction;

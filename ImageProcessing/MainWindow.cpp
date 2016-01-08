@@ -102,16 +102,20 @@ void MainWindow::on_actionOpenImage_triggered()
 
   image->setSingleLayer(qImage.bits(), layerIndices);
 
-  StructuringElement structuringElement = StructuringElementGenerator::circle(7);
+  Line line(Point(0, 400), Point(200, 400));
+  Edges edgesLeft = image->findEdges(line, 15, 7);
 
-  QElapsedTimer timer;
-  timer.start();
+  Edge firstEdgeLeft = edgesLeft.front();
 
-  image->filterMedian(&structuringElement);
+  float x = firstEdgeLeft.getPosition().m_x + 50;
 
-  qDebug() << "The median filter took" << timer.elapsed() << "milliseconds";
+  Line line2(Point(x, 550), Point(x, 400));
+  Edges edgesBottom = image->findEdges(line2, 15, 7);
 
+  Point p = edgesBottom.front().getPosition();
 
+  Rectangle rectangle(Point(p.m_x - 25, p.m_y - 240), 130, 70);
+  image->setRectangle(255, rectangle, false);
 
   m_imageDisplay->setImage(image);
 }
