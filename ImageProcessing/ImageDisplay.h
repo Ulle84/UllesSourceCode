@@ -26,11 +26,23 @@ private slots:
 
   void on_pushButtonZoomOut_clicked();
 
+  void on_pushButton_clicked();
+
 private:
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
   bool m_ctrlButtonIsPressed;
   Image* m_image;
+
+  int m_mouseX;
+  int m_mouseY;
+  bool m_displayLine;
+
+  int m_lineStartX;
+  int m_lineStartY;
+
+  int m_lineEndX;
+  int m_lineEndY;
 };
 
 #endif // IMAGEDISPLAY_H

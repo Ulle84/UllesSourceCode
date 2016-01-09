@@ -1,6 +1,8 @@
 # Bugs
 
 # ToDo (prioritised)
+* interface movable -> move(float horizontalTranslation, float verticalTranslation, float rotationAngle);
+* select line in imagedisplay and display information
 * EdgeExtractor
   * getFirstEdge(edgeType: bright,dark,any)
   * getLastEdge(edgeType: bright,dark,any)

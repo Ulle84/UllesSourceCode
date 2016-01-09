@@ -7,6 +7,7 @@
 #include <QPixmap>
 #include <QScrollBar>
 #include <QWheelEvent>
+#include <QClipboard>
 
 #include "Image.h"
 
@@ -17,12 +18,13 @@ ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ImageDisplay),
   m_ctrlButtonIsPressed(false),
-  m_image(0)
+  m_image(0),
+  m_displayLine(false)
 {
   ui->setupUi(this);
 
   ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-  ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+  //ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
   ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
   ui->graphicsView->setBackgroundBrush(QBrush(QColor(Qt::gray)));
   ui->graphicsView->show();
@@ -44,14 +46,14 @@ ImageDisplay::~ImageDisplay()
 
 bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 {
-  // information about pixel under cursor
   if (target == ui->graphicsView->scene())
   {
     if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
+      // information about pixel under cursor
       QGraphicsSceneMouseEvent* mouseEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
-      int x = mouseEvent->scenePos().rx();
-      int y = mouseEvent->scenePos().ry();
+      m_mouseX = mouseEvent->scenePos().rx();
+      m_mouseY = mouseEvent->scenePos().ry();
 
       QString pixelInformation;
 
@@ -61,20 +63,34 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
         if (qtyLayers == 1)
         {
-          pixelInformation = tr("gray value: %1").arg(m_image->getValue(x, y));
+          pixelInformation = tr("gray value: %1").arg(m_image->getValue(m_mouseX, m_mouseY));
         }
         else if (qtyLayers == 3 || qtyLayers == 4)
         {
-          pixelInformation = tr("red: %1  green: %2  blue: %3").arg(m_image->getValue(x, y, 0)).arg(m_image->getValue(x, y, 1)).arg(m_image->getValue(x, y, 2));
+          pixelInformation = tr("red: %1  green: %2  blue: %3").arg(m_image->getValue(m_mouseX, m_mouseY, 0)).arg(m_image->getValue(m_mouseX, m_mouseY, 1)).arg(m_image->getValue(m_mouseX, m_mouseY, 2));
 
           if (qtyLayers == 4)
           {
-            pixelInformation.append(tr("  alpha: %1").arg(m_image->getValue(x, y, 3)));
+            pixelInformation.append(tr("  alpha: %1").arg(m_image->getValue(m_mouseX, m_mouseY, 3)));
           }
         }
       }
+      ui->label->setText(QString("x: %1  y: %2  %3").arg(m_mouseX).arg(m_mouseY).arg(pixelInformation));
+    }
+    else if (event->type() == QEvent::GraphicsSceneMousePress)
+    {
+      m_displayLine = true;
+      m_lineStartX = m_mouseX;
+      m_lineStartY = m_mouseY;
+    }
+    else if (event->type() == QEvent::GraphicsSceneMouseRelease)
+    {
+      m_displayLine = true;
+      m_lineEndX = m_mouseX;
+      m_lineEndY = m_mouseY;
 
-      ui->label->setText(QString("x: %1  y: %2  %3").arg(x).arg(y).arg(pixelInformation));
+      ui->lineEdit->setText(QString("Line line(Point(%1, %2), Point(%3, %4));").arg(m_lineStartX).arg(m_lineStartY).arg(m_lineEndX).arg(m_lineEndY));
+      ui->lineEditInformation->setText(QString("dx: %1   dy: %2").arg(m_lineEndX - m_lineStartX).arg(m_lineEndY - m_lineStartY));
     }
   }
 
@@ -159,5 +175,10 @@ void ImageDisplay::on_pushButtonZoomIn_clicked()
 
 void ImageDisplay::on_pushButtonZoomOut_clicked()
 {
-ui->graphicsView->scale(0.8, 0.8);
+  ui->graphicsView->scale(0.8, 0.8);
+}
+
+void ImageDisplay::on_pushButton_clicked()
+{
+  QApplication::clipboard()->setText(ui->lineEdit->text());
 }

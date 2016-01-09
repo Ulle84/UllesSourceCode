@@ -107,15 +107,31 @@ void MainWindow::on_actionOpenImage_triggered()
 
   Edge firstEdgeLeft = edgesLeft.front();
 
-  float x = firstEdgeLeft.getPosition().m_x + 50;
+  float xLeft = firstEdgeLeft.getPosition().m_x + 50;
 
-  Line line2(Point(x, 550), Point(x, 400));
-  Edges edgesBottom = image->findEdges(line2, 15, 7);
+  Line line2(Point(xLeft, 550), Point(xLeft, 400));
+  Edges edgesBottom1 = image->findEdges(line2, 15, 7);
 
-  Point p = edgesBottom.front().getPosition();
+  Point p = edgesBottom1.front().getPosition();
 
-  Rectangle rectangle(Point(p.m_x - 25, p.m_y - 240), 130, 70);
+  Rectangle rectangle(Point(p.m_x - 15, p.m_y - 240), 120, 70);
   image->setRectangle(255, rectangle, false);
+
+
+  Line line3(Point(767, 405), Point(630, 405));
+  Edges edgesRight = image->findEdges(line3, 15, 7);
+
+  Edge firstEdgeRight = edgesRight.front();
+
+  float xRight = firstEdgeRight.getPosition().m_x - 50;
+
+  Line line4(Point(xRight, 550), Point(xRight, 400));
+  Edges edgesBottom2 = image->findEdges(line4, 15, 7);
+
+  Point p2 = edgesBottom2.front().getPosition();
+
+  Rectangle rectangle2(Point(p2.m_x - 90, p2.m_y - 240), 120, 70);
+  image->setRectangle(255, rectangle2, false);
 
   m_imageDisplay->setImage(image);
 }

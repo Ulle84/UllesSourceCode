@@ -20,7 +20,7 @@ Point MathHelper::calcEndPoint(const Point &startPoint, float angle, float lengt
   endPoint.m_x = startPoint.m_x + length * cos(rad(angle));
   endPoint.m_y = startPoint.m_y + length * sin(rad(angle));
 
-  std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
+  //std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
 
   return endPoint;
 }

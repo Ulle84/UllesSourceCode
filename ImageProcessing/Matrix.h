@@ -1996,6 +1996,8 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
 
   Points points = line.getPointsAlongLine();
 
+  std::cout << "size: " << points.size() << std::endl;
+
   unsigned int stepSize = 1;
 
   std::list<double> averages;
