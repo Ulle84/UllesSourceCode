@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include <QGraphicsScene>
+#include <QLine>
+#include <QPoint>
+#include <QRect>
+#include <QGraphicsLineItem>
 
 class Image;
 
@@ -23,10 +27,13 @@ public:
 
 private slots:
   void on_pushButtonZoomIn_clicked();
-
   void on_pushButtonZoomOut_clicked();
+  void on_pushButtonClipboard_clicked();
 
-  void on_pushButton_clicked();
+  void on_toolButtonDragImage_clicked(bool checked);
+  void on_toolButtonTeachLine_clicked(bool checked);
+  void on_toolButtonTeachRectangle_clicked(bool checked);
+  void on_toolButtonTeachCircle_clicked(bool checked);
 
 private:
   Ui::ImageDisplay *ui;
@@ -36,13 +43,14 @@ private:
 
   int m_mouseX;
   int m_mouseY;
-  bool m_displayLine;
+  bool m_techingActive;
 
-  int m_lineStartX;
-  int m_lineStartY;
+  QPoint m_startPoint;
 
-  int m_lineEndX;
-  int m_lineEndY;
+  QGraphicsLineItem* m_currentTeachingLine;
+  QGraphicsRectItem* m_currentTeachingRect;
+  QGraphicsEllipseItem* m_currentTeachingEllipse;
+  QPen m_pen;
 };
 
 #endif // IMAGEDISPLAY_H

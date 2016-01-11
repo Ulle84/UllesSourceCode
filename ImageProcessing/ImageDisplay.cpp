@@ -19,12 +19,12 @@ ImageDisplay::ImageDisplay(QWidget *parent) :
   ui(new Ui::ImageDisplay),
   m_ctrlButtonIsPressed(false),
   m_image(0),
-  m_displayLine(false)
+  m_techingActive(false),
+  m_pen(QPen(QColor(255, 0, 0)))
 {
   ui->setupUi(this);
 
   ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-  //ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
   ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
   ui->graphicsView->setBackgroundBrush(QBrush(QColor(Qt::gray)));
   ui->graphicsView->show();
@@ -48,6 +48,8 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 {
   if (target == ui->graphicsView->scene())
   {
+    bool teachButtonPressed = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked();
+
     if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
       // information about pixel under cursor
@@ -75,22 +77,59 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
           }
         }
       }
-      ui->label->setText(QString("x: %1  y: %2  %3").arg(m_mouseX).arg(m_mouseY).arg(pixelInformation));
-    }
-    else if (event->type() == QEvent::GraphicsSceneMousePress)
-    {
-      m_displayLine = true;
-      m_lineStartX = m_mouseX;
-      m_lineStartY = m_mouseY;
-    }
-    else if (event->type() == QEvent::GraphicsSceneMouseRelease)
-    {
-      m_displayLine = true;
-      m_lineEndX = m_mouseX;
-      m_lineEndY = m_mouseY;
 
-      ui->lineEdit->setText(QString("Line line(Point(%1, %2), Point(%3, %4));").arg(m_lineStartX).arg(m_lineStartY).arg(m_lineEndX).arg(m_lineEndY));
-      ui->lineEditInformation->setText(QString("dx: %1   dy: %2").arg(m_lineEndX - m_lineStartX).arg(m_lineEndY - m_lineStartY));
+      ui->label->setText(QString("x: %1  y: %2  %3").arg(m_mouseX).arg(m_mouseY).arg(pixelInformation));
+
+      if (m_techingActive)
+      {
+        if (ui->toolButtonTeachLine->isChecked())
+        {
+          m_currentTeachingLine->setLine(QLine(m_startPoint, QPoint(m_mouseX, m_mouseY)));
+          ui->lineEditCode->setText(QString("Line line(Point(%1, %2), Point(%3, %4));").arg(m_startPoint.x()).arg(m_startPoint.y()).arg(m_mouseX).arg(m_mouseY));
+        }
+        else if (ui->toolButtonTeachRectangle->isChecked())
+        {
+          m_currentTeachingRect->setRect(QRect(m_startPoint, QPoint(m_mouseX, m_mouseY)));
+          ui->lineEditCode->setText(QString("Rectangle rectangle(Point(%1, %2), %3, %4);").arg(m_startPoint.x()).arg(m_startPoint.y()).arg(m_mouseX - m_startPoint.x()).arg(m_mouseY - m_startPoint.y()));
+        }
+        else if (ui->toolButtonTeachCircle->isChecked())
+        {
+          int dx = m_mouseX - m_startPoint.x();
+          int dy = m_mouseY - m_startPoint.y();
+
+          unsigned int r = sqrt(dx * dx + dy * dy);
+
+          QPoint p1(m_startPoint.x() - r, m_startPoint.y() - r);
+          QPoint p2(m_startPoint.x() + r, m_startPoint.y() + r);
+
+          m_currentTeachingEllipse->setRect(QRect(p1, p2));
+          ui->lineEditCode->setText(QString("Circle cirlce(Point(%1, %2), %3)").arg(m_startPoint.x()).arg(m_startPoint.y()).arg(r));
+        }
+      }
+    }
+    else if (event->type() == QEvent::GraphicsSceneMousePress && teachButtonPressed)
+    {
+      m_techingActive = true;
+
+      m_startPoint.setX(m_mouseX);
+      m_startPoint.setY(m_mouseY);
+
+      if (ui->toolButtonTeachLine->isChecked())
+      {
+        m_currentTeachingLine = m_scene->addLine(QLine(m_startPoint, m_startPoint), m_pen);
+      }
+      else if (ui->toolButtonTeachRectangle->isChecked())
+      {
+        m_currentTeachingRect = m_scene->addRect(QRect(m_startPoint, m_startPoint), m_pen);
+      }
+      else if (ui->toolButtonTeachCircle->isChecked())
+      {
+        m_currentTeachingEllipse = m_scene->addEllipse(QRect(m_startPoint, m_startPoint), m_pen);
+      }
+    }
+    else if (event->type() == QEvent::GraphicsSceneMouseRelease && teachButtonPressed)
+    {
+      m_techingActive = false;
     }
   }
 
@@ -178,7 +217,51 @@ void ImageDisplay::on_pushButtonZoomOut_clicked()
   ui->graphicsView->scale(0.8, 0.8);
 }
 
-void ImageDisplay::on_pushButton_clicked()
+void ImageDisplay::on_pushButtonClipboard_clicked()
 {
-  QApplication::clipboard()->setText(ui->lineEdit->text());
+  QApplication::clipboard()->setText(ui->lineEditCode->text());
+}
+
+void ImageDisplay::on_toolButtonDragImage_clicked(bool checked)
+{
+  if (checked)
+  {
+    ui->toolButtonTeachLine->setChecked(false);
+    ui->toolButtonTeachRectangle->setChecked(false);
+    ui->toolButtonTeachCircle->setChecked(false);
+    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+  }
+}
+
+void ImageDisplay::on_toolButtonTeachLine_clicked(bool checked)
+{
+  if (checked)
+  {
+    ui->toolButtonDragImage->setChecked(false);
+    ui->toolButtonTeachRectangle->setChecked(false);
+    ui->toolButtonTeachCircle->setChecked(false);
+    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+  }
+}
+
+void ImageDisplay::on_toolButtonTeachRectangle_clicked(bool checked)
+{
+  if (checked)
+  {
+    ui->toolButtonDragImage->setChecked(false);
+    ui->toolButtonTeachLine->setChecked(false);
+    ui->toolButtonTeachCircle->setChecked(false);
+    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+  }
+}
+
+void ImageDisplay::on_toolButtonTeachCircle_clicked(bool checked)
+{
+  if (checked)
+  {
+    ui->toolButtonDragImage->setChecked(false);
+    ui->toolButtonTeachLine->setChecked(false);
+    ui->toolButtonTeachRectangle->setChecked(false);
+    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+  }
 }
