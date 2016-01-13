@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     Edge.cpp \
     Line.cpp \
     MathHelper.cpp \
-    Converter.cpp
+    Converter.cpp \
+    GeometryCodeGenerator.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -45,7 +46,8 @@ HEADERS  += MainWindow.h \
     Line.h \
     MathHelper.h \
     Statistics.h \
-    Converter.h
+    Converter.h \
+    GeometryCodeGenerator.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

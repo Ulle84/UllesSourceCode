@@ -1,7 +1,11 @@
 # Bugs
 
 # ToDo (prioritised)
-* interface movable -> move(float horizontalTranslation, float verticalTranslation, float rotationAngle);
+* select and modify teached geometries
+* delete selected geometry
+* show list of al geometric objects (list of QGraphicItems)
+* teach and modify polyline
+* interface movable -> move(float horizontalTranslation, float verticalTranslation, float rotationAngle); -> see how this is done in Qt TransformationRule?
 * select line in imagedisplay and display information
 * EdgeExtractor
   * getFirstEdge(edgeType: bright,dark,any)

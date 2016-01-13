@@ -10,6 +10,7 @@
 #include <QClipboard>
 
 #include "Image.h"
+#include "GeometryCodeGenerator.h"
 
 #include "ImageDisplay.h"
 #include "ui_ImageDisplay.h"
@@ -48,7 +49,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 {
   if (target == ui->graphicsView->scene())
   {
-    bool teachButtonPressed = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked();
+    bool teachButtonChecked = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked();
 
     if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
@@ -82,6 +83,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
       if (m_techingActive)
       {
+        // TODO use class GeometryCodeGenerator
         if (ui->toolButtonTeachLine->isChecked())
         {
           m_currentTeachingLine->setLine(QLine(m_startPoint, QPoint(m_mouseX, m_mouseY)));
@@ -107,27 +109,72 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
         }
       }
     }
-    else if (event->type() == QEvent::GraphicsSceneMousePress && teachButtonPressed)
+    else if (event->type() == QEvent::GraphicsSceneMousePress)
     {
-      m_techingActive = true;
+      if (teachButtonChecked)
+      {
+        m_techingActive = true;
 
-      m_startPoint.setX(m_mouseX);
-      m_startPoint.setY(m_mouseY);
+        m_startPoint.setX(m_mouseX);
+        m_startPoint.setY(m_mouseY);
 
-      if (ui->toolButtonTeachLine->isChecked())
-      {
-        m_currentTeachingLine = m_scene->addLine(QLine(m_startPoint, m_startPoint), m_pen);
+        if (ui->toolButtonTeachLine->isChecked())
+        {
+          m_currentTeachingLine = m_scene->addLine(QLine(m_startPoint, m_startPoint), m_pen);
+        }
+        else if (ui->toolButtonTeachRectangle->isChecked())
+        {
+          m_currentTeachingRect = m_scene->addRect(QRect(m_startPoint, m_startPoint), m_pen);
+        }
+        else if (ui->toolButtonTeachCircle->isChecked())
+        {
+          m_currentTeachingEllipse = m_scene->addEllipse(QRect(m_startPoint, m_startPoint), m_pen);
+        }
       }
-      else if (ui->toolButtonTeachRectangle->isChecked())
+      else if (!ui->toolButtonDragImage->isChecked())
       {
-        m_currentTeachingRect = m_scene->addRect(QRect(m_startPoint, m_startPoint), m_pen);
+        QGraphicsItem* item = m_scene->itemAt(QPointF(m_mouseX, m_mouseY), ui->graphicsView->transform());
+
+        if (item->type() == QGraphicsLineItem::Type)
+        {
+          QGraphicsLineItem* lineItem = dynamic_cast<QGraphicsLineItem*>(item);
+          //int i = 0;
+
+          if (lineItem)
+          {
+            ui->lineEditCode->setText(GeometryCodeGenerator::generate(lineItem->line()));
+          }
+        }
+        else if (item->type() == QGraphicsRectItem::Type)
+        {
+          QGraphicsRectItem* rectItem = dynamic_cast<QGraphicsRectItem*>(item);
+
+          if (rectItem)
+          {
+            ui->lineEditCode->setText(GeometryCodeGenerator::generate(rectItem->rect()));
+          }
+        }
+
+        /*switch (item->type())
+        {
+        case QGraphicsRectItem::Type:
+          ui->lineEditCode->setText("rect selected");
+          break;
+
+        case QGraphicsEllipseItem::Type:
+          ui->lineEditCode->setText("circle selected");
+          break;
+
+        case QGraphicsLineItem::Type:
+          break;
+
+        default:
+          ui->lineEditCode->setText("unknown type selected");
+        }*/
       }
-      else if (ui->toolButtonTeachCircle->isChecked())
-      {
-        m_currentTeachingEllipse = m_scene->addEllipse(QRect(m_startPoint, m_startPoint), m_pen);
-      }
+
     }
-    else if (event->type() == QEvent::GraphicsSceneMouseRelease && teachButtonPressed)
+    else if (event->type() == QEvent::GraphicsSceneMouseRelease && teachButtonChecked)
     {
       m_techingActive = false;
     }

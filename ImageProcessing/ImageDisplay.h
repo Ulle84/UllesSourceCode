@@ -41,8 +41,8 @@ private:
   bool m_ctrlButtonIsPressed;
   Image* m_image;
 
-  int m_mouseX;
-  int m_mouseY;
+  float m_mouseX;
+  float m_mouseY;
   bool m_techingActive;
 
   QPoint m_startPoint;
