@@ -116,6 +116,8 @@ while(runLoop) {} // good
 #ifndef STYLEGUIDE_H
 #define STYLEGUIDE_H
 
+class StyleGuidePrivate;
+
 class StyleGuide
 {
 public:
@@ -125,12 +127,33 @@ public:
   
   int value();
   void setValue(int value);
+  
+  void getHuge(Huge& huge);
+  void setHuge(const Huge& huge);
 
 private:
   int m_value;
+  Huge m_huge;
+  StyleGuidePrivate* m;
 };
 
 #endif // STYLEGUIDE_H
+```
+
+### StyleGuidePrivate.h
+```
+#ifndef STYLEGUIDEPRIVATE_H
+#define STYLEGUIDEPRIVATE_H
+
+class StyleGuidePrivate
+{
+public:
+  StyleGuidePrivate();
+
+  bool flag;
+};
+
+#endif // STYLEGUIDEPRIVATE_H
 ```
 
 ### StyleGuide.cpp
@@ -143,9 +166,15 @@ StyleGuide::StyleGuide()
 }
 
 StyleGuide::StyleGuide(int value) :
-  m_value(value)
+  m_value(value),
+  m(new StyleGuidePrivate())
 {
-  
+  m->flag = true;
+}
+
+StyleGuide::~StyleGuide()
+{
+  delete m;
 }
 ```
 
@@ -167,9 +196,9 @@ for (auto it = fooList.begin(); it != fooList.end(); it++)
 * kein Postfix Interface in Header-Dateinamen verwenden -> kann nämlich sein, dass irgendwann doch mal eine non-pure-virtual function hinzukommt und schon ist der Name des Headers falsch -> Headernamen kann man oft nicht im Nachhinein ändern. Weiterhin ist es für den Anwender egal, ob er gegen ein Interface oder eine konkrete Klasse programmiert
 * Klassen, von denen abgeleitet wird, brauchen immer einen virtuellen Destruktor -> sonst drohen Speicherlecks!!!
 * pImpl
-  * Exportierte Klassen sollten immer einen pImpl haben. Die Membervarialbe heißt dann m. Die ImplKlasse trägt das Suffix 'Private'
+  * Exportierte Klassen sollten immer einen pImpl haben. Die Membervarialbe heißt dann `m` Die ImplKlasse trägt das Suffix 'Private'
   * Member einer privaten p_impl Klasse bekommen kein Präfix
-  * Instanz der pImpl Klasse hat einfach nur den Namen `m` wegen Symmetrie `m_directMember` und `m.indirectMember`
+  * Instanz der pImpl Klasse hat einfach nur den Namen `m` wegen Symmetrie `m_directMember` und `m->indirectMember`
 
 ## Mögliche Vorlagen
 * Qt Styleguide
