@@ -45,6 +45,7 @@ Die Einstellungsdatei hat folgenden Inhalt
 * der Typ einer Varialbe muss nicht im Namen auftauchen
 * Grundsätzlich werden Namen in Camel-Case Schreibweise geschrieben, z. B. `aCamelCaseVariable` und `aXmlReader`
 * Variablen und Funktionsnamen beginnen mit einem Kleinbuchstaben, Klassen mit einem Großbuchstaben.
+* Der Varialbenname kann (muss aber nicht) den Typnamen enthalten, wenn es hilfreich ist, z. B. `QPushButton* pushButtonAdd;`
 * `qty` als Präfix für "eine Anzahl von" z. B. `m_qtySoldArticles`
 * Member werden mit einem vorausgehenden `m_` gekennzeichnet - Ausnahme: d-Pointer (pImpl) heißt nur `d`
 * Globale Variablen werden mit einem vorausgehenden `g_` gekennzeichnet, z. B. `g_fileHandler`- globale Variablen sollten nur im Ausnahmefall verwendert werden.
@@ -62,6 +63,7 @@ aVariableWithXmlAbbreviation foo; // not: aVariableWithXMLAbbreviation
 aCamelCaseVariable foo;
 aCamelCaseFunction();
 ACamelCaseClass foo;
+QPushButton* pushButtonAdd;
 ```
 
 ## Includes
@@ -235,11 +237,36 @@ for (auto it = fooList.begin(); it != fooList.end(); it++)
 * jede variablendefinition hat eine eigene Zeile. double meanValue; double median; double standardDeviation nicht double meanValue, median, standardDeviation - zusätzliche schreibarbeit kann durch Block-Editing verhindert werden
 * kein Postfix Interface in Header-Dateinamen verwenden -> kann nämlich sein, dass irgendwann doch mal eine non-pure-virtual function hinzukommt und schon ist der Name des Headers falsch -> Headernamen kann man oft nicht im Nachhinein ändern. Weiterhin ist es für den Anwender egal, ob er gegen ein Interface oder eine konkrete Klasse programmiert
 * Klassen, von denen abgeleitet wird, brauchen immer einen virtuellen Destruktor -> sonst drohen Speicherlecks!!!
-* pImpl
-  * Exportierte Klassen sollten immer einen pImpl haben. Die Membervarialbe heißt dann `m` Die ImplKlasse trägt das Suffix 'Private'
-  * Member einer privaten p_impl Klasse bekommen kein Präfix
-  * Instanz der pImpl Klasse hat einfach nur den Namen `m` wegen Symmetrie `m_directMember` und `m->indirectMember`
+* d-Pointer / pImpl / Cashire Cat / Opaque Pointer
+  * Exportierte Klassen sollten immer einen d-Pointer haben. Die Membervarialbe heißt dann `d`. Die pImpl-Klasse heißt D und ist in der cpp Datei definiert.
+  * Member der d-Pointer-Klasse bekommen kein Präfix
+  * Instanz der d-Pointer Klasse hat einfach nur den Namen `d` (d-Pointer) und `d->indirectMember`
 
 ## Mögliche Vorlagen
 * Qt Styleguide
 * Google Styleguide
+
+## ToDo
+* Definition von API's
+  * Header bekommt Suffix 'Api'
+
+```
+#ifndef VIQTWIDGETAUTHORISATION_GLOBAL_H
+#define VIQTWIDGETAUTHORISATION_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#ifdef VIQTWIDGETAUTHORISATION_LIB
+#define VIQTWIDGETAUTHORISATION_EXPORT Q_DECL_EXPORT
+#else
+#define VIQTWIDGETAUTHORISATION_EXPORT Q_DECL_IMPORT
+
+#ifdef _DEBUG
+#pragma comment(lib, "ViQtWidgetAuthorisation_dbg.lib")
+#else
+#pragma comment(lib, "ViQtWidgetAuthorisation.lib")
+#endif
+#endif
+
+#endif // VIQTWIDGETAUTHORISATION_GLOBAL_H
+```
