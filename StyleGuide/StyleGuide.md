@@ -38,6 +38,7 @@ Die Einstellungsdatei hat folgenden Inhalt
 * Header-Dateien haben die Endung 'h'.
 * Source-Dateien haben die Endung 'cpp'.
 * In der Header-Datei wird kein Code implementiert! Ausnahme sind inline-Funktions und Template-Klassen-Funktionen, diese können ausserhalb der Klassendeklaration im Header implementiert werden.
+* In der Source-Datei werden keine Klassen oder Structs definiert! Ausnahme sind d-Pointer (pImpl) Klassen.
 
 ## Benennung
 * Variablen und Funktionsnamen sollten immer sprechend sein. Ändert sich die Aufgabe einer Funktion, sollte die Funktion auch umbenannt werden!
@@ -45,7 +46,7 @@ Die Einstellungsdatei hat folgenden Inhalt
 * Grundsätzlich werden Namen in Camel-Case Schreibweise geschrieben, z. B. `aCamelCaseVariable` und `aXmlReader`
 * Variablen und Funktionsnamen beginnen mit einem Kleinbuchstaben, Klassen mit einem Großbuchstaben.
 * `qty` als Präfix für "eine Anzahl von" z. B. `m_qtySoldArticles`
-* Member werden mit einem vorausgehenden `m_` gekennzeichnet - Ausnahme: pImpl heißt nur `m`
+* Member werden mit einem vorausgehenden `m_` gekennzeichnet - Ausnahme: d-Pointer (pImpl) heißt nur `d`
 * Globale Variablen werden mit einem vorausgehenden `g_` gekennzeichnet, z. B. `g_fileHandler`- globale Variablen sollten nur im Ausnahmefall verwendert werden.
 * Konstante Variablen werden nicht mit Präfix gekennzeichnet da es sonst:
   * Uneinigkeiten mit const members (`cm_` oder `mc_`) gibt
@@ -61,6 +62,26 @@ aVariableWithXmlAbbreviation foo; // not: aVariableWithXMLAbbreviation
 aCamelCaseVariable foo;
 aCamelCaseFunction();
 ACamelCaseClass foo;
+```
+
+## Includes
+* Nur die allernötigesten Includes verwenden!
+* Nach Zugehörigkeit gruppieren (von allgemein zu spezifisch)
+* Innerhalb einer Gruppierung nach Möglichkeit nach Namen sortieren
+* Beispiel:
+
+```
+#include <list>
+#include <string>
+#include <vector>
+
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+
+#include "MyClass.h"
+#include "MySecondClass.h"
+
+#include "HeaderOfThisClass.h"
 ```
 
 ## Aufbau einer Klasse
@@ -111,12 +132,44 @@ while(runLoop) {} // good
 ```
 
 ## Beispiele
+### Style.h
+```
+#ifndef STYLE_H
+#define STYLE_H
+
+#include "Huge.h"
+
+class StyleGuide
+{
+public:
+  Style();
+  ~Style();
+  
+  int value();
+  void setValue(int value);
+  
+  bool flag();
+  void setFlag(bool flag);
+  
+  void getHuge(Huge& huge);
+  void setHuge(const Huge& huge);
+
+private:
+  int m_value;
+  bool m_flag;
+  Huge m_huge;
+};
+
+#endif // STYLEGUIDE_H
+```
+
+
 ### StyleGuide.h
 ```
 #ifndef STYLEGUIDE_H
 #define STYLEGUIDE_H
 
-class StyleGuidePrivate;
+#include "Huge.h"
 
 class StyleGuide
 {
@@ -127,54 +180,41 @@ public:
   
   int value();
   void setValue(int value);
-  
-  void getHuge(Huge& huge);
-  void setHuge(const Huge& huge);
 
 private:
-  int m_value;
-  Huge m_huge;
-  StyleGuidePrivate* m;
+  class D;
+  D* d; // see d-Pointer Idiom
 };
 
 #endif // STYLEGUIDE_H
-```
-
-### StyleGuidePrivate.h
-```
-#ifndef STYLEGUIDEPRIVATE_H
-#define STYLEGUIDEPRIVATE_H
-
-class StyleGuidePrivate
-{
-public:
-  StyleGuidePrivate();
-
-  bool flag;
-};
-
-#endif // STYLEGUIDEPRIVATE_H
 ```
 
 ### StyleGuide.cpp
 ```
 #include "StyleGuide.h"
 
-StyleGuide::StyleGuide()
+class StyleGuide::D
 {
-  
+public:
+  int value;
+  Huge huge;
+};
+
+StyleGuide::StyleGuide() :
+  d(new StyleGuide::D())
+{
+  d->value = 10;
 }
 
 StyleGuide::StyleGuide(int value) :
-  m_value(value),
-  m(new StyleGuidePrivate())
+  d(new StyleGuide::D())
 {
-  m->flag = true;
+  d->value = value;
 }
 
 StyleGuide::~StyleGuide()
 {
-  delete m;
+  delete d;
 }
 ```
 

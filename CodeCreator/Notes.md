@@ -2,6 +2,9 @@
 
 # ToDo
 * save current folder at folder selection
+* Class Template
+  * Rename -> d-Pointer - see StyleGuide
+  * No extrea Header for pImpl Declaration -> move to *.cpp file
 
 # Ideas
 * Templates -> generate project per template?
