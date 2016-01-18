@@ -4,6 +4,8 @@
 * Arbeitszeit
 * Kernarbeit
 * flexible Arbeitszeiten
+* Überstundenregelung
+* Vereinbarkeit Familie/Beruf
 * Vergütung
 * elektrisch höhenverstellbarer Schreibtisch
 * Kantine
