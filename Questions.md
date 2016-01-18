@@ -28,3 +28,4 @@
 * Buildumgebung
 * Bugtracking
 * Gruppenrunden? Teamrunden? Projektspezifische Besprechungen?
+* Offenheit für neue Technolgien?
