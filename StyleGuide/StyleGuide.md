@@ -270,3 +270,13 @@ for (auto it = fooList.begin(); it != fooList.end(); it++)
 
 #endif // VIQTWIDGETAUTHORISATION_GLOBAL_H
 ```
+
+```
+#ifdef VIACQUIAPIDLL_EXPORTS
+  #define VIACQUIAPIDLL_API __declspec(dllexport)
+  #define _EXPORTIMPORTINFO "Exporting"
+#else
+  #define VIACQUIAPIDLL_API __declspec(dllimport)
+  #define _EXPORTIMPORTINFO "Importing"
+#endif
+```
