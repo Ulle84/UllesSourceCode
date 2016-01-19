@@ -248,35 +248,32 @@ for (auto it = fooList.begin(); it != fooList.end(); it++)
 
 ## ToDo
 * Definition von API's
-  * Header bekommt Suffix 'Api'
+  * Header bekommt Suffix `Api` z. B. `BlubApi.h`
 
 ```
-#ifndef VIQTWIDGETAUTHORISATION_GLOBAL_H
-#define VIQTWIDGETAUTHORISATION_GLOBAL_H
+#ifndef BLUB_API_H
+#define BLUB_API_H
 
-#include <QtCore/qglobal.h>
-
-#ifdef VIQTWIDGETAUTHORISATION_LIB
-#define VIQTWIDGETAUTHORISATION_EXPORT Q_DECL_EXPORT
+#ifdef BLUB_API_EXPORT
+  #define BLUB_API __declspec(dllexport)
+  #ifdef _DEBUG
+    #pragma message("Exporting to Blub_dbg.dll")
+  #else
+    #pragma message("Exporting to Blub.dll")
+  #endif
 #else
-#define VIQTWIDGETAUTHORISATION_EXPORT Q_DECL_IMPORT
-
-#ifdef _DEBUG
-#pragma comment(lib, "ViQtWidgetAuthorisation_dbg.lib")
-#else
-#pragma comment(lib, "ViQtWidgetAuthorisation.lib")
+  #define BLUB_API __declspec(dllimport)
+  #ifdef _DEBUG
+    #pragma message("Importing from Blub_dbg.dll")
+  #else
+    #pragma message("Importing from Blub.dll")
+  #endif
+  #ifdef _DEBUG
+    #pragma comment(lib,"Blub_dbg.lib")
+  #else
+    #pragma comment(lib,"Blub.lib")
+  #endif
 #endif
-#endif
 
-#endif // VIQTWIDGETAUTHORISATION_GLOBAL_H
-```
-
-```
-#ifdef VIACQUIAPIDLL_EXPORTS
-  #define VIACQUIAPIDLL_API __declspec(dllexport)
-  #define _EXPORTIMPORTINFO "Exporting"
-#else
-  #define VIACQUIAPIDLL_API __declspec(dllimport)
-  #define _EXPORTIMPORTINFO "Importing"
-#endif
+#endif // BLUB_API_H
 ```

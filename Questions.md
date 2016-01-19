@@ -27,6 +27,10 @@
 ## Software-Technik
 * Welches Versionsverwaltungssystem, zentraler Server mit Oberfläche (z. B. Bitbucket)?
 * Welche Tools kommen zum Einsatz? AddOns von Visual-Studio? Visual Assist X?
+* Welche Programmiersprachen kommen zum Einsatz?
+* Gibt es einen Style-Guide?
+* Wie einheitlich ist die Software?
+* Wie wird das Fehlerhandling in C++ gemacht? Return-Codes, Exceptions, ...?
 * Einsatz von eigenen bzw. OpenSource-Tools möglich oder per IT unterbunden?
 * Monolithische Anwendungen oder viele DLLs? pImpl konsequent eingesetzt?
 * schnell fertig vs. ordentlich erledigt
