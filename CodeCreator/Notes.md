@@ -5,6 +5,7 @@
 * Class Template
   * Rename -> d-Pointer - see StyleGuide
   * No extrea Header for pImpl Declaration -> move to *.cpp file
+  * q-Pointer -> pointing to overlaying class
 
 # Ideas
 * Templates -> generate project per template?

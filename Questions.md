@@ -1,9 +1,9 @@
 # Fragen
 
 ## Allgemein
-* Arbeitszeit
-* Kernarbeit
-* flexible Arbeitszeiten
+* Arbeitszeit pro Woche
+* Kernzeit (früh anfangen, früh gehen möglich?)
+* flexible Arbeitszeiten (Mittwoch ab 11:30 frei)
 * Überstundenregelung
 * Vereinbarkeit Familie/Beruf
 * Vergütung
@@ -12,22 +12,38 @@
 * Dusche/Spint
 * Sportangebot
 * Feedback/Mitarbeitergespräche
+* Dienstreisen
+* Fortbildungen
+* Doktorarbeit
+* Entwicklungsmöglichkeiten
+* Altersstruktur Kollegen
+* Anzahl Mitarbeiter
+* Gruppen/Teamgröße
+* Umgangsformen Du/Sie
+* Getränke (Kaffee/Tee/Wasser)
+* Bürogrößen
+* direkter Kontakt mit Kunden
 
 ## Software-Technik
-* Welches Versionsverwaltungssystem
+* Welches Versionsverwaltungssystem, zentraler Server mit Oberfläche (z. B. Bitbucket)?
 * Welche Tools kommen zum Einsatz? AddOns von Visual-Studio? Visual Assist X?
+* Einsatz von eigenen bzw. OpenSource-Tools möglich oder per IT unterbunden?
 * Monolithische Anwendungen oder viele DLLs? pImpl konsequent eingesetzt?
 * schnell fertig vs. ordentlich erledigt
+* Einsatz externer Bibliotheken vs. Eigenentwicklungen
 * Clean Code Developer / Refaktorisierung
 * Design Patterns
 * Pair Programming und ähnliche Techniken
 * Vorgehen bei SW Entwicklung - agil?
 * Wo kommen die Anforderungen her? Tool?
 * Wie schnell ändern sich Anforderungen?
+* Wie wird geplant? UML?
+* iterativ vs. Wasserfall
 * Wie wird dokumentiert?
 * Blick in den SourceCode möglich?
-* Testumgebung (Jenkis etc.)
+* Automatisierte Tests? Testumgebung (Jenkis etc.)?
 * Buildumgebung
 * Bugtracking
 * Gruppenrunden? Teamrunden? Projektspezifische Besprechungen?
 * Offenheit für neue Technolgien?
+* welche anderen Tätigkeiten außerhalb von SW-Entwicklung
