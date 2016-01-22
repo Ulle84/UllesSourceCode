@@ -21,7 +21,9 @@ ImageDisplay::ImageDisplay(QWidget *parent) :
   m_ctrlButtonIsPressed(false),
   m_image(0),
   m_techingActive(false),
-  m_pen(QPen(QColor(255, 0, 0)))
+  m_movingActive(false),
+  m_pen(QPen(QColor(255, 0, 0))),
+  m_brush(QBrush(Qt::DiagCrossPattern))
 {
   ui->setupUi(this);
 
@@ -49,14 +51,19 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 {
   if (target == ui->graphicsView->scene())
   {
+    QGraphicsSceneMouseEvent* mouseEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
+
     bool teachButtonChecked = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked();
 
     if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
-      // information about pixel under cursor
-      QGraphicsSceneMouseEvent* mouseEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
-      m_mouseX = mouseEvent->scenePos().rx();
-      m_mouseY = mouseEvent->scenePos().ry();
+      if (mouseEvent)
+      {
+        m_mouseMovePosition = mouseEvent->scenePos();
+      }
+
+      int x = qRound(m_mouseMovePosition.x());
+      int y = qRound(m_mouseMovePosition.y());
 
       QString pixelInformation;
 
@@ -66,79 +73,94 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
         if (qtyLayers == 1)
         {
-          pixelInformation = tr("gray value: %1").arg(m_image->getValue(m_mouseX, m_mouseY));
+          pixelInformation = tr("gray value: %1").arg(m_image->getValue(x, y));
         }
         else if (qtyLayers == 3 || qtyLayers == 4)
         {
-          pixelInformation = tr("red: %1  green: %2  blue: %3").arg(m_image->getValue(m_mouseX, m_mouseY, 0)).arg(m_image->getValue(m_mouseX, m_mouseY, 1)).arg(m_image->getValue(m_mouseX, m_mouseY, 2));
+          pixelInformation = tr("red: %1  green: %2  blue: %3").arg(m_image->getValue(x, y, 0)).arg(m_image->getValue(x, y, 1)).arg(m_image->getValue(x, y, 2));
 
           if (qtyLayers == 4)
           {
-            pixelInformation.append(tr("  alpha: %1").arg(m_image->getValue(m_mouseX, m_mouseY, 3)));
+            pixelInformation.append(tr("  alpha: %1").arg(m_image->getValue(x, y, 3)));
           }
         }
       }
 
-      ui->label->setText(QString("x: %1  y: %2  %3").arg(m_mouseX).arg(m_mouseY).arg(pixelInformation));
+      ui->label->setText(QString("x: %1  y: %2  %3").arg(x).arg(y).arg(pixelInformation));
 
       if (m_techingActive)
       {
-        // TODO use class GeometryCodeGenerator
         if (ui->toolButtonTeachLine->isChecked())
         {
-          m_currentTeachingLine->setLine(QLine(m_startPoint, QPoint(m_mouseX, m_mouseY)));
-          ui->lineEditCode->setText(QString("Line line(Point(%1, %2), Point(%3, %4));").arg(m_startPoint.x()).arg(m_startPoint.y()).arg(m_mouseX).arg(m_mouseY));
+          QLineF line (m_mousePressPosition, m_mouseMovePosition);
+
+          m_currentTeachingLine->setLine(line);
+          ui->lineEditCode->setText(GeometryCodeGenerator::generate(line));
         }
         else if (ui->toolButtonTeachRectangle->isChecked())
         {
-          m_currentTeachingRect->setRect(QRect(m_startPoint, QPoint(m_mouseX, m_mouseY)));
-          ui->lineEditCode->setText(QString("Rectangle rectangle(Point(%1, %2), %3, %4);").arg(m_startPoint.x()).arg(m_startPoint.y()).arg(m_mouseX - m_startPoint.x()).arg(m_mouseY - m_startPoint.y()));
+          QRectF rect (m_mousePressPosition, m_mouseMovePosition);
+
+          m_currentTeachingRect->setRect(rect);
+          ui->lineEditCode->setText(GeometryCodeGenerator::generate(rect));
         }
         else if (ui->toolButtonTeachCircle->isChecked())
         {
-          int dx = m_mouseX - m_startPoint.x();
-          int dy = m_mouseY - m_startPoint.y();
+          QPointF delta = m_mouseMovePosition - m_mousePressPosition;
 
-          unsigned int r = sqrt(dx * dx + dy * dy);
+          double r = sqrt(delta.x() * delta.x() + delta.y() * delta.y());
 
-          QPoint p1(m_startPoint.x() - r, m_startPoint.y() - r);
-          QPoint p2(m_startPoint.x() + r, m_startPoint.y() + r);
+          QPointF p1(m_mousePressPosition.x() - r, m_mousePressPosition.y() - r);
+          QPointF p2(m_mousePressPosition.x() + r, m_mousePressPosition.y() + r);
+          QRectF rect = QRectF(p1, p2);
 
-          m_currentTeachingEllipse->setRect(QRect(p1, p2));
-          ui->lineEditCode->setText(QString("Circle cirlce(Point(%1, %2), %3)").arg(m_startPoint.x()).arg(m_startPoint.y()).arg(r));
+          m_currentTeachingEllipse->setRect(QRectF(p1, p2));
+          ui->lineEditCode->setText(GeometryCodeGenerator::generate(rect, true, true));
+        }
+      }
+      else if (m_movingActive)
+      {
+        if (mouseEvent)
+        {
+          QPointF lastPos = mouseEvent->lastScenePos();
+          QPointF delta = mouseEvent->lastScenePos() - mouseEvent->scenePos();
+          QRectF rect = m_currentTeachingRect->rect();
+          rect.moveTo(rect.topLeft() - delta);
+          m_currentTeachingRect->setRect(rect);
         }
       }
     }
     else if (event->type() == QEvent::GraphicsSceneMousePress)
     {
+      if (mouseEvent)
+      {
+        m_mousePressPosition = mouseEvent->scenePos();
+      }
+
       if (teachButtonChecked)
       {
         m_techingActive = true;
 
-        m_startPoint.setX(m_mouseX);
-        m_startPoint.setY(m_mouseY);
-
         if (ui->toolButtonTeachLine->isChecked())
         {
-          m_currentTeachingLine = m_scene->addLine(QLine(m_startPoint, m_startPoint), m_pen);
+          m_currentTeachingLine = m_scene->addLine(QLineF(m_mousePressPosition, m_mousePressPosition), m_pen);
         }
         else if (ui->toolButtonTeachRectangle->isChecked())
         {
-          m_currentTeachingRect = m_scene->addRect(QRect(m_startPoint, m_startPoint), m_pen);
+          m_currentTeachingRect = m_scene->addRect(QRectF(m_mousePressPosition, m_mousePressPosition), m_pen, m_brush);
         }
         else if (ui->toolButtonTeachCircle->isChecked())
         {
-          m_currentTeachingEllipse = m_scene->addEllipse(QRect(m_startPoint, m_startPoint), m_pen);
+          m_currentTeachingEllipse = m_scene->addEllipse(QRectF(m_mousePressPosition, m_mousePressPosition), m_pen, m_brush);
         }
       }
       else if (!ui->toolButtonDragImage->isChecked())
       {
-        QGraphicsItem* item = m_scene->itemAt(QPointF(m_mouseX, m_mouseY), ui->graphicsView->transform());
+        QGraphicsItem* item = m_scene->itemAt(m_mouseMovePosition, ui->graphicsView->transform());
 
         if (item->type() == QGraphicsLineItem::Type)
         {
           QGraphicsLineItem* lineItem = dynamic_cast<QGraphicsLineItem*>(item);
-          //int i = 0;
 
           if (lineItem)
           {
@@ -151,32 +173,39 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
           if (rectItem)
           {
+            m_movingActive = true;
+            m_currentTeachingRect = rectItem;
             ui->lineEditCode->setText(GeometryCodeGenerator::generate(rectItem->rect()));
           }
         }
-
-        /*switch (item->type())
+        else if (item->type() == QGraphicsEllipseItem::Type)
         {
-        case QGraphicsRectItem::Type:
-          ui->lineEditCode->setText("rect selected");
-          break;
+          QGraphicsEllipseItem* ellipseItem = dynamic_cast<QGraphicsEllipseItem*>(item);
 
-        case QGraphicsEllipseItem::Type:
-          ui->lineEditCode->setText("circle selected");
-          break;
-
-        case QGraphicsLineItem::Type:
-          break;
-
-        default:
-          ui->lineEditCode->setText("unknown type selected");
-        }*/
+          if (ellipseItem)
+          {
+            ui->lineEditCode->setText(GeometryCodeGenerator::generate(ellipseItem->rect(), true, true));
+          }
+        }
+        else
+        {
+          ui->lineEditCode->clear();
+        }
       }
-
     }
-    else if (event->type() == QEvent::GraphicsSceneMouseRelease && teachButtonChecked)
+    else if (event->type() == QEvent::GraphicsSceneMouseRelease)
     {
       m_techingActive = false;
+      m_movingActive = false;
+      /*if (teachButtonChecked)
+      {
+        m_techingActive = false;
+      }
+
+      if (m_movingActive)
+      {
+        m_movingActive = false;
+      }*/
     }
   }
 

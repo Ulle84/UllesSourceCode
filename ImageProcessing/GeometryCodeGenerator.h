@@ -11,9 +11,9 @@ class GeometryCodeGenerator
 public:
   GeometryCodeGenerator();
 
-  static QString generate(const QPointF& point);
-  static QString generate(const QLineF& line);
-  static QString generate(const QRectF& rect);
+  static QString generate(const QPointF& point, bool generateName = true);
+  static QString generate(const QLineF& line, bool generateName = true);
+  static QString generate(const QRectF& rect, bool generateName = true, bool interpretAsCirlce = false);
 
 };
 

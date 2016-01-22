@@ -36,3 +36,5 @@ build/*
 PrivateData/*
 TuKi/build/*
 TuKi/ArticleList/DataArchive/*
+
+QtTestProgramms/build-DPointerTest-Desktop_Qt_5_2_0_clang_64bit-Release/*

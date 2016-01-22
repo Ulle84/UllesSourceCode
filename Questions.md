@@ -1,11 +1,15 @@
 # Fragen
 
 ## Allgemein
+* Befristung?
+* Wie ist die offene Stelle entstanden? Weggang? Erweiterung?
+* Besetzung ab wann? (4 Monate zum Monatsende)
 * Arbeitszeit pro Woche
 * Kernzeit (früh anfangen, früh gehen möglich?)
 * flexible Arbeitszeiten (Mittwoch ab 11:30 frei)
 * Überstundenregelung
-* Vereinbarkeit Familie/Beruf
+* Vereinbarkeit Familie/Beruf - Teilzeit nach Probezeit möglich
+* Elternzeit während Probezeit möglich?
 * Vergütung
 * elektrisch höhenverstellbarer Schreibtisch
 * Kantine
@@ -18,7 +22,7 @@
 * Entwicklungsmöglichkeiten
 * Altersstruktur Kollegen
 * Anzahl Mitarbeiter
-* Gruppen/Teamgröße
+* Gruppen/Teamgröße - Trend für die Zukunft?
 * Umgangsformen Du/Sie
 * Getränke (Kaffee/Tee/Wasser)
 * Bürogrößen

@@ -37,6 +37,8 @@ private:
   void rotatedRectangleTest();
   void setLineTest();
   void setStructuringElementTest();
+  void showLena();
+  void openAndShowImage(const QString& fileName, bool provideFeedback = false);
 
   Ui::MainWindow* ui;
   Image* m_image;

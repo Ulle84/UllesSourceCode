@@ -38,7 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //statisticsTest();
   //rotatedRectangleTest();
   //setLineTest();
-  setStructuringElementTest();
+  //setStructuringElementTest();
+  showLena();
 }
 
 MainWindow::~MainWindow()
@@ -61,48 +62,11 @@ void MainWindow::on_actionOpenImage_triggered()
 
   m_lastSelectedFile = fileName;
 
-  QImage qImage(fileName);
+  openAndShowImage(fileName, true);
 
-  if (qImage.isNull())
-  {
-    QMessageBox mb;
-    mb.setText(tr("Image could not be opened."));
-    mb.exec();
-    return;
-  }
 
-  std::vector<unsigned int> layerIndices;
 
-  // TODO create class FormatHelper and use also in class ImageDisplay
-  QImage::Format format = qImage.format();
-  switch(format)
-  {
-  case QImage::Format_Indexed8:
-    layerIndices.push_back(0);
-    break;
-
-  case QImage::Format_ARGB32:
-  case QImage::Format_RGB32:
-    layerIndices.push_back(2);
-    layerIndices.push_back(1);
-    layerIndices.push_back(0);
-    layerIndices.push_back(3);
-    break;
-  }
-
-  if (layerIndices.size() == 0)
-  {
-    QMessageBox mb;
-    mb.setText(tr("Image format could not be recognized."));
-    mb.exec();
-    return;
-  }
-
-  Image* image = new Image(qImage.width(), qImage.height(), layerIndices.size());
-
-  image->setSingleLayer(qImage.bits(), layerIndices);
-
-  Line line(Point(0, 400), Point(200, 400));
+  /*Line line(Point(0, 400), Point(200, 400));
   Edges edgesLeft = image->findEdges(line, 15, 7);
 
   Edge firstEdgeLeft = edgesLeft.front();
@@ -131,9 +95,7 @@ void MainWindow::on_actionOpenImage_triggered()
   Point p2 = edgesBottom2.front().getPosition();
 
   Rectangle rectangle2(Point(p2.m_x - 90, p2.m_y - 240), 120, 70);
-  image->setRectangle(255, rectangle2, false);
-
-  m_imageDisplay->setImage(image);
+  image->setRectangle(255, rectangle2, false);*/
 }
 
 void MainWindow::imageTest()
@@ -351,6 +313,63 @@ void MainWindow::setStructuringElementTest()
   se.setPolyLine(true, polyLine);
 
   image->setStructureElement(255, &se, Point(2, 3));
+
+  m_imageDisplay->setImage(image);
+}
+
+void MainWindow::showLena()
+{
+  openAndShowImage("/Users/Ulle/Programmierung/UllesSourceCode/ImageProcessing/TestImages/lena.tif");
+}
+
+void MainWindow::openAndShowImage(const QString &fileName, bool provideFeedback)
+{
+  QImage qImage(fileName);
+
+  if (qImage.isNull())
+  {
+    if (provideFeedback)
+    {
+      QMessageBox mb;
+      mb.setText(tr("Image could not be opened."));
+      mb.exec();
+    }
+    return;
+  }
+
+  std::vector<unsigned int> layerIndices;
+
+  // TODO create class FormatHelper and use also in class ImageDisplay
+  QImage::Format format = qImage.format();
+  switch(format)
+  {
+  case QImage::Format_Indexed8:
+    layerIndices.push_back(0);
+    break;
+
+  case QImage::Format_ARGB32:
+  case QImage::Format_RGB32:
+    layerIndices.push_back(2);
+    layerIndices.push_back(1);
+    layerIndices.push_back(0);
+    layerIndices.push_back(3);
+    break;
+  }
+
+  if (layerIndices.size() == 0)
+  {
+    if (provideFeedback)
+    {
+      QMessageBox mb;
+      mb.setText(tr("Image format could not be recognized."));
+      mb.exec();
+    }
+    return;
+  }
+
+  Image* image = new Image(qImage.width(), qImage.height(), layerIndices.size());
+
+  image->setSingleLayer(qImage.bits(), layerIndices);
 
   m_imageDisplay->setImage(image);
 }

@@ -1,6 +1,7 @@
 #ifndef IMAGEDISPLAY_H
 #define IMAGEDISPLAY_H
 
+#include <QBrush>
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QLine>
@@ -41,16 +42,17 @@ private:
   bool m_ctrlButtonIsPressed;
   Image* m_image;
 
-  float m_mouseX;
-  float m_mouseY;
   bool m_techingActive;
+  bool m_movingActive;
 
-  QPoint m_startPoint;
+  QPointF m_mousePressPosition;
+  QPointF m_mouseMovePosition;
 
   QGraphicsLineItem* m_currentTeachingLine;
   QGraphicsRectItem* m_currentTeachingRect;
   QGraphicsEllipseItem* m_currentTeachingEllipse;
   QPen m_pen;
+  QBrush m_brush;
 };
 
 #endif // IMAGEDISPLAY_H
