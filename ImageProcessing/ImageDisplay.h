@@ -8,8 +8,11 @@
 #include <QPoint>
 #include <QRect>
 #include <QGraphicsLineItem>
+#include <QVector>
+#include <QPair>
 
 class Image;
+class Teachable;
 
 namespace Ui {
 class ImageDisplay;
@@ -37,20 +40,22 @@ private slots:
   void on_toolButtonTeachCircle_clicked(bool checked);
 
 private:
+  void updateTeachables(QGraphicsItem* item);
+  void notifyTeachables(QGraphicsEllipseItem* item, const QPointF& position);
+
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
   bool m_ctrlButtonIsPressed;
   Image* m_image;
 
-  bool m_techingActive;
-  bool m_movingActive;
-
   QPointF m_mousePressPosition;
   QPointF m_mouseMovePosition;
 
-  QGraphicsLineItem* m_currentTeachingLine;
-  QGraphicsRectItem* m_currentTeachingRect;
-  QGraphicsEllipseItem* m_currentTeachingEllipse;
+  QGraphicsEllipseItem* m_currentTeachingPoint;
+
+  QList<Teachable*> m_teachables;
+  Teachable* m_currentTeachable;
+
   QPen m_pen;
   QBrush m_brush;
 };

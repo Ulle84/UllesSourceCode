@@ -15,15 +15,18 @@
 #include "ImageDisplay.h"
 #include "ui_ImageDisplay.h"
 
+#include "TeachableLine.h"
+#include "TeachableRectangle.h"
+#include "TeachableCirlce.h"
+
 ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ImageDisplay),
   m_ctrlButtonIsPressed(false),
   m_image(0),
-  m_techingActive(false),
-  m_movingActive(false),
   m_pen(QPen(QColor(255, 0, 0))),
-  m_brush(QBrush(Qt::DiagCrossPattern))
+  m_brush(QBrush(Qt::DiagCrossPattern)),
+  m_currentTeachingPoint(NULL)
 {
   ui->setupUi(this);
 
@@ -88,46 +91,9 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
       ui->label->setText(QString("x: %1  y: %2  %3").arg(x).arg(y).arg(pixelInformation));
 
-      if (m_techingActive)
+      if (m_currentTeachingPoint != NULL)
       {
-        if (ui->toolButtonTeachLine->isChecked())
-        {
-          QLineF line (m_mousePressPosition, m_mouseMovePosition);
-
-          m_currentTeachingLine->setLine(line);
-          ui->lineEditCode->setText(GeometryCodeGenerator::generate(line));
-        }
-        else if (ui->toolButtonTeachRectangle->isChecked())
-        {
-          QRectF rect (m_mousePressPosition, m_mouseMovePosition);
-
-          m_currentTeachingRect->setRect(rect);
-          ui->lineEditCode->setText(GeometryCodeGenerator::generate(rect));
-        }
-        else if (ui->toolButtonTeachCircle->isChecked())
-        {
-          QPointF delta = m_mouseMovePosition - m_mousePressPosition;
-
-          double r = sqrt(delta.x() * delta.x() + delta.y() * delta.y());
-
-          QPointF p1(m_mousePressPosition.x() - r, m_mousePressPosition.y() - r);
-          QPointF p2(m_mousePressPosition.x() + r, m_mousePressPosition.y() + r);
-          QRectF rect = QRectF(p1, p2);
-
-          m_currentTeachingEllipse->setRect(QRectF(p1, p2));
-          ui->lineEditCode->setText(GeometryCodeGenerator::generate(rect, true, true));
-        }
-      }
-      else if (m_movingActive)
-      {
-        if (mouseEvent)
-        {
-          QPointF lastPos = mouseEvent->lastScenePos();
-          QPointF delta = mouseEvent->lastScenePos() - mouseEvent->scenePos();
-          QRectF rect = m_currentTeachingRect->rect();
-          rect.moveTo(rect.topLeft() - delta);
-          m_currentTeachingRect->setRect(rect);
-        }
+        notifyTeachables(m_currentTeachingPoint, m_mouseMovePosition);
       }
     }
     else if (event->type() == QEvent::GraphicsSceneMousePress)
@@ -139,20 +105,24 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
       if (teachButtonChecked)
       {
-        m_techingActive = true;
-
         if (ui->toolButtonTeachLine->isChecked())
         {
-          m_currentTeachingLine = m_scene->addLine(QLineF(m_mousePressPosition, m_mousePressPosition), m_pen);
+          QGraphicsLineItem* lineItem = m_scene->addLine(QLineF(m_mousePressPosition, m_mousePressPosition), m_pen);
+          m_currentTeachable = new TeachableLine(lineItem, m_scene, &m_pen);
         }
         else if (ui->toolButtonTeachRectangle->isChecked())
         {
-          m_currentTeachingRect = m_scene->addRect(QRectF(m_mousePressPosition, m_mousePressPosition), m_pen, m_brush);
+          QGraphicsRectItem* rectItem = m_scene->addRect(QRectF(m_mousePressPosition, m_mousePressPosition), m_pen, m_brush);
+          m_currentTeachable = new TeachableRectangle(rectItem, m_scene, &m_pen);
         }
         else if (ui->toolButtonTeachCircle->isChecked())
         {
-          m_currentTeachingEllipse = m_scene->addEllipse(QRectF(m_mousePressPosition, m_mousePressPosition), m_pen, m_brush);
+          QGraphicsEllipseItem* ellipseItem = m_scene->addEllipse(QRectF(m_mousePressPosition, m_mousePressPosition), m_pen, m_brush);
+          m_currentTeachable = new TeachableCirlce(ellipseItem, m_scene, &m_pen);
         }
+
+        m_teachables.append(m_currentTeachable);
+        m_currentTeachingPoint = m_currentTeachable->defaultTeachingPoint();
       }
       else if (!ui->toolButtonDragImage->isChecked())
       {
@@ -173,8 +143,6 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
           if (rectItem)
           {
-            m_movingActive = true;
-            m_currentTeachingRect = rectItem;
             ui->lineEditCode->setText(GeometryCodeGenerator::generate(rectItem->rect()));
           }
         }
@@ -184,7 +152,22 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
           if (ellipseItem)
           {
-            ui->lineEditCode->setText(GeometryCodeGenerator::generate(ellipseItem->rect(), true, true));
+            bool ellipseIsTeachingPoint = false;
+            for (auto it = m_teachables.begin(); it != m_teachables.end(); it++)
+            {
+              if ((*it)->hasTeachingPoint(ellipseItem))
+              {
+                ellipseIsTeachingPoint = true;
+                m_currentTeachingPoint = ellipseItem;
+                break;
+              }
+            }
+
+            if (!ellipseIsTeachingPoint)
+            {
+              m_currentTeachingPoint = NULL;
+              ui->lineEditCode->setText(GeometryCodeGenerator::generate(ellipseItem->rect(), true, true));
+            }
           }
         }
         else
@@ -195,17 +178,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
     }
     else if (event->type() == QEvent::GraphicsSceneMouseRelease)
     {
-      m_techingActive = false;
-      m_movingActive = false;
-      /*if (teachButtonChecked)
-      {
-        m_techingActive = false;
-      }
-
-      if (m_movingActive)
-      {
-        m_movingActive = false;
-      }*/
+      m_currentTeachingPoint = NULL;
     }
   }
 
@@ -339,5 +312,29 @@ void ImageDisplay::on_toolButtonTeachCircle_clicked(bool checked)
     ui->toolButtonTeachLine->setChecked(false);
     ui->toolButtonTeachRectangle->setChecked(false);
     ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+  }
+}
+
+void ImageDisplay::updateTeachables(QGraphicsItem *item)
+{
+  for (auto it = m_teachables.begin(); it != m_teachables.end(); it++)
+  {
+    if ((*it)->getGraphicsItem() == item)
+    {
+      (*it)->update();
+      break;
+    }
+  }
+}
+
+void ImageDisplay::notifyTeachables(QGraphicsEllipseItem *item, const QPointF &position)
+{
+  for (auto it = m_teachables.begin(); it != m_teachables.end(); it++)
+  {
+    if ((*it)->hasTeachingPoint(item))
+    {
+      (*it)->positionChanged(item, position);
+      break;
+    }
   }
 }

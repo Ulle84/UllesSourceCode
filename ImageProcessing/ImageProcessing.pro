@@ -28,7 +28,10 @@ SOURCES += main.cpp\
     Line.cpp \
     MathHelper.cpp \
     Converter.cpp \
-    GeometryCodeGenerator.cpp
+    GeometryCodeGenerator.cpp \
+    TeachableLine.cpp \
+    TeachableRectangle.cpp \
+    TeachableCirlce.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -47,7 +50,11 @@ HEADERS  += MainWindow.h \
     MathHelper.h \
     Statistics.h \
     Converter.h \
-    GeometryCodeGenerator.h
+    GeometryCodeGenerator.h \
+    Teachable.h \
+    TeachableLine.h \
+    TeachableRectangle.h \
+    TeachableCirlce.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
