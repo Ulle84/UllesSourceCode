@@ -1,4 +1,7 @@
+#include <QDebug>
 #include <qmath.h>
+
+#include <QLineF>
 
 #include "Converter.h"
 
@@ -9,19 +12,36 @@ TeachableCirlce::TeachableCirlce(QGraphicsEllipseItem *ellipseItem, QGraphicsSce
   m_scene(scene),
   m_pen(pen)
 {
-  m_center = scene->addEllipse(Converter::toQRectF(ellipseItem->rect().center()), *m_pen);
-  m_pointOnCircle = scene->addEllipse(Converter::toQRectF(pointOnCircle()), *m_pen);
+  m_center = scene->addEllipse(QRectF(), *m_pen);
+  m_pointOnCircle = scene->addEllipse(QRectF(), *m_pen);
+  setTeachingPointsVisible(false);
 }
 
 void TeachableCirlce::setTeachingPointsVisible(bool visible)
 {
   m_center->setVisible(visible);
   m_pointOnCircle->setVisible(visible);
+
+  if (visible)
+  {
+    float radius = 5.0;
+    float factor = 2.5;
+
+    QLineF line(m_ellipseItem->rect().center(), m_teachedPointOnCircle);
+
+    if (line.length() < factor * radius)
+    {
+      radius = line.length() / factor;
+    }
+
+    m_center->setRect(Converter::toQRectF(m_ellipseItem->rect().center(), radius));
+    m_pointOnCircle->setRect(Converter::toQRectF(m_teachedPointOnCircle, radius));
+  }
 }
 
-QGraphicsItem *TeachableCirlce::getGraphicsItem()
+bool TeachableCirlce::hasGraphicsItem(QGraphicsItem *item)
 {
-  return m_ellipseItem;
+  return m_ellipseItem == item;
 }
 
 void TeachableCirlce::positionChanged(QGraphicsEllipseItem *item, const QPointF &position)
@@ -38,6 +58,7 @@ void TeachableCirlce::positionChanged(QGraphicsEllipseItem *item, const QPointF 
   else if (item == m_pointOnCircle)
   {
     m_teachedPointOnCircle = position;
+    qDebug() << m_teachedPointOnCircle;
 
     QPointF center = rect.center();
 
@@ -51,13 +72,6 @@ void TeachableCirlce::positionChanged(QGraphicsEllipseItem *item, const QPointF 
   }
 
   m_ellipseItem->setRect(rect);
-  update();
-}
-
-void TeachableCirlce::update()
-{
-  m_center->setRect(Converter::toQRectF(m_ellipseItem->rect().center()));
-  m_pointOnCircle->setRect(Converter::toQRectF(m_teachedPointOnCircle));
 }
 
 bool TeachableCirlce::hasTeachingPoint(QGraphicsEllipseItem *item)
@@ -68,9 +82,4 @@ bool TeachableCirlce::hasTeachingPoint(QGraphicsEllipseItem *item)
 QGraphicsEllipseItem *TeachableCirlce::defaultTeachingPoint()
 {
   return m_pointOnCircle;
-}
-
-QPointF TeachableCirlce::pointOnCircle()
-{
-  return QPoint(m_ellipseItem->rect().right(), m_ellipseItem->rect().center().y());
 }

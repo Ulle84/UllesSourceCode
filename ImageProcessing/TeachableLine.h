@@ -16,9 +16,8 @@ public:
 
   // Interface Techable
   void setTeachingPointsVisible(bool visible);
-  QGraphicsItem* getGraphicsItem();
+  bool hasGraphicsItem(QGraphicsItem* item);
   void positionChanged(QGraphicsEllipseItem* item, const QPointF& position);
-  void update();
   bool hasTeachingPoint(QGraphicsEllipseItem* item);
   QGraphicsEllipseItem* defaultTeachingPoint();
 

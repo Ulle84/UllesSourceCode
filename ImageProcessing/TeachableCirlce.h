@@ -14,17 +14,15 @@ class TeachableCirlce : public Teachable
 public:
   TeachableCirlce(QGraphicsEllipseItem* ellipseItem, QGraphicsScene* scene, QPen* pen);
 
+
   // Interface Techable
   void setTeachingPointsVisible(bool visible);
-  QGraphicsItem* getGraphicsItem();
+  bool hasGraphicsItem(QGraphicsItem* item);
   void positionChanged(QGraphicsEllipseItem* item, const QPointF& position);
-  void update();
   bool hasTeachingPoint(QGraphicsEllipseItem* item);
   QGraphicsEllipseItem* defaultTeachingPoint();
 
 private:
-  QPointF pointOnCircle();
-
   QGraphicsEllipseItem* m_ellipseItem;
   QGraphicsScene* m_scene;
   QPen* m_pen;

@@ -43,7 +43,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonTeachLine">
        <property name="text">
-        <string>teach line</string>
+        <string>teach new line</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -53,7 +53,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonTeachRectangle">
        <property name="text">
-        <string>teach rectangle</string>
+        <string>teach new rectangle</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -63,7 +63,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonTeachCircle">
        <property name="text">
-        <string>teach circle</string>
+        <string>teach new circle</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

@@ -40,9 +40,6 @@ private slots:
   void on_toolButtonTeachCircle_clicked(bool checked);
 
 private:
-  void updateTeachables(QGraphicsItem* item);
-  void notifyTeachables(QGraphicsEllipseItem* item, const QPointF& position);
-
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
   bool m_ctrlButtonIsPressed;
@@ -53,10 +50,11 @@ private:
 
   QGraphicsEllipseItem* m_currentTeachingPoint;
 
-  QList<Teachable*> m_teachables;
+  QList<Teachable*> m_teachables; // TODO clear list and delete entrys
   Teachable* m_currentTeachable;
 
-  QPen m_pen;
+  QPen m_penOutlines;
+  QPen m_penTeachinPoints;
   QBrush m_brush;
 };
 

@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QPen>
 #include <QPoint>
+#include <QVector>
 
 #include "Teachable.h"
 
@@ -16,13 +17,14 @@ public:
 
   // Interface Techable
   void setTeachingPointsVisible(bool visible);
-  QGraphicsItem* getGraphicsItem();
+  bool hasGraphicsItem(QGraphicsItem* item);
   void positionChanged(QGraphicsEllipseItem* item, const QPointF& position);
-  void update();
   bool hasTeachingPoint(QGraphicsEllipseItem* item);
   QGraphicsEllipseItem* defaultTeachingPoint();
 
 private:
+  QPointF middle(const QPointF& start, const QPointF& end);
+
   QPointF center();
 
   QGraphicsRectItem* m_rectItem;
@@ -30,10 +32,16 @@ private:
   QPen* m_pen;
 
   QGraphicsEllipseItem* m_topLeft;
+  QGraphicsEllipseItem* m_top;
   QGraphicsEllipseItem* m_topRight;
-  QGraphicsEllipseItem* m_bottomLeft;
-  QGraphicsEllipseItem* m_bottomRight;
+
+  QGraphicsEllipseItem* m_left;
   QGraphicsEllipseItem* m_center;
+  QGraphicsEllipseItem* m_right;
+
+  QGraphicsEllipseItem* m_bottomLeft;
+  QGraphicsEllipseItem* m_bottom;
+  QGraphicsEllipseItem* m_bottomRight;
 };
 
 #endif // TEACHABLERECTANGLE_H

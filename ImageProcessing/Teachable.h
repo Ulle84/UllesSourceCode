@@ -11,9 +11,8 @@ public:
   virtual ~Teachable(){}
 
   virtual void setTeachingPointsVisible(bool visible) = 0;
-  virtual QGraphicsItem* getGraphicsItem() = 0;
+  virtual bool hasGraphicsItem(QGraphicsItem* item) = 0;
   virtual void positionChanged(QGraphicsEllipseItem* item, const QPointF& position) = 0;
-  virtual void update() = 0;
   virtual bool hasTeachingPoint(QGraphicsEllipseItem* item) = 0;
   virtual QGraphicsEllipseItem* defaultTeachingPoint() = 0;
 };
