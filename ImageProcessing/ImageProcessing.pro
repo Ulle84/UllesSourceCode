@@ -33,8 +33,7 @@ SOURCES += main.cpp\
     TeachableRectangle.cpp \
     TeachableCirlce.cpp \
     RectangleRotated.cpp \
-    TeachableRectangleRotated.cpp \
-    RectRotated.cpp
+    TeachableRectangleRotated.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -59,8 +58,7 @@ HEADERS  += MainWindow.h \
     TeachableRectangle.h \
     TeachableCirlce.h \
     RectangleRotated.h \
-    TeachableRectangleRotated.h \
-    RectRotated.h
+    TeachableRectangleRotated.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui
