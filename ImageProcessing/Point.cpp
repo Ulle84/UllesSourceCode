@@ -13,7 +13,7 @@ Point::Point(float x, float y) :
 {
 }
 
-float Point::x()
+float Point::x() const
 {
   return m_x;
 }
@@ -23,7 +23,7 @@ void Point::setX(float x)
   m_x = x;
 }
 
-float Point::y()
+float Point::y() const
 {
   return m_y;
 }

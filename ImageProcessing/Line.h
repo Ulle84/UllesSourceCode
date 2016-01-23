@@ -11,7 +11,7 @@ public:
 
   Point getStartPoint() const;
   Point getEndPoint() const;
-  float getAngle() const;
+  float angle() const;
 
   Points getPointsAlongLine() const;
 

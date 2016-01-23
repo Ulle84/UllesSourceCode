@@ -4,6 +4,9 @@
 
 #include "Converter.h"
 #include "TeachableRectangleRotated.h"
+#include "MathHelper.h"
+#include "Point.h"
+#include "Line.h"
 
 
 TeachableRectangleRotated::TeachableRectangleRotated(RectangleRotated *rectangleRotated, QGraphicsScene *scene, QPen *pen) :
@@ -46,28 +49,25 @@ void TeachableRectangleRotated::setTeachingPointsVisible(bool visible)
 
   if (visible)
   {
-    QRectF rect = m_rectangleRotated->rectangle();
+    Rectangle rectangle = m_rectangleRotated->rectangle();
 
-    QPointF topLeft = rect.topLeft();
-    QPointF topRight = rect.topRight();
-    QPointF bottomLeft = rect.bottomLeft();
-    QPointF bottomRight = rect.bottomRight();
+    QPointF topLeft = Converter::toQPointF(rectangle.topLeft());
+    QPointF topRight = Converter::toQPointF(rectangle.topRight());
+    QPointF bottomLeft = Converter::toQPointF(rectangle.bottomLeft());
+    QPointF bottomRight = Converter::toQPointF(rectangle.bottomRight());
 
     float radius = 5.0;
 
     float factor = 5.0;
 
-    qDebug() << "width" << rect.width();
-    qDebug() << "height" << rect.height();
-
-    if (rect.width() < factor * radius)
+    if (rectangle.width() < factor * radius)
     {
-      radius = rect.width() / factor;
+      radius = rectangle.width() / factor;
     }
 
-    if (rect.height() < factor * radius)
+    if (rectangle.height() < factor * radius)
     {
-      radius = rect.height() / factor;
+      radius = rectangle.height() / factor;
     }
 
     m_topLeft->setRect(Converter::toQRectF(topLeft, radius));
@@ -75,12 +75,15 @@ void TeachableRectangleRotated::setTeachingPointsVisible(bool visible)
     m_topRight->setRect(Converter::toQRectF(topRight, radius));
 
     m_left->setRect(Converter::toQRectF(middle(topLeft, bottomLeft), radius));
-    m_center->setRect(Converter::toQRectF(rect.center(), radius));
+    m_center->setRect(Converter::toQRectF(middle(topLeft, bottomRight), radius));
     m_right->setRect(Converter::toQRectF(middle(topRight, bottomRight), radius));
 
     m_bottomLeft->setRect(Converter::toQRectF(bottomLeft, radius));
     m_bottom->setRect(Converter::toQRectF(middle(bottomLeft, bottomRight), radius));
     m_bottomRight->setRect(Converter::toQRectF(bottomRight, radius));
+
+    QPointF teachAngle = Converter::toQPointF(MathHelper::calcEndPoint(rectangle.topRight(), rectangle.angle(), radius * 2.5));
+    m_angle->setRect(Converter::toQRectF(teachAngle, radius));
   }
 }
 
@@ -91,43 +94,56 @@ bool TeachableRectangleRotated::hasGraphicsItem(QGraphicsItem *item)
 
 void TeachableRectangleRotated::positionChanged(QGraphicsEllipseItem *item, const QPointF &position)
 {
-  RectRotated rect = m_rectangleRotated->rectangle();
+  Rectangle rect = m_rectangleRotated->rectangle();
 
   if (item == m_topLeft)
   {
-    rect.setTopLeft(position);
+    rect.setTopLeft(Converter::toPoint(position));
   }
   else if (item == m_top)
   {
-    rect.setTop(position.y());
+    float width = rect.width();
+    rect.setTopRight(Converter::toPoint(position));
+    rect.setWidth(width);
   }
   else if (item == m_topRight)
   {
-    rect.setTopRight(position);
+    rect.setTopRight(Converter::toPoint(position));
   }
   else if (item == m_left)
   {
-    rect.setLeft(position.x());
+    float height = rect.height();
+    rect.setBottomLeft(Converter::toPoint(position));
+    rect.setHeight(height);
   }
   else if (item == m_center)
   {
-    rect.moveCenter(position);
+    rect.moveCenter(Converter::toPoint(position));
   }
   else if (item == m_right)
   {
-    rect.setRight(position.x());
+    float height = rect.height();
+    rect.setBottomRight(Converter::toPoint(position));
+    rect.setHeight(height);
   }
   else if (item == m_bottomLeft)
   {
-    rect.setBottomLeft(position);
+    rect.setBottomLeft(Converter::toPoint(position));
   }
   else if (item == m_bottom)
   {
-    rect.setBottom(position.y());
+    float width = rect.width();
+    rect.setBottomRight(Converter::toPoint(position));
+    rect.setWidth(width);
   }
   else if (item == m_bottomRight)
   {
-    rect.setBottomRight(position);
+    rect.setBottomRight(Converter::toPoint(position));
+  }
+  else if (item == m_angle)
+  {
+    Line line(rect.topLeft(), Converter::toPoint(position));
+    rect.setAngle(line.angle());
   }
 
   m_rectangleRotated->setRectangle(rect);

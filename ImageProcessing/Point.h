@@ -9,10 +9,10 @@ public:
   Point();
   Point(float x, float y);
 
-  float x();
+  float x() const;
   void setX(float x);
 
-  float y();
+  float y() const;
   void setY(float y);
 
   float m_x; // TODO private

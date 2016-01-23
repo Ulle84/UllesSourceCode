@@ -1,7 +1,7 @@
 # Bugs
 
 # ToDo (prioritised)
-* test create own types of QGraphicsItem -> RotatedRectangle for example
+* z-Order teaching-points must be high!
 * verify if use of QImage is really needed -> try to avoid -> use QPixmap directly instead
 * replace own geometries by QtTypes? - no! only use Qt for UI and Visualization!
 * Image to QPixMap?

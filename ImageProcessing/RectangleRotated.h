@@ -3,7 +3,7 @@
 
 #include <QGraphicsItem>
 
-#include "RectRotated.h"
+#include "Rectangle.h"
 
 class RectangleRotated : public QGraphicsItem
 {
@@ -16,12 +16,13 @@ public:
 
   QRectF boundingRect() const;
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  QPainterPath shape() const;
 
-  RectRotated rectangle();
-  void setRectangle(const RectRotated& rectRotated);
+  Rectangle rectangle();
+  void setRectangle(const Rectangle& rectangle);
 
 private:
-  RectRotated m_rectangle;
+  Rectangle m_rectangle;
 };
 
 #endif // RECTANGLEROTATED_H

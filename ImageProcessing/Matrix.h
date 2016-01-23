@@ -886,13 +886,13 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, uns
       {
         // TODO use memset if sizeof(T) == 1
         m_values[z][Converter::toUInt(rectangle.m_origin.m_y)][x] = value;
-        m_values[z][Converter::toUInt(rectangle.m_origin.m_y) + rectangle.m_height - 1][x] = value;
+        m_values[z][Converter::toUInt(rectangle.m_origin.m_y) + Converter::toUInt(rectangle.m_height) - 1][x] = value;
       }
 
       for (unsigned int y = rectangle.m_origin.m_y + 1; y < (rectangle.m_origin.m_y + rectangle.m_height - 1); y++)
       {
         m_values[z][y][Converter::toUInt(rectangle.m_origin.m_x)] = value;
-        m_values[z][y][Converter::toUInt(rectangle.m_origin.m_x) + rectangle.m_width - 1] = value;
+        m_values[z][y][Converter::toUInt(rectangle.m_origin.m_x) + Converter::toUInt(rectangle.m_width) - 1] = value;
       }
     }
   }
@@ -1000,8 +1000,8 @@ void Matrix<T>::setLine(T value, const Line & line, bool drawArrow, unsigned int
     float arrowLength = 3;
     float arrowAngle = 135;
 
-    setLine(value, Line(line.getEndPoint(), line.getAngle() + arrowAngle, arrowLength));
-    setLine(value, Line(line.getEndPoint(), line.getAngle() - arrowAngle, arrowLength));
+    setLine(value, Line(line.getEndPoint(), line.angle() + arrowAngle, arrowLength));
+    setLine(value, Line(line.getEndPoint(), line.angle() - arrowAngle, arrowLength));
   }
 }
 
@@ -2012,8 +2012,8 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
 
   if (smoothingWidth > 1)
   {
-    double d1 = sin(MathHelper::rad(line.getAngle()));
-    double d2 = cos(MathHelper::rad(line.getAngle()));
+    double d1 = sin(MathHelper::rad(line.angle()));
+    double d2 = cos(MathHelper::rad(line.angle()));
 
     /*std::cout << "d1: " << d1 << std::endl;
     std::cout << "d2: " << d2 << std::endl;*/
@@ -2030,8 +2030,8 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
   {
     if (smoothingWidth > 1)
     {
-      Point p1 = MathHelper::calcEndPoint(*it, line.getAngle() - 90, distance1);
-      Point p2 = MathHelper::calcEndPoint(*it, line.getAngle() + 90, distance2);
+      Point p1 = MathHelper::calcEndPoint(*it, line.angle() - 90, distance1);
+      Point p2 = MathHelper::calcEndPoint(*it, line.angle() + 90, distance2);
 
       Line verticalLine(p1, p2);
 
@@ -2054,7 +2054,7 @@ Edges Matrix<T>::findEdges(const Line &line, float minContrast, unsigned int smo
 
       if (difference > minContrast || difference < -minContrast)
       {
-        edges.push_back(Edge(*it, line.getAngle(), difference));
+        edges.push_back(Edge(*it, line.angle(), difference));
         //std::cout << "difference: " << difference << std::endl;
         setPoint(255, *it);
       }

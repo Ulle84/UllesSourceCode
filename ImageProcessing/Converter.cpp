@@ -29,8 +29,23 @@ unsigned int Converter::toUInt(double value)
   return result;
 }
 
-QRectF Converter::toQRectF(QPointF point, float radius)
+QRectF Converter::toQRectF(const QPointF& point, float radius)
 {
   QPointF offset(radius, radius);
   return QRectF(point - offset, point + offset);
+}
+
+QRectF Converter::toQRectF(const Rectangle &rectangle)
+{
+  return QRectF(Converter::toQPointF(rectangle.topLeft()), Converter::toQPointF(rectangle.bottomRight()));
+}
+
+QPointF Converter::toQPointF(const Point &point)
+{
+  return QPointF(point.x(), point.y());
+}
+
+Point Converter::toPoint(const QPointF &point)
+{
+  return Point(point.x(), point.y());
 }

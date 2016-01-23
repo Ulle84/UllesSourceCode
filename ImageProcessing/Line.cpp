@@ -29,7 +29,7 @@ Point Line::getEndPoint() const
   return m_endPoint;
 }
 
-float Line::getAngle() const
+float Line::angle() const
 {
   return m_angle;
 }

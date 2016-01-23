@@ -49,7 +49,7 @@ void TeachableRectangle::setTeachingPointsVisible(bool visible)
     QPointF bottomRight = rect.bottomRight();
 
     qreal width = rect.width() < 0 ? -rect.width() : rect.width();
-    qreal height = rect.height() < 0 ? -rect.height() : rect.height();
+    qreal heightx = rect.height() < 0 ? -rect.height() : rect.height();
 
     float radius = 5.0;
 

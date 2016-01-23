@@ -133,7 +133,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
         {
           RectangleRotated* rectangleRotated = new RectangleRotated();
 
-          RectRotated rect;
+          Rectangle rect;
           rect.setX(m_mousePressPosition.x());
           rect.setY(m_mousePressPosition.y());
           rect.setWidth(1);
