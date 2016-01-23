@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>656</width>
+    <width>740</width>
     <height>484</height>
    </rect>
   </property>
@@ -74,6 +74,16 @@
       <widget class="QToolButton" name="toolButtonTeachRotatedRectangle">
        <property name="text">
         <string>teach new rotated rectangle</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonTeachPolyLine">
+       <property name="text">
+        <string>teach new polyline</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

@@ -59,10 +59,11 @@ PolyLine Rectangle::toPolyLine() const
 {
   PolyLine polyLine;
 
-  Points points = getEdgePoints();
-  points.push_back(m_origin);
-
-  polyLine.setPoints(points);
+  polyLine.push_back(m_origin);
+  polyLine.push_back(bottomLeft());
+  polyLine.push_back(bottomRight());
+  polyLine.push_back(topRight());
+  polyLine.push_back(m_origin);
 
   return polyLine;
 }

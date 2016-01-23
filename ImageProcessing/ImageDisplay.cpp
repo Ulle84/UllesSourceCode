@@ -19,6 +19,7 @@
 #include "TeachableRectangle.h"
 #include "TeachableCirlce.h"
 #include "TeachableRectangleRotated.h"
+#include "TeachablePolyLine.h"
 
 ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
@@ -59,7 +60,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
   {
     QGraphicsSceneMouseEvent* mouseEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
-    bool teachButtonChecked = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked() || ui->toolButtonTeachRotatedRectangle->isChecked();
+    bool teachButtonChecked = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked() || ui->toolButtonTeachRotatedRectangle->isChecked() || ui->toolButtonTeachPolyLine->isChecked();
 
     if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
@@ -131,7 +132,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
         }
         else if (ui->toolButtonTeachRotatedRectangle->isChecked())
         {
-          RectangleRotated* rectangleRotated = new RectangleRotated();
+          RectangleRotated* rectangleRotated = new RectangleRotated(&m_penOutlines, &m_brush);
 
           Rectangle rect;
           rect.setX(m_mousePressPosition.x());
@@ -142,6 +143,21 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
 
           m_scene->addItem(rectangleRotated);
           m_currentTeachable = new TeachableRectangleRotated(rectangleRotated, m_scene, &m_penTeachinPoints);
+        }
+        else if (ui->toolButtonTeachPolyLine->isChecked())
+        {
+          GraphicsPolyLineItem* graphicsPolyLineItem = new GraphicsPolyLineItem(&m_penOutlines, &m_brush);
+
+          PolyLine polyLine;
+          /*polyLine.push_back(Point(10, 10));
+          polyLine.push_back(Point(10, 20));
+          polyLine.push_back(Point(20, 20));*/
+          polyLine.push_back(Point(Converter::toPoint(m_mousePressPosition)));
+          polyLine.push_back(Point(Converter::toPoint(m_mousePressPosition)));
+          graphicsPolyLineItem->setPolyLine(polyLine);
+
+          m_scene->addItem(graphicsPolyLineItem);
+          m_currentTeachable = new TeachablePolyLine(graphicsPolyLineItem, m_scene, &m_penTeachinPoints);
         }
 
         m_teachables.append(m_currentTeachable);
@@ -391,5 +407,15 @@ void ImageDisplay::resetControls()
   ui->toolButtonTeachRectangle->setChecked(false);
   ui->toolButtonTeachCircle->setChecked(false);
   ui->toolButtonTeachRotatedRectangle->setChecked(false);
+  ui->toolButtonTeachPolyLine->setChecked(false);
   ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void ImageDisplay::on_toolButtonTeachPolyLine_clicked(bool checked)
+{
+  if (checked)
+  {
+    resetControls();
+    ui->toolButtonTeachPolyLine->setChecked(true);
+  }
 }

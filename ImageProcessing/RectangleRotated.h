@@ -5,10 +5,12 @@
 
 #include "Rectangle.h"
 
+// TODO rename to GraphicsRectangle?
+
 class RectangleRotated : public QGraphicsItem
 {
 public:
-  RectangleRotated();
+  RectangleRotated(QPen* pen, QBrush* brush);
   ~RectangleRotated();
 
   enum { Type = UserType + 1 };
@@ -23,6 +25,8 @@ public:
 
 private:
   Rectangle m_rectangle;
+  QPen* m_pen;
+  QBrush* m_brush;
 };
 
 #endif // RECTANGLEROTATED_H

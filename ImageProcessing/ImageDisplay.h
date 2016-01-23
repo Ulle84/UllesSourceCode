@@ -41,6 +41,8 @@ private slots:
 
   void on_toolButtonTeachRotatedRectangle_clicked(bool checked);
 
+  void on_toolButtonTeachPolyLine_clicked(bool checked);
+
 private:
   void resetControls();
 

@@ -8,28 +8,18 @@
 
 class Rectangle;
 
-class PolyLine
+class PolyLine : public std::list<Point>
 {
 public:
   PolyLine();
 
-  void setPoints(const std::list<Point>& points);
   void appendPoint(const Point& point);
 
-  Rectangle getBoundingRectangle();
-
+  Rectangle boundingRectangle() const;
   RunLengthCode toRunLengthCode();
 
-  std::list<Point> m_points; // TODO really public?
-
 private:
-  void updateMinMavValues();
-
-  unsigned int m_xMin;
-  unsigned int m_xMax;
-  unsigned int m_yMin;
-  unsigned int m_yMax;
-
+  void getMinMaxValues(float& xMin, float& xMax, float& yMin, float& yMax) const;
 };
 
 #endif // POLYLINE_H

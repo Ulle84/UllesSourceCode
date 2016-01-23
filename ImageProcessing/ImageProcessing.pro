@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     TeachableRectangle.cpp \
     TeachableCirlce.cpp \
     RectangleRotated.cpp \
-    TeachableRectangleRotated.cpp
+    TeachableRectangleRotated.cpp \
+    TeachablePolyLine.cpp \
+    GraphicsPolyLineItem.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -58,7 +60,9 @@ HEADERS  += MainWindow.h \
     TeachableRectangle.h \
     TeachableCirlce.h \
     RectangleRotated.h \
-    TeachableRectangleRotated.h
+    TeachableRectangleRotated.h \
+    TeachablePolyLine.h \
+    GraphicsPolyLineItem.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

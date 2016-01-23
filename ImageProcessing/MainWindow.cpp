@@ -298,16 +298,13 @@ void MainWindow::setStructuringElementTest()
 
   Image* image = new Image(width, height);
 
-  Points points;
-  points.push_back(Point(0, 0));
-  points.push_back(Point(2, 2));
-  points.push_back(Point(4, 0));
-  points.push_back(Point(4, 4));
-  points.push_back(Point(0, 4));
-  points.push_back(Point(0, 0));
-
   PolyLine polyLine;
-  polyLine.setPoints(points);
+  polyLine.push_back(Point(0, 0));
+  polyLine.push_back(Point(2, 2));
+  polyLine.push_back(Point(4, 0));
+  polyLine.push_back(Point(4, 4));
+  polyLine.push_back(Point(0, 4));
+  polyLine.push_back(Point(0, 0));
 
   StructuringElement se(5, 5, false);
   se.setPolyLine(true, polyLine);

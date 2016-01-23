@@ -4,7 +4,9 @@
 #include "Converter.h"
 #include "RectangleRotated.h"
 
-RectangleRotated::RectangleRotated()
+RectangleRotated::RectangleRotated(QPen* pen, QBrush* brush) :
+  m_pen(pen),
+  m_brush(brush)
 {
 }
 
@@ -19,6 +21,9 @@ QRectF RectangleRotated::boundingRect() const
 
 void RectangleRotated::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+  painter->setPen(*m_pen);
+  painter->setBrush(*m_brush);
+
   painter->drawLine(Converter::toQPointF(m_rectangle.topLeft()), Converter::toQPointF(m_rectangle.bottomLeft()));
   painter->drawLine(Converter::toQPointF(m_rectangle.bottomLeft()), Converter::toQPointF(m_rectangle.bottomRight()));
   painter->drawLine(Converter::toQPointF(m_rectangle.bottomRight()), Converter::toQPointF(m_rectangle.topRight()));
@@ -45,5 +50,4 @@ void RectangleRotated::setRectangle(const Rectangle &rectangle)
 {
   prepareGeometryChange();
   m_rectangle = rectangle;
-  // TODO update?
 }

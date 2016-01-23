@@ -898,13 +898,6 @@ void Matrix<T>::setRectangle(T value, const Rectangle &rectangle, bool fill, uns
   }
   else
   {
-    Points points = rectangle.toPolyLine().m_points;
-
-    for (auto it = points.begin(); it != points.end(); it++)
-    {
-      std::cout << "x: " << it->m_x << " y: " << it->m_y << std::endl;
-    }
-
     if (fill)
     {
       setRunLengthCode(value, rectangle.toPolyLine().toRunLengthCode(), z);
@@ -1127,15 +1120,15 @@ void Matrix<T>::setFreemanCode(T value, const FreemanCode &freemanCode, unsigned
 template<typename T>
 void Matrix<T>::setPolyLine(T value, const PolyLine &polyLine, unsigned int z)
 {
-  if (polyLine.m_points.size() < 2)
+  if (polyLine.size()< 2)
   {
     return;
   }
 
-  auto itPrevious = polyLine.m_points.begin();
-  for (auto it = polyLine.m_points.begin(); it != polyLine.m_points.end(); it++)
+  auto itPrevious = polyLine.begin();
+  for (auto it = polyLine.begin(); it != polyLine.end(); it++)
   {
-    if (it == polyLine.m_points.begin())
+    if (it == polyLine.begin())
     {
       continue;
     }

@@ -35,6 +35,12 @@ QRectF Converter::toQRectF(const QPointF& point, float radius)
   return QRectF(point - offset, point + offset);
 }
 
+QRectF Converter::toQRectF(const Point &point, float radius)
+{
+  QPointF offset(radius, radius);
+  return QRectF(toQPointF(point) - offset, toQPointF(point) + offset);
+}
+
 QRectF Converter::toQRectF(const Rectangle &rectangle)
 {
   return QRectF(Converter::toQPointF(rectangle.topLeft()), Converter::toQPointF(rectangle.bottomRight()));

@@ -1,6 +1,9 @@
 # Bugs
 
 # ToDo (prioritised)
+* teach polyline
+  * show centerPoints between to edgePoints
+  * make polyline selectable
 * z-Order teaching-points must be high!
 * verify if use of QImage is really needed -> try to avoid -> use QPixmap directly instead
 * replace own geometries by QtTypes? - no! only use Qt for UI and Visualization!

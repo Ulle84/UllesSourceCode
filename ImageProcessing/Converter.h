@@ -14,6 +14,7 @@ public:
   static unsigned int toUInt(double value);
 
   static QRectF toQRectF(const QPointF& point, float radius = 5.0);
+  static QRectF toQRectF(const Point& point, float radius = 5.0);
   static QRectF toQRectF(const Rectangle& rectangle);
   static QPointF toQPointF(const Point& point);
   static Point toPoint(const QPointF& point);
