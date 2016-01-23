@@ -1,12 +1,13 @@
 #include <QDebug>
+#include <QRectF>
+#include <QPointF>
 
 #include "Converter.h"
+#include "TeachableRectangleRotated.h"
 
-#include "TeachableRectangle.h"
 
-
-TeachableRectangle::TeachableRectangle(QGraphicsRectItem *rectItem, QGraphicsScene *scene, QPen *pen) :
-  m_rectItem(rectItem),
+TeachableRectangleRotated::TeachableRectangleRotated(RectangleRotated *rectangleRotated, QGraphicsScene *scene, QPen *pen) :
+  m_rectangleRotated(rectangleRotated),
   m_scene(scene),
   m_pen(pen)
 {
@@ -22,10 +23,12 @@ TeachableRectangle::TeachableRectangle(QGraphicsRectItem *rectItem, QGraphicsSce
   m_bottom = scene->addEllipse(QRectF(), *m_pen);
   m_bottomRight = scene->addEllipse(QRectF(), *m_pen);
 
+  m_angle = scene->addEllipse(QRectF(), *m_pen);
+
   setTeachingPointsVisible(false);
 }
 
-void TeachableRectangle::setTeachingPointsVisible(bool visible)
+void TeachableRectangleRotated::setTeachingPointsVisible(bool visible)
 {
   m_topLeft->setVisible(visible);
   m_top->setVisible(visible);
@@ -39,23 +42,25 @@ void TeachableRectangle::setTeachingPointsVisible(bool visible)
   m_bottom->setVisible(visible);
   m_bottomRight->setVisible(visible);
 
+  m_angle->setVisible(visible);
+
   if (visible)
   {
-    QRectF rect = m_rectItem->rect();
+    QRectF rect = m_rectangleRotated->rectangle();
 
     QPointF topLeft = rect.topLeft();
     QPointF topRight = rect.topRight();
     QPointF bottomLeft = rect.bottomLeft();
     QPointF bottomRight = rect.bottomRight();
 
-    qreal width = rect.width() < 0 ? -rect.width() : rect.width();
-    qreal height = rect.height() < 0 ? -rect.height() : rect.height();
-
     float radius = 5.0;
 
     float factor = 5.0;
 
-    if (width < factor * radius)
+    qDebug() << "width" << rect.width();
+    qDebug() << "height" << rect.height();
+
+    if (rect.width() < factor * radius)
     {
       radius = rect.width() / factor;
     }
@@ -79,14 +84,14 @@ void TeachableRectangle::setTeachingPointsVisible(bool visible)
   }
 }
 
-bool TeachableRectangle::hasGraphicsItem(QGraphicsItem *item)
+bool TeachableRectangleRotated::hasGraphicsItem(QGraphicsItem *item)
 {
-  return m_rectItem == item;
+  return m_rectangleRotated == item;
 }
 
-void TeachableRectangle::positionChanged(QGraphicsEllipseItem *item, const QPointF &position)
+void TeachableRectangleRotated::positionChanged(QGraphicsEllipseItem *item, const QPointF &position)
 {
-  QRectF rect = m_rectItem->rect();
+  RectRotated rect = m_rectangleRotated->rectangle();
 
   if (item == m_topLeft)
   {
@@ -125,30 +130,30 @@ void TeachableRectangle::positionChanged(QGraphicsEllipseItem *item, const QPoin
     rect.setBottomRight(position);
   }
 
-
-  m_rectItem->setRect(rect);
+  m_rectangleRotated->setRectangle(rect);
 }
 
-QPointF TeachableRectangle::middle(const QPointF &start, const QPointF &end)
-{
-  qreal x = start.x() + (end.x() - start.x()) / 2;
-  qreal y = start.y() + (end.y() - start.y()) / 2;
-
-  return QPointF(x, y);
-}
-
-bool TeachableRectangle::hasTeachingPoint(QGraphicsEllipseItem *item)
+bool TeachableRectangleRotated::hasTeachingPoint(QGraphicsEllipseItem *item)
 {
   bool teachingPointFound = false;
 
   teachingPointFound |= (m_topLeft == item || m_top == item || m_topRight == item);
   teachingPointFound |= (m_left == item || m_center == item || m_right == item);
   teachingPointFound |= (m_bottomLeft == item || m_bottom == item || m_bottomRight == item);
+  teachingPointFound |= (m_angle == item);
 
   return teachingPointFound;
 }
 
-QGraphicsEllipseItem *TeachableRectangle::defaultTeachingPoint()
+QGraphicsEllipseItem *TeachableRectangleRotated::defaultTeachingPoint()
 {
   return m_bottomRight;
+}
+
+QPointF TeachableRectangleRotated::middle(const QPointF &start, const QPointF &end)
+{
+  qreal x = start.x() + (end.x() - start.x()) / 2;
+  qreal y = start.y() + (end.y() - start.y()) / 2;
+
+  return QPointF(x, y);
 }

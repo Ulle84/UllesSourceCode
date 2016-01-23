@@ -31,7 +31,10 @@ SOURCES += main.cpp\
     GeometryCodeGenerator.cpp \
     TeachableLine.cpp \
     TeachableRectangle.cpp \
-    TeachableCirlce.cpp
+    TeachableCirlce.cpp \
+    RectangleRotated.cpp \
+    TeachableRectangleRotated.cpp \
+    RectRotated.cpp
 
 HEADERS  += MainWindow.h \
     ImageDisplay.h \
@@ -54,7 +57,10 @@ HEADERS  += MainWindow.h \
     Teachable.h \
     TeachableLine.h \
     TeachableRectangle.h \
-    TeachableCirlce.h
+    TeachableCirlce.h \
+    RectangleRotated.h \
+    TeachableRectangleRotated.h \
+    RectRotated.h
 
 FORMS    += MainWindow.ui \
     ImageDisplay.ui

@@ -41,4 +41,44 @@ PolyLine Rectangle::toPolyLine() const
   return polyLine;
 }
 
+float Rectangle::x()
+{
+  return m_origin.x();
+}
+
+void Rectangle::setX(float x)
+{
+  m_origin.setX(x);
+}
+
+float Rectangle::y()
+{
+  return m_origin.y();
+}
+
+void Rectangle::setY(float y)
+{
+  m_origin.setY(y);
+}
+
+float Rectangle::width()
+{
+  return m_width;
+}
+
+void Rectangle::setWidth(float width)
+{
+  m_width = width;
+}
+
+float Rectangle::height()
+{
+  return m_height;
+}
+
+void Rectangle::setHeight(float height)
+{
+  m_height = height;
+}
+
 

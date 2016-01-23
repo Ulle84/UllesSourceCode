@@ -58,7 +58,6 @@ void TeachableCirlce::positionChanged(QGraphicsEllipseItem *item, const QPointF 
   else if (item == m_pointOnCircle)
   {
     m_teachedPointOnCircle = position;
-    qDebug() << m_teachedPointOnCircle;
 
     QPointF center = rect.center();
 

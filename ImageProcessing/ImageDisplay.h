@@ -39,7 +39,11 @@ private slots:
   void on_toolButtonTeachRectangle_clicked(bool checked);
   void on_toolButtonTeachCircle_clicked(bool checked);
 
+  void on_toolButtonTeachRotatedRectangle_clicked(bool checked);
+
 private:
+  void resetControls();
+
   Ui::ImageDisplay *ui;
   QGraphicsScene* m_scene;
   bool m_ctrlButtonIsPressed;

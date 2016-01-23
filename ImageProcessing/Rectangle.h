@@ -16,7 +16,21 @@ public:
   Points getEdgePoints() const;
   PolyLine toPolyLine() const;
 
-  Point m_origin;
+  float x();
+  void setX(float x);
+
+  float y();
+  void setY(float y);
+
+  float width();
+  void setWidth(float width);
+
+  float height();
+  void setHeight(float height);
+
+  //void setBottomRight
+
+  Point m_origin; // TODO -> private
   unsigned int m_width;
   unsigned int m_height;
   float m_angle;

@@ -18,6 +18,7 @@
 #include "TeachableLine.h"
 #include "TeachableRectangle.h"
 #include "TeachableCirlce.h"
+#include "TeachableRectangleRotated.h"
 
 ImageDisplay::ImageDisplay(QWidget *parent) :
   QWidget(parent),
@@ -58,7 +59,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
   {
     QGraphicsSceneMouseEvent* mouseEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
-    bool teachButtonChecked = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked();
+    bool teachButtonChecked = ui->toolButtonTeachLine->isChecked() || ui->toolButtonTeachRectangle->isChecked() || ui->toolButtonTeachCircle->isChecked() || ui->toolButtonTeachRotatedRectangle->isChecked();
 
     if (event->type() == QEvent::GraphicsSceneMouseMove)
     {
@@ -128,6 +129,20 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
           QGraphicsEllipseItem* ellipseItem = m_scene->addEllipse(QRectF(m_mousePressPosition, m_mousePressPosition), m_penOutlines, m_brush);
           m_currentTeachable = new TeachableCirlce(ellipseItem, m_scene, &m_penTeachinPoints);
         }
+        else if (ui->toolButtonTeachRotatedRectangle->isChecked())
+        {
+          RectangleRotated* rectangleRotated = new RectangleRotated();
+
+          RectRotated rect;
+          rect.setX(m_mousePressPosition.x());
+          rect.setY(m_mousePressPosition.y());
+          rect.setWidth(1);
+          rect.setHeight(1);
+          rectangleRotated->setRectangle(rect);
+
+          m_scene->addItem(rectangleRotated);
+          m_currentTeachable = new TeachableRectangleRotated(rectangleRotated, m_scene, &m_penTeachinPoints);
+        }
 
         m_teachables.append(m_currentTeachable);
         m_currentTeachingPoint = m_currentTeachable->defaultTeachingPoint();
@@ -172,6 +187,15 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
             ui->lineEditCode->setText(GeometryCodeGenerator::generate(rectItem->rect()));
           }
         }
+        else if (item->type() == RectangleRotated::Type)
+        {
+          RectangleRotated* rectangleRotated = dynamic_cast<RectangleRotated*>(item);
+
+          if (rectangleRotated)
+          {
+            ui->lineEditCode->setText("ToDo");
+          }
+        }
         else if (item->type() == QGraphicsEllipseItem::Type)
         {
           QGraphicsEllipseItem* ellipseItem = dynamic_cast<QGraphicsEllipseItem*>(item);
@@ -212,9 +236,7 @@ bool ImageDisplay::eventFilter(QObject *target, QEvent *event)
     else if (event->type() == QEvent::GraphicsSceneMouseRelease)
     {
       m_currentTeachingPoint = NULL;
-      ui->toolButtonTeachCircle->setChecked(false);
-      ui->toolButtonTeachLine->setChecked(false);
-      ui->toolButtonTeachRectangle->setChecked(false);
+      resetControls();
 
       if (m_currentTeachable != NULL)
       {
@@ -316,9 +338,8 @@ void ImageDisplay::on_toolButtonDragImage_clicked(bool checked)
 {
   if (checked)
   {
-    ui->toolButtonTeachLine->setChecked(false);
-    ui->toolButtonTeachRectangle->setChecked(false);
-    ui->toolButtonTeachCircle->setChecked(false);
+    resetControls();
+    ui->toolButtonDragImage->setChecked(true);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
   }
   else
@@ -331,10 +352,8 @@ void ImageDisplay::on_toolButtonTeachLine_clicked(bool checked)
 {
   if (checked)
   {
-    ui->toolButtonDragImage->setChecked(false);
-    ui->toolButtonTeachRectangle->setChecked(false);
-    ui->toolButtonTeachCircle->setChecked(false);
-    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+    resetControls();
+    ui->toolButtonTeachLine->setChecked(true);
   }
 }
 
@@ -342,10 +361,8 @@ void ImageDisplay::on_toolButtonTeachRectangle_clicked(bool checked)
 {
   if (checked)
   {
-    ui->toolButtonDragImage->setChecked(false);
-    ui->toolButtonTeachLine->setChecked(false);
-    ui->toolButtonTeachCircle->setChecked(false);
-    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+    resetControls();
+    ui->toolButtonTeachRectangle->setChecked(true);
   }
 }
 
@@ -353,9 +370,26 @@ void ImageDisplay::on_toolButtonTeachCircle_clicked(bool checked)
 {
   if (checked)
   {
-    ui->toolButtonDragImage->setChecked(false);
-    ui->toolButtonTeachLine->setChecked(false);
-    ui->toolButtonTeachRectangle->setChecked(false);
-    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+    resetControls();
+    ui->toolButtonTeachCircle->setChecked(true);
   }
+}
+
+void ImageDisplay::on_toolButtonTeachRotatedRectangle_clicked(bool checked)
+{
+  if (checked)
+  {
+    resetControls();
+    ui->toolButtonTeachRotatedRectangle->setChecked(true);
+  }
+}
+
+void ImageDisplay::resetControls()
+{
+  ui->toolButtonDragImage->setChecked(false);
+  ui->toolButtonTeachLine->setChecked(false);
+  ui->toolButtonTeachRectangle->setChecked(false);
+  ui->toolButtonTeachCircle->setChecked(false);
+  ui->toolButtonTeachRotatedRectangle->setChecked(false);
+  ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
 }

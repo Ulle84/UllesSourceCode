@@ -1,10 +1,8 @@
 # Bugs
 
 # ToDo (prioritised)
-* select and modify teached geometries
-* verify if use of QImage is really needed -> try to avoid
-* how to rotate a QRectF
 * test create own types of QGraphicsItem -> RotatedRectangle for example
+* verify if use of QImage is really needed -> try to avoid -> use QPixmap directly instead
 * replace own geometries by QtTypes? - no! only use Qt for UI and Visualization!
 * Image to QPixMap?
 * delete selected geometry

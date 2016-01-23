@@ -1,5 +1,5 @@
-#ifndef TEACHABLERECTANGLE_H
-#define TEACHABLERECTANGLE_H
+#ifndef TEACHABLERECTANGLEROTATED_H
+#define TEACHABLERECTANGLEROTATED_H
 
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -8,12 +8,13 @@
 #include <QPoint>
 #include <QVector>
 
+#include "RectangleRotated.h"
 #include "Teachable.h"
 
-class TeachableRectangle : public Teachable
+class TeachableRectangleRotated : public Teachable
 {
 public:
-  TeachableRectangle(QGraphicsRectItem* rectItem, QGraphicsScene* scene, QPen* pen);
+  TeachableRectangleRotated(RectangleRotated* rectangleRotated, QGraphicsScene* scene, QPen* pen);
 
   // Interface Techable
   void setTeachingPointsVisible(bool visible);
@@ -25,7 +26,7 @@ public:
 private:
   QPointF middle(const QPointF& start, const QPointF& end);
 
-  QGraphicsRectItem* m_rectItem;
+  RectangleRotated* m_rectangleRotated;
   QGraphicsScene* m_scene;
   QPen* m_pen;
 
@@ -40,6 +41,8 @@ private:
   QGraphicsEllipseItem* m_bottomLeft;
   QGraphicsEllipseItem* m_bottom;
   QGraphicsEllipseItem* m_bottomRight;
+
+  QGraphicsEllipseItem* m_angle;
 };
 
-#endif // TEACHABLERECTANGLE_H
+#endif // TEACHABLERECTANGLEROTATED_H

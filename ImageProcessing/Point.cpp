@@ -13,3 +13,23 @@ Point::Point(float x, float y) :
 {
 }
 
+float Point::x()
+{
+  return m_x;
+}
+
+void Point::setX(float x)
+{
+  m_x = x;
+}
+
+float Point::y()
+{
+  return m_y;
+}
+
+void Point::setY(float y)
+{
+  m_y = y;
+}
+

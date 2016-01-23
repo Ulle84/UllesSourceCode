@@ -9,7 +9,13 @@ public:
   Point();
   Point(float x, float y);
 
-  float m_x;
+  float x();
+  void setX(float x);
+
+  float y();
+  void setY(float y);
+
+  float m_x; // TODO private
   float m_y;
 };
 
