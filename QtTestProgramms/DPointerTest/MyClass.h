@@ -5,6 +5,7 @@ class MyClass
 {
 public:
   MyClass();
+  ~MyClass();
 
   void function();
   void anotherFunction();

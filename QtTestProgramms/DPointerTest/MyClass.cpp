@@ -26,6 +26,11 @@ MyClass::MyClass() :
   d->b = true;
 }
 
+MyClass::~MyClass()
+{
+  delete d;
+}
+
 void MyClass::function()
 {
   qDebug() << "MyClass::function()";
