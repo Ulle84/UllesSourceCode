@@ -8,8 +8,9 @@ public:
   ~MyClass();
   // TODO move constructor etc.
 
-  void function();
-  void anotherFunction();
+  int value() const;
+  void setValue(int value);
+  void printValue();
 
 private:
   class D;

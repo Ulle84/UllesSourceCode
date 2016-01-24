@@ -6,7 +6,8 @@ class MyClass
 public:
   MyClass();
   ~MyClass();
-  // TODO move constructor etc.
+
+  MyClass(const MyClass& rhs);
 
   void function();
   void anotherFunction();
