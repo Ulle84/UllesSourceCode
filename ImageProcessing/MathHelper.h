@@ -13,6 +13,7 @@ public:
   static double rad(double angleInDeg);
   static Point calcEndPoint(const Point& startPoint, float angle, float length);
   static void calcAngleAndLength(const Point& startPoint, const Point& endPoint, float& angle, float& length);
+  static bool isBetween(float min, float value, float max);
 };
 
 #endif // MATHHELPER_H

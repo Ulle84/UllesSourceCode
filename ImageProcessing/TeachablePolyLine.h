@@ -36,9 +36,6 @@ private:
 
   QGraphicsEllipseItem* m_append;
   QGraphicsEllipseItem* m_prepend;
-  QGraphicsEllipseItem* m_close;
-
-  bool m_closed;
 };
 
 #endif // TEACHABLEPOLYLINE_H

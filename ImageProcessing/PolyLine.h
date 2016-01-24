@@ -13,7 +13,7 @@ class PolyLine : public std::list<Point>
 public:
   PolyLine();
 
-  void appendPoint(const Point& point);
+  bool isClosed() const;
 
   Rectangle boundingRectangle() const;
   RunLengthCode toRunLengthCode();

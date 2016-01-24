@@ -2,17 +2,20 @@
 
 # ToDo (prioritised)
 * teach polyline
-  * show centerPoints between to edgePoints
+  * show addPoints between to edgePoints, if an addPoint is moved the addPoint becomes an edgePoint
   * make polyline selectable
+  * draw center point
+  * adapt circumface of teaching points -> no touching of teaching points
+  * draw start and end point in different color, than edgepoints
+* Teachable: getDescription of geometric object
+* calculate intersections between to lines -> remove QLine from Rectangle
 * z-Order teaching-points must be high!
 * verify if use of QImage is really needed -> try to avoid -> use QPixmap directly instead
 * replace own geometries by QtTypes? - no! only use Qt for UI and Visualization!
-* Image to QPixMap?
+* Converter: Image to QPixMap?
 * delete selected geometry
 * show list of al geometric objects (list of QGraphicItems)
-* teach and modify polyline
 * interface movable -> move(float horizontalTranslation, float verticalTranslation, float rotationAngle); -> see how this is done in Qt TransformationRule?
-* select line in imagedisplay and display information
 * EdgeExtractor
   * getFirstEdge(edgeType: bright,dark,any)
   * getLastEdge(edgeType: bright,dark,any)

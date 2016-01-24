@@ -9,6 +9,8 @@ public:
   Point();
   Point(float x, float y);
 
+  bool operator== (const Point& rhs) const;
+
   float x() const;
   void setX(float x);
 

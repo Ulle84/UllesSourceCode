@@ -8,19 +8,17 @@
 TeachablePolyLine::TeachablePolyLine(GraphicsPolyLineItem *polyLineItem, QGraphicsScene *scene, QPen *pen) :
   m_polyLineItem(polyLineItem),
   m_scene(scene),
-  m_pen(pen),
-  m_closed(false)
+  m_pen(pen)
 {
+  m_prepend = m_scene->addEllipse(QRectF(), *m_pen);
+  m_append = m_scene->addEllipse(QRectF(), *m_pen);
+
   PolyLine polyLine = m_polyLineItem->polyLine();
 
   for (auto it = polyLine.begin(); it != polyLine.end(); it++)
   {
     m_edgePoints.append(m_scene->addEllipse(QRectF(), *m_pen));
-  }
-
-  m_prepend = scene->addEllipse(QRectF(), *m_pen);
-  m_append = scene->addEllipse(QRectF(), *m_pen);
-  m_close = scene->addEllipse(QRectF(), *m_pen);
+  }  
 
   setTeachingPointsVisible(false);
 }
@@ -29,9 +27,8 @@ void TeachablePolyLine::setTeachingPointsVisible(bool visible)
 {
   PolyLine polyLine = m_polyLineItem->polyLine();
 
-  m_prepend->setVisible(m_closed ? false : visible);
-  m_append->setVisible(m_closed ? false : visible);
-  m_close->setVisible(m_closed ? false : visible && polyLine.size() > 2);
+  m_prepend->setVisible(polyLine.isClosed() ? false : visible);
+  m_append->setVisible(polyLine.isClosed() ? false : visible);
 
   for (auto it = m_edgePoints.begin(); it != m_edgePoints.end(); it++)
   {
@@ -57,7 +54,7 @@ void TeachablePolyLine::setTeachingPointsVisible(bool visible)
 
 
 
-    if (!m_closed)
+    if (!polyLine.isClosed())
     {
       auto it1 = polyLine.begin();
       auto it2 = it1++;
@@ -73,7 +70,6 @@ void TeachablePolyLine::setTeachingPointsVisible(bool visible)
 
       m_prepend->setRect(Converter::toQRectF(prepend, radius));
       m_append->setRect(Converter::toQRectF(append, radius));
-      m_close->setRect(Converter::toQRectF(close, radius));
     }
 
     unsigned int counter = 0;
@@ -99,7 +95,14 @@ void TeachablePolyLine::positionChanged(QGraphicsEllipseItem *item, const QPoint
 
   if (isEdgePoint(item))
   {
+    auto itPolyLineLast = polyLine.end();
+    itPolyLineLast--;
+
+    auto itLastEdgePoint = m_edgePoints.end();
+    itLastEdgePoint--;
+
     auto itPolyLine = polyLine.begin();
+
     for (auto it = m_edgePoints.begin(); it != m_edgePoints.end(); it++)
     {
       if (*it == item)
@@ -107,11 +110,41 @@ void TeachablePolyLine::positionChanged(QGraphicsEllipseItem *item, const QPoint
         itPolyLine->setX(position.x());
         itPolyLine->setY(position.y());
 
-        if (m_closed && it == m_edgePoints.begin())
+        // snipping to start or end point
+        if ((itPolyLine == itPolyLineLast || itPolyLine == polyLine.begin()) && polyLine.size() > 3 && !polyLine.isClosed())
         {
-          polyLine.rbegin()->setX(position.x());
-          polyLine.rbegin()->setY(position.y());
+          QPointF snapPoint = Converter::toQPointF(itPolyLine == itPolyLineLast ? polyLine.front() : polyLine.back());
+          QPointF delta = position - snapPoint;
+
+          float sd = 10.0; // snipping distance
+          if (MathHelper::isBetween(-sd, delta.x(), sd) && MathHelper::isBetween(-sd, delta.y(), sd))
+          {
+            if (itPolyLine == itPolyLineLast)
+            {
+              itPolyLine->setX(polyLine.front().x());
+              itPolyLine->setY(polyLine.front().y());
+            }
+            else
+            {
+              itPolyLine->setX(polyLine.back().x());
+              itPolyLine->setY(polyLine.back().y());
+            }
+          }
         }
+
+        /*if (polyLine.isClosed() && (it == m_edgePoints.begin() || it == itLastEdgePoint))
+        {
+          if (it == itLastEdgePoint)
+          {
+            polyLine.begin()->setX(position.x());
+            polyLine.begin()->setY(position.y());
+          }
+          else
+          {
+            polyLine.rbegin()->setX(position.x());
+            polyLine.rbegin()->setY(position.y());
+          }
+        }*/
 
         break;
       }
@@ -136,21 +169,13 @@ void TeachablePolyLine::positionChanged(QGraphicsEllipseItem *item, const QPoint
     m_edgePoints.prepend(m_prepend);
     m_prepend = m_scene->addEllipse(QRectF(), *m_pen);
   }
-  else if (item == m_close)
-  {
-    if (!m_closed)
-    {
-      polyLine.push_back(polyLine.front());
-      m_closed = true;
-    }
-  }
 
   m_polyLineItem->setPolyLine(polyLine);
 }
 
 bool TeachablePolyLine::hasTeachingPoint(QGraphicsEllipseItem *item)
 {
-  return item == m_append || item == m_prepend || item == m_close || isEdgePoint(item);
+  return item == m_append || item == m_prepend || isEdgePoint(item);
 }
 
 QGraphicsEllipseItem *TeachablePolyLine::defaultTeachingPoint()

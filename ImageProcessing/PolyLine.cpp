@@ -9,9 +9,9 @@ PolyLine::PolyLine()
 
 }
 
-void PolyLine::appendPoint(const Point &point)
+bool PolyLine::isClosed() const
 {
-  push_back(point);
+  return front() == back();
 }
 
 Rectangle PolyLine::boundingRectangle() const

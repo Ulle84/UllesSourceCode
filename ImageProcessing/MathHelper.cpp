@@ -35,3 +35,16 @@ void MathHelper::calcAngleAndLength(const Point &startPoint, const Point &endPoi
 
   //std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
 }
+
+bool MathHelper::isBetween(float min, float value, float max)
+{
+  if (value < min)
+  {
+    return false;
+  }
+  if (value > max)
+  {
+    return false;
+  }
+  return true;
+}

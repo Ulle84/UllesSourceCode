@@ -13,6 +13,11 @@ Point::Point(float x, float y) :
 {
 }
 
+bool Point::operator==(const Point &rhs) const
+{
+  return m_x == rhs.m_x && m_y == rhs.m_y;
+}
+
 float Point::x() const
 {
   return m_x;
