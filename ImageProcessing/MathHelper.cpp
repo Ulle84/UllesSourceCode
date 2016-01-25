@@ -17,23 +17,19 @@ Point MathHelper::calcEndPoint(const Point &startPoint, float angle, float lengt
 {
   Point endPoint;
 
-  endPoint.m_x = startPoint.m_x + length * cos(rad(angle));
-  endPoint.m_y = startPoint.m_y + length * sin(rad(angle));
-
-  //std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
+  endPoint.setX(startPoint.x() + length * cos(rad(angle)));
+  endPoint.setY(startPoint.y()+ length * sin(rad(angle)));
 
   return endPoint;
 }
 
 void MathHelper::calcAngleAndLength(const Point &startPoint, const Point &endPoint, float &angle, float &length)
 {
-  short x = endPoint.m_x - startPoint.m_x;
-  short y = endPoint.m_y - startPoint.m_y;
+  float x = endPoint.x() - startPoint.x();
+  float y = endPoint.y() - startPoint.y();
 
   length = sqrt(x * x + y * y);
   angle = deg(atan2(y, x));
-
-  //std::cout << "y: " << endPoint.m_y << " x: " << endPoint.m_x << " length: " << length << " angle: " << angle << std::endl;
 }
 
 bool MathHelper::isBetween(float min, float value, float max)
