@@ -1,9 +1,11 @@
 #include "MyClass.h"
 
-int main(int argc, char *argv[])
+int main()
 {
   MyClass myClass;
   myClass.printValue();
   myClass.setValue(31);
   myClass.printValue();
+
+  return 0;
 }

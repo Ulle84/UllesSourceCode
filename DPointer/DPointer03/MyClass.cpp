@@ -1,30 +1,35 @@
-#include <QDebug>
+#include <iostream>
 
 #include "MyClass.h"
 
-class MyClass::D
+class MyClass::MyClassPrivate
 {
 public:
-  D(MyClass* myClass) : myClass(myClass) {}
+  MyClassPrivate(MyClass* myClass) : myClass(myClass) {}
 
-  void function();
+  void reset();
 
   MyClass* myClass;
   int value;
-  bool flag;
 };
 
-void MyClass::D::function()
+void MyClass::MyClassPrivate::reset()
 {
-  qDebug() << "MyClass::D::function()";
-  myClass->anotherFunction();
+  std::cout << "MyClass::MyClassPrivate::reset()" << std::endl;
+  value = 42;
+  myClass->update();
 }
 
 MyClass::MyClass() :
-  d(new MyClass::D(this))
+  d(new MyClass::MyClassPrivate(this))
 {
-  d->flag = true;
   d->value = 42;
+}
+
+MyClass::MyClass(const MyClass& rhs) :
+  d(new MyClass::MyClassPrivate(this))
+{
+  d->value = rhs.d->value;
 }
 
 MyClass::~MyClass()
@@ -32,20 +37,28 @@ MyClass::~MyClass()
   delete d;
 }
 
-MyClass::MyClass(const MyClass &rhs) :
-  d(new MyClass::D(this))
+int MyClass::value() const
 {
-  d->flag = rhs.d->flag;
-  d->value = rhs.d->value;
+  return d->value;
 }
 
-void MyClass::function()
+void MyClass::setValue(int value)
 {
-  qDebug() << "MyClass::function()";
-  d->function();
+  d->value = value;
 }
 
-void MyClass::anotherFunction()
+void MyClass::printValue() const
 {
-  qDebug() << "MyClass::anotherFunction()";
+  std::cout << "value: " << d->value << std::endl;
+}
+
+void MyClass::reset()
+{
+  std::cout << "MyClass::reset()" << std::endl;
+  d->reset();
+}
+
+void MyClass::update()
+{
+  std::cout << "MyClass::update()" << std::endl;
 }

@@ -10,11 +10,11 @@ public:
 
   int value() const;
   void setValue(int value);
-  void printValue();
+  void printValue() const;
 
 private:
-  class D;
-  D* d;
+  class MyClassPrivate;
+  MyClassPrivate* d;
 };
 
 #endif // MYCLASS_H

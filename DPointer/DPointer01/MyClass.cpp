@@ -1,15 +1,15 @@
-#include <QDebug>
+#include <iostream>
 
 #include "MyClass.h"
 
-class MyClass::D
+class MyClass::MyClassPrivate
 {
 public:
   int value;
 };
 
 MyClass::MyClass() :
-  d(new MyClass::D())
+  d(new MyClass::MyClassPrivate())
 {
   d->value = 42;
 }
@@ -29,8 +29,8 @@ void MyClass::setValue(int value)
   d->value = value;
 }
 
-void MyClass::printValue()
+void MyClass::printValue() const
 {
-  qDebug() << "value:" << d->value;
+  std::cout << "value: " << d->value << std::endl;
 }
 

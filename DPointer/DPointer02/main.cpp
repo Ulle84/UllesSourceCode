@@ -1,7 +1,7 @@
 #include "MyClass.h"
 
-int main(int argc, char *argv[])
+int main()
 {
   MyClass myClass;
-  myClass.function();
+  myClass.reset();
 }

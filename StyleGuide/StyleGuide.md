@@ -246,9 +246,8 @@ for (auto it = fooList.begin(); it != fooList.end(); it++)
 * Qt Styleguide
 * Google Styleguide
 
-## ToDo
-* Definition von API's
-  * Header bekommt Suffix `Api` z. B. `BlubApi.h`
+## Definition von API's
+Header bekommt Suffix `Api` z. B. `BlubApi.h`
 
 ```
 #ifndef BLUB_API_H

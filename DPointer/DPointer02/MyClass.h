@@ -8,12 +8,17 @@ public:
   ~MyClass();
   // TODO move constructor etc.
 
-  void function();
-  void anotherFunction();
+  int value() const;
+  void setValue(int value);
+  void printValue() const;
+
+  void reset();
+
+  void update();
 
 private:
-  class D;
-  D* d;
+  class MyClassPrivate;
+  MyClassPrivate* d;
 };
 
 #endif // MYCLASS_H
