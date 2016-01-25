@@ -1,15 +1,22 @@
 #include <iostream>
 
 #include "Base.h"
+#include "BasePrivate.h"
 
 Base::Base() :
-  d(new Base::BasePrivate(this))
+  d(new BasePrivate())
 {
   d->value = 42;
 }
 
+Base::Base(BasePrivate& d) :
+  d(&d)
+{
+
+}
+
 Base::Base(const Base& rhs) :
-  d(new Base::BasePrivate(this))
+  d(new BasePrivate())
 {
   d->value = rhs.d->value;
 }
@@ -47,7 +54,6 @@ void Base::printValue() const
 void Base::reset()
 {
   std::cout << "Base::reset()" << std::endl;
-  d->reset();
 }
 
 void Base::update()

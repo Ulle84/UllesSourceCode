@@ -1,29 +1,48 @@
 #include <iostream>
 
+#include "BasePrivate.h"
 #include "Derived.h"
 
-Derived::Derived() :
-  d(new Derived::DerivedPrivate(this))
+class DerivedPrivate : public BasePrivate
 {
-  d->flag = true;
+public:
+  bool flag;
+};
+
+Derived::Derived() :
+  Base(*new DerivedPrivate)
+{
+}
+
+Derived::Derived(DerivedPrivate& d) :
+  Base(d)
+{
+
 }
 
 Derived::~Derived()
 {
-  delete d;
 }
 
 Derived::Derived(const Derived& rhs) :
-  d(new Derived::DerivedPrivate(this))
+  Base(*new DerivedPrivate)
 {
-  d->flag = rhs.d->flag;
+  DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
+  DerivedPrivate* dpRhs = static_cast<DerivedPrivate*>(rhs.d);
+
+  dp->value = dpRhs->value;
+  dp->flag = dpRhs->flag;
 }
 
 Derived& Derived::operator=(const Derived& rhs)
 {
   if (this != &rhs)
   {
-    d->flag = rhs.d->flag;
+    DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
+    DerivedPrivate* dpRhs = static_cast<DerivedPrivate*>(rhs.d);
+
+    dp->value = dpRhs->value;
+    dp->flag = dpRhs->flag;
   }
 
   return *this;
@@ -31,15 +50,18 @@ Derived& Derived::operator=(const Derived& rhs)
 
 bool Derived::flag() const
 {
-  return d->flag;
+  DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
+  return dp->flag;
 }
 
 void Derived::setFlag(bool flag)
 {
-  d->flag = flag;
+  DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
+  dp->flag = flag;
 }
 
 void Derived::printFlag() const
 {
-  std::cout << "flag: " << (d->flag ? "on" : "off") << std::endl;
+  DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
+  std::cout << "flag: " << (dp->flag ? "on" : "off") << std::endl;
 }

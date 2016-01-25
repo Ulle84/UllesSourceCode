@@ -20,7 +20,8 @@ public:
 
   void update();
 
-private:
+protected:
+  Base(BasePrivate& d);
   BasePrivate* d;
 };
 

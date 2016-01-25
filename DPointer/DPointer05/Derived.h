@@ -3,6 +3,8 @@
 
 #include "Base.h"
 
+class DerivedPrivate;
+
 class Derived : public Base
 {
 public:
@@ -16,9 +18,8 @@ public:
   void setFlag(bool flag);
   void printFlag() const;
 
-private:
-  class DerivedPrivate;
-  DerivedPrivate* d;
+protected:
+  Derived(DerivedPrivate& d);
 };
 
 #endif // DERIVED_H

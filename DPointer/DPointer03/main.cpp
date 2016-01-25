@@ -13,4 +13,6 @@ int main()
 
   myClass3 = myClass;
   myClass3.printValue();
+
+  return 0;
 }

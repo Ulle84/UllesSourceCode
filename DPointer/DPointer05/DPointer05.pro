@@ -19,5 +19,4 @@ SOURCES += main.cpp \
 HEADERS  += \
     Base.h \
     Derived.h \
-    BasePrivate.h \
-    DerivedPrivate.h
+    BasePrivate.h
