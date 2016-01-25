@@ -13,7 +13,9 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    MyClass.cpp
+    Base.cpp \
+    Derived.cpp
 
 HEADERS  += \
-    MyClass.h
+    Base.h \
+    Derived.h
