@@ -2,27 +2,6 @@
 
 #include "Base.h"
 
-class Base::BasePrivate
-{
-public:
-  BasePrivate(Base* base) : base(base)
-  {
-    std::cout << "construction of Base::BasePrivate" << std::endl;
-  }
-
-  void reset();
-
-  Base* base;
-  int value;
-};
-
-void Base::BasePrivate::reset()
-{
-  std::cout << "Base::BasePrivate::reset()" << std::endl;
-  value = 42;
-  base->update();
-}
-
 Base::Base() :
   d(new Base::BasePrivate(this))
 {

@@ -32,12 +32,13 @@ MyClass::MyClass(const MyClass& rhs) :
   d->value = rhs.d->value;
 }
 
-MyClass &MyClass::operator=(const MyClass &rhs)
+MyClass& MyClass::operator=(const MyClass& rhs)
 {
-  if(this != &rhs)
+  if (this != &rhs)
   {
     d->value = rhs.d->value;
   }
+
   return *this;
 }
 

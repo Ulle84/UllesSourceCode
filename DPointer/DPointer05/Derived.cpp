@@ -2,18 +2,6 @@
 
 #include "Derived.h"
 
-class Derived::DerivedPrivate
-{
-public:
-  DerivedPrivate(Derived* derived) : derived(derived)
-  {
-    std::cout << "construction of Derived::DerivedPrivate" << std::endl;
-  }
-
-  Derived* derived;
-  bool flag;
-};
-
 Derived::Derived() :
   d(new Derived::DerivedPrivate(this))
 {
