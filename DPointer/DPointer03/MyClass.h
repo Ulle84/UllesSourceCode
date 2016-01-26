@@ -7,8 +7,8 @@ public:
   MyClass();
   ~MyClass();
 
-  MyClass(const MyClass& rhs);
-  MyClass& operator=(const MyClass& rhs);
+  MyClass(const MyClass& rhs); // copy constructor
+  MyClass& operator=(const MyClass& rhs); // copy operator
 
   int value() const;
   void setValue(int value);

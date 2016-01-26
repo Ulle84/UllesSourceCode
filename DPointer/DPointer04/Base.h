@@ -14,10 +14,6 @@ public:
   void setValue(int value);
   void printValue() const;
 
-  void reset();
-
-  void update();
-
 private:
   class BasePrivate;
   BasePrivate* d;

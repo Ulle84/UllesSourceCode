@@ -5,17 +5,13 @@
 class Derived::DerivedPrivate
 {
 public:
-  DerivedPrivate(Derived* derived) : derived(derived)
-  {
-    std::cout << "construction of Derived::DerivedPrivate" << std::endl;
-  }
+  DerivedPrivate() { std::cout << "construction of Derived::DerivedPrivate" << std::endl; }
 
-  Derived* derived;
   bool flag;
 };
 
 Derived::Derived() :
-  d(new Derived::DerivedPrivate(this))
+  d(new Derived::DerivedPrivate())
 {
   d->flag = true;
 }
@@ -26,7 +22,8 @@ Derived::~Derived()
 }
 
 Derived::Derived(const Derived& rhs) :
-  d(new Derived::DerivedPrivate(this))
+  Base(rhs),
+  d(new Derived::DerivedPrivate())
 {
   d->flag = rhs.d->flag;
 }
@@ -35,6 +32,7 @@ Derived& Derived::operator=(const Derived& rhs)
 {
   if (this != &rhs)
   {
+    Base::operator=(rhs);
     d->flag = rhs.d->flag;
   }
 

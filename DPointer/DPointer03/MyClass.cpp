@@ -29,14 +29,17 @@ MyClass::MyClass() :
 MyClass::MyClass(const MyClass& rhs) :
   d(new MyClass::MyClassPrivate(this))
 {
+  // like a normal copy constructor
   d->value = rhs.d->value;
 }
 
 MyClass& MyClass::operator=(const MyClass& rhs)
 {
+  // seems like a normal copy operator ...
   if (this != &rhs)
   {
     d->value = rhs.d->value;
+    d->myClass = this; // ... except for this
   }
 
   return *this;

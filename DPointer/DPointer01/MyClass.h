@@ -14,7 +14,7 @@ public:
 
 private:
   class MyClassPrivate;
-  MyClassPrivate* d;
+  MyClassPrivate* d; // here we have the D-Pointer
 };
 
 #endif // MYCLASS_H

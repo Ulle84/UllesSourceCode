@@ -2,6 +2,7 @@
 
 #include "MyClass.h"
 
+// the declaration of the D-Pointer class
 class MyClass::MyClassPrivate
 {
 public:
@@ -9,14 +10,14 @@ public:
 };
 
 MyClass::MyClass() :
-  d(new MyClass::MyClassPrivate())
+  d(new MyClass::MyClassPrivate()) // here the D-Pointer is initialized
 {
-  d->value = 42;
+  d->value = 42; // here a value of the D-Pointer class instance is set
 }
 
 MyClass::~MyClass()
 {
-  delete d;
+  delete d; // don't forget to clean up
 }
 
 int MyClass::value() const

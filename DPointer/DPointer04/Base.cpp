@@ -5,32 +5,19 @@
 class Base::BasePrivate
 {
 public:
-  BasePrivate(Base* base) : base(base)
-  {
-    std::cout << "construction of Base::BasePrivate" << std::endl;
-  }
+  BasePrivate() { std::cout << "construction of Base::BasePrivate" << std::endl; }
 
-  void reset();
-
-  Base* base;
   int value;
 };
 
-void Base::BasePrivate::reset()
-{
-  std::cout << "Base::BasePrivate::reset()" << std::endl;
-  value = 42;
-  base->update();
-}
-
 Base::Base() :
-  d(new Base::BasePrivate(this))
+  d(new Base::BasePrivate())
 {
   d->value = 42;
 }
 
 Base::Base(const Base& rhs) :
-  d(new Base::BasePrivate(this))
+  d(new Base::BasePrivate())
 {
   d->value = rhs.d->value;
 }
@@ -63,15 +50,4 @@ void Base::setValue(int value)
 void Base::printValue() const
 {
   std::cout << "value: " << d->value << std::endl;
-}
-
-void Base::reset()
-{
-  std::cout << "Base::reset()" << std::endl;
-  d->reset();
-}
-
-void Base::update()
-{
-  std::cout << "Base::update()" << std::endl;
 }

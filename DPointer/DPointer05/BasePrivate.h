@@ -6,6 +6,7 @@
 class BasePrivate
 {
 public:
+  // declare empty virtual destructor, since this will become a base class
   virtual ~BasePrivate() {}
 
   int value;

@@ -19,7 +19,7 @@ public:
   void printFlag() const;
 
 protected:
-  Derived(DerivedPrivate& d);
+  Derived(DerivedPrivate& d); // alow subclasses of Derived to acces Base-D-Pointer
 };
 
 #endif // DERIVED_H

@@ -9,6 +9,7 @@ Base::Base() :
   d->value = 42;
 }
 
+// this protected constructor is new
 Base::Base(BasePrivate& d) :
   d(&d)
 {
@@ -49,14 +50,4 @@ void Base::setValue(int value)
 void Base::printValue() const
 {
   std::cout << "value: " << d->value << std::endl;
-}
-
-void Base::reset()
-{
-  std::cout << "Base::reset()" << std::endl;
-}
-
-void Base::update()
-{
-  std::cout << "Base::update()" << std::endl;
 }

@@ -1,7 +1,7 @@
 #ifndef BASE_H
 #define BASE_H
 
-class BasePrivate;
+class BasePrivate; // cannot be declared private anymore and needs its own header
 
 class Base
 {
@@ -16,13 +16,9 @@ public:
   void setValue(int value);
   void printValue() const;
 
-  void reset();
-
-  void update();
-
 protected:
-  Base(BasePrivate& d);
-  BasePrivate* d;
+  Base(BasePrivate& d); // allow derived classes to initialize with their own D-Pointer
+  BasePrivate* d; // not private anymore, but protected so it is accessible for derived classes
 };
 
 #endif // BASE_H
