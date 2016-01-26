@@ -5,7 +5,7 @@ class Base
 {
 public:
   Base();
-  ~Base();
+  virtual ~Base();
 
   Base(const Base& rhs);
   Base& operator=(const Base& rhs);

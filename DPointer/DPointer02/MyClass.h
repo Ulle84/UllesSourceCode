@@ -6,7 +6,7 @@ class MyClass
 public:
   MyClass();
   ~MyClass();
-  // TODO move constructor etc.
+  // TODO copy constructor etc.
 
   int value() const;
   void setValue(int value);

@@ -20,6 +20,8 @@ public:
 
 protected:
   Derived(DerivedPrivate& d); // alow subclasses of Derived to acces Base-D-Pointer
+
+  // no d-pointer anymore, since the d-Pointer of Base is used
 };
 
 #endif // DERIVED_H
