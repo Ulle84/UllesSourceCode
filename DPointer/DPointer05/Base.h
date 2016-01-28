@@ -19,6 +19,12 @@ public:
 protected:
   Base(BasePrivate& d); // allow derived classes to initialize with their own D-Pointer
   BasePrivate* d; // not private anymore, but protected so it is accessible for derived classes
+
+/* former version:
+private:
+  class BasePrivate;
+  BasePrivate* d;
+*/
 };
 
 #endif // BASE_H

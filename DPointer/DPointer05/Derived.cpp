@@ -28,10 +28,16 @@ Derived::~Derived()
   // cleaning up D-Pointer is done in base class
 }
 
+bool Derived::flag() const
+{
+  // cast is needed, since 'd' has the type 'BasePrivate'
+  DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
+  return dp->flag;
+}
+
 Derived::Derived(const Derived& rhs) :
   Base(rhs)
 {
-  // casts are needed
   DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
   DerivedPrivate* dpRhs = static_cast<DerivedPrivate*>(rhs.d);
 
@@ -51,12 +57,6 @@ Derived& Derived::operator=(const Derived& rhs)
   }
 
   return *this;
-}
-
-bool Derived::flag() const
-{
-  DerivedPrivate* dp = static_cast<DerivedPrivate*>(d);
-  return dp->flag;
 }
 
 void Derived::setFlag(bool flag)

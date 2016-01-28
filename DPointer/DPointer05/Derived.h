@@ -19,7 +19,7 @@ public:
   void printFlag() const;
 
 protected:
-  Derived(DerivedPrivate& d); // alow subclasses of Derived to acces Base-D-Pointer
+  Derived(DerivedPrivate& d); // alow subclasses to initialize with their own D-Pointer
 
   // no d-pointer anymore, since the d-Pointer of Base is used
 };

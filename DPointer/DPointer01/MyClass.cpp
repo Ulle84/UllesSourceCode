@@ -2,7 +2,7 @@
 
 #include "MyClass.h"
 
-// the declaration of the D-Pointer class
+// the declaration of the "underlaying" D-Pointer class
 class MyClass::MyClassPrivate
 {
 public:

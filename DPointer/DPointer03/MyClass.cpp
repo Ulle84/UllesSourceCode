@@ -36,10 +36,11 @@ MyClass::MyClass(const MyClass& rhs) :
 MyClass& MyClass::operator=(const MyClass& rhs)
 {
   // seems like a normal copy operator ...
+  // where is the mistake?
   if (this != &rhs)
   {
     d->value = rhs.d->value;
-    d->myClass = this; // ... except for this
+    d->myClass = this;
   }
 
   return *this;

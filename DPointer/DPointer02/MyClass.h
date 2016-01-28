@@ -6,7 +6,7 @@ class MyClass
 public:
   MyClass();
   ~MyClass();
-  // TODO copy constructor etc.
+  // TODO copy constructor and copy operator
 
   int value() const;
   void setValue(int value);

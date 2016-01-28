@@ -5,7 +5,7 @@
 class MyClass::MyClassPrivate
 {
 public:
-  // D-Pointer Class is initialized with pointer of "overlaying" class
+  // "underlaying" D-Pointer Class is initialized with pointer of "overlaying" class
   MyClassPrivate(MyClass* myClass) : myClass(myClass) {}
 
   void reset();
