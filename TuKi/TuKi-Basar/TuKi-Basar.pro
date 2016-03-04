@@ -64,4 +64,4 @@ FORMS    += TuKiBasar.ui \
     EvaluationByCategory.ui
 
 OTHER_FILES += \
-    ToDo.txt
+    Nodes.md

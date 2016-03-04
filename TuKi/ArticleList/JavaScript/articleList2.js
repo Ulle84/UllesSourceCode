@@ -4,6 +4,7 @@ var theDialog;
 var decisionDialogPdf;
 var decisionDialogSave;
 var confirmationDialog;
+var lastSelectedRow;
 
 function closeDialog() {
     confirmationDialog.close();
@@ -17,7 +18,7 @@ function init (sellerNumberValue, idValue) {
     confirmationDialog = new Dialog();
     decisionDialogPdf = new Dialog();
     decisionDialogPdf.setButtonText("Zurück zur Liste");
-    decisionDialogPdf.addSecondButton("PDF dennoch anzeigen", "openPdf()");
+    decisionDialogPdf.addSecondButton("PDF dennoch anzeigen", "closeDialog(); openPdf()");
     decisionDialogPdf.setBackgroundColor("#FFDED6");
 
     decisionDialogSave = new Dialog();
@@ -26,6 +27,13 @@ function init (sellerNumberValue, idValue) {
     decisionDialogSave.setBackgroundColor("#FFDED6");
 
     theDialog = confirmationDialog;
+
+    var trs = window.document.getElementById("articleList").getElementsByTagName("tr");
+    if (trs.length > 1) {
+        lastSelectedRow = trs[1];
+        trs[1].style.backgroundColor = "lightgrey";
+    }
+
 }
 
 function save(checkInput, confirmation) {
@@ -62,9 +70,14 @@ function save(checkInput, confirmation) {
         var saveButton = window.document.getElementById("saveButton");
         saveButton.disabled = true;
         xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                //alert(xmlhttp.responseText);
-                theDialog.setText(xmlhttp.responseText);
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) {
+                    //alert(xmlhttp.responseText);
+                    theDialog.setText(xmlhttp.responseText);
+                }
+                else {
+                    theDialog.setText("Es ist ein Fehler beim Speichern aufgetreten\nBitte versuchen Sie es erneut!");
+                }
                 theDialog.show();
                 saveButton.disabled = false;
             }
@@ -165,10 +178,16 @@ function checkPrice(element) {
             return;
         }
 
-        if (number > 999.99) {
+        if (number >= 50.00) {
             element.value = ""; // set, so onblur-function does return immediately
-            theDialog.setText("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
+            theDialog.setText("Achtung, der Preis ist 50,00 € oder höher - bitte kontrollieren!");
             theDialog.show();
+        }
+
+        if (number > 999.99) {
+            //element.value = ""; // set, so onblur-function does return immediately
+            //theDialog.setText("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
+            //theDialog.show();
             //alert("Preise größer als 999,99 € sind nicht erlaubt!\nDer eingegebene Preis wurde auf das Maximum erniedrigt");
             number = 999.99;
         }
@@ -218,5 +237,19 @@ function checkSize(element) {
 
         element.value = number;
     }
+
+}
+
+function highlightCurrentLine(inputElement) {
+    var selectedRow = inputElement.parentNode.parentNode;
+
+    if (selectedRow != lastSelectedRow) {
+        lastSelectedRow.style.backgroundColor = "white";
+        selectedRow.style.backgroundColor = "lightgrey";
+
+        lastSelectedRow = selectedRow;
+    }
+
+
 
 }

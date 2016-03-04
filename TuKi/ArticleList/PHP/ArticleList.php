@@ -88,7 +88,7 @@ class ArticleList
         echo '<head>';
         echo '<title>TuKi Artikelliste</title>';
         echo '<link rel="stylesheet" type="text/css" href="../CSS/global.css" media="all"/>';
-        echo '<script src="../JavaScript/articleList.js"></script>';
+        echo '<script src="../JavaScript/articleList2.js"></script>';
         echo '<script src="../JavaScript/Dialog.js"></script>';
         echo '<script src="../JavaScript/WindowBlocker.js"></script>';
         echo '</head>';
@@ -144,7 +144,7 @@ class ArticleList
         echo '</table>';
         echo '<br />';
 
-        echo '<table>';
+        echo '<table id="articleList">';
         echo '<tr>';
         echo '<th>Artikelnummer</th>';
         echo '<th>Preis</th>';
@@ -162,9 +162,9 @@ class ArticleList
                 echo '<td>' . htmlspecialchars($this->articleDescription[$i]) . '</td>';
             } else {
                 //TODO wann wird onblur gesendet und wann onchange - muss man wirklicha auf beide Events hören???
-                echo '<td><input onblur="checkPrice(this); save()" onchange="checkPrice(this); save()" class="right" value="' . htmlspecialchars($this->price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
-                echo '<td><input onblur="save()" onchange="save()" value="' . htmlspecialchars($this->size[$i]) . '" type="text" size="7" maxlength="7" /></td>';
-                echo '<td><input onblur="save()" onchange="save()" value="' . htmlspecialchars($this->articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
+                echo '<td><input onfocus="highlightCurrentLine(this)" onblur="checkPrice(this); save()" onchange="checkPrice(this); save()" class="right" value="' . htmlspecialchars($this->price[$i]) . '" type="text" size="6" maxlength="6" /> €</td>';
+                echo '<td><input onfocus="highlightCurrentLine(this)" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->size[$i]) . '" type="text" size="7" maxlength="7" /></td>';
+                echo '<td><input onfocus="highlightCurrentLine(this)" onblur="save()" onchange="save()" value="' . htmlspecialchars($this->articleDescription[$i]) . '" type="text" size="60" maxlength="50" /></td>';
             }
 
 

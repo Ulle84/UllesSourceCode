@@ -14,7 +14,7 @@
 * Gesamtübersicht: Summe -> Umsatz?
 
 # Ideas
-* Sprachausgabe des Preises
+* Sprachausgabe des Preises -> auf Qt-Speech warten!
 * Abweichungen zwischen Listen- und Etikettpreis auswerten -> Übersicht: Anzahl der Abweichungen + Summe der Abweichungen
 * Spacer zwischen Verkäufer- und Artikelnummer
 * Quittung per Mail zuschicken

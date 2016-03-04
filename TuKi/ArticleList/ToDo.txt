@@ -1,6 +1,3 @@
 ToDo
-* Sicherheitsabfrage bei Preisen über 50 Euro -> 2 Buttons: "Preis ändern" oder Preis beibehalten und speichern
-* aktuelle Zeile grau hinterlegen
-* notifySellers -> 2x Datum aus Settings anstatt "hardcoded"
 * Liste auf zwei Geräten gleichzeitig editierbar machen -> PUSH-Mechanismus implementieren
 * Wenn die Frist abgelaufen ist auf read-only umschalten -> direkt, nicht erst nach einem Refresh der Seite -> sonst können die Leute doch noch nach Ablauf der Frist editieren
