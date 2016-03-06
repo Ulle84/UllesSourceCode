@@ -2,9 +2,13 @@
 * Verkaufshistorie wird nicht gelöscht, wenn man Aritkel importiert -> allgemein scheint es da Update-Probleme zu geben -> Workaround: SW starten, Artikel importieren -> SW neustarten
 
 # ToDo (priorisiert)
-* Buch-Auswertung
-* update UI after returning article -> model view controler pattern?
 * Speicherort von PDFs merken!
+* Möglichkeit eine Gesamtliste einzugeben - generiert aus Excel oder ähnlichem
+* Caps-Lock-Detektion
+* Maximaler Betrag, den der Käufer zur Verfügung hat -> wenn der Betrag erreicht ist, wird kein weiterere Artikel angenommen
+* Tastaturkürzel für Button-Aktionen
+* update UI after returning article -> model view controler pattern?
+
 * Artikel zurückgeben, egal an welcher Kasse er eingegeben wurde
 
 # Nice to have
