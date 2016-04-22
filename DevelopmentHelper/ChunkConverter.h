@@ -1,22 +1,21 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef CHUNKCONVERTER_H
+#define CHUNKCONVERTER_H
 
 #include <QMap>
 #include <QString>
-#include <QMainWindow>
-
+#include <QWidget>
 
 namespace Ui {
-class MainWindow;
+class ChunkConverter;
 }
 
-class MainWindow : public QMainWindow
+class ChunkConverter : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
+  explicit ChunkConverter(QWidget *parent = 0);
+  ~ChunkConverter();
 
 private slots:
   void on_lineEditChunkCode_returnPressed();
@@ -26,10 +25,10 @@ private:
   void setUpCharacterForCodeMap();
   void setUpCodeForCharacterMap();
 
-  Ui::MainWindow *ui;
+  Ui::ChunkConverter *ui;
 
   QMap<QString, QString> m_characterForCode;
   QMap<QString, QString> m_codeForCharacter;
 };
 
-#endif // MAINWINDOW_H
+#endif // CHUNKCONVERTER_H

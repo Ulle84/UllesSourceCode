@@ -1,11 +1,9 @@
-#include <QDebug>
+#include "ChunkConverter.h"
+#include "ui_ChunkConverter.h"
 
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
-
-MainWindow::MainWindow(QWidget *parent) :
-  QMainWindow(parent),
-  ui(new Ui::MainWindow)
+ChunkConverter::ChunkConverter(QWidget *parent) :
+  QWidget(parent),
+  ui(new Ui::ChunkConverter)
 {
   setUpCharacterForCodeMap();
   setUpCodeForCharacterMap();
@@ -13,12 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
+ChunkConverter::~ChunkConverter()
 {
   delete ui;
 }
 
-void MainWindow::on_lineEditChunkCode_returnPressed()
+void ChunkConverter::on_lineEditChunkCode_returnPressed()
 {
   QString chunkCode = ui->lineEditChunkCode->text();
 
@@ -37,7 +35,7 @@ void MainWindow::on_lineEditChunkCode_returnPressed()
   ui->lineEditChunkName->setText(chunkName);
 }
 
-void MainWindow::on_lineEditChunkName_returnPressed()
+void ChunkConverter::on_lineEditChunkName_returnPressed()
 {
   QString chunkName = ui->lineEditChunkName->text();
 
@@ -51,7 +49,7 @@ void MainWindow::on_lineEditChunkName_returnPressed()
   ui->lineEditChunkCode->setText(chunkCode);
 }
 
-void MainWindow::setUpCharacterForCodeMap()
+void ChunkConverter::setUpCharacterForCodeMap()
 {
   m_characterForCode["41"] = "A";
   m_characterForCode["42"] = "B";
@@ -108,7 +106,7 @@ void MainWindow::setUpCharacterForCodeMap()
   m_characterForCode["7A"] = "z";
 }
 
-void MainWindow::setUpCodeForCharacterMap()
+void ChunkConverter::setUpCodeForCharacterMap()
 {
   m_codeForCharacter["A"] = "41";
   m_codeForCharacter["B"] = "42";

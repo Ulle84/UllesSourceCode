@@ -21,6 +21,7 @@
 #include "BlockCodeFormatter.h"
 #include "ProjectCleaner.h"
 #include "BitbucketHelper.h"
+#include "Converter.h"
 
 DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   QMainWindow(parent),
@@ -31,10 +32,10 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
 
   m_settings = new QSettings("Ulle", "DevelopmentHelper", this);
 
-  m_widgets["Bitbucket Helper"] = new BitbucketHelper(this);
-  m_widgets["Log File Viewer"] = new LogFileViewer(this);
+  //m_widgets["Bitbucket Helper"] = new BitbucketHelper(this);
+  //m_widgets["Log File Viewer"] = new LogFileViewer(this);
   m_widgets["Code Assistant"] = new CodeAssistant(this);
-  m_widgets["Converter Base64"] = new ConverterBase64(this);
+  //m_widgets["Converter Base64"] = new ConverterBase64(this);
   m_widgets["Date and Time Helper"] = new DateTimeHelper(this);
   //m_widgets["HTML Table Generator"] = new HtmlTableGenerator(this);
   m_widgets["Crypto Helper"] = new CryptoHelper(this);
@@ -43,12 +44,13 @@ DevelopmentHelper::DevelopmentHelper(QWidget* parent) :
   //m_widgets["Require File Helper"] = new RequireFileHelper(this);
   m_widgets["RegExp Tester"] = new RegExpTester(this);
   //m_widgets["HTML Editor"] = new HtmlEditor(this);
-  m_widgets["Number Converter"] = new NumberConverter(this);
+  //m_widgets["Number Converter"] = new NumberConverter(this);
   //m_widgets["File or Dir Selector"] = new FileOrDirSelector(this);
-  m_widgets["Package Helper"] = new PackageHelper(this);
-  m_widgets["Text Converter"] = new TextConverter(this);
+  //m_widgets["Package Helper"] = new PackageHelper(this);
+  //m_widgets["Text Converter"] = new TextConverter(this);
   m_widgets["Block Code Formatter"] = new BlockCodeFormatter(this);
-  m_widgets["Project Cleaner"] = new ProjectCleaner(this);
+  //m_widgets["Project Cleaner"] = new ProjectCleaner(this);
+  m_widgets["Converters"] = new Converter(this);
 
   bool firstWidget = true;
 

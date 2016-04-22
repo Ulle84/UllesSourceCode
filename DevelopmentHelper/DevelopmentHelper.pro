@@ -43,7 +43,9 @@ SOURCES += main.cpp\
     FindInContainer.cpp \
     ForLoopCreator.cpp \
     ConnectionHelper.cpp \
-    EnumHelper.cpp
+    EnumHelper.cpp \
+    Converter.cpp \
+    ChunkConverter.cpp
 
 HEADERS  += DevelopmentHelper.h \
     LogFileViewer.h \
@@ -75,7 +77,9 @@ HEADERS  += DevelopmentHelper.h \
     FindInContainer.h \
     ForLoopCreator.h \
     ConnectionHelper.h \
-    EnumHelper.h
+    EnumHelper.h \
+    Converter.h \
+    ChunkConverter.h
 
 FORMS    += DevelopmentHelper.ui \
     StashHelper.ui \
@@ -108,4 +112,6 @@ FORMS    += DevelopmentHelper.ui \
     FindInContainer.ui \
     ForLoopCreator.ui \
     ConnectionHelper.ui \
-    EnumHelper.ui
+    EnumHelper.ui \
+    Converter.ui \
+    ChunkConverter.ui
