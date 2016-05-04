@@ -4,6 +4,8 @@
 class ITemplateObserver
 {
 public:
+  virtual ~ITemplateObserver(){};
+
   virtual void notify() = 0;
 };
 

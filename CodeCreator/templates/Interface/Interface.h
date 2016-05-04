@@ -5,6 +5,7 @@ class Interface
 {
 public:
   virtual ~Interface() {};
+  
   // TODO add functions here
 };
 

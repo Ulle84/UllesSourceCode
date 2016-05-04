@@ -7,6 +7,8 @@
 
 class IGenerator {
 public:
+  virtual ~IGenerator(){}
+
   virtual bool generate(const QString& folder) = 0;
   virtual void readXml(QXmlStreamReader& xml) = 0;
   virtual void writeXml(QXmlStreamWriter& xml) = 0;

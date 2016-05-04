@@ -7,10 +7,23 @@
 // TODO detect block comment /* ... */
 // TODO do not simplify string literals in "..."
 
+/* test
+
+//# #=#
+int a = 12;
+int blub = 1;
+double horst = 0.0;
+myspecialtype test = "horst";
+
+*/
+
 BlockCodeFormatter::BlockCodeFormatter(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::BlockCodeFormatter)
 {
+  m_startTag = "//#";
+  m_seperator = "#";
+
   ui->setupUi(this);
 }
 
@@ -27,8 +40,6 @@ void BlockCodeFormatter::on_pushButtonBlockFormat_clicked()
   QStringList symbols;
   QList<int> linesToConvert;
 
-  QString startTag = "//|";
-
   QString leadingWhitespace;
   bool convertNextLine = false;
 
@@ -36,12 +47,12 @@ void BlockCodeFormatter::on_pushButtonBlockFormat_clicked()
   {
     QString trimmedLine = lines.at(i).trimmed();
 
-    if (trimmedLine.startsWith(startTag))
+    if (trimmedLine.startsWith(m_startTag))
     {
       qDebug() << "found start tag in line" << i;
-      leadingWhitespace = lines.at(i).left(lines.at(i).indexOf(startTag));
+      leadingWhitespace = lines.at(i).left(lines.at(i).indexOf(m_startTag));
       convertNextLine = true;
-      symbols = trimmedLine.mid(startTag.length()).split("|");
+      symbols = trimmedLine.mid(m_startTag.length()).split(m_seperator);
       symbols.removeLast();
       qDebug() << "symbols:" << symbols;
     }

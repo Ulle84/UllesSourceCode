@@ -1,6 +1,8 @@
 ﻿# Bugs
 
 # ToDo
+* namespace
+* no template files -> write code instead -> much more flexible
 * save current folder at folder selection
 * Class Template
   * Rename -> d-Pointer - see StyleGuide

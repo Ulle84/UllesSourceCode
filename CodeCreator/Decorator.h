@@ -26,9 +26,7 @@ public:
 
 private slots:
   void on_checkBoxDecorator_toggled(bool checked);
-
   void on_checkBoxComponent_toggled(bool checked);
-
   void on_checkBoxInterface_toggled(bool checked);
 
 private:

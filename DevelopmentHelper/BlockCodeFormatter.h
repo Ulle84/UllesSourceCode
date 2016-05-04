@@ -24,6 +24,9 @@ private:
   void convertText(QStringList& text, QList<int> lines, QStringList symbols, const QString& leadingWhitespace);
 
   Ui::BlockCodeFormatter* ui;
+
+  QString m_startTag;
+  QString m_seperator;
 };
 
 #endif // BLOCKCODEFORMATTER_H
