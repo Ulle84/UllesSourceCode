@@ -9,6 +9,7 @@
   * std includes
   * Qt includes
   * own includes
+* SimpleWaitCondition() : _ready(false) -> : and , at end of line, not in beginning
 
 # Done
 * remove doubled empty lines
