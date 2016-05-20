@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     allowedExtensions << ".cpp" << ".hpp" << ".h";
 
     bool hasAllowedExtension = false;
+
     for (auto it = allowedExtensions.begin(); it != allowedExtensions.end(); it++)
     {
       if (fileName.endsWith(*it))

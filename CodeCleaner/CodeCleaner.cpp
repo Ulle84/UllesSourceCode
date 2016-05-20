@@ -129,34 +129,6 @@ void CodeCleaner::removeUnnecessaryStuff()
 {
   QMap<QString, QString> replaceMap;
 
-  QStringList namespaces;
-  namespaces << "Base";
-  namespaces << "CU";
-  namespaces << "Catalog";
-  namespaces << "Comm";
-  namespaces << "Core";
-  namespaces << "Data";
-  namespaces << "ExML";
-  namespaces << "Exp";
-  namespaces << "Gui";
-  namespaces << "Instr";
-  namespaces << "Main";
-  namespaces << "Qt";
-  namespaces << "Script";
-  namespaces << "Store";
-  namespaces << "View";
-
-  for (int i = 0; i < 5; i++)
-  {
-    QString spaces = createSpaceString(i);
-    replaceMap["}" + spaces + "// end of namespace\n"] = "}\n";
-
-    for (auto it = namespaces.begin(); it != namespaces.end(); it++)
-    {
-      replaceMap["}" + spaces + "// namespace " + *it + "\n"] = "}\n";
-    }
-  }
-
   replaceMap["  /*****************************************************************************\n      \\brief\n   ****************************************************************************/"] = "";
   replaceMap["  /*****************************************************************************\n     \\brief\n  ****************************************************************************/"] = "";
   replaceMap["  /*****************************************************************************\n\n   ****************************************************************************/"] = "";

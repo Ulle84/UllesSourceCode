@@ -29,6 +29,7 @@
 :*:_#::________________________________________________________________________________
 :*:as#::* formated by AStyle
 :*:bzgl#::bezüglich
+:*:cc#::* code cleaned
 :*:fyi#::for your information
 :*:ggf#::gegebenfalls
 :*:ic#::{+} initial commit
@@ -46,7 +47,7 @@
 :*:tdd#::// TODO delete
 :*:tdr#::// TODO remove this line after testing
 :*:tdi#::// TODO implement this functionality
-:*:uc#::[*] under construction
+:*:uc#::* under construction
 :*:vd#::Vielen Dank{!}
 :*:vdiv#::Vielen Dank im Voraus{!}
 :*:zb#::zum Beispiel
