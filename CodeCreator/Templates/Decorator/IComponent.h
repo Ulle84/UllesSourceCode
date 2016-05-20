@@ -4,6 +4,8 @@
 class IComponent
 {
 public:
+  virtual ~IComponent(){}
+
   // TODO add functions here
 };
 

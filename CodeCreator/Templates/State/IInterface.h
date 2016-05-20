@@ -4,6 +4,8 @@
 class IInterface
 {
 public:
+  virtual ~IInterface(){}
+
   // TODO add functions here
 };
 
