@@ -15,7 +15,9 @@ void CodeCleaner::process()
   removeDoubleEmptyLines();
   removeEmptyLinesBeforeClosingBracket();
   removeEmptyLinesAfterOpeningBracket();
+  removeUnnecessaryNamespaceStuff();
   removeUnnecessaryStuff();
+  moveCommaToRightPlace();
 }
 
 void CodeCleaner::removeDoubleEmptyLines()
@@ -83,11 +85,39 @@ void CodeCleaner::removeLineDelimiters()
   }
 }
 
-void CodeCleaner::removeUnnecessaryStuff()
+void CodeCleaner::removeUnnecessaryNamespaceStuff()
 {
+  QStringList namespaces;
+  namespaces << "Base";
+  namespaces << "CU";
+  namespaces << "Catalog";
+  namespaces << "Comm";
+  namespaces << "Core";
+  namespaces << "Data";
+  namespaces << "ExML";
+  namespaces << "Exp";
+  namespaces << "Gui";
+  namespaces << "Instr";
+  namespaces << "Main";
+  namespaces << "Qt";
+  namespaces << "Script";
+  namespaces << "Store";
+  namespaces << "View";
+
   QMap<QString, QString> replaceMap;
-  replaceMap["}  // end of namespace"] = "}";
-  replaceMap["} // end of namespace"] = "}";
+
+  for (int i = 0; i < 5; i++)
+  {
+    QString spaces = createSpaceString(i);
+    replaceMap["}" + spaces + "//end of namespace\n"] = "}\n";
+    replaceMap["}" + spaces + "// end of namespace\n"] = "}\n";
+
+    for (auto it = namespaces.begin(); it != namespaces.end(); it++)
+    {
+      replaceMap["}" + spaces + "//namespace " + *it + "\n"] = "}\n";
+      replaceMap["}" + spaces + "// namespace " + *it + "\n"] = "}\n";
+    }
+  }
 
   for (auto it = replaceMap.begin(); it != replaceMap.end(); it++)
   {
@@ -95,7 +125,55 @@ void CodeCleaner::removeUnnecessaryStuff()
   }
 }
 
+void CodeCleaner::removeUnnecessaryStuff()
+{
+  QMap<QString, QString> replaceMap;
 
+  QStringList namespaces;
+  namespaces << "Base";
+  namespaces << "CU";
+  namespaces << "Catalog";
+  namespaces << "Comm";
+  namespaces << "Core";
+  namespaces << "Data";
+  namespaces << "ExML";
+  namespaces << "Exp";
+  namespaces << "Gui";
+  namespaces << "Instr";
+  namespaces << "Main";
+  namespaces << "Qt";
+  namespaces << "Script";
+  namespaces << "Store";
+  namespaces << "View";
+
+  for (int i = 0; i < 5; i++)
+  {
+    QString spaces = createSpaceString(i);
+    replaceMap["}" + spaces + "// end of namespace\n"] = "}\n";
+
+    for (auto it = namespaces.begin(); it != namespaces.end(); it++)
+    {
+      replaceMap["}" + spaces + "// namespace " + *it + "\n"] = "}\n";
+    }
+  }
+
+  replaceMap["  /*****************************************************************************\n      \\brief\n   ****************************************************************************/"] = "";
+  replaceMap["  /*****************************************************************************\n     \\brief\n  ****************************************************************************/"] = "";
+  replaceMap["  /*****************************************************************************\n\n   ****************************************************************************/"] = "";
+  replaceMap["  /*******************************************************************************\n\n  ******************************************************************************/"] = "";
+  replaceMap["  //////////////////////////////////////////////////////////////////////////////\n  //////////////////////////////////////////////////////////////////////////////\n  //////////////////////////////////////////////////////////////////////////////"] = "";
+  replaceMap["  ////////////////////////////////////////////////////////////////////////////////\n  ////////////////////////////////////////////////////////////////////////////////\n  ////////////////////////////////////////////////////////////////////////////////\n  ////////////////////////////////////////////////////////////////////////////////\n  ////////////////////////////////////////////////////////////////////////////////"] = "";
+
+  for (auto it = replaceMap.begin(); it != replaceMap.end(); it++)
+  {
+    m_string.replace(it.key(), it.value());
+  }
+}
+
+void CodeCleaner::moveCommaToRightPlace()
+{
+  m_string.replace("\n    , ", ",\n      ");
+}
 
 QString CodeCleaner::createSpaceString(unsigned int length)
 {
@@ -105,10 +183,12 @@ QString CodeCleaner::createSpaceString(unsigned int length)
 QString CodeCleaner::createString(QString characters, unsigned int length)
 {
   QString string;
+
   for (unsigned int i = 0; i < length; i++)
   {
     string.append(characters);
   }
+
   return string;
 }
 

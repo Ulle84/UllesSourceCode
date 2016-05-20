@@ -17,7 +17,9 @@ private:
   void removeEmptyLinesBeforeClosingBracket();
   void removeEmptyLinesAfterOpeningBracket();
   void removeLineDelimiters();
+  void removeUnnecessaryNamespaceStuff();
   void removeUnnecessaryStuff();
+  void moveCommaToRightPlace();
 
   QString createSpaceString(unsigned int length);
   QString createString(QString characters, unsigned int length);
