@@ -8,18 +8,16 @@ ClassGenerator::ClassGenerator()
 QString ClassGenerator::createClass(const Options &options)
 {
   QString code;
+
   code.append(headerGuardStart());
   code.append(baseClassIncludes());
-code.append(namespaceStart());
+  code.append(namespaceStart());
   code.append(classDeclaration(options));
-
-  // public
-
+  code.append(section("public"));
   code.append(constructorDeclaration(options));
   code.append(destructorDeclaration(options));
   code.append(leadingWhitespace(false));
   code.append("}\n");
-
   code.append(namespaceEnd());
   code.append(headerGuardEnd());
 
@@ -222,5 +220,13 @@ QString ClassGenerator::baseClassIncludes()
     code.append("\n");
   }
 
+  return code;
+}
+
+QString ClassGenerator::section(const QString &sectionName)
+{
+  QString code = leadingWhitespace(false);
+  code.append(sectionName);
+  code.append(":\n");
   return code;
 }

@@ -36,6 +36,7 @@ private:
   QString headerGuardEnd();
   QString headerGuard();
   QString baseClassIncludes();
+  QString section(const QString& sectionName);
 
 
   QString m_className;
