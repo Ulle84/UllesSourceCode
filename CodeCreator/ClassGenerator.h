@@ -15,12 +15,12 @@ public:
   {
     bool declareConstructorExplicit;
     bool declareDestructorVirtual;
+    bool includeQObjectMacro;
   };
-  QString createClass(const Options& options);
+  QString createHeader(const Options& options);
+  QString createImplementation(const Options& options);
 
-  QString constructorDeclaration(const Options& options);
-  QString destructorDeclaration(const Options& options);
-  QString classDeclaration(const Options& options);
+
 
 
   void setClassName(const QString& className);
@@ -37,6 +37,12 @@ private:
   QString headerGuard();
   QString baseClassIncludes();
   QString section(const QString& sectionName);
+  QString constructorDeclaration(const Options& options);
+  QString constructorImplementation(const Options& options);
+  QString destructorDeclaration(const Options& options);
+  QString destructorImplementation(const Options& options);
+  QString classDeclaration(const Options& options);
+  QString include(const QString& header);
 
 
   QString m_className;

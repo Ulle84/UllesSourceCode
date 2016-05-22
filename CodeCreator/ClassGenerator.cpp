@@ -5,7 +5,7 @@ ClassGenerator::ClassGenerator()
 {
 }
 
-QString ClassGenerator::createClass(const Options &options)
+QString ClassGenerator::createHeader(const Options &options)
 {
   QString code;
 
@@ -13,6 +13,13 @@ QString ClassGenerator::createClass(const Options &options)
   code.append(baseClassIncludes());
   code.append(namespaceStart());
   code.append(classDeclaration(options));
+
+  if (options.includeQObjectMacro)
+  {
+    code.append(leadingWhitespace(true));
+    code.append("Q_OBJECT\n\n");
+  }
+
   code.append(section("public"));
   code.append(constructorDeclaration(options));
   code.append(destructorDeclaration(options));
@@ -20,6 +27,22 @@ QString ClassGenerator::createClass(const Options &options)
   code.append("}\n");
   code.append(namespaceEnd());
   code.append(headerGuardEnd());
+
+  return code;
+}
+
+QString ClassGenerator::createImplementation(const ClassGenerator::Options &options)
+{
+  QString code;
+
+  code.append(include(m_className));
+  code.append("\n");
+
+  code.append(namespaceStart());
+  code.append(constructorImplementation(options));
+  code.append(destructorImplementation(options));
+
+  code.append(namespaceEnd());
 
   return code;
 }
@@ -39,6 +62,22 @@ QString ClassGenerator::constructorDeclaration(const Options &options)
   return code;
 }
 
+QString ClassGenerator::constructorImplementation(const ClassGenerator::Options &options)
+{
+  QString code = leadingWhitespace(false);
+
+  code.append(m_className);
+  code.append("::");
+  code.append(m_className);
+  code.append("()\n");
+  code.append(leadingWhitespace(false));
+  code.append("{\n\n");
+  code.append(leadingWhitespace(false));
+  code.append("}\n\n");
+
+  return code;
+}
+
 QString ClassGenerator::destructorDeclaration(const Options &options)
 {
   QString code = leadingWhitespace(true);
@@ -51,6 +90,22 @@ QString ClassGenerator::destructorDeclaration(const Options &options)
   code.append("~");
   code.append(m_className);
   code.append("();\n");
+
+  return code;
+}
+
+QString ClassGenerator::destructorImplementation(const ClassGenerator::Options &options)
+{
+  QString code = leadingWhitespace(false);
+
+  code.append(m_className);
+  code.append("::~");
+  code.append(m_className);
+  code.append("()\n");
+  code.append(leadingWhitespace(false));
+  code.append("{\n\n");
+  code.append(leadingWhitespace(false));
+  code.append("}\n\n");
 
   return code;
 }
@@ -83,6 +138,17 @@ QString ClassGenerator::classDeclaration(const ClassGenerator::Options &options)
   code.append(leadingWhitespace(false));
   code.append("{\n");
 
+
+  return code;
+}
+
+QString ClassGenerator::include(const QString &header)
+{
+  QString code;
+
+  code.append("#include \"");
+  code.append(header);
+  code.append(".h\"\n");
 
   return code;
 }
@@ -197,7 +263,16 @@ QString ClassGenerator::headerGuardEnd()
 
 QString ClassGenerator::headerGuard()
 {
-  QString code = m_className.toUpper();
+  QString code;
+
+  for (auto it = m_namespaceNames.begin(); it != m_namespaceNames.end(); it++)
+  {
+    code.append(it->toUpper());
+    code.append("_");
+  }
+
+
+  code.append(m_className.toUpper());
 
   code.append("_H");
 
@@ -210,9 +285,7 @@ QString ClassGenerator::baseClassIncludes()
 
   for (auto it = m_baseClasses.begin(); it != m_baseClasses.end(); it++)
   {
-    code.append("#include ");
-    code.append(*it);
-    code.append(".h\n");
+    code.append(include(*it));
   }
 
   if (!m_baseClasses.isEmpty())

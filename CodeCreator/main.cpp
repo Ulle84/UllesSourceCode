@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
   ClassGenerator::Options options;
   options.declareDestructorVirtual = false;
   options.declareConstructorExplicit = false;
-
+  options.includeQObjectMacro = false;
 
   ClassGenerator classGenerator;
   classGenerator.setClassName("MyClass");
@@ -22,9 +22,10 @@ int main(int argc, char *argv[])
   QStringList namespaces;
   namespaces.append("namespaceA");
   namespaces.append("namespaceB");
-  classGenerator.setNamespaceNames(namespaces);
+  //classGenerator.setNamespaceNames(namespaces);
 
-  qDebug() << classGenerator.createClass(options);
+  qDebug() << classGenerator.createHeader(options);
+  qDebug() << classGenerator.createImplementation(options);
 
   return 0;
 
