@@ -5,8 +5,6 @@
 #include <QString>
 #include "Options.h"
 
-class QStringList;
-
 class CodeGenerator  : public QWidget
 {
   Q_OBJECT
@@ -16,6 +14,7 @@ public:
   ~CodeGenerator();
 
   void setBasePath(const QString& basePath);
+
   bool copyFromTemplate(const Options& options);
 
 private:

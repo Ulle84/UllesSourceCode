@@ -17,7 +17,7 @@ public:
   QStringList files;
   QString folderInput;
   QString folderOutput;
-  QList<QPair<QString, QString>> searchAndReplace;
+  QList<QPair<QString, QString> > searchAndReplace;
 };
 
 #endif // OPTIONS_H
