@@ -20,7 +20,7 @@
 #include "Decorator.h"
 #include "State.h"
 
-CodeCreator::CodeCreator(QWidget *parent) :
+CodeCreator::CodeCreator(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::CodeCreator),
   mFileName("Settings.xml")
@@ -74,7 +74,7 @@ void CodeCreator::initGenerators()
   }
 }
 
-void CodeCreator::on_comboBoxType_currentIndexChanged(const QString &type)
+void CodeCreator::on_comboBoxType_currentIndexChanged(const QString& type)
 {
   if (ui->comboBoxType->count() < 1)
   {
@@ -115,7 +115,7 @@ void CodeCreator::on_pushButtonStart_clicked()
     return;
   }
 
-  if(dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
+  if (dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
   {
     QMessageBox messageBox;
     messageBox.setText(tr("Creation finished!"));
@@ -169,6 +169,7 @@ bool CodeCreator::readXml()
           xml.skipCurrentElement();
         }
       }
+
       updateComboBoxFolders();
     }
     else if (xml.name() == "SelectedFolder")

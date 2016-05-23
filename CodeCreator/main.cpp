@@ -10,15 +10,18 @@ int main(int argc, char *argv[])
   options.declareDestructorVirtual = false;
   options.declareConstructorExplicit = false;
   options.includeQObjectMacro = false;
-  options.copyConstructor = ClassGenerator::DeclarationType::NONE;
-  options.copyOperator = ClassGenerator::DeclarationType::PUBLIC;
+  options.declareConstrucorPrivate = true;
+  options.copyConstructor = ClassGenerator::DeclarationType::PRIVATE;
+  options.copyOperator = ClassGenerator::DeclarationType::PRIVATE;
+  options.outputDirectory = "D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\";
+  options.overwriteExistingFiles = true;
 
   ClassGenerator classGenerator;
-  classGenerator.setClassName("MyClass");
+  classGenerator.setClassName("Test");
 
   QStringList baseClasses;
-  baseClasses.append("BaseA");
-  baseClasses.append("BaseB");
+  //baseClasses.append("BaseA");
+  //baseClasses.append("BaseB");
   classGenerator.setBaseClasses(baseClasses);
 
   QStringList namespaces;
@@ -29,6 +32,13 @@ int main(int argc, char *argv[])
   qDebug() << classGenerator.createHeader(options);
   qDebug() << "----------------------------------------------------";
   qDebug() << classGenerator.createImplementation(options);
+
+  if(classGenerator.createFiles(options))
+  {
+    qDebug() << "file succesfully writen";
+  }
+  else
+    qDebug() << "error while writing files";
 
   return 0;
 

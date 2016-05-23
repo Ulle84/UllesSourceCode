@@ -9,8 +9,9 @@
 class CodeGenerator;
 class Options;
 
-namespace Ui {
-class CodeCreator;
+namespace Ui
+{
+  class CodeCreator;
 }
 
 class CodeCreator : public QWidget
@@ -18,11 +19,11 @@ class CodeCreator : public QWidget
   Q_OBJECT
 
 public:
-  explicit CodeCreator(QWidget *parent = 0);
+  explicit CodeCreator(QWidget* parent = 0);
   ~CodeCreator();
 
 private slots:
-  void on_comboBoxType_currentIndexChanged(const QString &type);
+  void on_comboBoxType_currentIndexChanged(const QString& type);
   void on_pushButtonSelectFolder_clicked();
   void on_pushButtonStart_clicked();
   void on_pushButtonClearHistory_clicked();

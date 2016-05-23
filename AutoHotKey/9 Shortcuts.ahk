@@ -41,6 +41,8 @@
 :*:nc#::no comment
 :*:qd#::qDebug() << ""{;}{Left}{Left}
 :*:so#::ScientaOmicron
+:*:rf#::return false{;}
+:*:rt#::return true{;}
 :*:st#::bool stop = true;
 :*:san#::// TODO @all SANITIZE:{Space}
 :*:td#::// TODO @ube:{Space}
