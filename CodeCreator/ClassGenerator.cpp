@@ -22,7 +22,36 @@ QString ClassGenerator::createHeader(const Options &options)
 
   code.append(section("public"));
   code.append(constructorDeclaration(options));
+
+  if (options.copyConstructor == DeclarationType::PUBLIC)
+  {
+    code.append(copyConstructorDeclaration(options));
+  }
+
+  if (options.copyOperator == DeclarationType::PUBLIC)
+  {
+    code.append(copyOperatorDeclaration(options));
+  }
+
   code.append(destructorDeclaration(options));
+
+  if (options.copyConstructor == DeclarationType::PRIVATE
+      || options.copyOperator == DeclarationType::PRIVATE)
+  {
+    code.append("\n");
+    code.append(section("private"));
+  }
+
+  if (options.copyConstructor == DeclarationType::PRIVATE)
+  {
+    code.append(copyConstructorDeclaration(options));
+  }
+
+  if (options.copyOperator == DeclarationType::PRIVATE)
+  {
+    code.append(copyOperatorDeclaration(options));
+  }
+
   code.append(leadingWhitespace(false));
   code.append("}\n");
   code.append(namespaceEnd());
@@ -40,7 +69,23 @@ QString ClassGenerator::createImplementation(const ClassGenerator::Options &opti
 
   code.append(namespaceStart());
   code.append(constructorImplementation(options));
+
+  if (options.copyConstructor == DeclarationType::PUBLIC)
+  {
+    code.append("\n");
+    code.append(copyConstructorImplementation(options));
+  }
+
+  if (options.copyOperator == DeclarationType::PUBLIC)
+  {
+    code.append("\n");
+    code.append(copyOperatorImplementation(options));
+  }
+
+  code.append("\n");
   code.append(destructorImplementation(options));
+
+
 
   code.append(namespaceEnd());
 
@@ -70,10 +115,82 @@ QString ClassGenerator::constructorImplementation(const ClassGenerator::Options 
   code.append("::");
   code.append(m_className);
   code.append("()\n");
-  code.append(leadingWhitespace(false));
-  code.append("{\n\n");
-  code.append(leadingWhitespace(false));
-  code.append("}\n\n");
+  code.append(emptyBlock());
+
+  return code;
+}
+
+QString ClassGenerator::copyConstructorDeclaration(const ClassGenerator::Options &options)
+{
+  if (options.copyConstructor == DeclarationType::NONE)
+  {
+    return QString();
+  }
+
+  QString code = leadingWhitespace(true);
+
+  code.append(m_className);
+  code.append(constRef());
+  if (options.copyConstructor == DeclarationType::PRIVATE)
+  {
+    code.append("{}");
+  }
+  else
+    code.append(";");
+  code.append("\n");
+
+  return code;
+}
+
+QString ClassGenerator::copyConstructorImplementation(const ClassGenerator::Options &options)
+{
+  QString code = leadingWhitespace(false);
+
+  code.append(m_className);
+  code.append("::");
+  code.append(m_className);
+  code.append(constRef());
+  code.append("\n");
+  code.append(emptyBlock());
+
+  return code;
+}
+
+QString ClassGenerator::copyOperatorDeclaration(const ClassGenerator::Options &options)
+{
+  //   Matrix& operator= (const Matrix& rhs);
+
+  if (options.copyOperator == DeclarationType::NONE)
+  {
+    return QString();
+  }
+
+  QString code = leadingWhitespace(true);
+
+  code.append(m_className);
+  code.append("& operator= ");
+  code.append(constRef());
+  if (options.copyOperator == DeclarationType::PRIVATE)
+  {
+    code.append("{}");
+  }
+  else
+    code.append(";");
+  code.append("\n");
+
+  return code;
+}
+
+QString ClassGenerator::copyOperatorImplementation(const ClassGenerator::Options &options)
+{
+  QString code = leadingWhitespace(false);
+
+  code.append(m_className);
+  code.append("::");
+  code.append(m_className);
+  code.append(constRef());
+  code.append("\n");
+  code.append(emptyBlock());
 
   return code;
 }
@@ -89,7 +206,18 @@ QString ClassGenerator::destructorDeclaration(const Options &options)
 
   code.append("~");
   code.append(m_className);
-  code.append("();\n");
+  code.append("()");
+
+  if (options.declareDestructorVirtual)
+  {
+    code.append("{}");
+  }
+  else
+  {
+    code.append(";");
+  }
+
+  code.append("\n");
 
   return code;
 }
@@ -102,10 +230,7 @@ QString ClassGenerator::destructorImplementation(const ClassGenerator::Options &
   code.append("::~");
   code.append(m_className);
   code.append("()\n");
-  code.append(leadingWhitespace(false));
-  code.append("{\n\n");
-  code.append(leadingWhitespace(false));
-  code.append("}\n\n");
+  code.append(emptyBlock());
 
   return code;
 }
@@ -149,6 +274,29 @@ QString ClassGenerator::include(const QString &header)
   code.append("#include \"");
   code.append(header);
   code.append(".h\"\n");
+
+  return code;
+}
+
+QString ClassGenerator::emptyBlock()
+{
+  QString code;
+
+  code.append(leadingWhitespace(false));
+  code.append("{\n\n");
+  code.append(leadingWhitespace(false));
+  code.append("}\n");
+
+  return code;
+}
+
+QString ClassGenerator::constRef()
+{
+  QString code;
+
+  code.append("(const ");
+  code.append(m_className);
+  code.append("& rhs)");
 
   return code;
 }
@@ -302,4 +450,15 @@ QString ClassGenerator::section(const QString &sectionName)
   code.append(sectionName);
   code.append(":\n");
   return code;
+}
+
+
+ClassGenerator::Options::Options()
+  : declareConstructorExplicit(false),
+    declareDestructorVirtual(false),
+    includeQObjectMacro(false),
+    copyConstructor(NONE)
+
+{
+
 }

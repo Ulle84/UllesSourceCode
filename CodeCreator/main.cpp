@@ -10,6 +10,8 @@ int main(int argc, char *argv[])
   options.declareDestructorVirtual = false;
   options.declareConstructorExplicit = false;
   options.includeQObjectMacro = false;
+  options.copyConstructor = ClassGenerator::DeclarationType::NONE;
+  options.copyOperator = ClassGenerator::DeclarationType::PUBLIC;
 
   ClassGenerator classGenerator;
   classGenerator.setClassName("MyClass");
@@ -25,6 +27,7 @@ int main(int argc, char *argv[])
   //classGenerator.setNamespaceNames(namespaces);
 
   qDebug() << classGenerator.createHeader(options);
+  qDebug() << "----------------------------------------------------";
   qDebug() << classGenerator.createImplementation(options);
 
   return 0;
