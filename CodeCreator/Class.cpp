@@ -88,13 +88,17 @@ bool Class::generate(const QString &folder)
   {
     if (baseClass.left(1) == "Q")
     {
-      include = QString("<%1>").arg(baseClass);
+      include = "<";
+      include.append(baseClass);
+      include.append(">");
       options.searchAndReplace.append(qMakePair(QString("  Template()"), QString("  explicit %1(%2* parent = 0)").arg(name).arg(baseClass)));
       options.searchAndReplace.append(qMakePair(QString("%1::%1()").arg(name), QString("%1::%1(%2* parent) :\n  %2(parent)").arg(name).arg(baseClass)));
     }
     else
     {
-      include = QString("\"%1.h\"").arg(baseClass);
+      include = "\"";
+      include.append(baseClass);
+      include.append(".h\"");
     }
 
     options.searchAndReplace.append(qMakePair(QString("class %1").arg(name), QString("#include %1\n\nclass %2 : %3 %5").arg(include).arg(name).arg(type).arg(baseClass)));

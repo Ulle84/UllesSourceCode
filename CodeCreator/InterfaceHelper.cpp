@@ -99,7 +99,9 @@ QString InterfaceHelper::createFunctionImplementations(const QPlainTextEdit *pla
     QStringList splitted2 = splitted1[0].split(" ");
     splitted2[splitted2.length() - 1] = splitted2.last().replace(";", "").prepend("::").prepend(className);
 
-    splitted1[0] = splitted2.join(" ");
+    QString temp = splitted2.join(" ");
+    splitted1[0] = temp;
+    //splitted1[0] = splitted2.join(" "); // not possible -> linker error: Class.obj:-1: error: LNK2019: unresolved external symbol "__declspec(dllimport) public: class QString & __thiscall QString::operator=(class QString &&)" (__imp_??4QString@@QAEAAV0@$$QAV0@@Z) referenced in function "public: virtual bool __thiscall Class::generate(class QString const &)" (?generate@Class@@UAE_NABVQString@@@Z)
 
     QString functionImplementation = splitted1.join("(") + "\n{\n  // TODO add implementation";
 
