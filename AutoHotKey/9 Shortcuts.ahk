@@ -41,6 +41,7 @@
 :*:nc#::no comment
 :*:qd#::qDebug() << ""{;}{Left}{Left}
 :*:so#::ScientaOmicron
+:*:st#::bool stop = true;
 :*:san#::// TODO @all SANITIZE:{Space}
 :*:td#::// TODO @ube:{Space}
 :*:tdc#::// TODO change after testing
