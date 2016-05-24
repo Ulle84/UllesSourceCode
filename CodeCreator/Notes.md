@@ -1,13 +1,14 @@
 ﻿# Bugs
 
 # ToDo
-* namespace
-* no template files -> write code instead -> much more flexible
 * save current folder at folder selection
 * Class Template
-  * Rename -> d-Pointer - see StyleGuide
+  * singleton support
+  * d-Pointer support
   * No extrea Header for pImpl Declaration -> move to *.cpp file
-  * q-Pointer -> pointing to overlaying class
+  * q-Pointer support -> pointing to overlaying class
+* remove Class; rename ClassAdvanced to Class
+* remove template mechanism from existing generators
 
 # Ideas
 * Templates -> generate project per template?
@@ -26,3 +27,5 @@
 
 # Done
 * looking in wrong folder for templates -> needs to be configurable!!!
+* namespace
+* no template files -> write code instead -> much more flexible

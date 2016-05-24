@@ -115,6 +115,11 @@ return
 SendInput {[}{]}(%clipboard%)
 return
 
+; member asignment
+:*:ma#::
+SendInput m_%clipboard% = %clipboard%{;}
+return
+
 ; redmine link from clipboard in mark-down-syntax
 :*:rlink#::
 SendInput {[}Redmine{]}(%clipboard%)
@@ -250,54 +255,9 @@ return
 ; --------------------------------------------------------------------------------
 ; Sonstiges
 ; --------------------------------------------------------------------------------
-:*:jira#::
-SendInput Die Aufgabe wurde erledigt.`n`nBitte das Paket %clipboard% verwenden.`n`nBitte verifizieren und Vorgang schließen.
-return
-
 :*:bug#::
 (
 *pre-condition:* 
 *trigger:* 
 *findings:*  
-)
-
-:*:screen#::
-(
-begin of screen
-0        1         2         3         4         5         6         7         8         9        10        11        12
-123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-end of screen
 )

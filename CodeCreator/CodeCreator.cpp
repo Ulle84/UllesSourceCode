@@ -11,6 +11,7 @@
 #include "ui_CodeCreator.h"
 #include "CodeGenerator.h"
 #include "Class.h"
+#include "ClassAdvanced.h"
 #include "Generator.h"
 #include "Observer.h"
 #include "Interface.h"
@@ -50,6 +51,7 @@ CodeCreator::~CodeCreator()
 void CodeCreator::initGenerators()
 {
   mGenerators["Class"] = new Class(mCodeGenerator, this);
+  mGenerators["ClassAdvanced"] = new ClassAdvanced(mCodeGenerator, this);
   mGenerators["Interface"] = new Interface(mCodeGenerator, this);
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
