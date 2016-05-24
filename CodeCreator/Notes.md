@@ -3,7 +3,7 @@
 # ToDo
 * save current folder at folder selection
 * Class Template
-  * singleton support
+  * singleton support -> override options (no public constructor etc.), before creating
   * d-Pointer support
   * No extrea Header for pImpl Declaration -> move to *.cpp file
   * q-Pointer support -> pointing to overlaying class

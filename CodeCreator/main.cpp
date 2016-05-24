@@ -11,14 +11,15 @@ int main(int argc, char* argv[])
   classGenerator.setDeclareDestructorVirtual(false);
   classGenerator.setDeclareConstructorExplicit(false);
   classGenerator.setIncludeQObjectMacro(false);
-  classGenerator.setDestructorDeclarationType(ClassGenerator::DeclarationType::PUBLIC);
-  classGenerator.setConstructorDeclarationType(ClassGenerator::DeclarationType::PUBLIC);
-  classGenerator.setCopyConstructorDeclarationType(ClassGenerator::DeclarationType::NONE);
-  classGenerator.setCopyOperatorDeclarationType(ClassGenerator::DeclarationType::NONE);
-  classGenerator.setMoveConstructorDeclarationType(ClassGenerator::DeclarationType::NONE);
-  classGenerator.setMoveOperatorDeclarationType(ClassGenerator::DeclarationType::NONE);
+  classGenerator.setDestructorDeclarationType(ClassGenerator::DeclarationType::Public);
+  classGenerator.setConstructorDeclarationType(ClassGenerator::DeclarationType::Public);
+  classGenerator.setCopyConstructorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
+  classGenerator.setCopyOperatorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
+  classGenerator.setMoveConstructorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
+  classGenerator.setMoveOperatorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
   classGenerator.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
   classGenerator.setOverwriteExistingFiles(true);
+  classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
 
   QStringList baseClasses;
   baseClasses.append("BaseA");

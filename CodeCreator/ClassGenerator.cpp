@@ -8,19 +8,22 @@ ClassGenerator::ClassGenerator()
     m_declareConstructorExplicit(false),
     m_declareDestructorVirtual(false),
     m_includeQObjectMacro(false),
-    m_constructorDeclarationType(DeclarationType::PUBLIC),
-    m_destructorDeclarationType(DeclarationType::PUBLIC),
-    m_copyConstructorDeclarationType(DeclarationType::NONE),
-    m_copyOperatorDeclarationType(DeclarationType::NONE),
-    m_moveConstructorDeclarationType(DeclarationType::NONE),
-    m_moveOperatorDeclarationType(DeclarationType::NONE),
+    m_constructorDeclarationType(DeclarationType::Public),
+    m_destructorDeclarationType(DeclarationType::Public),
+    m_copyConstructorDeclarationType(DeclarationType::NoDeclaration),
+    m_copyOperatorDeclarationType(DeclarationType::NoDeclaration),
+    m_moveConstructorDeclarationType(DeclarationType::NoDeclaration),
+    m_moveOperatorDeclarationType(DeclarationType::NoDeclaration),
     m_overwriteExistingFiles(false),
-    m_uppercaseHeaderGuard(false)
+    m_uppercaseHeaderGuard(false),
+    m_singletonType(SingletonType::NoSingleton)
 {
 }
 
 QString ClassGenerator::createHeader()
 {
+  checkOptions();
+
   QString code;
 
   code.append(headerGuardStart());
@@ -36,76 +39,87 @@ QString ClassGenerator::createHeader()
 
   code.append(section("public"));
 
-  if (m_constructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_singletonType != SingletonType::NoSingleton)
+  {
+    code.append(singletonGetInstanceDeclaration());
+  }
+
+  if (m_constructorDeclarationType == DeclarationType::Public)
   {
     code.append(constructorDeclaration());
   }
 
-  if (m_copyConstructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_copyConstructorDeclarationType == DeclarationType::Public)
   {
     code.append(copyConstructorDeclaration());
   }
 
-  if (m_moveConstructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_moveConstructorDeclarationType == DeclarationType::Public)
   {
     code.append(moveConstructorDeclaration());
   }
 
-  if (m_copyOperatorDeclarationType == DeclarationType::PUBLIC)
+  if (m_copyOperatorDeclarationType == DeclarationType::Public)
   {
     code.append(copyOperatorDeclaration());
   }
 
-  if (m_moveOperatorDeclarationType == DeclarationType::PUBLIC)
+  if (m_moveOperatorDeclarationType == DeclarationType::Public)
   {
     code.append(moveOperatorDeclaration());
   }
 
-  if (m_destructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_destructorDeclarationType == DeclarationType::Public)
   {
     code.append(destructorDeclaration());
   }
 
-
-  if (m_constructorDeclarationType == DeclarationType::PRIVATE
-      || m_copyConstructorDeclarationType == DeclarationType::PRIVATE
-      || m_copyOperatorDeclarationType == DeclarationType::PRIVATE
-      || m_moveConstructorDeclarationType == DeclarationType::PRIVATE
-      || m_moveOperatorDeclarationType == DeclarationType::PRIVATE
-      || m_destructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_constructorDeclarationType == DeclarationType::Private
+      || m_copyConstructorDeclarationType == DeclarationType::Private
+      || m_copyOperatorDeclarationType == DeclarationType::Private
+      || m_moveConstructorDeclarationType == DeclarationType::Private
+      || m_moveOperatorDeclarationType == DeclarationType::Private
+      || m_destructorDeclarationType == DeclarationType::Private
+      || m_singletonType != SingletonType::NoSingleton)
   {
     code.append("\n");
     code.append(section("private"));
   }
 
-  if (m_constructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_constructorDeclarationType == DeclarationType::Private)
   {
     code.append(constructorDeclaration());
   }
 
-  if (m_copyConstructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_copyConstructorDeclarationType == DeclarationType::Private)
   {
     code.append(copyConstructorDeclaration());
   }
 
-  if (m_moveConstructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_moveConstructorDeclarationType == DeclarationType::Private)
   {
     code.append(moveConstructorDeclaration());
   }
 
-  if (m_copyOperatorDeclarationType == DeclarationType::PRIVATE)
+  if (m_copyOperatorDeclarationType == DeclarationType::Private)
   {
     code.append(copyOperatorDeclaration());
   }
 
-  if (m_moveOperatorDeclarationType == DeclarationType::PRIVATE)
+  if (m_moveOperatorDeclarationType == DeclarationType::Private)
   {
     code.append(moveOperatorDeclaration());
   }
 
-  if (m_destructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_destructorDeclarationType == DeclarationType::Private)
   {
     code.append(destructorDeclaration());
+  }
+
+  if (m_singletonType != SingletonType::NoSingleton)
+  {
+    code.append("\n");
+    code.append(singletonInstance());
   }
 
   code.append(leadingWhitespace(false));
@@ -118,6 +132,8 @@ QString ClassGenerator::createHeader()
 
 QString ClassGenerator::createImplementation()
 {
+  checkOptions();
+
   QString code;
 
   code.append(include(m_className));
@@ -126,58 +142,91 @@ QString ClassGenerator::createImplementation()
   code.append(namespaceStart());
 
   bool alreadyOneImplementationPresent = false;
-  if (m_constructorDeclarationType == DeclarationType::PUBLIC)
+
+  if (m_singletonType == SingletonType::Eager)
   {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(singletonInitialization());
+    alreadyOneImplementationPresent = true;
+  }
+
+  if (m_singletonType != SingletonType::NoSingleton)
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(singletonGetInstanceImplementation());
+    alreadyOneImplementationPresent = true;
+  }
+
+  if (m_constructorDeclarationType == DeclarationType::Public)
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
     code.append(constructorImplementation());
     alreadyOneImplementationPresent = true;
   }
 
-  if (m_copyConstructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_copyConstructorDeclarationType == DeclarationType::Public)
   {
     if (alreadyOneImplementationPresent)
     {
       code.append("\n");
     }
+
     code.append(copyConstructorImplementation());
     alreadyOneImplementationPresent = true;
   }
 
-  if (m_moveConstructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_moveConstructorDeclarationType == DeclarationType::Public)
   {
     if (alreadyOneImplementationPresent)
     {
       code.append("\n");
     }
+
     code.append(moveConstructorImplementation());
     alreadyOneImplementationPresent = true;
   }
 
-  if (m_copyOperatorDeclarationType == DeclarationType::PUBLIC)
+  if (m_copyOperatorDeclarationType == DeclarationType::Public)
   {
     if (alreadyOneImplementationPresent)
     {
       code.append("\n");
     }
+
     code.append(copyOperatorImplementation());
     alreadyOneImplementationPresent = true;
   }
 
-  if (m_moveOperatorDeclarationType == DeclarationType::PUBLIC)
+  if (m_moveOperatorDeclarationType == DeclarationType::Public)
   {
     if (alreadyOneImplementationPresent)
     {
       code.append("\n");
     }
+
     code.append(moveOperatorImplementation());
     alreadyOneImplementationPresent = true;
   }
 
-  if (m_destructorDeclarationType == DeclarationType::PUBLIC)
+  if (m_destructorDeclarationType == DeclarationType::Public)
   {
     if (alreadyOneImplementationPresent)
     {
       code.append("\n");
     }
+
     code.append(destructorImplementation());
     alreadyOneImplementationPresent = true;
   }
@@ -189,12 +238,12 @@ QString ClassGenerator::createImplementation()
 
 bool ClassGenerator::createFiles()
 {
-  if (!createFile(FileType::HEADER))
+  if (!createFile(FileType::Header))
   {
     return false;
   }
 
-  if (!createFile(FileType::SOURCE))
+  if (!createFile(FileType::Source))
   {
     return false;
   }
@@ -232,7 +281,7 @@ QString ClassGenerator::constructorImplementation()
 
 QString ClassGenerator::copyConstructorDeclaration()
 {
-  if (m_copyConstructorDeclarationType == DeclarationType::NONE)
+  if (m_copyConstructorDeclarationType == DeclarationType::NoDeclaration)
   {
     return QString();
   }
@@ -242,7 +291,7 @@ QString ClassGenerator::copyConstructorDeclaration()
   code.append(m_className);
   code.append(constRef());
 
-  if (m_copyConstructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_copyConstructorDeclarationType == DeclarationType::Private)
   {
     code.append("{}");
   }
@@ -272,7 +321,7 @@ QString ClassGenerator::copyConstructorImplementation()
 
 QString ClassGenerator::moveConstructorDeclaration()
 {
-  if (m_moveConstructorDeclarationType == DeclarationType::NONE)
+  if (m_moveConstructorDeclarationType == DeclarationType::NoDeclaration)
   {
     return QString();
   }
@@ -282,7 +331,7 @@ QString ClassGenerator::moveConstructorDeclaration()
   code.append(m_className);
   code.append(moveRef());
 
-  if (m_copyConstructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_copyConstructorDeclarationType == DeclarationType::Private)
   {
     code.append("{}");
   }
@@ -312,7 +361,7 @@ QString ClassGenerator::moveConstructorImplementation()
 
 QString ClassGenerator::copyOperatorDeclaration()
 {
-  if (m_copyOperatorDeclarationType == DeclarationType::NONE)
+  if (m_copyOperatorDeclarationType == DeclarationType::NoDeclaration)
   {
     return QString();
   }
@@ -323,7 +372,7 @@ QString ClassGenerator::copyOperatorDeclaration()
   code.append("& operator= ");
   code.append(constRef());
 
-  if (m_copyOperatorDeclarationType == DeclarationType::PRIVATE)
+  if (m_copyOperatorDeclarationType == DeclarationType::Private)
   {
     code.append("{}");
   }
@@ -358,7 +407,7 @@ QString ClassGenerator::copyOperatorImplementation()
 
 QString ClassGenerator::moveOperatorDeclaration()
 {
-  if (m_moveOperatorDeclarationType == DeclarationType::NONE)
+  if (m_moveOperatorDeclarationType == DeclarationType::NoDeclaration)
   {
     return QString();
   }
@@ -369,7 +418,7 @@ QString ClassGenerator::moveOperatorDeclaration()
   code.append("& operator= ");
   code.append(moveRef());
 
-  if (m_copyOperatorDeclarationType == DeclarationType::PRIVATE)
+  if (m_copyOperatorDeclarationType == DeclarationType::Private)
   {
     code.append("{}");
   }
@@ -415,7 +464,7 @@ QString ClassGenerator::destructorDeclaration()
   code.append(m_className);
   code.append("()");
 
-  if (m_declareDestructorVirtual || m_destructorDeclarationType == DeclarationType::PRIVATE)
+  if (m_declareDestructorVirtual || m_destructorDeclarationType == DeclarationType::Private)
   {
     code.append("{}");
   }
@@ -442,6 +491,58 @@ QString ClassGenerator::destructorImplementation()
   return code;
 }
 
+QString ClassGenerator::singletonInstance()
+{
+  QString code = leadingWhitespace(true);
+
+  code.append("static ");
+  code.append(m_className);
+  code.append("* m_instance;\n");
+
+  return code;
+}
+
+QString ClassGenerator::singletonInitialization()
+{
+  QString code = leadingWhitespace(false);
+
+  code.append(m_className);
+  code.append("* ");
+  code.append(m_className);
+  code.append("::m_instance = new ");
+  code.append(m_className);
+  code.append("();\n");
+
+  return code;
+}
+
+QString ClassGenerator::singletonGetInstanceDeclaration()
+{
+  QString code = leadingWhitespace(true);
+
+  code.append("static ");
+  code.append(m_className);
+  code.append("* getInstance();\n");
+
+  return code;
+}
+
+QString ClassGenerator::singletonGetInstanceImplementation()
+{
+  QString code = leadingWhitespace(false);
+
+  code.append(m_className);
+  code.append("* ");
+  code.append(m_className);
+  code.append("::getInstance()\n");
+  code.append(openBlock());
+  code.append(leadingWhitespace(true));
+  code.append("return m_instance;\n");
+  code.append(closeBlock());
+
+  return code;
+}
+
 bool ClassGenerator::createFile(FileType fileType)
 {
   QString suffix = getSuffix(fileType);
@@ -462,11 +563,11 @@ bool ClassGenerator::createFile(FileType fileType)
 
   QTextStream textStream(&file);
 
-  if (fileType == FileType::HEADER)
+  if (fileType == FileType::Header)
   {
     textStream << createHeader();
   }
-  else if (fileType == FileType::SOURCE)
+  else if (fileType == FileType::Source)
   {
     textStream << createImplementation();
   }
@@ -482,11 +583,11 @@ QString ClassGenerator::getSuffix(ClassGenerator::FileType fileType)
 
   switch (fileType)
   {
-  case FileType::HEADER:
+  case FileType::Header:
     suffix = ".h";
     break;
 
-  case FileType::SOURCE:
+  case FileType::Source:
     suffix = ".cpp";
     break;
 
@@ -542,8 +643,27 @@ QString ClassGenerator::emptyBlock()
 {
   QString code;
 
+  code.append(openBlock());
+  code.append("\n");
+  code.append(closeBlock());
+
+  return code;
+}
+
+QString ClassGenerator::openBlock()
+{
+  QString code;
+
   code.append(leadingWhitespace(false));
-  code.append("{\n\n");
+  code.append("{\n");
+
+  return code;
+}
+
+QString ClassGenerator::closeBlock()
+{
+  QString code;
+
   code.append(leadingWhitespace(false));
   code.append("}\n");
 
@@ -649,6 +769,24 @@ void ClassGenerator::setMoveConstructorDeclarationType(ClassGenerator::Declarati
 void ClassGenerator::setMoveOperatorDeclarationType(ClassGenerator::DeclarationType moveOperatorDeclarationType)
 {
   m_moveOperatorDeclarationType = moveOperatorDeclarationType;
+}
+
+void ClassGenerator::setSingletonType(ClassGenerator::SingletonType singletonType)
+{
+  m_singletonType = singletonType;
+}
+
+void ClassGenerator::checkOptions()
+{
+  if (m_singletonType != SingletonType::NoSingleton)
+  {
+    m_constructorDeclarationType = DeclarationType::Private;
+    m_destructorDeclarationType = DeclarationType::NoDeclaration;
+    m_copyConstructorDeclarationType = DeclarationType::Private;
+    m_copyOperatorDeclarationType = DeclarationType::Private;
+    m_moveConstructorDeclarationType = DeclarationType::Private;
+    m_moveOperatorDeclarationType = DeclarationType::Private;
+  }
 }
 
 void ClassGenerator::setOutputDirectory(const QString& outputDirectory)

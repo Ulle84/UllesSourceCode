@@ -10,13 +10,6 @@ public:
 
   ClassGenerator();
 
-  enum DeclarationType
-  {
-    NONE,
-    PUBLIC,
-    PRIVATE
-  };
-
   QString createHeader();
   QString createImplementation();
   bool createFiles();
@@ -25,21 +18,37 @@ public:
   void setNamespaceNames(const QStringList& namespaceNames);
   void setBaseClasses(const QStringList& baseClasses);
   void setIndent(const QString& indent);
-
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
   void setIncludeQObjectMacro(bool includeQObjectMacro);
+  void setOutputDirectory(const QString& outputDirectory);
+  void setOverwriteExistingFiles(bool overwriteExistingFiles);
+  void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
+
+  enum DeclarationType
+  {
+    NoDeclaration,
+    Public,
+    Private
+  };
   void setConstructorDeclarationType(DeclarationType constructorDeclarationType);
   void setDestructorDeclarationType(DeclarationType destructorDeclarationType);
   void setCopyConstructorDeclarationType(DeclarationType copyConstructorDeclarationType);
   void setCopyOperatorDeclarationType(DeclarationType copyOperatorDeclarationType);
   void setMoveConstructorDeclarationType(DeclarationType moveConstructorDeclarationType);
   void setMoveOperatorDeclarationType(DeclarationType moveOperatorDeclarationType);
-  void setOutputDirectory(const QString& outputDirectory);
-  void setOverwriteExistingFiles(bool overwriteExistingFiles);
-  void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
+
+  enum SingletonType
+  {
+    NoSingleton,
+    Eager,
+    LazyWithQMutex // TODO implement this option
+  };
+  void setSingletonType(SingletonType singletonType);
 
 private:
+  void checkOptions();
+
   QString leadingWhitespace(bool indent);
   QString namespaceStart();
   QString namespaceEnd();
@@ -51,6 +60,8 @@ private:
   QString classDeclaration();
   QString include(const QString& header);
   QString emptyBlock();
+  QString openBlock();
+  QString closeBlock();
   QString constRef();
   QString moveRef();
   QString toDo(const QString& task);
@@ -74,10 +85,15 @@ private:
   QString destructorDeclaration();
   QString destructorImplementation();
 
+  QString singletonInstance();
+  QString singletonInitialization();
+  QString singletonGetInstanceDeclaration();
+  QString singletonGetInstanceImplementation();
+
   enum FileType
   {
-    HEADER,
-    SOURCE
+    Header,
+    Source
   };
   bool createFile(FileType fileType);
   QString getSuffix(FileType fileType);
@@ -99,6 +115,7 @@ private:
   QString m_outputDirectory;
   bool m_overwriteExistingFiles;
   bool m_uppercaseHeaderGuard;
+  SingletonType m_singletonType;
 };
 
 #endif // CLASSGENERATOR_H
