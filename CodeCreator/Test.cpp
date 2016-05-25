@@ -1,8 +1,11 @@
 #include "Test.h"
 
-Test* Test::m_instance = new Test();
-
-Test* Test::getInstance()
+Test::Test()
 {
-  return m_instance;
+
+}
+
+Test::~Test()
+{
+
 }

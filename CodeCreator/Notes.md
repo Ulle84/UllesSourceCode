@@ -3,7 +3,6 @@
 # ToDo
 * save current folder at folder selection
 * Class Template
-  * singleton support -> override options (no public constructor etc.), before creating
   * d-Pointer support
   * No extrea Header for pImpl Declaration -> move to *.cpp file
   * q-Pointer support -> pointing to overlaying class
@@ -29,3 +28,4 @@
 * looking in wrong folder for templates -> needs to be configurable!!!
 * namespace
 * no template files -> write code instead -> much more flexible
+* singleton support -> override options (no public constructor etc.), before creating

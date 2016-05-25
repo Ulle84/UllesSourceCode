@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-  Test* test = Test::getInstance();
+  Test test;
 
   return 0;
 }
