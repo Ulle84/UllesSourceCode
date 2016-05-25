@@ -810,7 +810,7 @@ void ClassGenerator::checkOptions()
   if (m_singletonType != SingletonType::NoSingleton)
   {
     m_constructorDeclarationType = DeclarationType::Private;
-    m_destructorDeclarationType = DeclarationType::NoDeclaration;
+    m_destructorDeclarationType = DeclarationType::Private;
     m_copyConstructorDeclarationType = DeclarationType::Private;
     m_copyOperatorDeclarationType = DeclarationType::Private;
     m_moveConstructorDeclarationType = DeclarationType::Private;

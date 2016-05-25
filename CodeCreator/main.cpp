@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
   classGenerator.setMoveOperatorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
   classGenerator.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
   classGenerator.setOverwriteExistingFiles(true);
-  classGenerator.setSingletonType(ClassGenerator::SingletonType::LazyProtectedWithQMutex);
+  classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
 
   QStringList baseClasses;
   baseClasses.append("BaseA");
@@ -35,14 +35,14 @@ int main(int argc, char* argv[])
   qDebug() << "----------------------------------------------------";
   qDebug() << classGenerator.createImplementation();
 
-  /*if (classGenerator.createFiles(options))
-    {
+  if (classGenerator.createFiles())
+  {
     qDebug() << "file succesfully writen";
-    }
-    else
-    {
+  }
+  else
+  {
     qDebug() << "error while writing files";
-    }*/
+  }
 
   return 0;
 
