@@ -49,7 +49,6 @@ public:
 private:
   void checkOptions();
 
-  // TODO use 2 functions below in all other functions instead of manually calling "leadingWhitespace" etc.
   void append(QString& code, unsigned int indent, const QString& toAppend);
   void appendLine(QString& code, unsigned int indent, const QString& toAppend);
 

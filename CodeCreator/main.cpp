@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
   classGenerator.setMoveOperatorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
   classGenerator.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
   classGenerator.setOverwriteExistingFiles(true);
-  classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
+  classGenerator.setSingletonType(ClassGenerator::SingletonType::LazyProtectedWithQMutex);
 
   QStringList baseClasses;
   baseClasses.append("BaseA");

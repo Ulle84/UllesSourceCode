@@ -40,8 +40,7 @@ QString ClassGenerator::createHeader()
 
   if (m_includeQObjectMacro)
   {
-    code.append(leadingWhitespace(1));
-    code.append("Q_OBJECT\n\n");
+    appendLine(code, 1, "Q_OBJECT\n");
   }
 
   code.append(section("public"));
@@ -126,16 +125,18 @@ QString ClassGenerator::createHeader()
   if (m_singletonType != SingletonType::NoSingleton)
   {
     code.append("\n");
+
     if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
     {
       code.append(leadingWhitespace(1));
       code.append("static QMutex m_mutex;\n");
     }
+
     code.append(singletonInstance());
   }
 
-  code.append(leadingWhitespace(0));
-  code.append("};\n");
+  appendLine(code, 0, "};");
+
   code.append(namespaceEnd());
   code.append(headerGuardEnd());
 
@@ -169,6 +170,7 @@ QString ClassGenerator::createImplementation()
     {
       code.append("\n");
     }
+
     code.append(constructorImplementation());
     alreadyOneImplementationPresent = true;
   }
@@ -507,6 +509,7 @@ QString ClassGenerator::singletonInitialization()
   code.append("* ");
   code.append(m_className);
   code.append("::m_instance = ");
+
   if (m_singletonType == SingletonType::Eager)
   {
     code.append("new ");
@@ -517,8 +520,8 @@ QString ClassGenerator::singletonInitialization()
   {
     code.append("nullptr");
   }
-  code.append(";\n");
 
+  code.append(";\n");
 
   return code;
 }
@@ -536,15 +539,6 @@ QString ClassGenerator::singletonGetInstanceDeclaration()
 
 QString ClassGenerator::singletonGetInstanceImplementation()
 {
-  /*
-mMutex.lock();
-  if(mInstance == nullptr)
-  {
-    mInstance = new SingletonLazy();
-  }
-  mMutex.unlock();
-  return mInstance;*/
-
   QString code = leadingWhitespace(0);
 
   code.append(m_className);
@@ -664,8 +658,12 @@ QString ClassGenerator::include(const QString& headerName, bool useSuffix, bool 
   code.append("#include ");
   code.append(useAngleBrackets ? "<" : "\"");
   code.append(headerName);
+
   if (useSuffix)
+  {
     code.append(".h");
+  }
+
   code.append(useAngleBrackets ? ">" : "\"");
   code.append("\n");
 
@@ -687,8 +685,7 @@ QString ClassGenerator::openBlock(unsigned int indent)
 {
   QString code;
 
-  code.append(leadingWhitespace(indent));
-  code.append("{\n");
+  appendLine(code, indent, "{");
 
   return code;
 }
@@ -697,8 +694,7 @@ QString ClassGenerator::closeBlock(unsigned int indent)
 {
   QString code;
 
-  code.append(leadingWhitespace(indent));
-  code.append("}\n");
+  appendLine(code, indent, "}");
 
   return code;
 }
@@ -855,7 +851,7 @@ QString ClassGenerator::leadingWhitespace(unsigned int indent)
 
   unsigned int totalIndent = indent + m_namespaceNames.size();
 
-  for (int i = 0; i < totalIndent; i++)
+  for (unsigned int i = 0; i < totalIndent; i++)
   {
     leadingWhitespace.append(m_indent);
   }
