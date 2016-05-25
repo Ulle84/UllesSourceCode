@@ -42,14 +42,18 @@ public:
   {
     NoSingleton,
     Eager,
-    LazyWithQMutex // TODO implement this option
+    LazyProtectedWithQMutex // TODO implement this option
   };
   void setSingletonType(SingletonType singletonType);
 
 private:
   void checkOptions();
 
-  QString leadingWhitespace(bool indent);
+  // TODO use 2 functions below in all other functions instead of manually calling "leadingWhitespace" etc.
+  void append(QString& code, unsigned int indent, const QString& toAppend);
+  void appendLine(QString& code, unsigned int indent, const QString& toAppend);
+
+  QString leadingWhitespace(unsigned int indent = 0);
   QString namespaceStart();
   QString namespaceEnd();
   QString headerGuardStart();
@@ -58,10 +62,10 @@ private:
   QString baseClassIncludes();
   QString section(const QString& sectionName);
   QString classDeclaration();
-  QString include(const QString& header);
-  QString emptyBlock();
-  QString openBlock();
-  QString closeBlock();
+  QString include(const QString& headerName, bool useSuffix, bool useAngleBrackets);
+  QString emptyBlock(unsigned int indent = 0);
+  QString openBlock(unsigned int indent = 0);
+  QString closeBlock(unsigned int indent = 0);
   QString constRef();
   QString moveRef();
   QString toDo(const QString& task);

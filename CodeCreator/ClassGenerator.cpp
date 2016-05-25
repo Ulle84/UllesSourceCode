@@ -27,13 +27,20 @@ QString ClassGenerator::createHeader()
   QString code;
 
   code.append(headerGuardStart());
+
+  if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
+  {
+    code.append(include("QtCore\\QMutex", false, true));
+    code.append("\n");
+  }
+
   code.append(baseClassIncludes());
   code.append(namespaceStart());
   code.append(classDeclaration());
 
   if (m_includeQObjectMacro)
   {
-    code.append(leadingWhitespace(true));
+    code.append(leadingWhitespace(1));
     code.append("Q_OBJECT\n\n");
   }
 
@@ -119,10 +126,15 @@ QString ClassGenerator::createHeader()
   if (m_singletonType != SingletonType::NoSingleton)
   {
     code.append("\n");
+    if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
+    {
+      code.append(leadingWhitespace(1));
+      code.append("static QMutex m_mutex;\n");
+    }
     code.append(singletonInstance());
   }
 
-  code.append(leadingWhitespace(false));
+  code.append(leadingWhitespace(0));
   code.append("};\n");
   code.append(namespaceEnd());
   code.append(headerGuardEnd());
@@ -136,31 +148,17 @@ QString ClassGenerator::createImplementation()
 
   QString code;
 
-  code.append(include(m_className));
+  code.append(include(m_className, true, false));
   code.append("\n");
 
   code.append(namespaceStart());
 
   bool alreadyOneImplementationPresent = false;
 
-  if (m_singletonType == SingletonType::Eager)
-  {
-    if (alreadyOneImplementationPresent)
-    {
-      code.append("\n");
-    }
-
-    code.append(singletonInitialization());
-    alreadyOneImplementationPresent = true;
-  }
-
   if (m_singletonType != SingletonType::NoSingleton)
   {
-    if (alreadyOneImplementationPresent)
-    {
-      code.append("\n");
-    }
-
+    code.append(singletonInitialization());
+    code.append("\n");
     code.append(singletonGetInstanceImplementation());
     alreadyOneImplementationPresent = true;
   }
@@ -171,7 +169,6 @@ QString ClassGenerator::createImplementation()
     {
       code.append("\n");
     }
-
     code.append(constructorImplementation());
     alreadyOneImplementationPresent = true;
   }
@@ -253,7 +250,7 @@ bool ClassGenerator::createFiles()
 
 QString ClassGenerator::constructorDeclaration()
 {
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   if (m_declareConstructorExplicit)
   {
@@ -268,7 +265,7 @@ QString ClassGenerator::constructorDeclaration()
 
 QString ClassGenerator::constructorImplementation()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("::");
@@ -286,7 +283,7 @@ QString ClassGenerator::copyConstructorDeclaration()
     return QString();
   }
 
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   code.append(m_className);
   code.append(constRef());
@@ -307,7 +304,7 @@ QString ClassGenerator::copyConstructorDeclaration()
 
 QString ClassGenerator::copyConstructorImplementation()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("::");
@@ -326,7 +323,7 @@ QString ClassGenerator::moveConstructorDeclaration()
     return QString();
   }
 
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   code.append(m_className);
   code.append(moveRef());
@@ -347,7 +344,7 @@ QString ClassGenerator::moveConstructorDeclaration()
 
 QString ClassGenerator::moveConstructorImplementation()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("::");
@@ -366,7 +363,7 @@ QString ClassGenerator::copyOperatorDeclaration()
     return QString();
   }
 
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   code.append(m_className);
   code.append("& operator= ");
@@ -388,7 +385,7 @@ QString ClassGenerator::copyOperatorDeclaration()
 
 QString ClassGenerator::copyOperatorImplementation()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("& ");
@@ -397,9 +394,9 @@ QString ClassGenerator::copyOperatorImplementation()
   code.append(constRef());
   code.append("\n{\n");
   code.append(toDoImplementation());
-  code.append(leadingWhitespace(true));
+  code.append(leadingWhitespace(1));
   code.append("return *this;\n");
-  code.append(leadingWhitespace(false));
+  code.append(leadingWhitespace(0));
   code.append("}\n");
 
   return code;
@@ -412,7 +409,7 @@ QString ClassGenerator::moveOperatorDeclaration()
     return QString();
   }
 
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   code.append(m_className);
   code.append("& operator= ");
@@ -434,7 +431,7 @@ QString ClassGenerator::moveOperatorDeclaration()
 
 QString ClassGenerator::moveOperatorImplementation()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("& ");
@@ -443,9 +440,9 @@ QString ClassGenerator::moveOperatorImplementation()
   code.append(moveRef());
   code.append("\n{\n");
   code.append(toDoImplementation());
-  code.append(leadingWhitespace(true));
+  code.append(leadingWhitespace(1));
   code.append("return *this;\n");
-  code.append(leadingWhitespace(false));
+  code.append(leadingWhitespace(0));
   code.append("}\n");
 
   return code;
@@ -453,7 +450,7 @@ QString ClassGenerator::moveOperatorImplementation()
 
 QString ClassGenerator::destructorDeclaration()
 {
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   if (m_declareDestructorVirtual)
   {
@@ -480,7 +477,7 @@ QString ClassGenerator::destructorDeclaration()
 
 QString ClassGenerator::destructorImplementation()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("::~");
@@ -493,7 +490,7 @@ QString ClassGenerator::destructorImplementation()
 
 QString ClassGenerator::singletonInstance()
 {
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   code.append("static ");
   code.append(m_className);
@@ -504,21 +501,31 @@ QString ClassGenerator::singletonInstance()
 
 QString ClassGenerator::singletonInitialization()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("* ");
   code.append(m_className);
-  code.append("::m_instance = new ");
-  code.append(m_className);
-  code.append("();\n");
+  code.append("::m_instance = ");
+  if (m_singletonType == SingletonType::Eager)
+  {
+    code.append("new ");
+    code.append(m_className);
+    code.append("()");
+  }
+  else
+  {
+    code.append("nullptr");
+  }
+  code.append(";\n");
+
 
   return code;
 }
 
 QString ClassGenerator::singletonGetInstanceDeclaration()
 {
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
 
   code.append("static ");
   code.append(m_className);
@@ -529,15 +536,37 @@ QString ClassGenerator::singletonGetInstanceDeclaration()
 
 QString ClassGenerator::singletonGetInstanceImplementation()
 {
-  QString code = leadingWhitespace(false);
+  /*
+mMutex.lock();
+  if(mInstance == nullptr)
+  {
+    mInstance = new SingletonLazy();
+  }
+  mMutex.unlock();
+  return mInstance;*/
+
+  QString code = leadingWhitespace(0);
 
   code.append(m_className);
   code.append("* ");
   code.append(m_className);
   code.append("::getInstance()\n");
   code.append(openBlock());
-  code.append(leadingWhitespace(true));
-  code.append("return m_instance;\n");
+
+  if (m_singletonType == LazyProtectedWithQMutex)
+  {
+    appendLine(code, 1, "m_mutex.lock();");
+    appendLine(code, 1, "if (m_instance == nullptr)");
+    code.append(openBlock(1));
+    append(code, 2, "m_instance = new ");//SingletonLazy();");
+    code.append(m_className);
+    code.append("();\n");
+    code.append(closeBlock(1));
+    appendLine(code, 1, "m_mutex.unlock();");
+    code.append("\n");
+  }
+
+  appendLine(code, 1, "return m_instance;");
   code.append(closeBlock());
 
   return code;
@@ -600,7 +629,7 @@ QString ClassGenerator::getSuffix(ClassGenerator::FileType fileType)
 
 QString ClassGenerator::classDeclaration()
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
 
   code.append("class ");
   code.append(m_className);
@@ -622,49 +651,53 @@ QString ClassGenerator::classDeclaration()
   }
 
   code.append("\n");
-  code.append(leadingWhitespace(false));
+  code.append(leadingWhitespace(0));
   code.append("{\n");
 
   return code;
 }
 
-QString ClassGenerator::include(const QString& header)
+QString ClassGenerator::include(const QString& headerName, bool useSuffix, bool useAngleBrackets)
 {
   QString code;
 
-  code.append("#include \"");
-  code.append(header);
-  code.append(".h\"\n");
-
-  return code;
-}
-
-QString ClassGenerator::emptyBlock()
-{
-  QString code;
-
-  code.append(openBlock());
+  code.append("#include ");
+  code.append(useAngleBrackets ? "<" : "\"");
+  code.append(headerName);
+  if (useSuffix)
+    code.append(".h");
+  code.append(useAngleBrackets ? ">" : "\"");
   code.append("\n");
-  code.append(closeBlock());
 
   return code;
 }
 
-QString ClassGenerator::openBlock()
+QString ClassGenerator::emptyBlock(unsigned int indent)
 {
   QString code;
 
-  code.append(leadingWhitespace(false));
+  code.append(openBlock(indent));
+  code.append("\n");
+  code.append(closeBlock(indent));
+
+  return code;
+}
+
+QString ClassGenerator::openBlock(unsigned int indent)
+{
+  QString code;
+
+  code.append(leadingWhitespace(indent));
   code.append("{\n");
 
   return code;
 }
 
-QString ClassGenerator::closeBlock()
+QString ClassGenerator::closeBlock(unsigned int indent)
 {
   QString code;
 
-  code.append(leadingWhitespace(false));
+  code.append(leadingWhitespace(indent));
   code.append("}\n");
 
   return code;
@@ -694,7 +727,7 @@ QString ClassGenerator::moveRef()
 
 QString ClassGenerator::toDo(const QString& task)
 {
-  QString code = leadingWhitespace(true);
+  QString code = leadingWhitespace(1);
   code.append("// TODO ");
   code.append(task);
   code.append("\n");
@@ -789,6 +822,18 @@ void ClassGenerator::checkOptions()
   }
 }
 
+void ClassGenerator::append(QString& code, unsigned int indent, const QString& toAppend)
+{
+  code.append(leadingWhitespace(indent));
+  code.append(toAppend);
+}
+
+void ClassGenerator::appendLine(QString& code, unsigned int indent, const QString& toAppend)
+{
+  append(code, indent, toAppend);
+  code.append("\n");
+}
+
 void ClassGenerator::setOutputDirectory(const QString& outputDirectory)
 {
   m_outputDirectory = outputDirectory;
@@ -804,16 +849,13 @@ void ClassGenerator::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)
   m_uppercaseHeaderGuard = uppercaseHeaderGuard;
 }
 
-QString ClassGenerator::leadingWhitespace(bool indent)
+QString ClassGenerator::leadingWhitespace(unsigned int indent)
 {
   QString leadingWhitespace;
 
-  if (indent)
-  {
-    leadingWhitespace.append(m_indent);
-  }
+  unsigned int totalIndent = indent + m_namespaceNames.size();
 
-  for (int i = 0; i < m_namespaceNames.size(); i++)
+  for (int i = 0; i < totalIndent; i++)
   {
     leadingWhitespace.append(m_indent);
   }
@@ -903,7 +945,6 @@ QString ClassGenerator::headerGuard()
   }
 
   code.append(m_uppercaseHeaderGuard ? m_className.toUpper() : m_className);
-
   code.append(m_uppercaseHeaderGuard ? "_H" : "_h");
 
   return code;
@@ -915,7 +956,7 @@ QString ClassGenerator::baseClassIncludes()
 
   for (auto it = m_baseClasses.begin(); it != m_baseClasses.end(); it++)
   {
-    code.append(include(*it));
+    code.append(include(*it, true, false));
   }
 
   if (!m_baseClasses.isEmpty())
@@ -928,7 +969,7 @@ QString ClassGenerator::baseClassIncludes()
 
 QString ClassGenerator::section(const QString& sectionName)
 {
-  QString code = leadingWhitespace(false);
+  QString code = leadingWhitespace(0);
   code.append(sectionName);
   code.append(":\n");
   return code;
