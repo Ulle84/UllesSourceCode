@@ -46,6 +46,15 @@ public:
   };
   void setSingletonType(SingletonType singletonType);
 
+  enum DPointerType
+  {
+    NoDPointer,
+    DPointer,
+    DPointerWithQPointer,
+    InheritableDPointer
+  };
+  void setDPointerType(DPointerType dPointerType);
+
 private:
   void checkOptions();
 
@@ -119,6 +128,7 @@ private:
   bool m_overwriteExistingFiles;
   bool m_uppercaseHeaderGuard;
   SingletonType m_singletonType;
+  DPointerType m_dPointerType;
 };
 
 #endif // CLASSGENERATOR_H

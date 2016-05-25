@@ -3,9 +3,26 @@
 
 #include "CodeCreator.h"
 #include "ClassGenerator.h"
+#include "Function.h"
+#include "Parameter.h"
 
 int main(int argc, char* argv[])
 {
+  Parameter parameter("type", "name");
+  qDebug() << parameter.toString();
+
+  Parameter parameter2(" test my const type\t &name  =  \t0");
+  qDebug() << parameter2.toString();
+
+  Parameter parameter3("void myTest");
+  qDebug() << parameter3.toString();
+
+  Function function1("virtual void 2 myTest(int i, bool b, myType mt)=0;");
+  qDebug() << function1.toString();
+
+  Function function2("virtual void myTest( )=0;");
+  qDebug() << function2.toString();
+
   ClassGenerator classGenerator;
   classGenerator.setClassName("Test");
   classGenerator.setDeclareDestructorVirtual(false);
@@ -31,7 +48,7 @@ int main(int argc, char* argv[])
   namespaces.append("namespaceB");
   //classGenerator.setNamespaceNames(namespaces);
 
-  qDebug() << classGenerator.createHeader();
+  /*qDebug() << classGenerator.createHeader();
   qDebug() << "----------------------------------------------------";
   qDebug() << classGenerator.createImplementation();
 
@@ -42,7 +59,7 @@ int main(int argc, char* argv[])
   else
   {
     qDebug() << "error while writing files";
-  }
+  }*/
 
   return 0;
 

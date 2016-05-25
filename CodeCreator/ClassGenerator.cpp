@@ -775,6 +775,11 @@ void ClassGenerator::setConstructorDeclarationType(ClassGenerator::DeclarationTy
   m_constructorDeclarationType = constructorDeclarationType;
 }
 
+void ClassGenerator::setDPointerType(ClassGenerator::DPointerType dPointerType)
+{
+  m_dPointerType = dPointerType;
+}
+
 void ClassGenerator::setDestructorDeclarationType(ClassGenerator::DeclarationType destructorDeclarationType)
 {
   m_destructorDeclarationType = destructorDeclarationType;

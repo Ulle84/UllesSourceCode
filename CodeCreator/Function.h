@@ -1,0 +1,31 @@
+#ifndef FUNCTION_H
+#define FUNCTION_H
+
+
+#include <QList>
+#include <QString>
+
+#include "Parameter.h"
+
+class Function
+{
+public:
+  Function(const QString& function);
+
+  QString toString();
+
+private:
+  enum Type
+  {
+    Normal,
+    Virtual,
+    PureVirtual
+  };
+
+  QString m_name;
+  QString m_returnType;
+  Type m_type;
+  QList<Parameter> m_parameters;
+};
+
+#endif // FUNCTION_H
