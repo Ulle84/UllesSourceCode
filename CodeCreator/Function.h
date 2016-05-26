@@ -14,14 +14,20 @@ public:
 
   QString toString();
 
-private:
+  bool isValid();
+
   enum Type
   {
     Normal,
     Virtual,
     PureVirtual
   };
+  void setType(Type type);
+  void setName(const QString& name);
+  void setReturnType(const QString& returnType);
 
+
+private:
   QString m_name;
   QString m_returnType;
   Type m_type;

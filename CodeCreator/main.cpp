@@ -5,6 +5,7 @@
 #include "ClassGenerator.h"
 #include "Function.h"
 #include "Parameter.h"
+#include "Interface.h"
 
 int main(int argc, char* argv[])
 {
@@ -22,6 +23,17 @@ int main(int argc, char* argv[])
 
   Function function2("virtual void myTest( )=0;");
   qDebug() << function2.toString();*/
+
+  QString interfaceDescription;
+  interfaceDescription.append("virtual bool *myTest(int i, bool b, myType mt = nullptr)=0;");
+  interfaceDescription.append("\nvirtual void myTest( )=0;");
+  interfaceDescription.append("\nvoid myTest2(const QString& param);");
+  interfaceDescription.append("\nvoid myTest2(const QString& param) = 0;");
+  interfaceDescription.append("\n//void commented(const QString& param) = 0;");
+
+  Interface interface(interfaceDescription);
+
+  qDebug() << interface.toString();
 
   ClassGenerator classGenerator;
   classGenerator.setClassName("Test");
@@ -61,7 +73,7 @@ int main(int argc, char* argv[])
     qDebug() << "error while writing files";
   }*/
 
-  //return 0;
+  return 0;
 
   QApplication a(argc, argv);
 

@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     ClassAdvanced.cpp \
     Parameter.cpp \
     Function.cpp \
-    GeneratorInterface.cpp
+    GeneratorInterface.cpp \
+    Interface.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -48,7 +49,8 @@ HEADERS  += CodeCreator.h \
     ClassAdvanced.h \
     Parameter.h \
     Function.h \
-    GeneratorInterface.h
+    GeneratorInterface.h \
+    Interface.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

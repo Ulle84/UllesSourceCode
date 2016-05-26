@@ -9,6 +9,11 @@ Function::Function(const QString &function)
   copy.replace("=", " = ");
   copy = copy.simplified();
 
+  if (copy.startsWith("//"))
+  {
+    return;
+  }
+
   if (copy.endsWith(" = 0") && copy.startsWith("virtual"))
   {
     m_type = Type::PureVirtual;
@@ -80,4 +85,24 @@ QString Function::toString()
   function.append(";");
 
   return function;
+}
+
+bool Function::isValid()
+{
+  return !m_name.isEmpty() && !m_returnType.isEmpty();
+}
+
+void Function::setType(Function::Type type)
+{
+  m_type = type;
+}
+
+void Function::setName(const QString &name)
+{
+  m_name = name;
+}
+
+void Function::setReturnType(const QString &returnType)
+{
+  m_returnType = returnType;
 }
