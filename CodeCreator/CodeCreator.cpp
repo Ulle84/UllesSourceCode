@@ -10,7 +10,6 @@
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
 #include "CodeGenerator.h"
-#include "Class.h"
 #include "ClassAdvanced.h"
 #include "Generator.h"
 #include "Observer.h"
@@ -20,6 +19,7 @@
 #include "Decorator.h"
 #include "State.h"
 #include "GeneratorInterface.h"
+#include "GeneratorClass.h"
 
 CodeCreator::CodeCreator(QWidget* parent) :
   QWidget(parent),
@@ -50,7 +50,7 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::initGenerators()
 {
-  mGenerators["Class"] = new Class(mCodeGenerator, this);
+  mGenerators["Class"] = new GeneratorClass(mCodeGenerator, this);
   mGenerators["ClassAdvanced"] = new ClassAdvanced(mCodeGenerator, this);
   mGenerators["Interface"] = new GeneratorInterface(mCodeGenerator, this);
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);

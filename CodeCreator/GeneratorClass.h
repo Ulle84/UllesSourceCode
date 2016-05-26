@@ -1,5 +1,5 @@
-#ifndef CLASS_H
-#define CLASS_H
+#ifndef GENERATORCLASS_H
+#define GENERATORCLASS_H
 
 #include <QWidget>
 
@@ -9,16 +9,16 @@ class QCompleter;
 class CodeGenerator;
 
 namespace Ui {
-class Class;
+class GeneratorClass;
 }
 
-class Class : public QWidget, public IGenerator
+class GeneratorClass : public QWidget, public IGenerator
 {
   Q_OBJECT
 
 public:
-  explicit Class(CodeGenerator* codeGenerator, QWidget *parent = 0);
-  ~Class();
+  explicit GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent = 0);
+  ~GeneratorClass();
 
   // IGenerator
   bool generate(const QString& folder);
@@ -30,10 +30,10 @@ private slots:
   void on_lineEditBaseClass_textEdited(const QString &text);
 
 private:
-  Ui::Class* ui;
+  Ui::GeneratorClass* ui;
 
   CodeGenerator* mCodeGenerator;
   QCompleter* mCompleter;
 };
 
-#endif // CLASS_H
+#endif // GENERATORCLASS_H

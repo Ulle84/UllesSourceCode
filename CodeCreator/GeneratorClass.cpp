@@ -1,15 +1,15 @@
 #include <QMessageBox>
 #include <QCompleter>
 
-#include "Class.h"
-#include "ui_Class.h"
+#include "GeneratorClass.h"
+#include "ui_GeneratorClass.h"
 #include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
 
-Class::Class(CodeGenerator* codeGenerator, QWidget *parent) :
+GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::Class),
+  ui(new Ui::GeneratorClass),
   mCodeGenerator(codeGenerator)
 {
   ui->setupUi(this);
@@ -22,12 +22,12 @@ Class::Class(CodeGenerator* codeGenerator, QWidget *parent) :
   ui->lineEditBaseClass->setCompleter(mCompleter);
 }
 
-Class::~Class()
+GeneratorClass::~GeneratorClass()
 {
   delete ui;
 }
 
-bool Class::generate(const QString &folder)
+bool GeneratorClass::generate(const QString &folder)
 {
   if (ui->lineEditName->text().isEmpty())
   {
@@ -114,7 +114,7 @@ bool Class::generate(const QString &folder)
   return mCodeGenerator->copyFromTemplate(options);
 }
 
-void Class::readXml(QXmlStreamReader &xml)
+void GeneratorClass::readXml(QXmlStreamReader &xml)
 {
   while (xml.readNextStartElement())
   {
@@ -153,7 +153,7 @@ void Class::readXml(QXmlStreamReader &xml)
   }
 }
 
-void Class::writeXml(QXmlStreamWriter &xml)
+void GeneratorClass::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
   XmlHelper::writeXml(xml, "DisableCopy", ui->checkBoxDisableCopy);
@@ -164,12 +164,12 @@ void Class::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);
 }
 
-void Class::on_checkBoxInherit_toggled(bool checked)
+void GeneratorClass::on_checkBoxInherit_toggled(bool checked)
 {
-    ui->widgetInheritance->setEnabled(checked);
+  ui->widgetInheritance->setEnabled(checked);
 }
 
-void Class::on_lineEditBaseClass_textEdited(const QString &text)
+void GeneratorClass::on_lineEditBaseClass_textEdited(const QString &text)
 {
-    ui->checkBoxQObject->setChecked(text.left(1) == "Q");
+  ui->checkBoxQObject->setChecked(text.left(1) == "Q");
 }

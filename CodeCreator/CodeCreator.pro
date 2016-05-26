@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     Generator.cpp \
     Observer.cpp \
     Singleton.cpp \
-    Class.cpp \
     Data.cpp \
     Decorator.cpp \
     XmlHelper.cpp \
@@ -30,7 +29,8 @@ SOURCES += main.cpp\
     Parameter.cpp \
     Function.cpp \
     GeneratorInterface.cpp \
-    Interface.cpp
+    Interface.cpp \
+    GeneratorClass.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -38,7 +38,6 @@ HEADERS  += CodeCreator.h \
     Observer.h \
     IGenerator.h \
     Singleton.h \
-    Class.h \
     Options.h \
     Data.h \
     Decorator.h \
@@ -50,18 +49,19 @@ HEADERS  += CodeCreator.h \
     Parameter.h \
     Function.h \
     GeneratorInterface.h \
-    Interface.h
+    Interface.h \
+    GeneratorClass.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
     Observer.ui \
     Singleton.ui \
-    Class.ui \
     Data.ui \
     Decorator.ui \
     State.ui \
     ClassAdvanced.ui \
-    GeneratorInterface.ui
+    GeneratorInterface.ui \
+    GeneratorClass.ui
 
 OTHER_FILES += \
     ToDo.txt \

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Class</class>
- <widget class="QWidget" name="Class">
+ <class>GeneratorClass</class>
+ <widget class="QWidget" name="GeneratorClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>487</width>
+    <width>400</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Class</string>
+   <string>GeneratorClass</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -43,7 +43,16 @@
         <bool>false</bool>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -109,7 +118,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>240</height>
+       <height>131</height>
       </size>
      </property>
     </spacer>
