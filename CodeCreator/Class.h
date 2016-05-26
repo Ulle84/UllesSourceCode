@@ -4,6 +4,8 @@
 #include <QString>
 #include <QStringList>
 
+#include "Interface.h"
+
 class Class
 {
 public:
@@ -16,7 +18,8 @@ public:
 
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
-  void setBaseClasses(const QStringList& baseClasses);
+  void setBaseClass(const QString& baseClass);
+  void setInterfaces(const QList<Interface>& interfaces);
   void setIndent(const QString& indent);
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
@@ -67,7 +70,7 @@ private:
   QString headerGuardStart();
   QString headerGuardEnd();
   QString headerGuard();
-  QString baseClassIncludes();
+  QString includes();
   QString section(const QString& sectionName);
   QString classDeclaration();
   QString include(const QString& headerName, bool useSuffix, bool useAngleBrackets);
@@ -112,7 +115,8 @@ private:
 
   QString m_className;
   QStringList m_namespaceNames;
-  QStringList m_baseClasses;
+  QString m_baseClass;
+  QList<Interface> m_interfaces;
   QString m_indent;
 
   bool m_declareConstructorExplicit;

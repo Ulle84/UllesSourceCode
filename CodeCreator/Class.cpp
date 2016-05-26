@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QFile>
 #include <QTextStream>
 
@@ -34,7 +35,7 @@ QString Class::createHeader()
     code.append("\n");
   }
 
-  code.append(baseClassIncludes());
+  code.append(includes());
   code.append(namespaceStart());
   code.append(classDeclaration());
 
@@ -628,19 +629,25 @@ QString Class::classDeclaration()
   code.append("class ");
   code.append(m_className);
 
-  if (!m_baseClasses.isEmpty())
+  if (!m_baseClass.isEmpty() || m_interfaces.isEmpty())
   {
     code.append(" : ");
 
-    for (auto it = m_baseClasses.begin(); it != m_baseClasses.end(); it++)
+    if (!m_baseClass.isEmpty())
     {
-      if (it != m_baseClasses.begin())
+      code.append("public ");
+      code.append(m_baseClass);
+    }
+
+    for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
+    {
+      if (it != m_interfaces.begin() || !m_baseClass.isEmpty())
       {
         code.append(", ");
       }
 
       code.append("public ");
-      code.append(*it);
+      code.append(it->name());
     }
   }
 
@@ -745,9 +752,15 @@ void Class::setNamespaceNames(const QStringList& namespaceNames)
   m_namespaceNames = namespaceNames;
 }
 
-void Class::setBaseClasses(const QStringList& baseClasses)
+void Class::setInterfaces(const QList<Interface> &interfaces)
 {
-  m_baseClasses = baseClasses;
+  qDebug() << interfaces.length();
+  m_interfaces = interfaces;
+}
+
+void Class::setBaseClass(const QString& baseClass)
+{
+  m_baseClass = baseClass;
 }
 
 void Class::setIndent(const QString& indent)
@@ -951,16 +964,23 @@ QString Class::headerGuard()
   return code;
 }
 
-QString Class::baseClassIncludes()
+QString Class::includes()
 {
   QString code;
 
-  for (auto it = m_baseClasses.begin(); it != m_baseClasses.end(); it++)
+  if (!m_baseClass.isEmpty())
   {
-    code.append(include(*it, true, false));
+    code.append(include(m_baseClass, true, false));
   }
 
-  if (!m_baseClasses.isEmpty())
+  qDebug() << m_interfaces.length();
+
+  for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
+  {
+    code.append(include(it->name(), true, false));
+  }
+
+  if (!m_baseClass.isEmpty() || !m_interfaces.isEmpty())
   {
     code.append("\n");
   }

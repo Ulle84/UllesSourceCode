@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   interfaceDescription.append("\nvoid myTest2(const QString& param) = 0;");
   interfaceDescription.append("\n//void commented(const QString& param) = 0;");
 
-  Interface interface(interfaceDescription);
+  Interface interface("Interface", interfaceDescription);
 
   qDebug() << interface.toString();
 
@@ -48,23 +48,24 @@ int main(int argc, char* argv[])
   test.setMoveOperatorDeclarationType(Class::DeclarationType::NoDeclaration);
   test.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
   test.setOverwriteExistingFiles(true);
+  test.setBaseClass("BaseClass");
   //classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
 
-  QStringList baseClasses;
-  baseClasses.append("BaseA");
-  baseClasses.append("BaseB");
-  //classGenerator.setBaseClasses(baseClasses);
+  QList<Interface> interfaces;
+  interfaces.append(Interface("InterfaceA", ""));
+  interfaces.append(Interface("InterfaceB", ""));
+  test.setInterfaces(interfaces);
 
   QStringList namespaces;
   namespaces.append("namespaceA");
   namespaces.append("namespaceB");
   //classGenerator.setNamespaceNames(namespaces);
 
-  /*qDebug() << classGenerator.createHeader();
+  qDebug() << test.createHeader();
   qDebug() << "----------------------------------------------------";
-  qDebug() << classGenerator.createImplementation();
+  qDebug() << test.createImplementation();
 
-  if (classGenerator.createFiles())
+  /*if (test.createFiles())
   {
     qDebug() << "file succesfully writen";
   }

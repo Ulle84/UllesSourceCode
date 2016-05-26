@@ -1,17 +1,13 @@
 ﻿# Bugs
 
 # ToDo
-* New Generator: InterfaceGenerator
-* Copy Content from Interface to InterfaceGenerator
-* Create Class Interface
-* move all GeneratorsToClases with Prefix 'Generator' or to directory Generator and namespace Generator
 * save current folder at folder selection
 * Class Template
   * d-Pointer support
   * No extrea Header for pImpl Declaration -> move to *.cpp file
   * q-Pointer support -> pointing to overlaying class
 * remove Class; rename ClassAdvanced to Class
-* remove template mechanism from existing generators
+* remove template mechanism from existing generators -> new generators with Prefix 'Generator'
 
 # Ideas
 * Templates -> generate project per template?

@@ -9,8 +9,9 @@ class Interface : public QList<Function>
 {
 public:
   Interface();
-  Interface(const QString& interface);
+  Interface(const QString& name, const QString& interface);
 
+  QString name();
   void setName(const QString& name);
 
   QString toString();
