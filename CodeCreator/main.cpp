@@ -2,7 +2,7 @@
 #include <QDebug>
 
 #include "CodeCreator.h"
-#include "ClassGenerator.h"
+#include "Class.h"
 #include "Function.h"
 #include "Parameter.h"
 #include "Interface.h"
@@ -35,19 +35,19 @@ int main(int argc, char* argv[])
 
   qDebug() << interface.toString();
 
-  ClassGenerator classGenerator;
-  classGenerator.setClassName("Test");
-  classGenerator.setDeclareDestructorVirtual(false);
-  classGenerator.setDeclareConstructorExplicit(false);
-  classGenerator.setIncludeQObjectMacro(false);
-  classGenerator.setDestructorDeclarationType(ClassGenerator::DeclarationType::Public);
-  classGenerator.setConstructorDeclarationType(ClassGenerator::DeclarationType::Public);
-  classGenerator.setCopyConstructorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
-  classGenerator.setCopyOperatorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
-  classGenerator.setMoveConstructorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
-  classGenerator.setMoveOperatorDeclarationType(ClassGenerator::DeclarationType::NoDeclaration);
-  classGenerator.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
-  classGenerator.setOverwriteExistingFiles(true);
+  Class test;
+  test.setClassName("Test");
+  test.setDeclareDestructorVirtual(false);
+  test.setDeclareConstructorExplicit(false);
+  test.setIncludeQObjectMacro(false);
+  test.setDestructorDeclarationType(Class::DeclarationType::Public);
+  test.setConstructorDeclarationType(Class::DeclarationType::Public);
+  test.setCopyConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
+  test.setCopyOperatorDeclarationType(Class::DeclarationType::NoDeclaration);
+  test.setMoveConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
+  test.setMoveOperatorDeclarationType(Class::DeclarationType::NoDeclaration);
+  test.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
+  test.setOverwriteExistingFiles(true);
   //classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
 
   QStringList baseClasses;

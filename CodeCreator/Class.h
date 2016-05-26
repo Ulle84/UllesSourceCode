@@ -1,14 +1,14 @@
-#ifndef CLASSGENERATOR_H
-#define CLASSGENERATOR_H
+#ifndef CLASS_H
+#define CLASS_H
 
 #include <QString>
 #include <QStringList>
 
-class ClassGenerator
+class Class
 {
 public:
 
-  ClassGenerator();
+  Class();
 
   QString createHeader();
   QString createImplementation();
@@ -131,4 +131,4 @@ private:
   DPointerType m_dPointerType;
 };
 
-#endif // CLASSGENERATOR_H
+#endif // CLASS_H

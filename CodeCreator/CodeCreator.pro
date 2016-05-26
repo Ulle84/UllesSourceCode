@@ -24,13 +24,13 @@ SOURCES += main.cpp\
     InterfaceHelper.cpp \
     State.cpp \
     Options.cpp \
-    ClassGenerator.cpp \
     ClassAdvanced.cpp \
     Parameter.cpp \
     Function.cpp \
     GeneratorInterface.cpp \
     Interface.cpp \
-    GeneratorClass.cpp
+    GeneratorClass.cpp \
+    Class.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -44,13 +44,13 @@ HEADERS  += CodeCreator.h \
     XmlHelper.h \
     InterfaceHelper.h \
     State.h \
-    ClassGenerator.h \
     ClassAdvanced.h \
     Parameter.h \
     Function.h \
     GeneratorInterface.h \
     Interface.h \
-    GeneratorClass.h
+    GeneratorClass.h \
+    Class.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

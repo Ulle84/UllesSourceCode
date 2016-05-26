@@ -1,9 +1,9 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "ClassGenerator.h"
+#include "Class.h"
 
-ClassGenerator::ClassGenerator()
+Class::Class()
   : m_indent("  "),
     m_declareConstructorExplicit(false),
     m_declareDestructorVirtual(false),
@@ -20,7 +20,7 @@ ClassGenerator::ClassGenerator()
 {
 }
 
-QString ClassGenerator::createHeader()
+QString Class::createHeader()
 {
   checkOptions();
 
@@ -143,7 +143,7 @@ QString ClassGenerator::createHeader()
   return code;
 }
 
-QString ClassGenerator::createImplementation()
+QString Class::createImplementation()
 {
   checkOptions();
 
@@ -235,7 +235,7 @@ QString ClassGenerator::createImplementation()
   return code;
 }
 
-bool ClassGenerator::createFiles()
+bool Class::createFiles()
 {
   if (!createFile(FileType::Header))
   {
@@ -250,7 +250,7 @@ bool ClassGenerator::createFiles()
   return true;
 }
 
-QString ClassGenerator::constructorDeclaration()
+QString Class::constructorDeclaration()
 {
   QString code = leadingWhitespace(1);
 
@@ -265,7 +265,7 @@ QString ClassGenerator::constructorDeclaration()
   return code;
 }
 
-QString ClassGenerator::constructorImplementation()
+QString Class::constructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -278,7 +278,7 @@ QString ClassGenerator::constructorImplementation()
   return code;
 }
 
-QString ClassGenerator::copyConstructorDeclaration()
+QString Class::copyConstructorDeclaration()
 {
   if (m_copyConstructorDeclarationType == DeclarationType::NoDeclaration)
   {
@@ -304,7 +304,7 @@ QString ClassGenerator::copyConstructorDeclaration()
   return code;
 }
 
-QString ClassGenerator::copyConstructorImplementation()
+QString Class::copyConstructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -318,7 +318,7 @@ QString ClassGenerator::copyConstructorImplementation()
   return code;
 }
 
-QString ClassGenerator::moveConstructorDeclaration()
+QString Class::moveConstructorDeclaration()
 {
   if (m_moveConstructorDeclarationType == DeclarationType::NoDeclaration)
   {
@@ -344,7 +344,7 @@ QString ClassGenerator::moveConstructorDeclaration()
   return code;
 }
 
-QString ClassGenerator::moveConstructorImplementation()
+QString Class::moveConstructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -358,7 +358,7 @@ QString ClassGenerator::moveConstructorImplementation()
   return code;
 }
 
-QString ClassGenerator::copyOperatorDeclaration()
+QString Class::copyOperatorDeclaration()
 {
   if (m_copyOperatorDeclarationType == DeclarationType::NoDeclaration)
   {
@@ -385,7 +385,7 @@ QString ClassGenerator::copyOperatorDeclaration()
   return code;
 }
 
-QString ClassGenerator::copyOperatorImplementation()
+QString Class::copyOperatorImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -404,7 +404,7 @@ QString ClassGenerator::copyOperatorImplementation()
   return code;
 }
 
-QString ClassGenerator::moveOperatorDeclaration()
+QString Class::moveOperatorDeclaration()
 {
   if (m_moveOperatorDeclarationType == DeclarationType::NoDeclaration)
   {
@@ -431,7 +431,7 @@ QString ClassGenerator::moveOperatorDeclaration()
   return code;
 }
 
-QString ClassGenerator::moveOperatorImplementation()
+QString Class::moveOperatorImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -450,7 +450,7 @@ QString ClassGenerator::moveOperatorImplementation()
   return code;
 }
 
-QString ClassGenerator::destructorDeclaration()
+QString Class::destructorDeclaration()
 {
   QString code = leadingWhitespace(1);
 
@@ -477,7 +477,7 @@ QString ClassGenerator::destructorDeclaration()
   return code;
 }
 
-QString ClassGenerator::destructorImplementation()
+QString Class::destructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -490,7 +490,7 @@ QString ClassGenerator::destructorImplementation()
   return code;
 }
 
-QString ClassGenerator::singletonInstance()
+QString Class::singletonInstance()
 {
   QString code = leadingWhitespace(1);
 
@@ -501,7 +501,7 @@ QString ClassGenerator::singletonInstance()
   return code;
 }
 
-QString ClassGenerator::singletonInitialization()
+QString Class::singletonInitialization()
 {
   QString code = leadingWhitespace(0);
 
@@ -526,7 +526,7 @@ QString ClassGenerator::singletonInitialization()
   return code;
 }
 
-QString ClassGenerator::singletonGetInstanceDeclaration()
+QString Class::singletonGetInstanceDeclaration()
 {
   QString code = leadingWhitespace(1);
 
@@ -537,7 +537,7 @@ QString ClassGenerator::singletonGetInstanceDeclaration()
   return code;
 }
 
-QString ClassGenerator::singletonGetInstanceImplementation()
+QString Class::singletonGetInstanceImplementation()
 {
   QString code = leadingWhitespace(0);
 
@@ -566,7 +566,7 @@ QString ClassGenerator::singletonGetInstanceImplementation()
   return code;
 }
 
-bool ClassGenerator::createFile(FileType fileType)
+bool Class::createFile(FileType fileType)
 {
   QString suffix = getSuffix(fileType);
 
@@ -600,7 +600,7 @@ bool ClassGenerator::createFile(FileType fileType)
   return true;
 }
 
-QString ClassGenerator::getSuffix(ClassGenerator::FileType fileType)
+QString Class::getSuffix(Class::FileType fileType)
 {
   QString suffix;
 
@@ -621,7 +621,7 @@ QString ClassGenerator::getSuffix(ClassGenerator::FileType fileType)
   return suffix;
 }
 
-QString ClassGenerator::classDeclaration()
+QString Class::classDeclaration()
 {
   QString code = leadingWhitespace(0);
 
@@ -651,7 +651,7 @@ QString ClassGenerator::classDeclaration()
   return code;
 }
 
-QString ClassGenerator::include(const QString& headerName, bool useSuffix, bool useAngleBrackets)
+QString Class::include(const QString& headerName, bool useSuffix, bool useAngleBrackets)
 {
   QString code;
 
@@ -670,7 +670,7 @@ QString ClassGenerator::include(const QString& headerName, bool useSuffix, bool 
   return code;
 }
 
-QString ClassGenerator::emptyBlock(unsigned int indent)
+QString Class::emptyBlock(unsigned int indent)
 {
   QString code;
 
@@ -681,7 +681,7 @@ QString ClassGenerator::emptyBlock(unsigned int indent)
   return code;
 }
 
-QString ClassGenerator::openBlock(unsigned int indent)
+QString Class::openBlock(unsigned int indent)
 {
   QString code;
 
@@ -690,7 +690,7 @@ QString ClassGenerator::openBlock(unsigned int indent)
   return code;
 }
 
-QString ClassGenerator::closeBlock(unsigned int indent)
+QString Class::closeBlock(unsigned int indent)
 {
   QString code;
 
@@ -699,7 +699,7 @@ QString ClassGenerator::closeBlock(unsigned int indent)
   return code;
 }
 
-QString ClassGenerator::constRef()
+QString Class::constRef()
 {
   QString code;
 
@@ -710,7 +710,7 @@ QString ClassGenerator::constRef()
   return code;
 }
 
-QString ClassGenerator::moveRef()
+QString Class::moveRef()
 {
   QString code;
 
@@ -721,7 +721,7 @@ QString ClassGenerator::moveRef()
   return code;
 }
 
-QString ClassGenerator::toDo(const QString& task)
+QString Class::toDo(const QString& task)
 {
   QString code = leadingWhitespace(1);
   code.append("// TODO ");
@@ -730,87 +730,87 @@ QString ClassGenerator::toDo(const QString& task)
   return code;
 }
 
-QString ClassGenerator::toDoImplementation()
+QString Class::toDoImplementation()
 {
   return toDo("do implementation");
 }
 
-void ClassGenerator::setClassName(const QString& className)
+void Class::setClassName(const QString& className)
 {
   m_className = className;
 }
 
-void ClassGenerator::setNamespaceNames(const QStringList& namespaceNames)
+void Class::setNamespaceNames(const QStringList& namespaceNames)
 {
   m_namespaceNames = namespaceNames;
 }
 
-void ClassGenerator::setBaseClasses(const QStringList& baseClasses)
+void Class::setBaseClasses(const QStringList& baseClasses)
 {
   m_baseClasses = baseClasses;
 }
 
-void ClassGenerator::setIndent(const QString& indent)
+void Class::setIndent(const QString& indent)
 {
   m_indent = indent;
 }
 
-void ClassGenerator::setDeclareConstructorExplicit(bool declareConstructorExplicit)
+void Class::setDeclareConstructorExplicit(bool declareConstructorExplicit)
 {
   m_declareConstructorExplicit = declareConstructorExplicit;
 }
 
-void ClassGenerator::setDeclareDestructorVirtual(bool declareDestructorVirtual)
+void Class::setDeclareDestructorVirtual(bool declareDestructorVirtual)
 {
   m_declareDestructorVirtual = declareDestructorVirtual;
 }
 
-void ClassGenerator::setIncludeQObjectMacro(bool includeQObjectMacro)
+void Class::setIncludeQObjectMacro(bool includeQObjectMacro)
 {
   m_includeQObjectMacro = includeQObjectMacro;
 }
 
-void ClassGenerator::setConstructorDeclarationType(ClassGenerator::DeclarationType constructorDeclarationType)
+void Class::setConstructorDeclarationType(Class::DeclarationType constructorDeclarationType)
 {
   m_constructorDeclarationType = constructorDeclarationType;
 }
 
-void ClassGenerator::setDPointerType(ClassGenerator::DPointerType dPointerType)
+void Class::setDPointerType(Class::DPointerType dPointerType)
 {
   m_dPointerType = dPointerType;
 }
 
-void ClassGenerator::setDestructorDeclarationType(ClassGenerator::DeclarationType destructorDeclarationType)
+void Class::setDestructorDeclarationType(Class::DeclarationType destructorDeclarationType)
 {
   m_destructorDeclarationType = destructorDeclarationType;
 }
 
-void ClassGenerator::setCopyConstructorDeclarationType(ClassGenerator::DeclarationType copyConstructorDeclarationType)
+void Class::setCopyConstructorDeclarationType(Class::DeclarationType copyConstructorDeclarationType)
 {
   m_copyConstructorDeclarationType = copyConstructorDeclarationType;
 }
 
-void ClassGenerator::setCopyOperatorDeclarationType(ClassGenerator::DeclarationType copyOperatorDeclarationType)
+void Class::setCopyOperatorDeclarationType(Class::DeclarationType copyOperatorDeclarationType)
 {
   m_copyOperatorDeclarationType = copyOperatorDeclarationType;
 }
 
-void ClassGenerator::setMoveConstructorDeclarationType(ClassGenerator::DeclarationType moveConstructorDeclarationType)
+void Class::setMoveConstructorDeclarationType(Class::DeclarationType moveConstructorDeclarationType)
 {
   m_moveConstructorDeclarationType = moveConstructorDeclarationType;
 }
 
-void ClassGenerator::setMoveOperatorDeclarationType(ClassGenerator::DeclarationType moveOperatorDeclarationType)
+void Class::setMoveOperatorDeclarationType(Class::DeclarationType moveOperatorDeclarationType)
 {
   m_moveOperatorDeclarationType = moveOperatorDeclarationType;
 }
 
-void ClassGenerator::setSingletonType(ClassGenerator::SingletonType singletonType)
+void Class::setSingletonType(Class::SingletonType singletonType)
 {
   m_singletonType = singletonType;
 }
 
-void ClassGenerator::checkOptions()
+void Class::checkOptions()
 {
   if (m_singletonType != SingletonType::NoSingleton)
   {
@@ -823,34 +823,34 @@ void ClassGenerator::checkOptions()
   }
 }
 
-void ClassGenerator::append(QString& code, unsigned int indent, const QString& toAppend)
+void Class::append(QString& code, unsigned int indent, const QString& toAppend)
 {
   code.append(leadingWhitespace(indent));
   code.append(toAppend);
 }
 
-void ClassGenerator::appendLine(QString& code, unsigned int indent, const QString& toAppend)
+void Class::appendLine(QString& code, unsigned int indent, const QString& toAppend)
 {
   append(code, indent, toAppend);
   code.append("\n");
 }
 
-void ClassGenerator::setOutputDirectory(const QString& outputDirectory)
+void Class::setOutputDirectory(const QString& outputDirectory)
 {
   m_outputDirectory = outputDirectory;
 }
 
-void ClassGenerator::setOverwriteExistingFiles(bool overwriteExistingFiles)
+void Class::setOverwriteExistingFiles(bool overwriteExistingFiles)
 {
   m_overwriteExistingFiles = overwriteExistingFiles;
 }
 
-void ClassGenerator::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)
+void Class::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)
 {
   m_uppercaseHeaderGuard = uppercaseHeaderGuard;
 }
 
-QString ClassGenerator::leadingWhitespace(unsigned int indent)
+QString Class::leadingWhitespace(unsigned int indent)
 {
   QString leadingWhitespace;
 
@@ -864,7 +864,7 @@ QString ClassGenerator::leadingWhitespace(unsigned int indent)
   return leadingWhitespace;
 }
 
-QString ClassGenerator::namespaceStart()
+QString Class::namespaceStart()
 {
   QString code;
 
@@ -893,7 +893,7 @@ QString ClassGenerator::namespaceStart()
   return code;
 }
 
-QString ClassGenerator::namespaceEnd()
+QString Class::namespaceEnd()
 {
   QString code;
 
@@ -910,7 +910,7 @@ QString ClassGenerator::namespaceEnd()
   return code;
 }
 
-QString ClassGenerator::headerGuardStart()
+QString Class::headerGuardStart()
 {
   QString code;
 
@@ -925,7 +925,7 @@ QString ClassGenerator::headerGuardStart()
   return code;
 }
 
-QString ClassGenerator::headerGuardEnd()
+QString Class::headerGuardEnd()
 {
   QString code;
 
@@ -935,7 +935,7 @@ QString ClassGenerator::headerGuardEnd()
   return code;
 }
 
-QString ClassGenerator::headerGuard()
+QString Class::headerGuard()
 {
   QString code;
 
@@ -951,7 +951,7 @@ QString ClassGenerator::headerGuard()
   return code;
 }
 
-QString ClassGenerator::baseClassIncludes()
+QString Class::baseClassIncludes()
 {
   QString code;
 
@@ -968,7 +968,7 @@ QString ClassGenerator::baseClassIncludes()
   return code;
 }
 
-QString ClassGenerator::section(const QString& sectionName)
+QString Class::section(const QString& sectionName)
 {
   QString code = leadingWhitespace(0);
   code.append(sectionName);
