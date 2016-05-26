@@ -1,24 +1,26 @@
-#include "Interface.h"
-#include "ui_Interface.h"
-#include "XmlHelper.h"
+#include <QMessageBox>
+
+#include "GeneratorInterface.h"
+#include "ui_GeneratorInterface.h"
 #include "Options.h"
 #include "CodeGenerator.h"
+#include "XmlHelper.h"
 #include "InterfaceHelper.h"
 
-Interface::Interface(CodeGenerator* codeGenerator, QWidget *parent) :
+GeneratorInterface::GeneratorInterface(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::Interface),
+  ui(new Ui::GeneratorInterface),
   m_codeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 }
 
-Interface::~Interface()
+GeneratorInterface::~GeneratorInterface()
 {
   delete ui;
 }
 
-bool Interface::generate(const QString &folder)
+bool GeneratorInterface::generate(const QString &folder)
 {
   QString interface = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditFunctions);
 
@@ -40,7 +42,7 @@ bool Interface::generate(const QString &folder)
   return m_codeGenerator->copyFromTemplate(options);
 }
 
-void Interface::readXml(QXmlStreamReader &xml)
+void GeneratorInterface::readXml(QXmlStreamReader &xml)
 {
   while (xml.readNextStartElement())
   {
@@ -63,7 +65,7 @@ void Interface::readXml(QXmlStreamReader &xml)
   }
 }
 
-void Interface::writeXml(QXmlStreamWriter &xml)
+void GeneratorInterface::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
   XmlHelper::writeXml(xml, "Prefix", ui->checkBoxPrefix);

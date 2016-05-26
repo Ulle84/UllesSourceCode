@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-  Parameter parameter("type", "name");
+  /*Parameter parameter("type", "name");
   qDebug() << parameter.toString();
 
   Parameter parameter2(" test my const type\t &name  =  \t0");
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
   qDebug() << function1.toString();
 
   Function function2("virtual void myTest( )=0;");
-  qDebug() << function2.toString();
+  qDebug() << function2.toString();*/
 
   ClassGenerator classGenerator;
   classGenerator.setClassName("Test");
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     qDebug() << "error while writing files";
   }*/
 
-  return 0;
+  //return 0;
 
   QApplication a(argc, argv);
 

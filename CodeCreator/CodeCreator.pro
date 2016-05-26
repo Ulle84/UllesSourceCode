@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     CodeGenerator.cpp \
     Generator.cpp \
     Observer.cpp \
-    Interface.cpp \
     Singleton.cpp \
     Class.cpp \
     Data.cpp \
@@ -29,14 +28,14 @@ SOURCES += main.cpp\
     ClassGenerator.cpp \
     ClassAdvanced.cpp \
     Parameter.cpp \
-    Function.cpp
+    Function.cpp \
+    GeneratorInterface.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
     Generator.h \
     Observer.h \
     IGenerator.h \
-    Interface.h \
     Singleton.h \
     Class.h \
     Options.h \
@@ -48,23 +47,25 @@ HEADERS  += CodeCreator.h \
     ClassGenerator.h \
     ClassAdvanced.h \
     Parameter.h \
-    Function.h
+    Function.h \
+    GeneratorInterface.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
     Observer.ui \
-    Interface.ui \
     Singleton.ui \
     Class.ui \
     Data.ui \
     Decorator.ui \
     State.ui \
-    ClassAdvanced.ui
+    ClassAdvanced.ui \
+    GeneratorInterface.ui
 
 OTHER_FILES += \
     ToDo.txt \
     Bugs.txt \
-    Ideas.txt
+    Ideas.txt \
+    Notes.md
 
 DISTFILES += \
     Notes.md

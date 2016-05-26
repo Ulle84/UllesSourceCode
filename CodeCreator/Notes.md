@@ -1,6 +1,10 @@
 ﻿# Bugs
 
 # ToDo
+* New Generator: InterfaceGenerator
+* Copy Content from Interface to InterfaceGenerator
+* Create Class Interface
+* move all GeneratorsToClases with Prefix 'Generator' or to directory Generator and namespace Generator
 * save current folder at folder selection
 * Class Template
   * d-Pointer support
