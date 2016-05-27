@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QMessageBox>
 
 #include "GeneratorInterface.h"
@@ -6,6 +7,9 @@
 #include "CodeGenerator.h"
 #include "XmlHelper.h"
 #include "InterfaceHelper.h"
+#include "Class.h"
+#include "Interface.h"
+#include "Method.h"
 
 GeneratorInterface::GeneratorInterface(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
@@ -22,15 +26,29 @@ GeneratorInterface::~GeneratorInterface()
 
 bool GeneratorInterface::generate(const QString &folder)
 {
-  QString interface = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditFunctions);
+  //QString interface = InterfaceHelper::createVirtualFunctionDeclarations(ui->plainTextEditFunctions);
 
   QString name = ui->lineEditName->text();
-  if (ui->checkBoxPrefix->isChecked())
+  if (ui->checkBoxPostfix->isChecked())
   {
-    name.prepend("I");
+    if (!name.endsWith("I"))
+    {
+      name.append("I");
+    }
   }
 
-  Options options;
+  Class c(name);
+  c.setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
+  c.setDestructorDeclarationType(Class::DeclarationType::NoDeclaration);
+  c.setMethods(Interface(name, ui->plainTextEditFunctions->toPlainText()));
+  c.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\"); // TODO take folder of UI
+  c.setOverwriteExistingFiles(true);
+
+  c.createHeaderFile();
+
+  return true;
+
+  /*Options options;
   options.folderOutput = folder;
   options.folderInput = "Interface/";
   options.files << "Interface.h";
@@ -39,7 +57,7 @@ bool GeneratorInterface::generate(const QString &folder)
 
   options.sortSearchAndReplaceList();
 
-  return m_codeGenerator->copyFromTemplate(options);
+  return m_codeGenerator->copyFromTemplate(options);*/
 }
 
 void GeneratorInterface::readXml(QXmlStreamReader &xml)
@@ -56,7 +74,7 @@ void GeneratorInterface::readXml(QXmlStreamReader &xml)
     }
     else if (xml.name() == "Prefix")
     {
-      XmlHelper::readXml(xml, ui->checkBoxPrefix);
+      XmlHelper::readXml(xml, ui->checkBoxPostfix);
     }
     else
     {
@@ -68,6 +86,6 @@ void GeneratorInterface::readXml(QXmlStreamReader &xml)
 void GeneratorInterface::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
-  XmlHelper::writeXml(xml, "Prefix", ui->checkBoxPrefix);
+  XmlHelper::writeXml(xml, "Prefix", ui->checkBoxPostfix);
   XmlHelper::writeXml(xml, "Functions", ui->plainTextEditFunctions);
 }

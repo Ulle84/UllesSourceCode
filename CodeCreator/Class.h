@@ -17,6 +17,8 @@ public:
   QString createHeader();
   QString createImplementation();
   bool createFiles();
+  bool createHeaderFile();
+  bool createImplementationFile();
 
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
@@ -112,6 +114,9 @@ private:
   QString dPointerDeclaration();
   QString dPointerImplementation();
   QString dPointerInitialization(bool copyRhs);
+
+  bool hasMethodDeclarations(Method::DeclarationType declarationType);
+  QString methodDeclarations(Method::DeclarationType declarationType);
 
   enum FileType
   {

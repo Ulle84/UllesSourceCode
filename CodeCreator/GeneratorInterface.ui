@@ -37,7 +37,7 @@
       <widget class="QLineEdit" name="lineEditName"/>
      </item>
      <item row="0" column="2">
-      <widget class="QCheckBox" name="checkBoxPrefix">
+      <widget class="QCheckBox" name="checkBoxPostfix">
        <property name="text">
         <string>use prefix I</string>
        </property>

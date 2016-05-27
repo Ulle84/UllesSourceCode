@@ -3,9 +3,9 @@
 
 #include <QList>
 
-#include "Function.h"
+#include "Method.h"
 
-class Interface : public QList<Function>
+class Interface : public QList<Method>
 {
 public:
   Interface();

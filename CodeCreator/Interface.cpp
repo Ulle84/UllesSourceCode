@@ -14,11 +14,12 @@ Interface::Interface(const QString &name, const QString &interface)
 
   for (auto it = functions.begin(); it != functions.end(); it++)
   {
-    Function function(*it);
-    function.setType(Function::Type::PureVirtual);
-    if (function.isValid())
+    Method method(*it);
+    method.setType(Function::Type::PureVirtual);
+    method.setDeclarationType(Method::DeclarationType::Public);
+    if (method.isValid())
     {
-      append(function);
+      append(method);
     }
   }
 }

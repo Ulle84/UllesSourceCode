@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 
   //test.setDPointerType(Class::DPointerType::DPointer);
 
-  if (test.createFiles())
+  /*if (test.createFiles())
   {
     qDebug() << "file succesfully writen";
   }
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     qDebug() << "error while writing files";
   }
 
-  return 0;
+  return 0;*/
 
   QApplication a(argc, argv);
 

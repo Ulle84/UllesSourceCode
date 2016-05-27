@@ -2,6 +2,10 @@
 
 # ToDo
 * Class Template
+  * methods
+    * protected and private declarations
+    * all implementations
+  * finish GeneratorInterface
   * q-Pointer support -> pointing to overlaying class
   * singleton and dPointer combined?
   * implementation of interfaces
@@ -29,3 +33,4 @@
 * no template files -> write code instead -> much more flexible
 * singleton support -> override options (no public constructor etc.), before creating
 * d-Pointer support
+* base implementation of GeneratorInterface

@@ -23,7 +23,8 @@ Class::Class(const QString& name)
     m_dPointerName("p"),
     m_rhs("rhs"),
     m_baseClass(nullptr),
-    m_memberPrefix("horst_")
+    m_memberPrefix("horst_"),
+    m_dPointerType(DPointerType::NoDPointer)
 {
 }
 
@@ -96,6 +97,18 @@ QString Class::createHeader()
   if (m_destructorDeclarationType == DeclarationType::Public)
   {
     code.append(destructorDeclaration());
+    m_sectionEmtpy = false;
+  }
+
+  if (hasMethodDeclarations(Method::DeclarationType::Public))
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    code.append(methodDeclarations(Method::DeclarationType::Public));
+    m_sectionEmtpy = false;
   }
 
   if (m_constructorDeclarationType == DeclarationType::Private
@@ -296,17 +309,27 @@ QString Class::createImplementation()
 
 bool Class::createFiles()
 {
-  if (!createFile(FileType::Header))
+  if (!createHeaderFile())
   {
     return false;
   }
 
-  if (!createFile(FileType::Source))
+  if (!createImplementationFile())
   {
     return false;
   }
 
   return true;
+}
+
+bool Class::createHeaderFile()
+{
+  return createFile(FileType::Header);
+}
+
+bool Class::createImplementationFile()
+{
+  return createFile(FileType::Source);
 }
 
 QString Class::constructorDeclaration()
@@ -738,6 +761,34 @@ QString Class::dPointerInitialization(bool copyRhs)
     code.append(m_dPointerName);
   }
   code.append("))\n");
+
+  return code;
+}
+
+bool Class::hasMethodDeclarations(Method::DeclarationType declarationType)
+{
+  for (auto it = m_methods.begin(); it != m_methods.end(); it++)
+  {
+    if (it->declarationType() == declarationType)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+QString Class::methodDeclarations(Method::DeclarationType declarationType)
+{
+  QString code;
+
+  for (auto it = m_methods.begin(); it != m_methods.end(); it++)
+  {
+    if (it->declarationType() == declarationType)
+    {
+      appendLine(code, 1, it->toString());
+    }
+  }
 
   return code;
 }
