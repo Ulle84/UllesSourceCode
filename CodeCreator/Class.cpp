@@ -4,8 +4,9 @@
 
 #include "Class.h"
 
-Class::Class()
-  : m_indent("  "),
+Class::Class(const QString& name)
+  : m_name(name),
+    m_indent("  "),
     m_declareConstructorExplicit(false),
     m_declareDestructorVirtual(false),
     m_includeQObjectMacro(false),
@@ -19,6 +20,11 @@ Class::Class()
     m_uppercaseHeaderGuard(false),
     m_singletonType(SingletonType::NoSingleton)
 {
+}
+
+QString Class::name()
+{
+  return m_name;
 }
 
 QString Class::createHeader()
@@ -150,7 +156,7 @@ QString Class::createImplementation()
 
   QString code;
 
-  code.append(include(m_className, true, false));
+  code.append(include(m_name, true, false));
   code.append("\n");
 
   code.append(namespaceStart());
@@ -260,7 +266,7 @@ QString Class::constructorDeclaration()
     code.append("explicit ");
   }
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("();\n");
 
   return code;
@@ -270,9 +276,9 @@ QString Class::constructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("::");
-  code.append(m_className);
+  code.append(m_name);
   code.append("()\n");
   code.append(emptyBlock());
 
@@ -288,7 +294,7 @@ QString Class::copyConstructorDeclaration()
 
   QString code = leadingWhitespace(1);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append(constRef());
 
   if (m_copyConstructorDeclarationType == DeclarationType::Private)
@@ -309,9 +315,9 @@ QString Class::copyConstructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("::");
-  code.append(m_className);
+  code.append(m_name);
   code.append(constRef());
   code.append("\n");
   code.append(emptyBlock());
@@ -328,7 +334,7 @@ QString Class::moveConstructorDeclaration()
 
   QString code = leadingWhitespace(1);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append(moveRef());
 
   if (m_copyConstructorDeclarationType == DeclarationType::Private)
@@ -349,9 +355,9 @@ QString Class::moveConstructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("::");
-  code.append(m_className);
+  code.append(m_name);
   code.append(moveRef());
   code.append("\n");
   code.append(emptyBlock());
@@ -368,7 +374,7 @@ QString Class::copyOperatorDeclaration()
 
   QString code = leadingWhitespace(1);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("& operator= ");
   code.append(constRef());
 
@@ -390,9 +396,9 @@ QString Class::copyOperatorImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("& ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("::operator=");
   code.append(constRef());
   code.append("\n{\n");
@@ -414,7 +420,7 @@ QString Class::moveOperatorDeclaration()
 
   QString code = leadingWhitespace(1);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("& operator= ");
   code.append(moveRef());
 
@@ -436,9 +442,9 @@ QString Class::moveOperatorImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("& ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("::operator=");
   code.append(moveRef());
   code.append("\n{\n");
@@ -461,7 +467,7 @@ QString Class::destructorDeclaration()
   }
 
   code.append("~");
-  code.append(m_className);
+  code.append(m_name);
   code.append("()");
 
   if (m_declareDestructorVirtual || m_destructorDeclarationType == DeclarationType::Private)
@@ -482,9 +488,9 @@ QString Class::destructorImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("::~");
-  code.append(m_className);
+  code.append(m_name);
   code.append("()\n");
   code.append(emptyBlock());
 
@@ -496,7 +502,7 @@ QString Class::singletonInstance()
   QString code = leadingWhitespace(1);
 
   code.append("static ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("* m_instance;\n");
 
   return code;
@@ -506,15 +512,15 @@ QString Class::singletonInitialization()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("* ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("::m_instance = ");
 
   if (m_singletonType == SingletonType::Eager)
   {
     code.append("new ");
-    code.append(m_className);
+    code.append(m_name);
     code.append("()");
   }
   else
@@ -532,7 +538,7 @@ QString Class::singletonGetInstanceDeclaration()
   QString code = leadingWhitespace(1);
 
   code.append("static ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("* getInstance();\n");
 
   return code;
@@ -542,9 +548,9 @@ QString Class::singletonGetInstanceImplementation()
 {
   QString code = leadingWhitespace(0);
 
-  code.append(m_className);
+  code.append(m_name);
   code.append("* ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("::getInstance()\n");
   code.append(openBlock());
 
@@ -554,7 +560,7 @@ QString Class::singletonGetInstanceImplementation()
     appendLine(code, 1, "if (m_instance == nullptr)");
     code.append(openBlock(1));
     append(code, 2, "m_instance = new ");//SingletonLazy();");
-    code.append(m_className);
+    code.append(m_name);
     code.append("();\n");
     code.append(closeBlock(1));
     appendLine(code, 1, "m_mutex.unlock();");
@@ -571,7 +577,7 @@ bool Class::createFile(FileType fileType)
 {
   QString suffix = getSuffix(fileType);
 
-  QString fileName = m_outputDirectory + m_className + suffix;
+  QString fileName = m_outputDirectory + m_name + suffix;
 
   QFile file(fileName);
 
@@ -627,7 +633,7 @@ QString Class::classDeclaration()
   QString code = leadingWhitespace(0);
 
   code.append("class ");
-  code.append(m_className);
+  code.append(m_name);
 
   if (!m_baseClass.isEmpty() || m_interfaces.isEmpty())
   {
@@ -711,7 +717,7 @@ QString Class::constRef()
   QString code;
 
   code.append("(const ");
-  code.append(m_className);
+  code.append(m_name);
   code.append("& rhs)");
 
   return code;
@@ -722,7 +728,7 @@ QString Class::moveRef()
   QString code;
 
   code.append("(");
-  code.append(m_className);
+  code.append(m_name);
   code.append("&& rhs)");
 
   return code;
@@ -744,7 +750,7 @@ QString Class::toDoImplementation()
 
 void Class::setClassName(const QString& className)
 {
-  m_className = className;
+  m_name = className;
 }
 
 void Class::setNamespaceNames(const QStringList& namespaceNames)
@@ -754,7 +760,6 @@ void Class::setNamespaceNames(const QStringList& namespaceNames)
 
 void Class::setInterfaces(const QList<Interface> &interfaces)
 {
-  qDebug() << interfaces.length();
   m_interfaces = interfaces;
 }
 
@@ -958,7 +963,7 @@ QString Class::headerGuard()
     code.append("_");
   }
 
-  code.append(m_uppercaseHeaderGuard ? m_className.toUpper() : m_className);
+  code.append(m_uppercaseHeaderGuard ? m_name.toUpper() : m_name);
   code.append(m_uppercaseHeaderGuard ? "_H" : "_h");
 
   return code;
@@ -972,8 +977,6 @@ QString Class::includes()
   {
     code.append(include(m_baseClass, true, false));
   }
-
-  qDebug() << m_interfaces.length();
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
   {

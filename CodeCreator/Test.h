@@ -1,7 +1,11 @@
 #ifndef Test_h
 #define Test_h
 
-class Test
+#include "BaseClass.h"
+#include "InterfaceA.h"
+#include "InterfaceB.h"
+
+class Test : public BaseClass, public InterfaceA, public InterfaceB
 {
 public:
   Test();

@@ -33,10 +33,7 @@ int main(int argc, char* argv[])
 
   Interface interface("Interface", interfaceDescription);
 
-  qDebug() << interface.toString();
-
-  Class test;
-  test.setClassName("Test");
+  Class test("Test");
   test.setDeclareDestructorVirtual(false);
   test.setDeclareConstructorExplicit(false);
   test.setIncludeQObjectMacro(false);
@@ -61,18 +58,14 @@ int main(int argc, char* argv[])
   namespaces.append("namespaceB");
   //classGenerator.setNamespaceNames(namespaces);
 
-  qDebug() << test.createHeader();
-  qDebug() << "----------------------------------------------------";
-  qDebug() << test.createImplementation();
-
-  /*if (test.createFiles())
+  if (test.createFiles())
   {
     qDebug() << "file succesfully writen";
   }
   else
   {
     qDebug() << "error while writing files";
-  }*/
+  }
 
   return 0;
 

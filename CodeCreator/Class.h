@@ -10,7 +10,9 @@ class Class
 {
 public:
 
-  Class();
+  Class(const QString& name);
+
+  QString name();
 
   QString createHeader();
   QString createImplementation();
@@ -113,7 +115,7 @@ private:
   bool createFile(FileType fileType);
   QString getSuffix(FileType fileType);
 
-  QString m_className;
+  QString m_name;
   QStringList m_namespaceNames;
   QString m_baseClass;
   QList<Interface> m_interfaces;
