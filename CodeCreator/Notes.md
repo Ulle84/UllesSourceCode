@@ -2,9 +2,9 @@
 
 # ToDo
 * Class Template
-  * No extrea Header for pImpl Declaration -> move to *.cpp file
   * q-Pointer support -> pointing to overlaying class
-* singleton and dPointer combined?
+  * singleton and dPointer combined?
+  * implementation of interfaces
 * save current folder at folder selection
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 

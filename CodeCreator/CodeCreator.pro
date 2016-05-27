@@ -37,7 +37,6 @@ HEADERS  += CodeCreator.h \
     CodeGenerator.h \
     Generator.h \
     Observer.h \
-    IGenerator.h \
     Singleton.h \
     Options.h \
     Data.h \
@@ -52,7 +51,8 @@ HEADERS  += CodeCreator.h \
     Interface.h \
     GeneratorClass.h \
     Class.h \
-    Method.h
+    Method.h \
+    GeneratorI.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

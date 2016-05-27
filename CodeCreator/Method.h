@@ -1,12 +1,14 @@
 #ifndef METHOD_H
 #define METHOD_H
 
+#include <QString>
+
 #include "Function.h"
 
 class Method : public Function
 {
 public:
-  Method();
+  Method(const QString& method);
 
   enum DeclarationType
   {

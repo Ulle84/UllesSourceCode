@@ -1,6 +1,7 @@
 #include "Method.h"
 
-Method::Method()
+Method::Method(const QString& method)
+  : Function(method)
 {
 
 }

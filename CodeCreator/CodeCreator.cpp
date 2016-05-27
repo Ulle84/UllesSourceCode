@@ -117,7 +117,7 @@ void CodeCreator::on_pushButtonStart_clicked()
     return;
   }
 
-  if (dynamic_cast<IGenerator*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
+  if (dynamic_cast<GeneratorI*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
   {
     QMessageBox messageBox;
     messageBox.setText(tr("Creation finished!"));
@@ -186,7 +186,7 @@ bool CodeCreator::readXml()
     }
     else if (mGenerators.find(xml.name().toString()) != mGenerators.end())
     {
-      dynamic_cast<IGenerator*>(mGenerators.find(xml.name().toString()).value())->readXml(xml);
+      dynamic_cast<GeneratorI*>(mGenerators.find(xml.name().toString()).value())->readXml(xml);
     }
     else
     {
@@ -231,7 +231,7 @@ bool CodeCreator::writeXml()
   for (auto it = mGenerators.begin(); it != mGenerators.end(); ++it)
   {
     xml.writeStartElement(it.key());
-    dynamic_cast<IGenerator*>(it.value())->writeXml(xml);
+    dynamic_cast<GeneratorI*>(it.value())->writeXml(xml);
     xml.writeEndElement();
   }
 
