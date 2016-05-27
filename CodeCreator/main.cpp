@@ -47,18 +47,20 @@ int main(int argc, char* argv[])
   test.setOverwriteExistingFiles(true);
 
   Class base("BaseClass");
-  test.setBaseClass(&base);
-  //classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
+  //test.setBaseClass(&base);
+  test.setSingletonType(Class::SingletonType::LazyProtectedWithQMutex);
 
   QList<Interface> interfaces;
   interfaces.append(Interface("InterfaceA", ""));
   interfaces.append(Interface("InterfaceB", ""));
-  test.setInterfaces(interfaces);
+  //test.setInterfaces(interfaces);
 
   QStringList namespaces;
   namespaces.append("namespaceA");
   namespaces.append("namespaceB");
   //classGenerator.setNamespaceNames(namespaces);
+
+  //test.setDPointerType(Class::DPointerType::DPointer);
 
   if (test.createFiles())
   {

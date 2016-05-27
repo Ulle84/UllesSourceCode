@@ -10,7 +10,6 @@
 class Class
 {
 public:
-
   Class(const QString& name);
 
   QString name() const;
@@ -56,9 +55,9 @@ public:
   enum DPointerType
   {
     NoDPointer,
-    DPointer,
-    DPointerWithQPointer,
-    InheritableDPointer
+    DPointer
+    //DPointerWithQPointer,
+    //InheritableDPointer
   };
   void setDPointerType(DPointerType dPointerType);
 
@@ -109,6 +108,11 @@ private:
   QString singletonGetInstanceDeclaration();
   QString singletonGetInstanceImplementation();
 
+  QString dPointerClass();
+  QString dPointerDeclaration();
+  QString dPointerImplementation();
+  QString dPointerInitialization(bool copyRhs);
+
   enum FileType
   {
     Header,
@@ -138,6 +142,11 @@ private:
   SingletonType m_singletonType;
   DPointerType m_dPointerType;
   QList<Method> m_methods;
+  QString m_dPointerSuffix;
+  QString m_dPointerName;
+  QString m_rhs;
+  QString m_memberPrefix;
+  bool m_sectionEmtpy;
 };
 
 #endif // CLASS_H

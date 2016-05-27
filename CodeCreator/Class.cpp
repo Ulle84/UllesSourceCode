@@ -18,7 +18,12 @@ Class::Class(const QString& name)
     m_moveOperatorDeclarationType(DeclarationType::NoDeclaration),
     m_overwriteExistingFiles(false),
     m_uppercaseHeaderGuard(false),
-    m_singletonType(SingletonType::NoSingleton)
+    m_singletonType(SingletonType::NoSingleton),
+    m_dPointerSuffix("P"),
+    m_dPointerName("p"),
+    m_rhs("rhs"),
+    m_baseClass(nullptr),
+    m_memberPrefix("horst_")
 {
 }
 
@@ -55,31 +60,37 @@ QString Class::createHeader()
   if (m_singletonType != SingletonType::NoSingleton)
   {
     code.append(singletonGetInstanceDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_constructorDeclarationType == DeclarationType::Public)
   {
     code.append(constructorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_copyConstructorDeclarationType == DeclarationType::Public)
   {
     code.append(copyConstructorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_moveConstructorDeclarationType == DeclarationType::Public)
   {
     code.append(moveConstructorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_copyOperatorDeclarationType == DeclarationType::Public)
   {
     code.append(copyOperatorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_moveOperatorDeclarationType == DeclarationType::Public)
   {
     code.append(moveOperatorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_destructorDeclarationType == DeclarationType::Public)
@@ -93,7 +104,8 @@ QString Class::createHeader()
       || m_moveConstructorDeclarationType == DeclarationType::Private
       || m_moveOperatorDeclarationType == DeclarationType::Private
       || m_destructorDeclarationType == DeclarationType::Private
-      || m_singletonType != SingletonType::NoSingleton)
+      || m_singletonType != SingletonType::NoSingleton
+      || m_dPointerType != DPointerType::NoDPointer)
   {
     code.append("\n");
     code.append(section("private"));
@@ -102,44 +114,67 @@ QString Class::createHeader()
   if (m_constructorDeclarationType == DeclarationType::Private)
   {
     code.append(constructorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_copyConstructorDeclarationType == DeclarationType::Private)
   {
     code.append(copyConstructorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_moveConstructorDeclarationType == DeclarationType::Private)
   {
     code.append(moveConstructorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_copyOperatorDeclarationType == DeclarationType::Private)
   {
     code.append(copyOperatorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_moveOperatorDeclarationType == DeclarationType::Private)
   {
     code.append(moveOperatorDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_destructorDeclarationType == DeclarationType::Private)
   {
     code.append(destructorDeclaration());
+    m_sectionEmtpy = false;
+  }
+
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    code.append(dPointerDeclaration());
+    m_sectionEmtpy = false;
   }
 
   if (m_singletonType != SingletonType::NoSingleton)
   {
-    code.append("\n");
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
 
-    if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
+   if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
     {
       code.append(leadingWhitespace(1));
-      code.append("static QMutex m_mutex;\n");
+      code.append("static QMutex ");
+      code.append(m_memberPrefix);
+      code.append("mutex;\n");
     }
 
     code.append(singletonInstance());
+    m_sectionEmtpy = false;
   }
 
   appendLine(code, 0, "};");
@@ -163,8 +198,25 @@ QString Class::createImplementation()
 
   bool alreadyOneImplementationPresent = false;
 
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(dPointerImplementation());
+
+    alreadyOneImplementationPresent = true;
+  }
+
   if (m_singletonType != SingletonType::NoSingleton)
   {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
     code.append(singletonInitialization());
     code.append("\n");
     code.append(singletonGetInstanceImplementation());
@@ -280,6 +332,12 @@ QString Class::constructorImplementation()
   code.append("::");
   code.append(m_name);
   code.append("()\n");
+
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    code.append(dPointerInitialization(false));
+  }
+
   code.append(emptyBlock());
 
   return code;
@@ -320,6 +378,12 @@ QString Class::copyConstructorImplementation()
   code.append(m_name);
   code.append(constRef());
   code.append("\n");
+
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    code.append(dPointerInitialization(true));
+  }
+
   code.append(emptyBlock());
 
   return code;
@@ -401,12 +465,33 @@ QString Class::copyOperatorImplementation()
   code.append(m_name);
   code.append("::operator=");
   code.append(constRef());
-  code.append("\n{\n");
-  code.append(toDoImplementation());
-  code.append(leadingWhitespace(1));
-  code.append("return *this;\n");
-  code.append(leadingWhitespace(0));
-  code.append("}\n");
+  code.append("\n");
+  code.append(openBlock(0));
+
+  append(code, 1, "if (this != &");
+  code.append(m_rhs);
+  code.append(")\n");
+  code.append(openBlock(1));
+
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    append(code, 2, "*");
+    code.append(m_dPointerName);
+    code.append(" = *(");
+    code.append(m_rhs);
+    code.append(".");
+    code.append(m_dPointerName);
+    code.append(");\n");
+  }
+  else
+  {
+    code.append(toDoImplementation());
+  }
+
+  code.append(closeBlock(1));
+
+  appendLine(code, 1, "return *this;");
+  code.append(closeBlock(0));
 
   return code;
 }
@@ -492,7 +577,16 @@ QString Class::destructorImplementation()
   code.append("::~");
   code.append(m_name);
   code.append("()\n");
-  code.append(emptyBlock());
+  code.append(openBlock());
+
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    append(code, 1, "delete ");
+    code.append(m_dPointerName);
+    code.append(";\n");
+  }
+
+  code.append(closeBlock());
 
   return code;
 }
@@ -503,7 +597,9 @@ QString Class::singletonInstance()
 
   code.append("static ");
   code.append(m_name);
-  code.append("* m_instance;\n");
+  code.append("* ");
+  code.append(m_memberPrefix);
+  code.append("instance;\n");
 
   return code;
 }
@@ -515,7 +611,9 @@ QString Class::singletonInitialization()
   code.append(m_name);
   code.append("* ");
   code.append(m_name);
-  code.append("::m_instance = ");
+  code.append("::");
+  code.append(m_memberPrefix);
+  code.append("instance = ");
 
   if (m_singletonType == SingletonType::Eager)
   {
@@ -556,19 +654,90 @@ QString Class::singletonGetInstanceImplementation()
 
   if (m_singletonType == LazyProtectedWithQMutex)
   {
-    appendLine(code, 1, "m_mutex.lock();");
-    appendLine(code, 1, "if (m_instance == nullptr)");
+    append(code, 1, m_memberPrefix);
+    code.append("mutex.lock();\n\n");
+    append(code, 1, "if (");
+    code.append(m_memberPrefix);
+    code.append("instance == nullptr)\n");
     code.append(openBlock(1));
-    append(code, 2, "m_instance = new ");//SingletonLazy();");
+    append(code, 2, m_memberPrefix);
+    code.append("instance = new ");
     code.append(m_name);
     code.append("();\n");
     code.append(closeBlock(1));
-    appendLine(code, 1, "m_mutex.unlock();");
     code.append("\n");
+    append(code, 1, m_memberPrefix);
+    code.append("mutex.unlock();\n\n");
   }
 
-  appendLine(code, 1, "return m_instance;");
+  append(code, 1, "return ");
+  code.append(m_memberPrefix);
+  code.append("instance;\n");
   code.append(closeBlock());
+
+  return code;
+}
+
+QString Class::dPointerClass()
+{
+  QString code;
+
+  code.append(m_name);
+  code.append(m_dPointerSuffix);
+
+  return code;
+}
+
+QString Class::dPointerDeclaration()
+{
+  QString code;
+
+  append(code, 1, "class ");
+  code.append(dPointerClass());
+  code.append(";\n");
+  append(code, 1, dPointerClass());
+  code.append("* ");
+  code.append(m_dPointerName);
+  code.append(";\n");
+
+  return code;
+}
+
+QString Class::dPointerImplementation()
+{
+  QString code;
+
+  append(code, 0, "class ");
+  code.append(m_name);
+  code.append("::");
+  code.append(dPointerClass());
+  code.append("\n");
+  code.append(openBlock(0));
+  code.append(section("public"));
+  append(code, 0, toDoImplementation());
+  append(code, 0, "};\n");
+
+  return code;
+
+}
+
+QString Class::dPointerInitialization(bool copyRhs)
+{
+  QString code;
+
+  append(code, 1, ": ");
+  code.append(m_dPointerName);
+  code.append("(new ");
+  code.append(dPointerClass());
+  code.append("(");
+  if (copyRhs)
+  {
+    code.append("*");
+    code.append(m_rhs);
+    code.append(".");
+    code.append(m_dPointerName);
+  }
+  code.append("))\n");
 
   return code;
 }
@@ -635,7 +804,7 @@ QString Class::classDeclaration()
   code.append("class ");
   code.append(m_name);
 
-  if (m_baseClass != nullptr || m_interfaces.isEmpty())
+  if (m_baseClass != nullptr || !m_interfaces.isEmpty())
   {
     code.append(" : ");
 
@@ -718,7 +887,9 @@ QString Class::constRef()
 
   code.append("(const ");
   code.append(m_name);
-  code.append("& rhs)");
+  code.append("& ");
+  code.append(m_rhs);
+  code.append(")");
 
   return code;
 }
@@ -729,7 +900,9 @@ QString Class::moveRef()
 
   code.append("(");
   code.append(m_name);
-  code.append("&& rhs)");
+  code.append("&& ");
+  code.append(m_rhs);
+  code.append(")");
 
   return code;
 }
@@ -830,14 +1003,39 @@ void Class::setSingletonType(Class::SingletonType singletonType)
 
 void Class::checkOptions()
 {
+  if (m_dPointerType != DPointerType::NoDPointer)
+  {
+    if (m_copyConstructorDeclarationType == DeclarationType::NoDeclaration)
+    {
+      m_copyConstructorDeclarationType = DeclarationType::Public;
+    }
+
+    if (m_copyOperatorDeclarationType == DeclarationType::NoDeclaration)
+    {
+      m_copyOperatorDeclarationType = DeclarationType::Public;
+    }
+
+    // TODO support move constructor/operator
+    m_moveConstructorDeclarationType = DeclarationType::NoDeclaration;
+    m_moveOperatorDeclarationType = DeclarationType::NoDeclaration;
+  }
+
   if (m_singletonType != SingletonType::NoSingleton)
   {
     m_constructorDeclarationType = DeclarationType::Private;
     m_destructorDeclarationType = DeclarationType::Private;
     m_copyConstructorDeclarationType = DeclarationType::Private;
     m_copyOperatorDeclarationType = DeclarationType::Private;
-    m_moveConstructorDeclarationType = DeclarationType::Private;
-    m_moveOperatorDeclarationType = DeclarationType::Private;
+
+    if (m_moveConstructorDeclarationType != DeclarationType::NoDeclaration)
+    {
+      m_moveConstructorDeclarationType = DeclarationType::Private;
+    }
+
+    if (m_moveOperatorDeclarationType != DeclarationType::NoDeclaration)
+    {
+      m_moveOperatorDeclarationType = DeclarationType::Private;
+    }
   }
 }
 
@@ -998,6 +1196,8 @@ QString Class::includes()
 
 QString Class::section(const QString& sectionName)
 {
+  m_sectionEmtpy = true;
+
   QString code = leadingWhitespace(0);
   code.append(sectionName);
   code.append(":\n");

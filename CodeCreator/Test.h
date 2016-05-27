@@ -1,15 +1,21 @@
 #ifndef Test_h
 #define Test_h
 
-#include "BaseClass.h"
-#include "InterfaceA.h"
-#include "InterfaceB.h"
+#include <QtCore\QMutex>
 
-class Test : public BaseClass, public InterfaceA, public InterfaceB
+class Test
 {
 public:
+  static Test* getInstance();
+
+private:
   Test();
-  ~Test();
+  Test(const Test& rhs){}
+  Test& operator= (const Test& rhs){}
+  ~Test(){}
+
+  static QMutex horst_mutex;
+  static Test* horst_instance;
 };
 
 #endif // Test_h
