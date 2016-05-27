@@ -12,9 +12,9 @@ class Function
 public:
   Function(const QString& function);
 
-  QString toString();
+  QString toString() const;
 
-  bool isValid();
+  bool isValid() const;
 
   enum Type
   {

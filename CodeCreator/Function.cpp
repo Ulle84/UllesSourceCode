@@ -52,7 +52,7 @@ Function::Function(const QString &function)
   m_returnType = parameter.type();
 }
 
-QString Function::toString()
+QString Function::toString() const
 {
   QString function;
 
@@ -87,7 +87,7 @@ QString Function::toString()
   return function;
 }
 
-bool Function::isValid()
+bool Function::isValid() const
 {
   return !m_name.isEmpty() && !m_returnType.isEmpty();
 }

@@ -9,13 +9,13 @@ public:
   Parameter(const QString& type, const QString& name, const QString& defaultValue = QString());
   Parameter(const QString& parameter);
 
-  bool isValid();
+  bool isValid() const;
 
-  QString toString();
+  QString toString() const;
 
-  QString type();
-  QString name();
-  QString defaultValue();
+  QString type() const;
+  QString name() const;
+  QString defaultValue() const;
 
 private:
   QString m_type;

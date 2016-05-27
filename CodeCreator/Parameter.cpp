@@ -36,12 +36,12 @@ Parameter::Parameter(const QString &parameter)
   m_type = splitted.join(" ");
 }
 
-bool Parameter::isValid()
+bool Parameter::isValid() const
 {
   return !m_type.isEmpty() && !m_name.isEmpty();
 }
 
-QString Parameter::toString()
+QString Parameter::toString() const
 {
   QString parameter;
   parameter.append(m_type);
@@ -57,17 +57,17 @@ QString Parameter::toString()
   return parameter;
 }
 
-QString Parameter::type()
+QString Parameter::type() const
 {
   return m_type;
 }
 
-QString Parameter::name()
+QString Parameter::name() const
 {
   return m_name;
 }
 
-QString Parameter::defaultValue()
+QString Parameter::defaultValue() const
 {
   return m_defaultValue;
 }
