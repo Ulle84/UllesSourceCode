@@ -5,6 +5,7 @@
 #include <QStringList>
 
 #include "Interface.h"
+#include "Method.h"
 
 class Class
 {
@@ -29,6 +30,7 @@ public:
   void setOutputDirectory(const QString& outputDirectory);
   void setOverwriteExistingFiles(bool overwriteExistingFiles);
   void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
+  void setMethods(const QList<Method>& methods);
 
   enum DeclarationType
   {
@@ -135,6 +137,7 @@ private:
   bool m_uppercaseHeaderGuard;
   SingletonType m_singletonType;
   DPointerType m_dPointerType;
+  QList<Method> m_methods;
 };
 
 #endif // CLASS_H

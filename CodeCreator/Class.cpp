@@ -868,6 +868,11 @@ void Class::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)
   m_uppercaseHeaderGuard = uppercaseHeaderGuard;
 }
 
+void Class::setMethods(const QList<Method>& methods)
+{
+  m_methods = methods;
+}
+
 QString Class::leadingWhitespace(unsigned int indent)
 {
   QString leadingWhitespace;

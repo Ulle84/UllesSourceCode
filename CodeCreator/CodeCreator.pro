@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     GeneratorInterface.cpp \
     Interface.cpp \
     GeneratorClass.cpp \
-    Class.cpp
+    Class.cpp \
+    Method.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -50,7 +51,8 @@ HEADERS  += CodeCreator.h \
     GeneratorInterface.h \
     Interface.h \
     GeneratorClass.h \
-    Class.h
+    Class.h \
+    Method.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

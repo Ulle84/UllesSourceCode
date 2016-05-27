@@ -261,3 +261,12 @@ return
 *trigger:* 
 *findings:*  
 )
+
+; --------------------------------------------------------------------------------
+; Hotkeys
+; --------------------------------------------------------------------------------
+;^NumPad9::                                                                 ; Convert text to upper
+; 
+; StringUpper Clipboard, Clipboard
+; SendInput %Clipboard%
+;RETURN
