@@ -12,7 +12,7 @@ public:
 
   Class(const QString& name);
 
-  QString name();
+  QString name() const;
 
   QString createHeader();
   QString createImplementation();
@@ -20,7 +20,7 @@ public:
 
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
-  void setBaseClass(const QString& baseClass);
+  void setBaseClass(const Class* baseClass);
   void setInterfaces(const QList<Interface>& interfaces);
   void setIndent(const QString& indent);
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
@@ -117,7 +117,7 @@ private:
 
   QString m_name;
   QStringList m_namespaceNames;
-  QString m_baseClass;
+  const Class* m_baseClass;
   QList<Interface> m_interfaces;
   QString m_indent;
 

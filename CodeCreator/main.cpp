@@ -45,7 +45,9 @@ int main(int argc, char* argv[])
   test.setMoveOperatorDeclarationType(Class::DeclarationType::NoDeclaration);
   test.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
   test.setOverwriteExistingFiles(true);
-  test.setBaseClass("BaseClass");
+
+  Class base("BaseClass");
+  test.setBaseClass(&base);
   //classGenerator.setSingletonType(ClassGenerator::SingletonType::Eager);
 
   QList<Interface> interfaces;

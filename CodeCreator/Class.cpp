@@ -22,7 +22,7 @@ Class::Class(const QString& name)
 {
 }
 
-QString Class::name()
+QString Class::name() const
 {
   return m_name;
 }
@@ -635,19 +635,19 @@ QString Class::classDeclaration()
   code.append("class ");
   code.append(m_name);
 
-  if (!m_baseClass.isEmpty() || m_interfaces.isEmpty())
+  if (m_baseClass != nullptr || m_interfaces.isEmpty())
   {
     code.append(" : ");
 
-    if (!m_baseClass.isEmpty())
+    if (m_baseClass != nullptr)
     {
       code.append("public ");
-      code.append(m_baseClass);
+      code.append(m_baseClass->name());
     }
 
     for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
     {
-      if (it != m_interfaces.begin() || !m_baseClass.isEmpty())
+      if (it != m_interfaces.begin() || m_baseClass != nullptr)
       {
         code.append(", ");
       }
@@ -763,7 +763,7 @@ void Class::setInterfaces(const QList<Interface> &interfaces)
   m_interfaces = interfaces;
 }
 
-void Class::setBaseClass(const QString& baseClass)
+void Class::setBaseClass(const Class* baseClass)
 {
   m_baseClass = baseClass;
 }
@@ -973,9 +973,9 @@ QString Class::includes()
 {
   QString code;
 
-  if (!m_baseClass.isEmpty())
+  if (m_baseClass != nullptr)
   {
-    code.append(include(m_baseClass, true, false));
+    code.append(include(m_baseClass->name(), true, false));
   }
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
@@ -983,7 +983,7 @@ QString Class::includes()
     code.append(include(it->name(), true, false));
   }
 
-  if (!m_baseClass.isEmpty() || !m_interfaces.isEmpty())
+  if (m_baseClass != nullptr || !m_interfaces.isEmpty())
   {
     code.append("\n");
   }
