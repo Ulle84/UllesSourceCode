@@ -31,7 +31,10 @@ SOURCES += main.cpp\
     Interface.cpp \
     GeneratorClass.cpp \
     Class.cpp \
-    Method.cpp
+    Method.cpp \
+    DeclarationTypeSelector.cpp \
+    DPointerTypeSelector.cpp \
+    SingletonTypeSelector.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -52,7 +55,10 @@ HEADERS  += CodeCreator.h \
     GeneratorClass.h \
     Class.h \
     Method.h \
-    GeneratorI.h
+    GeneratorI.h \
+    DeclarationTypeSelector.h \
+    DPointerTypeSelector.h \
+    SingletonTypeSelector.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -63,7 +69,10 @@ FORMS    += CodeCreator.ui \
     State.ui \
     ClassAdvanced.ui \
     GeneratorInterface.ui \
-    GeneratorClass.ui
+    GeneratorClass.ui \
+    DeclarationTypeSelector.ui \
+    DPointerTypeSelector.ui \
+    SingletonTypeSelector.ui
 
 OTHER_FILES += \
     ToDo.txt \

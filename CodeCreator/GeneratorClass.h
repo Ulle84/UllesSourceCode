@@ -26,8 +26,7 @@ public:
   void writeXml(QXmlStreamWriter& xml);
 
 private slots:
-  void on_checkBoxInherit_toggled(bool checked);
-  void on_lineEditBaseClass_textEdited(const QString &text);
+
 
 private:
   Ui::GeneratorClass* ui;

@@ -20,6 +20,9 @@ GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
 
   mCompleter = new QCompleter(templates);
   ui->lineEditBaseClass->setCompleter(mCompleter);
+
+  ui->destructor->setDeclarationType(Class::DeclarationType::Public);
+  ui->destructor->setEnabled(false);
 }
 
 GeneratorClass::~GeneratorClass()
@@ -37,7 +40,9 @@ bool GeneratorClass::generate(const QString &folder)
     return false;
   }
 
-  if (ui->checkBoxInherit->isChecked() && ui->lineEditBaseClass->text().isEmpty())
+  return true;
+
+  /*if (ui->checkBoxInherit->isChecked() && ui->lineEditBaseClass->text().isEmpty())
   {
     QMessageBox mb;
     mb.setText(tr("Please enter a base name!"));
@@ -111,7 +116,7 @@ bool GeneratorClass::generate(const QString &folder)
 
   options.sortSearchAndReplaceList();
 
-  return mCodeGenerator->copyFromTemplate(options);
+  return mCodeGenerator->copyFromTemplate(options);*/
 }
 
 void GeneratorClass::readXml(QXmlStreamReader &xml)
@@ -122,7 +127,7 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->lineEditName);
     }
-    else if (xml.name() == "DisableCopy")
+    /*else if (xml.name() == "DisableCopy")
     {
       XmlHelper::readXml(xml, ui->checkBoxDisableCopy);
     }
@@ -149,27 +154,17 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     else
     {
       xml.skipCurrentElement();
-    }
+    }*/
   }
 }
 
 void GeneratorClass::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
-  XmlHelper::writeXml(xml, "DisableCopy", ui->checkBoxDisableCopy);
+  /*XmlHelper::writeXml(xml, "DisableCopy", ui->checkBoxDisableCopy);
   XmlHelper::writeXml(xml, "UsePimpl", ui->checkBoxUsePimpl);
   XmlHelper::writeXml(xml, "QObject", ui->checkBoxQObject);
   XmlHelper::writeXml(xml, "Inherit", ui->checkBoxInherit);
   XmlHelper::writeXml(xml, "Type", ui->comboBoxType, false);
-  XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);
-}
-
-void GeneratorClass::on_checkBoxInherit_toggled(bool checked)
-{
-  ui->widgetInheritance->setEnabled(checked);
-}
-
-void GeneratorClass::on_lineEditBaseClass_textEdited(const QString &text)
-{
-  ui->checkBoxQObject->setChecked(text.left(1) == "Q");
+  XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);*/
 }

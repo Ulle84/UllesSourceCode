@@ -22,7 +22,7 @@ Class::Class(const QString& name)
     m_dPointerSuffix("P"),
     m_dPointerName("p"),
     m_rhs("rhs"),
-    m_baseClass(nullptr),
+    m_baseClass(0),
     m_memberPrefix("horst_"),
     m_dPointerType(DPointerType::NoDPointer)
 {
@@ -855,11 +855,11 @@ QString Class::classDeclaration()
   code.append("class ");
   code.append(m_name);
 
-  if (m_baseClass != nullptr || !m_interfaces.isEmpty())
+  if (m_baseClass != 0 || !m_interfaces.isEmpty())
   {
     code.append(" : ");
 
-    if (m_baseClass != nullptr)
+    if (m_baseClass != 0)
     {
       code.append("public ");
       code.append(m_baseClass->name());
@@ -867,7 +867,7 @@ QString Class::classDeclaration()
 
     for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
     {
-      if (it != m_interfaces.begin() || m_baseClass != nullptr)
+      if (it != m_interfaces.begin() || m_baseClass != 0)
       {
         code.append(", ");
       }
@@ -1227,7 +1227,7 @@ QString Class::includes()
 {
   QString code;
 
-  if (m_baseClass != nullptr)
+  if (m_baseClass != 0)
   {
     code.append(include(m_baseClass->name(), true, false));
   }
@@ -1237,7 +1237,7 @@ QString Class::includes()
     code.append(include(it->name(), true, false));
   }
 
-  if (m_baseClass != nullptr || !m_interfaces.isEmpty())
+  if (m_baseClass != 0 || !m_interfaces.isEmpty())
   {
     code.append("\n");
   }

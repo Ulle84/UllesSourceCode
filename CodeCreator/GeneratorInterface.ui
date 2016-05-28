@@ -39,7 +39,7 @@
      <item row="0" column="2">
       <widget class="QCheckBox" name="checkBoxPostfix">
        <property name="text">
-        <string>use prefix I</string>
+        <string>use postfix I</string>
        </property>
       </widget>
      </item>

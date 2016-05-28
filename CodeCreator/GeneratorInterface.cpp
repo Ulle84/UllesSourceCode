@@ -44,7 +44,9 @@ bool GeneratorInterface::generate(const QString &folder)
   c.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\"); // TODO take folder of UI
   c.setOverwriteExistingFiles(true);
 
-  c.createHeaderFile();
+  qDebug() << c.createHeader();
+
+  //c.createHeaderFile();
 
   return true;
 

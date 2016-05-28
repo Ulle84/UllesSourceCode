@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>692</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,116 +15,156 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="checkBoxQObjectMacro">
+         <property name="text">
+          <string>create Q_OBJECT macro</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lineEditName"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>move constructor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>base class</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>copy operator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>interfaces</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEditBaseClass"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>copy constructor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>name</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLineEdit" name="lineEditName"/>
+     <item row="11" column="1">
+      <widget class="QPlainTextEdit" name="plainTextEdit"/>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QCheckBox" name="checkBoxInherit">
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>inherit</string>
+        <string>constructor</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QWidget" name="widgetInheritance" native="true">
-       <property name="enabled">
-        <bool>false</bool>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>destructor</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QComboBox" name="comboBoxType">
-          <item>
-           <property name="text">
-            <string notr="true">public</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string notr="true">protected</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string notr="true">private</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>from</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lineEditBaseClass"/>
-        </item>
-       </layout>
       </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="DeclarationTypeSelector" name="constructor"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>QObject</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>move operator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="DeclarationTypeSelector" name="copyConstructor"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="DeclarationTypeSelector" name="destructor"/>
+     </item>
+     <item row="6" column="1">
+      <widget class="DeclarationTypeSelector" name="copyOperator"/>
+     </item>
+     <item row="7" column="1">
+      <widget class="DeclarationTypeSelector" name="moveConstructor"/>
+     </item>
+     <item row="8" column="1">
+      <widget class="DeclarationTypeSelector" name="moveOperator"/>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>d-pointer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="DPointerTypeSelector" name="comboBox"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>singleton</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="SingletonTypeSelector" name="comboBox_2"/>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxQObject">
-     <property name="text">
-      <string>use macro Q_OBJECT</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxDisableCopy">
-     <property name="text">
-      <string>declare constructor, move constructor and assignment operator private</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUsePimpl">
-     <property name="text">
-      <string>use pImpl</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>131</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DeclarationTypeSelector</class>
+   <extends>QComboBox</extends>
+   <header>DeclarationTypeSelector.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DPointerTypeSelector</class>
+   <extends>QComboBox</extends>
+   <header>DPointerTypeSelector.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SingletonTypeSelector</class>
+   <extends>QComboBox</extends>
+   <header>SingletonTypeSelector.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
