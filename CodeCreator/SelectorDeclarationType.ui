@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DeclarationTypeSelector</class>
- <widget class="QWidget" name="DeclarationTypeSelector">
+ <class>SelectorDeclarationType</class>
+ <widget class="QWidget" name="SelectorDeclarationType">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>146</width>
-    <height>26</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,7 +26,7 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QComboBox" name="comboBox"/>
    </item>
   </layout>

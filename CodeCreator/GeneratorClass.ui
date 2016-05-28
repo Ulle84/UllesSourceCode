@@ -93,7 +93,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="DeclarationTypeSelector" name="constructor"/>
+      <widget class="SelectorDeclarationType" name="constructor"/>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
@@ -110,19 +110,19 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="DeclarationTypeSelector" name="copyConstructor"/>
+      <widget class="SelectorDeclarationType" name="copyConstructor"/>
      </item>
      <item row="4" column="1">
-      <widget class="DeclarationTypeSelector" name="destructor"/>
+      <widget class="SelectorDeclarationType" name="destructor"/>
      </item>
      <item row="6" column="1">
-      <widget class="DeclarationTypeSelector" name="copyOperator"/>
+      <widget class="SelectorDeclarationType" name="copyOperator"/>
      </item>
      <item row="7" column="1">
-      <widget class="DeclarationTypeSelector" name="moveConstructor"/>
+      <widget class="SelectorDeclarationType" name="moveConstructor"/>
      </item>
      <item row="8" column="1">
-      <widget class="DeclarationTypeSelector" name="moveOperator"/>
+      <widget class="SelectorDeclarationType" name="moveOperator"/>
      </item>
      <item row="9" column="0">
       <widget class="QLabel" name="label_11">
@@ -132,7 +132,7 @@
       </widget>
      </item>
      <item row="9" column="1">
-      <widget class="DPointerTypeSelector" name="comboBox"/>
+      <widget class="SelectorDPointerType" name="comboBoxDPointer"/>
      </item>
      <item row="10" column="0">
       <widget class="QLabel" name="label_12">
@@ -142,7 +142,7 @@
       </widget>
      </item>
      <item row="10" column="1">
-      <widget class="SingletonTypeSelector" name="comboBox_2"/>
+      <widget class="SelectorSingletonType" name="comboBoxSingleton"/>
      </item>
     </layout>
    </item>
@@ -150,19 +150,19 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DeclarationTypeSelector</class>
+   <class>SelectorDeclarationType</class>
    <extends>QComboBox</extends>
-   <header>DeclarationTypeSelector.h</header>
+   <header>SelectorDeclarationType.h</header>
   </customwidget>
   <customwidget>
-   <class>DPointerTypeSelector</class>
+   <class>SelectorDPointerType</class>
    <extends>QComboBox</extends>
-   <header>DPointerTypeSelector.h</header>
+   <header>SelectorDPointerType.h</header>
   </customwidget>
   <customwidget>
-   <class>SingletonTypeSelector</class>
+   <class>SelectorSingletonType</class>
    <extends>QComboBox</extends>
-   <header>SingletonTypeSelector.h</header>
+   <header>SelectorSingletonType.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

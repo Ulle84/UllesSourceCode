@@ -1,9 +1,9 @@
-#include "DPointerTypeSelector.h"
-#include "ui_DPointerTypeSelector.h"
+#include "SelectorDPointerType.h"
+#include "ui_SelectorDPointerType.h"
 
-DPointerTypeSelector::DPointerTypeSelector(QWidget *parent) :
+SelectorDPointerType::SelectorDPointerType(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::DPointerTypeSelector)
+  ui(new Ui::SelectorDPointerType)
 {
   ui->setupUi(this);
 
@@ -13,16 +13,16 @@ DPointerTypeSelector::DPointerTypeSelector(QWidget *parent) :
   //ui->comboBox->addItem(tr("inheritable d-pointer"), Class::DPointerType::InheritableDPointer);
 }
 
-DPointerTypeSelector::~DPointerTypeSelector()
+SelectorDPointerType::~SelectorDPointerType()
 {
   delete ui;
 }
 
-Class::DPointerType DPointerTypeSelector::dPointerType()
+Class::DPointerType SelectorDPointerType::dPointerType()
 {
-  int declarationType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
+  int dPointerType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
 
-  switch(declarationType)
+  switch(dPointerType)
   {
   case Class::DPointerType::NoDPointer:
     return Class::DPointerType::NoDPointer;
@@ -35,7 +35,7 @@ Class::DPointerType DPointerTypeSelector::dPointerType()
   }
 }
 
-bool DPointerTypeSelector::setDPointerType(Class::DPointerType dPointerType)
+bool SelectorDPointerType::setDPointerType(Class::DPointerType dPointerType)
 {
   for (int i = 0; i < ui->comboBox->count(); i++)
   {
@@ -49,7 +49,7 @@ bool DPointerTypeSelector::setDPointerType(Class::DPointerType dPointerType)
   return false;
 }
 
-void DPointerTypeSelector::setEnabled(bool enabled)
+void SelectorDPointerType::setEnabled(bool enabled)
 {
   ui->comboBox->setEnabled(enabled);
 }

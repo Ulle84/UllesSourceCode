@@ -1,9 +1,9 @@
-#include "SingletonTypeSelector.h"
-#include "ui_SingletonTypeSelector.h"
+#include "SelectorSingletonType.h"
+#include "ui_SelectorSingletonType.h"
 
-SingletonTypeSelector::SingletonTypeSelector(QWidget *parent) :
+SelectorSingletonType::SelectorSingletonType(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::SingletonTypeSelector)
+  ui(new Ui::SelectorSingletonType)
 {
   ui->setupUi(this);
 
@@ -12,12 +12,12 @@ SingletonTypeSelector::SingletonTypeSelector(QWidget *parent) :
   ui->comboBox->addItem(tr("lazy initialization, protected with QMutex"), Class::SingletonType::LazyProtectedWithQMutex);
 }
 
-SingletonTypeSelector::~SingletonTypeSelector()
+SelectorSingletonType::~SelectorSingletonType()
 {
   delete ui;
 }
 
-Class::SingletonType SingletonTypeSelector::singletonType()
+Class::SingletonType SelectorSingletonType::singletonType()
 {
   int singletonType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
 
@@ -32,7 +32,7 @@ Class::SingletonType SingletonTypeSelector::singletonType()
   }
 }
 
-bool SingletonTypeSelector::setSingletonType(Class::SingletonType singletonType)
+bool SelectorSingletonType::setSingletonType(Class::SingletonType singletonType)
 {
   for (int i = 0; i < ui->comboBox->count(); i++)
   {
@@ -46,7 +46,7 @@ bool SingletonTypeSelector::setSingletonType(Class::SingletonType singletonType)
   return false;
 }
 
-void SingletonTypeSelector::setEnabled(bool enabled)
+void SelectorSingletonType::setEnabled(bool enabled)
 {
   ui->comboBox->setEnabled(enabled);
 }

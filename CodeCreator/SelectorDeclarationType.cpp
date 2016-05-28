@@ -1,9 +1,9 @@
-#include "DeclarationTypeSelector.h"
-#include "ui_DeclarationTypeSelector.h"
+#include "SelectorDeclarationType.h"
+#include "ui_SelectorDeclarationType.h"
 
-DeclarationTypeSelector::DeclarationTypeSelector(QWidget *parent) :
+SelectorDeclarationType::SelectorDeclarationType(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::DeclarationTypeSelector)
+  ui(new Ui::SelectorDeclarationType)
 {
   ui->setupUi(this);
 
@@ -12,12 +12,12 @@ DeclarationTypeSelector::DeclarationTypeSelector(QWidget *parent) :
   ui->comboBox->addItem(tr("private declaration"), Class::DeclarationType::Private);
 }
 
-DeclarationTypeSelector::~DeclarationTypeSelector()
+SelectorDeclarationType::~SelectorDeclarationType()
 {
   delete ui;
 }
 
-Class::DeclarationType DeclarationTypeSelector::declarationType()
+Class::DeclarationType SelectorDeclarationType::declarationType()
 {
   int declarationType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
 
@@ -32,7 +32,7 @@ Class::DeclarationType DeclarationTypeSelector::declarationType()
   }
 }
 
-bool DeclarationTypeSelector::setDeclarationType(Class::DeclarationType declarationType)
+bool SelectorDeclarationType::setDeclarationType(Class::DeclarationType declarationType)
 {
   for (int i = 0; i < ui->comboBox->count(); i++)
   {
@@ -46,7 +46,7 @@ bool DeclarationTypeSelector::setDeclarationType(Class::DeclarationType declarat
   return false;
 }
 
-void DeclarationTypeSelector::setEnabled(bool enabled)
+void SelectorDeclarationType::setEnabled(bool enabled)
 {
   ui->comboBox->setEnabled(enabled);
 }
