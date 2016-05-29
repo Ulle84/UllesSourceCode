@@ -50,3 +50,8 @@ void SelectorSingletonType::setEnabled(bool enabled)
 {
   ui->comboBox->setEnabled(enabled);
 }
+
+void SelectorSingletonType::on_comboBox_currentIndexChanged(int index)
+{
+  emit singletonTypeChanged(ui->comboBox->itemData(index).toInt());
+}

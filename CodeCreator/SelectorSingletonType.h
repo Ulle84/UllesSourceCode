@@ -22,6 +22,12 @@ public:
 
   void setEnabled(bool enabled);
 
+signals:
+  void singletonTypeChanged(int dPointerType);
+
+private slots:
+  void on_comboBox_currentIndexChanged(int index);
+
 private:
   Ui::SelectorSingletonType *ui;
 };

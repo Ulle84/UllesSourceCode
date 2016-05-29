@@ -26,7 +26,7 @@ public:
   void writeXml(QXmlStreamWriter& xml);
 
 private slots:
-
+  void on_constructor_declarationTypeChanged(int declarationType);
 
 private:
   Ui::GeneratorClass* ui;

@@ -53,3 +53,8 @@ void SelectorDPointerType::setEnabled(bool enabled)
 {
   ui->comboBox->setEnabled(enabled);
 }
+
+void SelectorDPointerType::on_comboBox_currentIndexChanged(int index)
+{
+  emit dPointerTypeChanged(ui->comboBox->itemData(index).toInt());
+}

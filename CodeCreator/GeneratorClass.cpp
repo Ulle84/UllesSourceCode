@@ -168,3 +168,9 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "Type", ui->comboBoxType, false);
   XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);*/
 }
+
+void GeneratorClass::on_constructor_declarationTypeChanged(int declarationType)
+{
+  QMessageBox mb;
+  mb.exec();
+}

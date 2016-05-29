@@ -28,7 +28,7 @@ Class::DeclarationType SelectorDeclarationType::declarationType()
   case Class::DeclarationType::Public:
     return Class::DeclarationType::Public;
   case Class::DeclarationType::Private:
-      return Class::DeclarationType::Private;
+    return Class::DeclarationType::Private;
   }
 }
 
@@ -49,4 +49,9 @@ bool SelectorDeclarationType::setDeclarationType(Class::DeclarationType declarat
 void SelectorDeclarationType::setEnabled(bool enabled)
 {
   ui->comboBox->setEnabled(enabled);
+}
+
+void SelectorDeclarationType::on_comboBox_currentIndexChanged(int index)
+{
+  emit declarationTypeChanged(ui->comboBox->itemData(index).toInt());
 }
