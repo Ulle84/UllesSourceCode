@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QMessageBox>
 #include <QCompleter>
 
@@ -6,6 +7,7 @@
 #include "XmlHelper.h"
 #include "Options.h"
 #include "CodeGenerator.h"
+#include "Class.h"
 
 GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
@@ -21,8 +23,8 @@ GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
   mCompleter = new QCompleter(templates);
   ui->lineEditBaseClass->setCompleter(mCompleter);
 
+  ui->constructor->setDeclarationType(Class::DeclarationType::Public);
   ui->destructor->setDeclarationType(Class::DeclarationType::Public);
-  ui->destructor->setEnabled(false);
 }
 
 GeneratorClass::~GeneratorClass()
@@ -32,13 +34,49 @@ GeneratorClass::~GeneratorClass()
 
 bool GeneratorClass::generate(const QString &folder)
 {
-  if (ui->lineEditName->text().isEmpty())
+  QString className = ui->lineEditName->text();
+
+  if (className.isEmpty())
   {
     QMessageBox mb;
     mb.setText(tr("Please enter a name!"));
     mb.exec();
     return false;
   }
+
+  Class c(className);
+  c.setConstructorDeclarationType(ui->constructor->declarationType());
+  c.setDestructorDeclarationType(ui->destructor->declarationType());
+  c.setCopyConstructorDeclarationType(ui->copyConstructor->declarationType());
+  c.setCopyOperatorDeclarationType(ui->copyOperator->declarationType());
+  c.setMoveConstructorDeclarationType(ui->moveConstructor->declarationType());
+  c.setMoveOperatorDeclarationType(ui->moveOperator->declarationType());
+  c.setSingletonType(ui->singleton->singletonType());
+  c.setDPointerType(ui->dPointer->dPointerType());
+  c.setOutputDirectory(folder);
+  c.setIncludeQObjectMacro(ui->checkBoxQObjectMacro->isChecked());
+  c.setDeclareConstructorExplicit(ui->checkBoxExplicitDestructor->isChecked());
+  c.setDeclareDestructorVirtual(ui->checkBoxVirtualDesctructor->isChecked());
+  c.setOverwriteExistingFiles(true);
+
+  QString baseClass = ui->lineEditBaseClass->text();
+  if (!baseClass.isEmpty())
+  {
+    Class baseClass(ui->lineEditBaseClass->text());
+    c.setBaseClass(&baseClass);
+  }
+
+  QString namespaces = ui->plainTextEditNamespaces->toPlainText();
+
+  if (!namespaces.isEmpty())
+  {
+    c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
+  }
+
+
+  qDebug() << c.createHeader();
+  qDebug() << "-----------------------------------------";
+  qDebug() << c.createImplementation();
 
   return true;
 
@@ -169,8 +207,27 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);*/
 }
 
-void GeneratorClass::on_constructor_declarationTypeChanged(int declarationType)
+void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
 {
-  QMessageBox mb;
-  mb.exec();
+  bool enabled = true;
+
+  if (singletonType != Class::SingletonType::NoSingleton)
+  {
+    ui->constructor->setDeclarationType(Class::DeclarationType::Private);
+    ui->destructor->setDeclarationType(Class::DeclarationType::Private);
+    ui->copyConstructor->setDeclarationType(Class::DeclarationType::Private);
+    ui->copyOperator->setDeclarationType(Class::DeclarationType::Private);
+    ui->moveConstructor->setDeclarationType(Class::DeclarationType::NoDeclaration);
+    ui->moveOperator->setDeclarationType(Class::DeclarationType::NoDeclaration);
+
+    enabled = false;
+  }
+
+  ui->constructor->setEnabled(enabled);
+  ui->destructor->setEnabled(enabled);
+  ui->copyConstructor->setEnabled(enabled);
+  ui->copyOperator->setEnabled(enabled);
+  ui->moveConstructor->setEnabled(enabled);
+  ui->moveOperator->setEnabled(enabled);
+
 }

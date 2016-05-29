@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>692</width>
-    <height>498</height>
+    <width>718</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,12 +16,26 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="1">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item row="10" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QCheckBox" name="checkBoxQObjectMacro">
          <property name="text">
           <string>create Q_OBJECT macro</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxVirtualDesctructor">
+         <property name="text">
+          <string>virtual destructor</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxExplicitDestructor">
+         <property name="text">
+          <string>explicit constructor</string>
          </property>
         </widget>
        </item>
@@ -30,7 +44,7 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="lineEditName"/>
      </item>
-     <item row="7" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
         <string>move constructor</string>
@@ -44,14 +58,14 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="5" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
         <string>copy operator</string>
        </property>
       </widget>
      </item>
-     <item row="11" column="0">
+     <item row="12" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>interfaces</string>
@@ -61,7 +75,7 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="lineEditBaseClass"/>
      </item>
-     <item row="5" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
         <string>copy constructor</string>
@@ -75,34 +89,24 @@
        </property>
       </widget>
      </item>
-     <item row="11" column="1">
-      <widget class="QPlainTextEdit" name="plainTextEdit"/>
+     <item row="12" column="1">
+      <widget class="QPlainTextEdit" name="plainTextEditInterfaces"/>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>constructor</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>destructor</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="SelectorDeclarationType" name="constructor"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>QObject</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0">
+     <item row="7" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
         <string>move operator</string>
@@ -110,39 +114,59 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="SelectorDeclarationType" name="copyConstructor"/>
-     </item>
-     <item row="4" column="1">
-      <widget class="SelectorDeclarationType" name="destructor"/>
-     </item>
-     <item row="6" column="1">
       <widget class="SelectorDeclarationType" name="copyOperator"/>
      </item>
-     <item row="7" column="1">
+     <item row="4" column="1">
+      <widget class="SelectorDeclarationType" name="copyConstructor"/>
+     </item>
+     <item row="6" column="1">
       <widget class="SelectorDeclarationType" name="moveConstructor"/>
      </item>
-     <item row="8" column="1">
-      <widget class="SelectorDeclarationType" name="moveOperator"/>
-     </item>
-     <item row="9" column="0">
+     <item row="8" column="0">
       <widget class="QLabel" name="label_11">
        <property name="text">
         <string>d-pointer</string>
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
-      <widget class="SelectorDPointerType" name="comboBoxDPointer"/>
+     <item row="7" column="1">
+      <widget class="SelectorDeclarationType" name="moveOperator"/>
      </item>
-     <item row="10" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="label_12">
        <property name="text">
         <string>singleton</string>
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
-      <widget class="SelectorSingletonType" name="comboBoxSingleton"/>
+     <item row="8" column="1">
+      <widget class="SelectorDPointerType" name="dPointer"/>
+     </item>
+     <item row="9" column="1">
+      <widget class="SelectorSingletonType" name="singleton"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>further options</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="SelectorDeclarationType" name="destructor"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="SelectorDeclarationType" name="constructor"/>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>namespaces</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QPlainTextEdit" name="plainTextEditNamespaces"/>
      </item>
     </layout>
    </item>

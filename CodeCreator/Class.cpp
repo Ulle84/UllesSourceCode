@@ -23,7 +23,7 @@ Class::Class(const QString& name)
     m_dPointerName("p"),
     m_rhs("rhs"),
     m_baseClass(0),
-    m_memberPrefix("horst_"),
+    m_memberPrefix("m_"),
     m_dPointerType(DPointerType::NoDPointer)
 {
 }
@@ -342,7 +342,18 @@ QString Class::constructorDeclaration()
   }
 
   code.append(m_name);
-  code.append("();\n");
+  code.append("()");
+
+  if (m_singletonType != SingletonType::NoSingleton)
+  {
+    code.append("{}");
+  }
+  else
+  {
+    code.append(";");
+  }
+
+  code.append("\n");
 
   return code;
 }
@@ -1227,17 +1238,26 @@ QString Class::includes()
 {
   QString code;
 
+  bool includeLineAdded = false;
+
   if (m_baseClass != 0)
   {
     code.append(include(m_baseClass->name(), true, false));
+    includeLineAdded = true;
+
   }
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
   {
-    code.append(include(it->name(), true, false));
+    if (!it->name().isEmpty())
+    {
+      code.append(include(it->name(), true, false));
+      includeLineAdded = true;
+    }
+
   }
 
-  if (m_baseClass != 0 || !m_interfaces.isEmpty())
+  if (includeLineAdded)
   {
     code.append("\n");
   }
