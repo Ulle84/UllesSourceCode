@@ -9,6 +9,10 @@ class QComboBox;
 class QLineEdit;
 class QPlainTextEdit;
 
+class SelectorDeclarationType;
+class SelectorSingletonType;
+class SelectorDPointerType;
+
 class XmlHelper
 {
 public:
@@ -27,6 +31,18 @@ public:
   // QPlainTextEdit
   static void writeXml(QXmlStreamWriter& xml, const QString& name, const QPlainTextEdit* plainTextEdit);
   static void readXml(QXmlStreamReader& xml, QPlainTextEdit* plainTextEdit);
+
+  // SelectorDeclarationType
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const SelectorDeclarationType* selectorDeclarationType);
+  static void readXml(QXmlStreamReader& xml, SelectorDeclarationType* selectorDeclarationType);
+
+  // SelectorSingletonType
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const SelectorSingletonType* selectorSingletonType);
+  static void readXml(QXmlStreamReader& xml, SelectorSingletonType* selectorSingletonType);
+
+  // SelectorDeclarationType
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const SelectorDPointerType* selectorDPointerType);
+  static void readXml(QXmlStreamReader& xml, SelectorDPointerType* selectorDPointerType);
 };
 
 #endif // XMLHELPER_H

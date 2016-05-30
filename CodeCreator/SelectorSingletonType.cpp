@@ -17,19 +17,9 @@ SelectorSingletonType::~SelectorSingletonType()
   delete ui;
 }
 
-Class::SingletonType SelectorSingletonType::singletonType()
+Class::SingletonType SelectorSingletonType::singletonType() const
 {
-  int singletonType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
-
-  switch(singletonType)
-  {
-  case Class::SingletonType::NoSingleton:
-    return Class::SingletonType::NoSingleton;
-  case Class::SingletonType::Eager:
-    return Class::SingletonType::Eager;
-  case Class::SingletonType::LazyProtectedWithQMutex:
-    return Class::SingletonType::LazyProtectedWithQMutex;
-  }
+  return static_cast<Class::SingletonType>(ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt());
 }
 
 bool SelectorSingletonType::setSingletonType(Class::SingletonType singletonType)

@@ -17,7 +17,7 @@ public:
   explicit SelectorDeclarationType(QWidget *parent = 0);
   ~SelectorDeclarationType();
 
-  Class::DeclarationType declarationType();
+  Class::DeclarationType declarationType() const;
   bool setDeclarationType(Class::DeclarationType declarationType);
 
   void setEnabled(bool enabled);

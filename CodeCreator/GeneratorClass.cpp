@@ -55,7 +55,7 @@ bool GeneratorClass::generate(const QString &folder)
   c.setDPointerType(ui->dPointer->dPointerType());
   c.setOutputDirectory(folder);
   c.setIncludeQObjectMacro(ui->checkBoxQObjectMacro->isChecked());
-  c.setDeclareConstructorExplicit(ui->checkBoxExplicitDestructor->isChecked());
+  c.setDeclareConstructorExplicit(ui->checkBoxExplicitConstructor->isChecked());
   c.setDeclareDestructorVirtual(ui->checkBoxVirtualDesctructor->isChecked());
   c.setOverwriteExistingFiles(true);
 
@@ -73,10 +73,29 @@ bool GeneratorClass::generate(const QString &folder)
     c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
   }
 
+  QList<Interface> interfaces;
+  QString interfaceText = ui->plainTextEditInterfaces->toPlainText();
+
+  if (!interfaceText.isEmpty())
+  {
+    QStringList interfaceList = interfaceText.split("\n");
+    for (auto it = interfaceList.begin(); it != interfaceList.end(); it++)
+    {
+      interfaces.append(Interface(*it, "void toDo();"));
+    }
+  }
+
+  c.setInterfaces(interfaces);
+
 
   qDebug() << c.createHeader();
   qDebug() << "-----------------------------------------";
   qDebug() << c.createImplementation();
+
+  ui->plainTextEditTestOutput->clear();
+  ui->plainTextEditTestOutput->appendPlainText(c.createHeader());
+  ui->plainTextEditTestOutput->appendPlainText("\n\n\n");
+  ui->plainTextEditTestOutput->appendPlainText(c.createImplementation());
 
   return true;
 
@@ -159,52 +178,93 @@ bool GeneratorClass::generate(const QString &folder)
 
 void GeneratorClass::readXml(QXmlStreamReader &xml)
 {
+  // TODO can this be be done with QMap<String, XmlBlubI> ?
   while (xml.readNextStartElement())
   {
     if (xml.name() == "Name")
     {
       XmlHelper::readXml(xml, ui->lineEditName);
     }
-    /*else if (xml.name() == "DisableCopy")
-    {
-      XmlHelper::readXml(xml, ui->checkBoxDisableCopy);
-    }
-    else if (xml.name() == "UsePimpl")
-    {
-      XmlHelper::readXml(xml, ui->checkBoxUsePimpl);
-    }
-    else if (xml.name() == "QObject")
-    {
-      XmlHelper::readXml(xml, ui->checkBoxQObject);
-    }
-    else if (xml.name() == "Inherit")
-    {
-      XmlHelper::readXml(xml, ui->checkBoxInherit);
-    }
-    else if (xml.name() == "Type")
-    {
-      XmlHelper::readXml(xml, ui->comboBoxType);
-    }
     else if (xml.name() == "BaseClass")
     {
       XmlHelper::readXml(xml, ui->lineEditBaseClass);
     }
+    else if (xml.name() == "ConstructorDeclaration")
+    {
+      XmlHelper::readXml(xml, ui->constructor);
+    }
+    else if (xml.name() == "DestructorDeclaration")
+    {
+      XmlHelper::readXml(xml, ui->destructor);
+    }
+    else if (xml.name() == "CopyConstructorDeclaration")
+    {
+      XmlHelper::readXml(xml, ui->copyConstructor);
+    }
+    else if (xml.name() == "CopyOperatorDeclaration")
+    {
+      XmlHelper::readXml(xml, ui->copyOperator);
+    }
+    else if (xml.name() == "MoveConstructorDeclaration")
+    {
+      XmlHelper::readXml(xml, ui->moveConstructor);
+    }
+    else if (xml.name() == "MoveOperatorDeclaration")
+    {
+      XmlHelper::readXml(xml, ui->moveOperator);
+    }
+    else if (xml.name() == "SingletonType")
+    {
+      XmlHelper::readXml(xml, ui->singleton);
+    }
+    else if (xml.name() == "DPointerType")
+    {
+      XmlHelper::readXml(xml, ui->dPointer);
+    }
+    else if (xml.name() == "QObjectMacro")
+    {
+      XmlHelper::readXml(xml, ui->checkBoxQObjectMacro);
+    }
+    else if (xml.name() == "VirtualDestructor")
+    {
+      XmlHelper::readXml(xml, ui->checkBoxVirtualDesctructor);
+    }
+    else if (xml.name() == "ExplicitConstructor")
+    {
+      XmlHelper::readXml(xml, ui->checkBoxExplicitConstructor);
+    }
+    else if (xml.name() == "Namespaces")
+    {
+      XmlHelper::readXml(xml, ui->plainTextEditNamespaces);
+    }
+    else if (xml.name() == "Interfaces")
+    {
+      XmlHelper::readXml(xml, ui->plainTextEditInterfaces);
+    }
     else
     {
       xml.skipCurrentElement();
-    }*/
+    }
   }
 }
 
 void GeneratorClass::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
-  /*XmlHelper::writeXml(xml, "DisableCopy", ui->checkBoxDisableCopy);
-  XmlHelper::writeXml(xml, "UsePimpl", ui->checkBoxUsePimpl);
-  XmlHelper::writeXml(xml, "QObject", ui->checkBoxQObject);
-  XmlHelper::writeXml(xml, "Inherit", ui->checkBoxInherit);
-  XmlHelper::writeXml(xml, "Type", ui->comboBoxType, false);
-  XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);*/
+  XmlHelper::writeXml(xml, "BaseClass", ui->lineEditBaseClass);
+  XmlHelper::writeXml(xml, "ConstructorDeclaration", ui->constructor);
+  XmlHelper::writeXml(xml, "DestructorDeclaration", ui->destructor);
+  XmlHelper::writeXml(xml, "CopyConstructorDeclaration", ui->copyConstructor);
+  XmlHelper::writeXml(xml, "CopyOperatorDeclaration", ui->copyOperator);
+  XmlHelper::writeXml(xml, "MoveConstructorDeclaration", ui->moveConstructor);
+  XmlHelper::writeXml(xml, "MoveOperatorDeclaration", ui->moveOperator);
+  XmlHelper::writeXml(xml, "SingletonType", ui->singleton);
+  XmlHelper::writeXml(xml, "DPointerType", ui->dPointer);
+  XmlHelper::writeXml(xml, "QObjectMacro", ui->checkBoxQObjectMacro);
+  XmlHelper::writeXml(xml, "VirtualDestructor", ui->checkBoxVirtualDesctructor);
+  XmlHelper::writeXml(xml, "ExplicitConstructor", ui->checkBoxExplicitConstructor);
+  XmlHelper::writeXml(xml, "Namespaces", ui->plainTextEditNamespaces);
+  XmlHelper::writeXml(xml, "Interfaces", ui->plainTextEditInterfaces);
 }
 
 void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)

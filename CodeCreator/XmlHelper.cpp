@@ -4,6 +4,9 @@
 #include <QPlainTextEdit>
 #include <QStringList>
 
+#include "SelectorDeclarationType.h"
+#include "SelectorDPointerType.h"
+#include "SelectorSingletonType.h"
 #include "XmlHelper.h"
 
 void XmlHelper::writeXml(QXmlStreamWriter& xml, const QString &name, const QCheckBox* checkBox)
@@ -102,4 +105,34 @@ void XmlHelper::readXml(QXmlStreamReader &xml, QPlainTextEdit* plainTextEdit)
     }
   }
   plainTextEdit->setPlainText(lines.join("\n"));
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter &xml, const QString &name, const SelectorDeclarationType *selectorDeclarationType)
+{
+  xml.writeTextElement(name, QString::number(selectorDeclarationType->declarationType()));
+}
+
+void XmlHelper::readXml(QXmlStreamReader &xml, SelectorDeclarationType *selectorDeclarationType)
+{
+  selectorDeclarationType->setDeclarationType(static_cast<Class::DeclarationType>(xml.readElementText().toInt()));
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter &xml, const QString &name, const SelectorSingletonType *selectorSingletonType)
+{
+  xml.writeTextElement(name, QString::number(selectorSingletonType->singletonType()));
+}
+
+void XmlHelper::readXml(QXmlStreamReader &xml, SelectorSingletonType *selectorSingletonType)
+{
+  selectorSingletonType->setSingletonType(static_cast<Class::SingletonType>(xml.readElementText().toInt()));
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter &xml, const QString &name, const SelectorDPointerType *selectorDPointerType)
+{
+  xml.writeTextElement(name, QString::number(selectorDPointerType->dPointerType()));
+}
+
+void XmlHelper::readXml(QXmlStreamReader &xml, SelectorDPointerType *selectorDPointerType)
+{
+  selectorDPointerType->setDPointerType(static_cast<Class::DPointerType>(xml.readElementText().toInt()));
 }

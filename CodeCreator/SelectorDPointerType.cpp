@@ -18,21 +18,9 @@ SelectorDPointerType::~SelectorDPointerType()
   delete ui;
 }
 
-Class::DPointerType SelectorDPointerType::dPointerType()
+Class::DPointerType SelectorDPointerType::dPointerType() const
 {
-  int dPointerType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
-
-  switch(dPointerType)
-  {
-  case Class::DPointerType::NoDPointer:
-    return Class::DPointerType::NoDPointer;
-  case Class::DPointerType::DPointer:
-    return Class::DPointerType::DPointer;
-    //case Class::DPointerType::DPointerWithQPointer:
-    //    return Class::DPointerType::DPointerWithQPointer;
-    //case Class::DPointerType::InheritableDPointer:
-    //  return Class::DPointerType::InheritableDPointer;
-  }
+  return static_cast<Class::DPointerType>(ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt());
 }
 
 bool SelectorDPointerType::setDPointerType(Class::DPointerType dPointerType)

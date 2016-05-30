@@ -84,8 +84,8 @@ private:
   QString closeBlock(unsigned int indent = 0);
   QString constRef();
   QString moveRef();
-  QString toDo(const QString& task);
-  QString toDoImplementation();
+  QString toDo(const QString& task, unsigned int indent = 0);
+  QString toDoImplementation(unsigned int indent = 0);
 
   QString constructorDeclaration();
   QString constructorImplementation();

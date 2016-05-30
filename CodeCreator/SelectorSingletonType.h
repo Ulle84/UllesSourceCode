@@ -17,7 +17,7 @@ public:
   explicit SelectorSingletonType(QWidget *parent = 0);
   ~SelectorSingletonType();
 
-  Class::SingletonType singletonType();
+  Class::SingletonType singletonType() const;
   bool setSingletonType(Class::SingletonType singletonType);
 
   void setEnabled(bool enabled);

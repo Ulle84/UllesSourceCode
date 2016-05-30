@@ -17,7 +17,7 @@ public:
   explicit SelectorDPointerType(QWidget *parent = 0);
   ~SelectorDPointerType();
 
-  Class::DPointerType dPointerType();
+  Class::DPointerType dPointerType() const;
   bool setDPointerType(Class::DPointerType dPointerType);
 
   void setEnabled(bool enabled);

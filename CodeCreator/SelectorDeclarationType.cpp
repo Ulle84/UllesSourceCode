@@ -17,19 +17,9 @@ SelectorDeclarationType::~SelectorDeclarationType()
   delete ui;
 }
 
-Class::DeclarationType SelectorDeclarationType::declarationType()
+Class::DeclarationType SelectorDeclarationType::declarationType() const
 {
-  int declarationType = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
-
-  switch(declarationType)
-  {
-  case Class::DeclarationType::NoDeclaration:
-    return Class::DeclarationType::NoDeclaration;
-  case Class::DeclarationType::Public:
-    return Class::DeclarationType::Public;
-  case Class::DeclarationType::Private:
-    return Class::DeclarationType::Private;
-  }
+  return static_cast<Class::DeclarationType>(ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt());
 }
 
 bool SelectorDeclarationType::setDeclarationType(Class::DeclarationType declarationType)

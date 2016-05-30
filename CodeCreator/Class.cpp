@@ -291,7 +291,7 @@ QString Class::createImplementation()
     alreadyOneImplementationPresent = true;
   }
 
-  if (m_destructorDeclarationType == DeclarationType::Public)
+  if (m_destructorDeclarationType == DeclarationType::Public && !m_declareDestructorVirtual)
   {
     if (alreadyOneImplementationPresent)
     {
@@ -501,7 +501,6 @@ QString Class::copyOperatorImplementation()
   code.append(constRef());
   code.append("\n");
   code.append(openBlock(0));
-
   append(code, 1, "if (this != &");
   code.append(m_rhs);
   code.append(")\n");
@@ -519,7 +518,7 @@ QString Class::copyOperatorImplementation()
   }
   else
   {
-    code.append(toDoImplementation());
+    code.append(toDoImplementation(1));
   }
 
   code.append(closeBlock(1));
@@ -566,12 +565,10 @@ QString Class::moveOperatorImplementation()
   code.append(m_name);
   code.append("::operator=");
   code.append(moveRef());
-  code.append("\n{\n");
+  code.append("\n");
+  code.append(openBlock());
   code.append(toDoImplementation());
-  code.append(leadingWhitespace(1));
-  code.append("return *this;\n");
-  code.append(leadingWhitespace(0));
-  code.append("}\n");
+  code.append(closeBlock());
 
   return code;
 }
@@ -969,18 +966,18 @@ QString Class::moveRef()
   return code;
 }
 
-QString Class::toDo(const QString& task)
+QString Class::toDo(const QString& task, unsigned int indent)
 {
-  QString code = leadingWhitespace(1);
+  QString code = leadingWhitespace(1 + indent);
   code.append("// TODO ");
   code.append(task);
   code.append("\n");
   return code;
 }
 
-QString Class::toDoImplementation()
+QString Class::toDoImplementation(unsigned int indent)
 {
-  return toDo("do implementation");
+  return toDo("do implementation", indent);
 }
 
 void Class::setClassName(const QString& className)
@@ -1160,6 +1157,7 @@ QString Class::namespaceStart()
       code.append(m_indent);
     }
 
+    code.append("namespace ");
     code.append(*it);
     code.append("\n");
 
