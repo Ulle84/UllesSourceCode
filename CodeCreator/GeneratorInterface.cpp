@@ -39,12 +39,16 @@ bool GeneratorInterface::generate(const QString &folder)
 
   Class c(name);
   c.setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
-  c.setDestructorDeclarationType(Class::DeclarationType::NoDeclaration);
+  c.setDestructorDeclarationType(Class::DeclarationType::Public);
+  c.setDeclareDestructorVirtual(true);
   c.setMethods(Interface(name, ui->plainTextEditFunctions->toPlainText()));
   c.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\"); // TODO take folder of UI
   c.setOverwriteExistingFiles(true);
 
   qDebug() << c.createHeader();
+
+  ui->plainTextEditTestOutput->clear();
+  ui->plainTextEditTestOutput->appendPlainText(c.createHeader());
 
   //c.createHeaderFile();
 

@@ -21,6 +21,8 @@ private:
   QString m_type;
   QString m_name;
   QString m_defaultValue;
+
+  friend class ParameterGui;
 };
 
 #endif // PARAMETER_H

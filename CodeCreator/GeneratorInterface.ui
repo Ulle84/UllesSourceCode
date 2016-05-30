@@ -19,7 +19,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>functions</string>
+        <string>methods</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -47,6 +47,9 @@
       <widget class="QPlainTextEdit" name="plainTextEditFunctions"/>
      </item>
     </layout>
+   </item>
+   <item row="0" column="1">
+    <widget class="QPlainTextEdit" name="plainTextEditTestOutput"/>
    </item>
   </layout>
  </widget>

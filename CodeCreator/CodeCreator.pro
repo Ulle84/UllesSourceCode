@@ -31,10 +31,11 @@ SOURCES += main.cpp\
     Interface.cpp \
     GeneratorClass.cpp \
     Class.cpp \
-    Method.cpp \
     SelectorDeclarationType.cpp \
     SelectorDPointerType.cpp \
-    SelectorSingletonType.cpp
+    SelectorSingletonType.cpp \
+    ParameterGui.cpp \
+    ListEditor.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -54,11 +55,12 @@ HEADERS  += CodeCreator.h \
     Interface.h \
     GeneratorClass.h \
     Class.h \
-    Method.h \
     GeneratorI.h \
     SelectorDeclarationType.h \
     SelectorDPointerType.h \
-    SelectorSingletonType.h
+    SelectorSingletonType.h \
+    ParameterGui.h \
+    ListEditor.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -72,7 +74,9 @@ FORMS    += CodeCreator.ui \
     GeneratorClass.ui \
     SelectorDeclarationType.ui \
     SelectorDPointerType.ui \
-    SelectorSingletonType.ui
+    SelectorSingletonType.ui \
+    ParameterGui.ui \
+    ListEditor.ui
 
 OTHER_FILES += \
     ToDo.txt \
