@@ -1,15 +1,15 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
+#ifndef METHOD_H
+#define METHOD_H
 
 #include <QList>
 #include <QString>
 
 #include "Parameter.h"
 
-class Function
+class Method
 {
 public:
-  Function(const QString& function);
+  Method(const QString& method);
 
   QString toString() const;
 
@@ -42,4 +42,4 @@ private:
   DeclarationType m_declarationType;
 };
 
-#endif // FUNCTION_H
+#endif // METHOD_H

@@ -15,7 +15,7 @@ Interface::Interface(const QString &name, const QString &interface)
   for (auto it = functions.begin(); it != functions.end(); it++)
   {
     Method method(*it);
-    method.setType(Function::Type::PureVirtual);
+    method.setType(Method::Type::PureVirtual);
     method.setDeclarationType(Method::DeclarationType::Public);
     if (method.isValid())
     {

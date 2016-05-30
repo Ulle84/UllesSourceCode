@@ -1,10 +1,10 @@
 #include <QDebug>
 
-#include "Function.h"
+#include "Method.h"
 
-Function::Function(const QString &function)
+Method::Method(const QString &method)
 {
-  QString copy = function;
+  QString copy = method;
   copy.replace(";", "");
   copy.replace("=", " = ");
   copy = copy.simplified();
@@ -52,57 +52,67 @@ Function::Function(const QString &function)
   m_returnType = parameter.type();
 }
 
-QString Function::toString() const
+QString Method::toString() const
 {
-  QString function;
+  QString method;
 
   if (m_type != Type::Normal)
   {
-    function.append("virtual ");
+    method.append("virtual ");
   }
 
-  function.append(m_returnType);
-  function.append(" ");
-  function.append(m_name);
-  function.append("(");
+  method.append(m_returnType);
+  method.append(" ");
+  method.append(m_name);
+  method.append("(");
 
   for (auto it = m_parameters.begin(); it != m_parameters.end(); it++)
   {
     if (it != m_parameters.begin())
     {
-      function.append(", ");
+      method.append(", ");
     }
-    function.append(it->toString());
+    method.append(it->toString());
   }
 
-  function.append(")");
+  method.append(")");
 
   if (m_type == Type::PureVirtual)
   {
-    function.append(" = 0");
+    method.append(" = 0");
   }
 
-  function.append(";");
+  method.append(";");
 
-  return function;
+  return method;
 }
 
-bool Function::isValid() const
+bool Method::isValid() const
 {
   return !m_name.isEmpty() && !m_returnType.isEmpty();
 }
 
-void Function::setType(Function::Type type)
+void Method::setType(Method::Type type)
 {
   m_type = type;
 }
 
-void Function::setName(const QString &name)
+void Method::setName(const QString &name)
 {
   m_name = name;
 }
 
-void Function::setReturnType(const QString &returnType)
+void Method::setReturnType(const QString &returnType)
 {
   m_returnType = returnType;
+}
+
+Method::DeclarationType Method::declarationType() const
+{
+  return m_declarationType;
+}
+
+void Method::setDeclarationType(Method::DeclarationType declarationType)
+{
+  m_declarationType = declarationType;
 }

@@ -26,7 +26,6 @@ SOURCES += main.cpp\
     Options.cpp \
     ClassAdvanced.cpp \
     Parameter.cpp \
-    Function.cpp \
     GeneratorInterface.cpp \
     Interface.cpp \
     GeneratorClass.cpp \
@@ -35,7 +34,8 @@ SOURCES += main.cpp\
     SelectorDPointerType.cpp \
     SelectorSingletonType.cpp \
     ParameterGui.cpp \
-    ListEditor.cpp
+    ListEditor.cpp \
+    Method.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -50,7 +50,6 @@ HEADERS  += CodeCreator.h \
     State.h \
     ClassAdvanced.h \
     Parameter.h \
-    Function.h \
     GeneratorInterface.h \
     Interface.h \
     GeneratorClass.h \
@@ -60,7 +59,8 @@ HEADERS  += CodeCreator.h \
     SelectorDPointerType.h \
     SelectorSingletonType.h \
     ParameterGui.h \
-    ListEditor.h
+    ListEditor.h \
+    Method.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
