@@ -40,6 +40,8 @@ private:
   Type m_type;
   QList<Parameter> m_parameters;
   DeclarationType m_declarationType;
+
+  friend class MethodGui;
 };
 
 #endif // METHOD_H

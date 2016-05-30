@@ -34,8 +34,8 @@ SOURCES += main.cpp\
     SelectorDPointerType.cpp \
     SelectorSingletonType.cpp \
     ParameterGui.cpp \
-    ListEditor.cpp \
-    Method.cpp
+    Method.cpp \
+    MethodGui.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -59,8 +59,8 @@ HEADERS  += CodeCreator.h \
     SelectorDPointerType.h \
     SelectorSingletonType.h \
     ParameterGui.h \
-    ListEditor.h \
-    Method.h
+    Method.h \
+    MethodGui.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -76,7 +76,7 @@ FORMS    += CodeCreator.ui \
     SelectorDPointerType.ui \
     SelectorSingletonType.ui \
     ParameterGui.ui \
-    ListEditor.ui
+    MethodGui.ui
 
 OTHER_FILES += \
     ToDo.txt \
