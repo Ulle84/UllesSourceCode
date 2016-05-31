@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class Method;
+class WidgetListEditor;
 
 namespace Ui {
 class MethodGui;
@@ -23,10 +24,12 @@ private slots:
   void on_lineEditReturnType_textEdited(const QString &returnType);
   void on_lineEditName_textEdited(const QString &name);
   void on_pushButtonParameters_clicked();
+  void addParameter();
 
 private:
   Ui::MethodGui *ui;
   Method* m_method;
+  WidgetListEditor* m_widgetListEditor;
 };
 
 #endif // METHODGUI_H

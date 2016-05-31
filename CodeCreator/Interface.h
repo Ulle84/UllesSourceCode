@@ -5,7 +5,7 @@
 
 #include "Method.h"
 
-class Interface : public QList<Method>
+class Interface : public QList<Method> // TODO really inherit of QList<Method> ?
 {
 public:
   Interface();
@@ -18,6 +18,8 @@ public:
 
 private:
   QString m_name;
+
+  friend class InterfaceGui;
 };
 
 #endif // INTERFACE_H

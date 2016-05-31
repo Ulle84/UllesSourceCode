@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MethodGui</class>
- <widget class="QWidget" name="MethodGui">
+ <class>InterfaceGui</class>
+ <widget class="QDialog" name="InterfaceGui">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
+    <width>247</width>
     <height>35</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Dialog</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -27,29 +27,16 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QComboBox" name="comboBoxDeclarationType"/>
-   </item>
-   <item>
-    <widget class="QComboBox" name="comboBoxType"/>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEditReturnType">
-     <property name="placeholderText">
-      <string>return type</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLineEdit" name="lineEditName">
      <property name="placeholderText">
-      <string>method name</string>
+      <string>interface name</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButtonParameters">
+    <widget class="QPushButton" name="pushButtonMethods">
      <property name="text">
-      <string>parameters</string>
+      <string>methods</string>
      </property>
     </widget>
    </item>

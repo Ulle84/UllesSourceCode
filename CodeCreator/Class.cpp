@@ -881,7 +881,7 @@ QString Class::classDeclaration()
       }
 
       code.append("public ");
-      code.append(it->name());
+      code.append((*it)->name());
     }
   }
 
@@ -990,7 +990,7 @@ void Class::setNamespaceNames(const QStringList& namespaceNames)
   m_namespaceNames = namespaceNames;
 }
 
-void Class::setInterfaces(const QList<Interface> &interfaces)
+void Class::setInterfaces(const QList<Interface*> &interfaces)
 {
   m_interfaces = interfaces;
 }
@@ -1247,9 +1247,9 @@ QString Class::includes()
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
   {
-    if (!it->name().isEmpty())
+    if (!(*it)->name().isEmpty())
     {
-      code.append(include(it->name(), true, false));
+      code.append(include((*it)->name(), true, false));
       includeLineAdded = true;
     }
 

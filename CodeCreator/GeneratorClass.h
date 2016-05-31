@@ -2,8 +2,11 @@
 #define GENERATORCLASS_H
 
 #include <QWidget>
+#include <Qlist>
 
 #include "GeneratorI.h"
+#include "WidgetListEditor.h"
+#include "Interface.h"
 
 class QCompleter;
 class CodeGenerator;
@@ -27,12 +30,16 @@ public:
 
 private slots:
   void on_singleton_singletonTypeChanged(int singletonType);
+  void addInterface();
+  void on_pushButtonInterfaces_clicked();
 
 private:
   Ui::GeneratorClass* ui;
 
-  CodeGenerator* mCodeGenerator;
-  QCompleter* mCompleter;
+  CodeGenerator* m_codeGenerator;
+  QCompleter* m_completer;
+  WidgetListEditor* m_widgetListEditor;
+  QList<Interface*> m_interfaces;
 };
 
 #endif // GENERATORCLASS_H

@@ -23,7 +23,7 @@ public:
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
   void setBaseClass(const Class* baseClass);
-  void setInterfaces(const QList<Interface>& interfaces);
+  void setInterfaces(const QList<Interface *> &interfaces);
   void setIndent(const QString& indent);
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
@@ -129,7 +129,7 @@ private:
   QString m_name;
   QStringList m_namespaceNames;
   const Class* m_baseClass;
-  QList<Interface> m_interfaces;
+  QList<Interface*> m_interfaces;
   QString m_indent;
 
   bool m_declareConstructorExplicit;

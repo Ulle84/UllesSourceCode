@@ -35,7 +35,10 @@ SOURCES += main.cpp\
     SelectorSingletonType.cpp \
     ParameterGui.cpp \
     Method.cpp \
-    MethodGui.cpp
+    MethodGui.cpp \
+    WidgetListEditor.cpp \
+    WidgetListItem.cpp \
+    InterfaceGui.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -60,7 +63,10 @@ HEADERS  += CodeCreator.h \
     SelectorSingletonType.h \
     ParameterGui.h \
     Method.h \
-    MethodGui.h
+    MethodGui.h \
+    WidgetListEditor.h \
+    WidgetListItem.h \
+    InterfaceGui.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -76,7 +82,10 @@ FORMS    += CodeCreator.ui \
     SelectorDPointerType.ui \
     SelectorSingletonType.ui \
     ParameterGui.ui \
-    MethodGui.ui
+    MethodGui.ui \
+    WidgetListEditor.ui \
+    WidgetListItem.ui \
+    InterfaceGui.ui
 
 OTHER_FILES += \
     ToDo.txt \

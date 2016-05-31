@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MethodGui</class>
- <widget class="QWidget" name="MethodGui">
+ <class>WidgetListItem</class>
+ <widget class="QWidget" name="WidgetListItem">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
-    <height>35</height>
+    <width>407</width>
+    <height>34</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,29 +27,26 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QComboBox" name="comboBoxDeclarationType"/>
+    <layout class="QHBoxLayout" name="item"/>
    </item>
    <item>
-    <widget class="QComboBox" name="comboBoxType"/>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEditReturnType">
-     <property name="placeholderText">
-      <string>return type</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEditName">
-     <property name="placeholderText">
-      <string>method name</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="pushButtonParameters">
+    <widget class="QPushButton" name="pushButtonUp">
      <property name="text">
-      <string>parameters</string>
+      <string>up</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonDown">
+     <property name="text">
+      <string>down</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonDelete">
+     <property name="text">
+      <string>delete</string>
      </property>
     </widget>
    </item>

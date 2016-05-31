@@ -8,11 +8,13 @@
 #include "Options.h"
 #include "CodeGenerator.h"
 #include "Class.h"
+#include "Interface.h"
+#include "InterfaceGui.h"
 
 GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GeneratorClass),
-  mCodeGenerator(codeGenerator)
+  m_codeGenerator(codeGenerator)
 {
   ui->setupUi(this);
 
@@ -20,11 +22,17 @@ GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
   templates << "QWidget";
   templates << "QObject";
 
-  mCompleter = new QCompleter(templates);
-  ui->lineEditBaseClass->setCompleter(mCompleter);
+  m_completer = new QCompleter(templates);
+  ui->lineEditBaseClass->setCompleter(m_completer);
 
   ui->constructor->setDeclarationType(Class::DeclarationType::Public);
   ui->destructor->setDeclarationType(Class::DeclarationType::Public);
+
+  m_widgetListEditor = new WidgetListEditor(this);
+
+  //connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addWidget()));
+  connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addInterface()));
+  //qDebug() << c;
 }
 
 GeneratorClass::~GeneratorClass()
@@ -73,7 +81,7 @@ bool GeneratorClass::generate(const QString &folder)
     c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
   }
 
-  QList<Interface> interfaces;
+  /*QList<Interface> interfaces;
   QString interfaceText = ui->plainTextEditInterfaces->toPlainText();
 
   if (!interfaceText.isEmpty())
@@ -83,9 +91,10 @@ bool GeneratorClass::generate(const QString &folder)
     {
       interfaces.append(Interface(*it, "void toDo();"));
     }
-  }
+  }*/
 
-  c.setInterfaces(interfaces);
+  c.setInterfaces(m_interfaces);
+
 
 
   qDebug() << c.createHeader();
@@ -237,10 +246,10 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->plainTextEditNamespaces);
     }
-    else if (xml.name() == "Interfaces")
+    /*else if (xml.name() == "Interfaces")
     {
       XmlHelper::readXml(xml, ui->plainTextEditInterfaces);
-    }
+    }*/
     else
     {
       xml.skipCurrentElement();
@@ -264,7 +273,7 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "VirtualDestructor", ui->checkBoxVirtualDesctructor);
   XmlHelper::writeXml(xml, "ExplicitConstructor", ui->checkBoxExplicitConstructor);
   XmlHelper::writeXml(xml, "Namespaces", ui->plainTextEditNamespaces);
-  XmlHelper::writeXml(xml, "Interfaces", ui->plainTextEditInterfaces);
+  //XmlHelper::writeXml(xml, "Interfaces", ui->plainTextEditInterfaces);
 }
 
 void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
@@ -290,4 +299,17 @@ void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
   ui->moveConstructor->setEnabled(enabled);
   ui->moveOperator->setEnabled(enabled);
 
+}
+
+void GeneratorClass::addInterface()
+{
+  Interface* interface = new Interface();
+  m_interfaces.append(interface);
+  InterfaceGui* interfaceGui = new InterfaceGui(interface);
+  m_widgetListEditor->addItem(interfaceGui);
+}
+
+void GeneratorClass::on_pushButtonInterfaces_clicked()
+{
+  m_widgetListEditor->exec();
 }

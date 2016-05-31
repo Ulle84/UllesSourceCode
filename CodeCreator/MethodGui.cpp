@@ -1,6 +1,10 @@
+#include <QDebug>
+
 #include "Method.h"
 #include "MethodGui.h"
 #include "ui_MethodGui.h"
+#include "WidgetListEditor.h"
+#include "ParameterGui.h"
 
 MethodGui::MethodGui(Method* method, QWidget *parent) :
   QWidget(parent),
@@ -16,6 +20,9 @@ MethodGui::MethodGui(Method* method, QWidget *parent) :
   ui->comboBoxType->addItem(tr("normal"), Method::Type::Normal);
   ui->comboBoxType->addItem(tr("virtual"), Method::Type::Virtual);
   ui->comboBoxType->addItem(tr("pure virtual"), Method::Type::PureVirtual);
+
+  m_widgetListEditor = new WidgetListEditor(this);
+  connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addParameter()));
 }
 
 MethodGui::~MethodGui()
@@ -45,5 +52,12 @@ void MethodGui::on_lineEditName_textEdited(const QString &name)
 
 void MethodGui::on_pushButtonParameters_clicked()
 {
-  // TODO open dialog with parameters
+  m_widgetListEditor->exec();
+}
+
+void MethodGui::addParameter()
+{
+  Parameter* parameter = new Parameter("");
+  ParameterGui* parameterGui = new ParameterGui(parameter);
+  m_widgetListEditor->addItem(parameterGui);
 }

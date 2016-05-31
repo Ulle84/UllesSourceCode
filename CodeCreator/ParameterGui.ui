@@ -36,7 +36,7 @@
    <item>
     <widget class="QLineEdit" name="lineEditName">
      <property name="placeholderText">
-      <string>name</string>
+      <string>parameter name</string>
      </property>
     </widget>
    </item>
