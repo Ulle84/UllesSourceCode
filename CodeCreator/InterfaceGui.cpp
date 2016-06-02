@@ -12,7 +12,7 @@ InterfaceGui::InterfaceGui(QWidget *parent) :
   ui->setupUi(this);
 
   m_widgetListEditor = new WidgetListEditor(this);
-  connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addMethod()));
+  connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addMethod()));
 }
 
 InterfaceGui::~InterfaceGui()

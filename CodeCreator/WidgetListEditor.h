@@ -16,9 +16,12 @@ public:
   ~WidgetListEditor();
 
   void addItem(QWidget* item);
+  QList<QWidget*> items();
+
+  void clear();
 
 signals:
-  void pushButtonAddClicked();
+  void addClicked();
 
 private slots:
   void on_pushButtonAdd_clicked();

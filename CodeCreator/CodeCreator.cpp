@@ -119,9 +119,10 @@ void CodeCreator::on_pushButtonStart_clicked()
 
   if (dynamic_cast<GeneratorI*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
   {
-    QMessageBox messageBox;
+    // TODO uncomment again
+    /*QMessageBox messageBox;
     messageBox.setText(tr("Creation finished!"));
-    messageBox.exec();
+    messageBox.exec();*/
   }
 }
 

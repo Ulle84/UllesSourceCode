@@ -5,11 +5,11 @@
 #include <Qlist>
 
 #include "GeneratorI.h"
-#include "WidgetListEditor.h"
 #include "Interface.h"
 
 class QCompleter;
 class CodeGenerator;
+class WidgetListEditor;
 
 namespace Ui {
 class GeneratorClass;
@@ -34,12 +34,14 @@ private slots:
   void on_pushButtonInterfaces_clicked();
 
 private:
+  void fillInterfaceList();
+
   Ui::GeneratorClass* ui;
 
   CodeGenerator* m_codeGenerator;
   QCompleter* m_completer;
-  WidgetListEditor* m_widgetListEditor;
   QList<Interface> m_interfaces;
+  WidgetListEditor* m_widgetListEditor;
 };
 
 #endif // GENERATORCLASS_H

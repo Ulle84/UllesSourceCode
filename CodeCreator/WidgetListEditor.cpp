@@ -27,9 +27,48 @@ void WidgetListEditor::addItem(QWidget *item)
   connect(widgetListItem, SIGNAL(moveDown()), this, SLOT(on_moveDown()));
 }
 
+QList<QWidget*> WidgetListEditor::items()
+{
+  QList<QWidget*> list;
+
+  for (int i = 0; i < ui->list->count(); i++)
+  {
+    QLayoutItem* layoutItem = ui->list->itemAt(i);
+    if (layoutItem)
+    {
+      WidgetListItem* widgetListItem = dynamic_cast<WidgetListItem*>(layoutItem->widget());
+      if (widgetListItem)
+      {
+        QWidget* item = widgetListItem->item();
+        if (item != NULL)
+        {
+          list.append(item);
+        }
+      }
+    }
+  }
+
+  qDebug() << list.count();
+
+  return list;
+}
+
+void WidgetListEditor::clear()
+{
+  while(ui->list->itemAt(0))
+  {
+    QLayoutItem* layoutItem = ui->list->takeAt(0);
+    if (layoutItem->widget())
+    {
+      delete layoutItem->widget();
+    }
+    delete layoutItem;
+  }
+}
+
 void WidgetListEditor::on_pushButtonAdd_clicked()
 {
-  emit pushButtonAddClicked();
+  emit addClicked();
 }
 
 void WidgetListEditor::on_deleteItem()

@@ -10,11 +10,13 @@
 #include "Class.h"
 #include "Interface.h"
 #include "InterfaceGui.h"
+#include "WidgetListEditor.h"
 
 GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GeneratorClass),
-  m_codeGenerator(codeGenerator)
+  m_codeGenerator(codeGenerator),
+  m_widgetListEditor(NULL)
 {
   ui->setupUi(this);
 
@@ -27,12 +29,6 @@ GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
 
   ui->constructor->setDeclarationType(Class::DeclarationType::Public);
   ui->destructor->setDeclarationType(Class::DeclarationType::Public);
-
-  m_widgetListEditor = new WidgetListEditor(this);
-
-  //connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addWidget()));
-  connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addInterface()));
-  //qDebug() << c;
 }
 
 GeneratorClass::~GeneratorClass()
@@ -304,10 +300,46 @@ void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
 void GeneratorClass::addInterface()
 {
   InterfaceGui* interfaceGui = new InterfaceGui();
-  m_widgetListEditor->addItem(interfaceGui);
+  dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(interfaceGui);
 }
 
 void GeneratorClass::on_pushButtonInterfaces_clicked()
 {
-  m_widgetListEditor->exec();
+  if (m_widgetListEditor == NULL)
+  {
+    m_widgetListEditor = new WidgetListEditor(this);
+    connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addInterface()));
+    fillInterfaceList();
+  }
+
+  if (m_widgetListEditor->exec() == QDialog::Accepted)
+  {
+    m_interfaces.clear();
+
+    QList<QWidget*> items = m_widgetListEditor->items();
+
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+      InterfaceGui* interfaceGui = dynamic_cast<InterfaceGui*>(*it);
+      if (interfaceGui)
+      {
+        m_interfaces.append(interfaceGui->interface());
+      }
+    }
+  }
+  else
+  {
+    m_widgetListEditor->clear();
+    fillInterfaceList();
+  }
+}
+
+void GeneratorClass::fillInterfaceList()
+{
+  for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
+  {
+    InterfaceGui* interfaceGui = new InterfaceGui();
+    interfaceGui->setInterface(*it);
+    m_widgetListEditor->addItem(interfaceGui);
+  }
 }

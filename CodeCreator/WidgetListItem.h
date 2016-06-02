@@ -15,6 +15,7 @@ public:
   explicit WidgetListItem(QWidget *parent = 0);
   ~WidgetListItem();
 
+  QWidget* item();
   void setItem(QWidget* item);
 
 signals:
@@ -24,9 +25,7 @@ signals:
 
 private slots:
   void on_pushButtonDelete_clicked();
-
   void on_pushButtonUp_clicked();
-
   void on_pushButtonDown_clicked();
 
 private:

@@ -13,6 +13,19 @@ WidgetListItem::~WidgetListItem()
   delete ui;
 }
 
+QWidget *WidgetListItem::item()
+{
+  QWidget* widget = NULL;
+
+  QLayoutItem* layoutItem = ui->item->itemAt(0);
+  if (layoutItem)
+  {
+    widget = layoutItem->widget();
+  }
+
+  return widget;
+}
+
 void WidgetListItem::setItem(QWidget *item)
 {
   ui->item->addWidget(item);
