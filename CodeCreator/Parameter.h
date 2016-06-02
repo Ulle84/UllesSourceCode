@@ -8,6 +8,7 @@ class Parameter
 public:
   Parameter(const QString& type, const QString& name, const QString& defaultValue = QString());
   Parameter(const QString& parameter);
+  Parameter();
 
   bool isValid() const;
 

@@ -9,9 +9,10 @@
 class Method
 {
 public:
+  Method();
   Method(const QString& method);
 
-  QString toString() const;
+  QString declaration(bool suppressVirtual = false) const;
 
   bool isValid() const;
 

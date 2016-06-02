@@ -2,6 +2,11 @@
 
 #include "Parameter.h"
 
+Parameter::Parameter()
+{
+
+}
+
 Parameter::Parameter(const QString &type, const QString &name, const QString &defaultValue)
   : m_type(type),
     m_name(name),

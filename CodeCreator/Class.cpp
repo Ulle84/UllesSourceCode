@@ -111,6 +111,17 @@ QString Class::createHeader()
     m_sectionEmtpy = false;
   }
 
+  if (hasInterfaceToImplement())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+    code.append(interfaceDeclarations());
+
+    m_sectionEmtpy = false;
+  }
+
   if (m_constructorDeclarationType == DeclarationType::Private
       || m_copyConstructorDeclarationType == DeclarationType::Private
       || m_copyOperatorDeclarationType == DeclarationType::Private
@@ -773,6 +784,30 @@ QString Class::dPointerInitialization(bool copyRhs)
   return code;
 }
 
+QString Class::interfaceDeclarations()
+{
+  QString code;
+
+  for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
+  {
+    if (!it->isToImplement())
+    {
+      continue;
+    }
+
+    append(code, 1, "// implementation of interface ");
+    code.append(it->name());
+    code.append("\n");
+
+    for (auto it2 = it->begin(); it2 != it->end(); it2++)
+    {
+      append(code, 1, it2->declaration(true));
+    }
+  }
+
+  return code;
+}
+
 bool Class::hasMethodDeclarations(Method::DeclarationType declarationType)
 {
   for (auto it = m_methods.begin(); it != m_methods.end(); it++)
@@ -794,11 +829,29 @@ QString Class::methodDeclarations(Method::DeclarationType declarationType)
   {
     if (it->declarationType() == declarationType)
     {
-      appendLine(code, 1, it->toString());
+      appendLine(code, 1, it->declaration());
     }
   }
 
   return code;
+}
+
+bool Class::hasInterfaceToImplement()
+{
+  if (m_interfaces.isEmpty())
+  {
+    return false;
+  }
+
+  for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
+  {
+    if (it->isToImplement())
+    {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 bool Class::createFile(FileType fileType)
@@ -881,7 +934,7 @@ QString Class::classDeclaration()
       }
 
       code.append("public ");
-      code.append((*it)->name());
+      code.append(it->name());
     }
   }
 
@@ -990,7 +1043,7 @@ void Class::setNamespaceNames(const QStringList& namespaceNames)
   m_namespaceNames = namespaceNames;
 }
 
-void Class::setInterfaces(const QList<Interface*> &interfaces)
+void Class::setInterfaces(const QList<Interface> &interfaces)
 {
   m_interfaces = interfaces;
 }
@@ -1247,9 +1300,9 @@ QString Class::includes()
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
   {
-    if (!(*it)->name().isEmpty())
+    if (!it->name().isEmpty())
     {
-      code.append(include((*it)->name(), true, false));
+      code.append(include(it->name(), true, false));
       includeLineAdded = true;
     }
 

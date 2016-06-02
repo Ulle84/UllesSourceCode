@@ -6,9 +6,8 @@
 #include "WidgetListEditor.h"
 #include "ParameterGui.h"
 
-MethodGui::MethodGui(Method* method, QWidget *parent) :
+MethodGui::MethodGui(QWidget *parent) :
   QWidget(parent),
-  m_method(method),
   ui(new Ui::MethodGui)
 {
   ui->setupUi(this);
@@ -30,24 +29,38 @@ MethodGui::~MethodGui()
   delete ui;
 }
 
+void MethodGui::setMethod(const Method &method)
+{
+  m_method = method;
+
+  ui->lineEditName->setText(m_method.m_name);
+  ui->lineEditReturnType->setText(m_method.m_returnType);
+  // TODO set state of combo boxes
+}
+
+Method MethodGui::method()
+{
+  return m_method;
+}
+
 void MethodGui::on_comboBoxDeclarationType_currentIndexChanged(const QString &arg1)
 {
-  m_method->m_declarationType = static_cast<Method::DeclarationType>(ui->comboBoxDeclarationType->itemData(ui->comboBoxDeclarationType->currentIndex()).toInt());
+  m_method.m_declarationType = static_cast<Method::DeclarationType>(ui->comboBoxDeclarationType->itemData(ui->comboBoxDeclarationType->currentIndex()).toInt());
 }
 
 void MethodGui::on_comboBoxType_currentIndexChanged(const QString &arg1)
 {
-  m_method->m_type = static_cast<Method::Type>(ui->comboBoxType->itemData(ui->comboBoxType->currentIndex()).toInt());
+  m_method.m_type = static_cast<Method::Type>(ui->comboBoxType->itemData(ui->comboBoxType->currentIndex()).toInt());
 }
 
 void MethodGui::on_lineEditReturnType_textEdited(const QString &returnType)
 {
-  m_method->m_returnType = returnType;
+  m_method.m_returnType = returnType;
 }
 
 void MethodGui::on_lineEditName_textEdited(const QString &name)
 {
-  m_method->m_name = name;
+  m_method.m_name = name;
 }
 
 void MethodGui::on_pushButtonParameters_clicked()
@@ -57,7 +70,6 @@ void MethodGui::on_pushButtonParameters_clicked()
 
 void MethodGui::addParameter()
 {
-  Parameter* parameter = new Parameter("");
-  ParameterGui* parameterGui = new ParameterGui(parameter);
+  ParameterGui* parameterGui = new ParameterGui();
   m_widgetListEditor->addItem(parameterGui);
 }

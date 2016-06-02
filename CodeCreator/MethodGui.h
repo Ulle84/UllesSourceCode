@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-class Method;
+#include "Method.h"
+
 class WidgetListEditor;
 
 namespace Ui {
@@ -15,8 +16,11 @@ class MethodGui : public QWidget
   Q_OBJECT
 
 public:
-  explicit MethodGui(Method* method, QWidget *parent = 0);
+  explicit MethodGui(QWidget *parent = 0);
   ~MethodGui();
+
+  void setMethod(const Method& method);
+  Method method();
 
 private slots:
   void on_comboBoxDeclarationType_currentIndexChanged(const QString &arg1);
@@ -28,7 +32,7 @@ private slots:
 
 private:
   Ui::MethodGui *ui;
-  Method* m_method;
+  Method m_method;
   WidgetListEditor* m_widgetListEditor;
 };
 

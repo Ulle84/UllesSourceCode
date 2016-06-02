@@ -39,7 +39,7 @@ private:
   CodeGenerator* m_codeGenerator;
   QCompleter* m_completer;
   WidgetListEditor* m_widgetListEditor;
-  QList<Interface*> m_interfaces;
+  QList<Interface> m_interfaces;
 };
 
 #endif // GENERATORCLASS_H

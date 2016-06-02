@@ -26,6 +26,10 @@ private slots:
   void on_moveUp();
   void on_moveDown();
 
+  void on_buttonBox_accepted();
+
+  void on_buttonBox_rejected();
+
 private:
   Ui::WidgetListEditor *ui;
 };

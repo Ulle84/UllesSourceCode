@@ -14,8 +14,11 @@ class ParameterGui : public QWidget
   Q_OBJECT
 
 public:
-  explicit ParameterGui(Parameter* parameter, QWidget *parent = 0);
+  explicit ParameterGui(QWidget *parent = 0);
   ~ParameterGui();
+
+  void setParameter(const Parameter& parameter);
+  Parameter parameter();
 
 private slots:
   void on_lineEditType_textEdited(const QString &type);
@@ -25,7 +28,7 @@ private slots:
 private:
   Ui::ParameterGui *ui;
 
-  Parameter* m_parameter;
+  Parameter m_parameter;
 };
 
 #endif // PARAMETERGUI_H

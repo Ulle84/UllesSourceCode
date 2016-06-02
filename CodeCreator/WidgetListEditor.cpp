@@ -71,3 +71,13 @@ void WidgetListEditor::on_moveDown()
   QLayoutItem* item = ui->list->takeAt(index);
   ui->list->insertItem(index + 1, item);
 }
+
+void WidgetListEditor::on_buttonBox_accepted()
+{
+  accept();
+}
+
+void WidgetListEditor::on_buttonBox_rejected()
+{
+  reject();
+}

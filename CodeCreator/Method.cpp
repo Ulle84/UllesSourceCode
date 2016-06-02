@@ -2,6 +2,11 @@
 
 #include "Method.h"
 
+Method::Method()
+{
+
+}
+
 Method::Method(const QString &method)
 {
   QString copy = method;
@@ -52,11 +57,11 @@ Method::Method(const QString &method)
   m_returnType = parameter.type();
 }
 
-QString Method::toString() const
+QString Method::declaration(bool suppressVirtual) const
 {
   QString method;
 
-  if (m_type != Type::Normal)
+  if (m_type != Type::Normal && !suppressVirtual)
   {
     method.append("virtual ");
   }
@@ -77,7 +82,7 @@ QString Method::toString() const
 
   method.append(")");
 
-  if (m_type == Type::PureVirtual)
+  if (m_type == Type::PureVirtual && !suppressVirtual)
   {
     method.append(" = 0");
   }

@@ -5,9 +5,8 @@
 #include "MethodGui.h"
 #include "Interface.h"
 
-InterfaceGui::InterfaceGui(Interface* interface, QWidget *parent) :
+InterfaceGui::InterfaceGui(QWidget *parent) :
   QDialog(parent),
-  m_interface(interface),
   ui(new Ui::InterfaceGui)
 {
   ui->setupUi(this);
@@ -21,6 +20,19 @@ InterfaceGui::~InterfaceGui()
   delete ui;
 }
 
+void InterfaceGui::setInterface(const Interface &interface)
+{
+  m_interface = interface;
+
+  ui->lineEditName->setText(m_interface.m_name);
+  ui->checkBox->setChecked(m_interface.m_implementInterface);
+}
+
+Interface InterfaceGui::interface()
+{
+  return m_interface;
+}
+
 void InterfaceGui::on_pushButtonMethods_clicked()
 {
   m_widgetListEditor->exec();
@@ -28,12 +40,16 @@ void InterfaceGui::on_pushButtonMethods_clicked()
 
 void InterfaceGui::addMethod()
 {
-  Method* method = new Method("");
-  MethodGui* methodGui = new MethodGui(method);
+  MethodGui* methodGui = new MethodGui();
   m_widgetListEditor->addItem(methodGui);
 }
 
 void InterfaceGui::on_lineEditName_textEdited(const QString &name)
 {
-  m_interface->m_name = name;
+  m_interface.m_name = name;
+}
+
+void InterfaceGui::on_checkBox_clicked(bool checked)
+{
+  m_interface.m_implementInterface = checked;
 }

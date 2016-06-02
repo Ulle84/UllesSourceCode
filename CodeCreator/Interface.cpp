@@ -3,16 +3,17 @@
 #include <QSTringList>
 
 Interface::Interface()
+  : m_implementInterface(true)
 {
 }
 
 Interface::Interface(const QString &name, const QString &interface)
+  : m_implementInterface(true),
+    m_name(name)
 {
-  m_name = name;
+  QStringList methods = interface.split("\n");
 
-  QStringList functions = interface.split("\n");
-
-  for (auto it = functions.begin(); it != functions.end(); it++)
+  for (auto it = methods.begin(); it != methods.end(); it++)
   {
     Method method(*it);
     method.setType(Method::Type::PureVirtual);
@@ -45,8 +46,13 @@ QString Interface::toString()
       interface.append("\n");
     }
 
-    interface.append(it->toString());
+    interface.append(it->declaration());
   }
 
   return interface;
+}
+
+bool Interface::isToImplement()
+{
+  return m_implementInterface;
 }

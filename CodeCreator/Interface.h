@@ -16,8 +16,11 @@ public:
 
   QString toString();
 
+  bool isToImplement();
+
 private:
   QString m_name;
+  bool m_implementInterface;
 
   friend class InterfaceGui;
 };

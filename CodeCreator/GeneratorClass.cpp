@@ -303,9 +303,7 @@ void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
 
 void GeneratorClass::addInterface()
 {
-  Interface* interface = new Interface();
-  m_interfaces.append(interface);
-  InterfaceGui* interfaceGui = new InterfaceGui(interface);
+  InterfaceGui* interfaceGui = new InterfaceGui();
   m_widgetListEditor->addItem(interfaceGui);
 }
 
