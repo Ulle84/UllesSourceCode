@@ -29,6 +29,8 @@ private slots:
   void on_checkBox_clicked(bool checked);
 
 private:
+  void fillMethodList();
+
   Ui::InterfaceGui *ui;
   Interface m_interface;
   WidgetListEditor* m_widgetListEditor;

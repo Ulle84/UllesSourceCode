@@ -47,7 +47,7 @@ Method::Method(const QString &method)
 
       if (parameter.isValid())
       {
-        m_parameters.append(parameter);
+        append(parameter);
       }
     }
   }
@@ -71,9 +71,9 @@ QString Method::declaration(bool suppressVirtual) const
   method.append(m_name);
   method.append("(");
 
-  for (auto it = m_parameters.begin(); it != m_parameters.end(); it++)
+  for (auto it = begin(); it != end(); it++)
   {
-    if (it != m_parameters.begin())
+    if (it != begin())
     {
       method.append(", ");
     }

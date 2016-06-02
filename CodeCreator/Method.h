@@ -6,7 +6,7 @@
 
 #include "Parameter.h"
 
-class Method
+class Method : public QList<Parameter>
 {
 public:
   Method();
@@ -39,7 +39,6 @@ private:
   QString m_name;
   QString m_returnType;
   Type m_type;
-  QList<Parameter> m_parameters;
   DeclarationType m_declarationType;
 
   friend class MethodGui;

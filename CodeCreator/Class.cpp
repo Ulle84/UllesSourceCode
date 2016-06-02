@@ -803,6 +803,8 @@ QString Class::interfaceDeclarations()
     {
       append(code, 1, it2->declaration(true));
     }
+
+    code.append("\n");
   }
 
   return code;

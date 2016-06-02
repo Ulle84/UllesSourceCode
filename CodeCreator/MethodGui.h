@@ -31,6 +31,8 @@ private slots:
   void addParameter();
 
 private:
+  void fillParameterList();
+
   Ui::MethodGui *ui;
   Method m_method;
   WidgetListEditor* m_widgetListEditor;

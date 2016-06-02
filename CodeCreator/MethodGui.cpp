@@ -8,6 +8,7 @@
 
 MethodGui::MethodGui(QWidget *parent) :
   QWidget(parent),
+  m_widgetListEditor(NULL),
   ui(new Ui::MethodGui)
 {
   ui->setupUi(this);
@@ -19,9 +20,6 @@ MethodGui::MethodGui(QWidget *parent) :
   ui->comboBoxType->addItem(tr("normal"), Method::Type::Normal);
   ui->comboBoxType->addItem(tr("virtual"), Method::Type::Virtual);
   ui->comboBoxType->addItem(tr("pure virtual"), Method::Type::PureVirtual);
-
-  m_widgetListEditor = new WidgetListEditor(this);
-  connect(m_widgetListEditor, SIGNAL(pushButtonAddClicked()), this, SLOT(addParameter()));
 }
 
 MethodGui::~MethodGui()
@@ -65,11 +63,47 @@ void MethodGui::on_lineEditName_textEdited(const QString &name)
 
 void MethodGui::on_pushButtonParameters_clicked()
 {
-  m_widgetListEditor->exec();
+  if (!m_widgetListEditor)
+  {
+    m_widgetListEditor = new WidgetListEditor(this);
+    connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addParameter()));
+    fillParameterList();
+  }
+
+  if (m_widgetListEditor->exec() == QDialog::Accepted)
+  {
+    m_method.clear();
+
+    QList<QWidget*> items = m_widgetListEditor->items();
+
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+      ParameterGui* parameterGui = dynamic_cast<ParameterGui*>(*it);
+      if (parameterGui)
+      {
+        m_method.append(parameterGui->parameter());
+      }
+    }
+  }
+  else
+  {
+    m_widgetListEditor->clear();
+    fillParameterList();
+  }
 }
 
 void MethodGui::addParameter()
 {
   ParameterGui* parameterGui = new ParameterGui();
   m_widgetListEditor->addItem(parameterGui);
+}
+
+void MethodGui::fillParameterList()
+{
+  for (auto it = m_method.begin(); it != m_method.end(); it++)
+  {
+    ParameterGui* parameterGui = new ParameterGui();
+    parameterGui->setParameter(*it);
+    m_widgetListEditor->addItem(parameterGui);
+  }
 }

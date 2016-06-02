@@ -7,12 +7,10 @@
 
 InterfaceGui::InterfaceGui(QWidget *parent) :
   QDialog(parent),
+  m_widgetListEditor(NULL),
   ui(new Ui::InterfaceGui)
 {
   ui->setupUi(this);
-
-  m_widgetListEditor = new WidgetListEditor(this);
-  connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addMethod()));
 }
 
 InterfaceGui::~InterfaceGui()
@@ -35,7 +33,33 @@ Interface InterfaceGui::interface()
 
 void InterfaceGui::on_pushButtonMethods_clicked()
 {
-  m_widgetListEditor->exec();
+  if (!m_widgetListEditor)
+  {
+    m_widgetListEditor = new WidgetListEditor(this);
+    connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addMethod()));
+    fillMethodList();
+  }
+
+  if (m_widgetListEditor->exec() == QDialog::Accepted)
+  {
+    m_interface.clear();
+
+    QList<QWidget*> items = m_widgetListEditor->items();
+
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+      MethodGui* methodGui = dynamic_cast<MethodGui*>(*it);
+      if (methodGui)
+      {
+        m_interface.append(methodGui->method());
+      }
+    }
+  }
+  else
+  {
+    m_widgetListEditor->clear();
+    fillMethodList();
+  }
 }
 
 void InterfaceGui::addMethod()
@@ -52,4 +76,14 @@ void InterfaceGui::on_lineEditName_textEdited(const QString &name)
 void InterfaceGui::on_checkBox_clicked(bool checked)
 {
   m_interface.m_implementInterface = checked;
+}
+
+void InterfaceGui::fillMethodList()
+{
+  for (auto it = m_interface.begin(); it != m_interface.end(); it++)
+  {
+    MethodGui* methodGui = new MethodGui();
+    methodGui->setMethod(*it);
+    m_widgetListEditor->addItem(methodGui);
+  }
 }
