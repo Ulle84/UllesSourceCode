@@ -19,6 +19,7 @@ public:
   QList<QWidget*> items();
 
   void clear();
+  void setButtonText(const QString& buttonText);
 
 signals:
   void addClicked();

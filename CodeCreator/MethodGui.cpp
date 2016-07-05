@@ -66,6 +66,8 @@ void MethodGui::on_pushButtonParameters_clicked()
   if (!m_widgetListEditor)
   {
     m_widgetListEditor = new WidgetListEditor(this);
+    m_widgetListEditor->setButtonText(tr("add parameter"));
+    m_widgetListEditor->setWindowTitle(tr("parameter editor"));
     connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addParameter()));
     fillParameterList();
   }

@@ -36,6 +36,8 @@ void InterfaceGui::on_pushButtonMethods_clicked()
   if (!m_widgetListEditor)
   {
     m_widgetListEditor = new WidgetListEditor(this);
+    m_widgetListEditor->setButtonText(tr("add method"));
+    m_widgetListEditor->setWindowTitle(tr("method editor"));
     connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addMethod()));
     fillMethodList();
   }

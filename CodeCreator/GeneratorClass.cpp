@@ -308,6 +308,8 @@ void GeneratorClass::on_pushButtonInterfaces_clicked()
   if (m_widgetListEditor == NULL)
   {
     m_widgetListEditor = new WidgetListEditor(this);
+    m_widgetListEditor->setButtonText(tr("add interface"));
+    m_widgetListEditor->setWindowTitle(tr("interface editor"));
     connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addInterface()));
     fillInterfaceList();
   }

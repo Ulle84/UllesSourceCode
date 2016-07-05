@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "Interface.h";
+#include "Interface.h"
 
 class WidgetListEditor;
 

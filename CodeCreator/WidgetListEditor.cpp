@@ -66,6 +66,11 @@ void WidgetListEditor::clear()
   }
 }
 
+void WidgetListEditor::setButtonText(const QString& buttonText)
+{
+  ui->pushButtonAdd->setText(buttonText);
+}
+
 void WidgetListEditor::on_pushButtonAdd_clicked()
 {
   emit addClicked();

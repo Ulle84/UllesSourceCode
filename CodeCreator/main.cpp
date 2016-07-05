@@ -3,7 +3,7 @@
 
 #include "CodeCreator.h"
 #include "Class.h"
-#include "Function.h"
+//#include "Function.h"
 #include "Parameter.h"
 #include "Interface.h"
 
