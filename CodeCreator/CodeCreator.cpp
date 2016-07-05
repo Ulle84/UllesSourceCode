@@ -1,8 +1,10 @@
+#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QScrollBar>
 #include <QStringList>
 #include <QDir>
 #include <QTextStream>
@@ -51,14 +53,14 @@ CodeCreator::~CodeCreator()
 void CodeCreator::initGenerators()
 {
   mGenerators["Class"] = new GeneratorClass(mCodeGenerator, this);
-  mGenerators["ClassAdvanced"] = new ClassAdvanced(mCodeGenerator, this);
+  /*mGenerators["ClassAdvanced"] = new ClassAdvanced(mCodeGenerator, this);
   mGenerators["Interface"] = new GeneratorInterface(mCodeGenerator, this);
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
   mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
   mGenerators["Singleton"] = new Singleton(mCodeGenerator, this);
   mGenerators["Data"] = new Data(mCodeGenerator, this);
   mGenerators["Decorator"] = new Decorator(mCodeGenerator, this);
-  mGenerators["State"] = new State(mCodeGenerator, this);
+  mGenerators["State"] = new State(mCodeGenerator, this);*/
 
   for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
   {
@@ -73,7 +75,33 @@ void CodeCreator::initGenerators()
 
     ui->comboBoxType->addItem(it.key());
     ui->generators->layout()->addWidget(it.value());
+
+    connect(it.value(), SIGNAL(optionsChanged()), this, SLOT(updatePreview()));
   }
+}
+
+void CodeCreator::updatePreview()
+{
+  ui->plainTextEditPreview->clear();
+
+  QList<QPair<QString, QString> > code = dynamic_cast<GeneratorI*>(mGenerators[ui->comboBoxType->currentText()])->generatedCode();
+
+  for (auto it = code.begin(); it != code.end(); it++)
+  {
+    if (it != code.begin())
+    {
+      ui->plainTextEditPreview->appendPlainText("\n\n");
+    }
+
+    ui->plainTextEditPreview->appendPlainText("--------------------------------------------------------------------------------");
+    ui->plainTextEditPreview->appendPlainText(it->first);
+    ui->plainTextEditPreview->appendPlainText("--------------------------------------------------------------------------------");
+    ui->plainTextEditPreview->appendPlainText(it->second);
+  }
+
+  // scroll to top
+  QScrollBar* vScrollBar = ui->plainTextEditPreview->verticalScrollBar();
+  vScrollBar->triggerAction(QScrollBar::SliderToMinimum);
 }
 
 void CodeCreator::on_comboBoxType_currentIndexChanged(const QString& type)
@@ -263,4 +291,9 @@ void CodeCreator::on_pushButtonSelectTemplateFolder_clicked()
 
   ui->lineEditTemplateFolder->setText(directory); // TODO relative path?
   mCodeGenerator->setBasePath(directory);
+}
+
+void CodeCreator::on_pushButtonUpdatePreview_clicked()
+{
+  updatePreview();
 }

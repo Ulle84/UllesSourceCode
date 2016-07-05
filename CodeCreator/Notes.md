@@ -1,6 +1,8 @@
 ﻿# Bugs
 
 # ToDo
+* preview of code for all generators - see GeneratorClass
+* live update for code-preview? (signal: codeUpdateRequired)
 * Class Template
   * methods
     * protected and private declarations

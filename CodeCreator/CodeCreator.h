@@ -28,6 +28,9 @@ private slots:
   void on_pushButtonStart_clicked();
   void on_pushButtonClearHistory_clicked();
   void on_pushButtonSelectTemplateFolder_clicked();
+  void on_pushButtonUpdatePreview_clicked();
+
+  void updatePreview();
 
 private:
   bool readXml();

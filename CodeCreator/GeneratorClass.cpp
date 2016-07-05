@@ -29,6 +29,32 @@ GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
 
   ui->constructor->setDeclarationType(Class::DeclarationType::Public);
   ui->destructor->setDeclarationType(Class::DeclarationType::Public);
+
+  setConnections();
+}
+
+void GeneratorClass::setConnections()
+{
+  connect(ui->lineEditName, SIGNAL(textEdited(QString)), this, SIGNAL(optionsChanged()));
+  connect(ui->lineEditBaseClass, SIGNAL(textEdited(QString)), this, SIGNAL(optionsChanged()));
+
+  connect(ui->constructor, SIGNAL(declarationTypeChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->destructor, SIGNAL(declarationTypeChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->copyConstructor, SIGNAL(declarationTypeChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->copyOperator, SIGNAL(declarationTypeChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->moveConstructor, SIGNAL(declarationTypeChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->moveOperator, SIGNAL(declarationTypeChanged(int)), this, SIGNAL(optionsChanged()));
+
+  connect(ui->dPointer, SIGNAL(dPointerTypeChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->singleton, SIGNAL(singletonTypeChanged(int)), this, SIGNAL(optionsChanged()));
+
+  connect(ui->checkBoxQObjectMacro, SIGNAL(clicked(bool)), this, SIGNAL(optionsChanged()));
+  connect(ui->checkBoxVirtualDesctructor, SIGNAL(clicked(bool)), this, SIGNAL(optionsChanged()));
+  connect(ui->checkBoxExplicitConstructor, SIGNAL(clicked(bool)), this, SIGNAL(optionsChanged()));
+
+  connect(ui->plainTextEditNamespaces, SIGNAL(textChanged()), this, SIGNAL(optionsChanged()));
+
+  // TODO interface change
 }
 
 GeneratorClass::~GeneratorClass()
@@ -93,14 +119,14 @@ bool GeneratorClass::generate(const QString &folder)
 
 
 
-  qDebug() << c.createHeader();
+  /*qDebug() << c.createHeader();
   qDebug() << "-----------------------------------------";
   qDebug() << c.createImplementation();
 
   ui->plainTextEditTestOutput->clear();
   ui->plainTextEditTestOutput->appendPlainText(c.createHeader());
   ui->plainTextEditTestOutput->appendPlainText("\n\n\n");
-  ui->plainTextEditTestOutput->appendPlainText(c.createImplementation());
+  ui->plainTextEditTestOutput->appendPlainText(c.createImplementation());*/
 
   return true;
 
@@ -272,6 +298,60 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   //XmlHelper::writeXml(xml, "Interfaces", ui->plainTextEditInterfaces);
 }
 
+QList<QPair<QString, QString> > GeneratorClass::generatedCode()
+{
+  // TODO revert code duplication ()!
+  QString className = ui->lineEditName->text();
+
+  Class c(className);
+  c.setConstructorDeclarationType(ui->constructor->declarationType());
+  c.setDestructorDeclarationType(ui->destructor->declarationType());
+  c.setCopyConstructorDeclarationType(ui->copyConstructor->declarationType());
+  c.setCopyOperatorDeclarationType(ui->copyOperator->declarationType());
+  c.setMoveConstructorDeclarationType(ui->moveConstructor->declarationType());
+  c.setMoveOperatorDeclarationType(ui->moveOperator->declarationType());
+  c.setSingletonType(ui->singleton->singletonType());
+  c.setDPointerType(ui->dPointer->dPointerType());
+  //c.setOutputDirectory(folder);
+  c.setIncludeQObjectMacro(ui->checkBoxQObjectMacro->isChecked());
+  c.setDeclareConstructorExplicit(ui->checkBoxExplicitConstructor->isChecked());
+  c.setDeclareDestructorVirtual(ui->checkBoxVirtualDesctructor->isChecked());
+  c.setOverwriteExistingFiles(true);
+
+  QString baseClass = ui->lineEditBaseClass->text();
+  if (!baseClass.isEmpty())
+  {
+    Class baseClass(ui->lineEditBaseClass->text());
+    c.setBaseClass(&baseClass);
+  }
+
+  QString namespaces = ui->plainTextEditNamespaces->toPlainText();
+
+  if (!namespaces.isEmpty())
+  {
+    c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
+  }
+
+  /*QList<Interface> interfaces;
+  QString interfaceText = ui->plainTextEditInterfaces->toPlainText();
+
+  if (!interfaceText.isEmpty())
+  {
+    QStringList interfaceList = interfaceText.split("\n");
+    for (auto it = interfaceList.begin(); it != interfaceList.end(); it++)
+    {
+      interfaces.append(Interface(*it, "void toDo();"));
+    }
+  }*/
+
+  c.setInterfaces(m_interfaces);
+
+  QList<QPair<QString, QString> > code;
+  code.append(qMakePair(className + ".h", c.createHeader()));
+  code.append(qMakePair(className + ".cpp", c.createImplementation()));
+  return code;
+}
+
 void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
 {
   bool enabled = true;
@@ -294,7 +374,6 @@ void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
   ui->copyOperator->setEnabled(enabled);
   ui->moveConstructor->setEnabled(enabled);
   ui->moveOperator->setEnabled(enabled);
-
 }
 
 void GeneratorClass::addInterface()
