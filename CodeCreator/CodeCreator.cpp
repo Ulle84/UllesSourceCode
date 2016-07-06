@@ -26,33 +26,33 @@
 CodeCreator::CodeCreator(QWidget* parent) :
   QWidget(parent),
   ui(new Ui::CodeCreator),
-  mFileName("Settings.xml")
+  m_fileName("Settings.xml")
 {
   ui->setupUi(this);
 
-  mSettings = new QSettings("Ulle", "CodeCreator");
+  m_settings = new QSettings("Ulle", "CodeCreator");
 
-  if (mSettings->contains("windowGeometry"))
+  if (m_settings->contains("windowGeometry"))
   {
-    this->setGeometry(mSettings->value("windowGeometry").toRect());
+    this->setGeometry(m_settings->value("windowGeometry").toRect());
   }
 
-  mCodeGenerator = new CodeGenerator();
+  m_codeGenerator = new CodeGenerator();
   initGenerators();
   readXml();
 }
 
 CodeCreator::~CodeCreator()
 {
-  mSettings->setValue("windowGeometry", this->geometry());
+  m_settings->setValue("windowGeometry", this->geometry());
   writeXml();
-  delete mCodeGenerator;
+  delete m_codeGenerator;
   delete ui;
 }
 
 void CodeCreator::initGenerators()
 {
-  mGenerators["Class"] = new GeneratorClass(mCodeGenerator, this);
+  m_generators["Class"] = new GeneratorClass(m_codeGenerator, this);
   /*mGenerators["ClassAdvanced"] = new ClassAdvanced(mCodeGenerator, this);
   mGenerators["Interface"] = new GeneratorInterface(mCodeGenerator, this);
   mGenerators["Observer"] = new Observer(mCodeGenerator, this);
@@ -62,11 +62,11 @@ void CodeCreator::initGenerators()
   mGenerators["Decorator"] = new Decorator(mCodeGenerator, this);
   mGenerators["State"] = new State(mCodeGenerator, this);*/
 
-  for (auto it = mGenerators.begin(); it != mGenerators.end(); it++)
+  for (auto it = m_generators.begin(); it != m_generators.end(); it++)
   {
-    if (it == mGenerators.begin())
+    if (it == m_generators.begin())
     {
-      mCurrentGenerator = it.value();
+      m_currentGenerator = it.value();
     }
     else
     {
@@ -84,7 +84,7 @@ void CodeCreator::updatePreview()
 {
   ui->plainTextEditPreview->clear();
 
-  QList<QPair<QString, QString> > code = dynamic_cast<GeneratorI*>(mGenerators[ui->comboBoxType->currentText()])->generatedCode();
+  QList<QPair<QString, QString> > code = dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()])->generatedCode();
 
   for (auto it = code.begin(); it != code.end(); it++)
   {
@@ -117,9 +117,9 @@ void CodeCreator::on_comboBoxType_currentIndexChanged(const QString& type)
     return;
   }
 
-  mCurrentGenerator->setVisible(false);
-  mCurrentGenerator = mGenerators[type];
-  mCurrentGenerator->setVisible(true);
+  m_currentGenerator->setVisible(false);
+  m_currentGenerator = m_generators[type];
+  m_currentGenerator->setVisible(true);
 }
 
 void CodeCreator::on_pushButtonSelectFolder_clicked()
@@ -131,7 +131,7 @@ void CodeCreator::on_pushButtonSelectFolder_clicked()
     return;
   }
 
-  mDirectories.prepend(directory);
+  m_directories.prepend(directory);
   updateComboBoxFolders();
 }
 
@@ -145,7 +145,7 @@ void CodeCreator::on_pushButtonStart_clicked()
     return;
   }
 
-  if (dynamic_cast<GeneratorI*>(mGenerators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
+  if (dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
   {
     // TODO uncomment again
     /*QMessageBox messageBox;
@@ -156,13 +156,13 @@ void CodeCreator::on_pushButtonStart_clicked()
 
 void CodeCreator::on_pushButtonClearHistory_clicked()
 {
-  mDirectories.clear();
+  m_directories.clear();
   updateComboBoxFolders();
 }
 
 bool CodeCreator::readXml()
 {
-  QFile file(mFileName);
+  QFile file(m_fileName);
 
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
   {
@@ -193,7 +193,7 @@ bool CodeCreator::readXml()
       {
         if (xml.name() == "Folder")
         {
-          mDirectories.append(xml.readElementText());
+          m_directories.append(xml.readElementText());
         }
         else
         {
@@ -211,11 +211,11 @@ bool CodeCreator::readXml()
     {
       QString templateFolder = xml.readElementText();
       ui->lineEditTemplateFolder->setText(templateFolder);
-      mCodeGenerator->setBasePath(templateFolder);
+      m_codeGenerator->setBasePath(templateFolder);
     }
-    else if (mGenerators.find(xml.name().toString()) != mGenerators.end())
+    else if (m_generators.find(xml.name().toString()) != m_generators.end())
     {
-      dynamic_cast<GeneratorI*>(mGenerators.find(xml.name().toString()).value())->readXml(xml);
+      dynamic_cast<GeneratorI*>(m_generators.find(xml.name().toString()).value())->readXml(xml);
     }
     else
     {
@@ -228,7 +228,7 @@ bool CodeCreator::readXml()
 
 bool CodeCreator::writeXml()
 {
-  QFile file(mFileName);
+  QFile file(m_fileName);
 
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
@@ -246,7 +246,7 @@ bool CodeCreator::writeXml()
 
   xml.writeStartElement("RecentFolders");
 
-  for (auto it = mDirectories.begin(); it != mDirectories.end(); ++it)
+  for (auto it = m_directories.begin(); it != m_directories.end(); ++it)
   {
     xml.writeTextElement("Folder", *it);
   }
@@ -257,7 +257,7 @@ bool CodeCreator::writeXml()
   xml.writeTextElement("TemplateFolder", ui->lineEditTemplateFolder->text());
 
   // generator settings
-  for (auto it = mGenerators.begin(); it != mGenerators.end(); ++it)
+  for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
   {
     xml.writeStartElement(it.key());
     dynamic_cast<GeneratorI*>(it.value())->writeXml(xml);
@@ -274,10 +274,10 @@ bool CodeCreator::writeXml()
 
 void CodeCreator::updateComboBoxFolders()
 {
-  mDirectories.removeDuplicates();
+  m_directories.removeDuplicates();
 
   ui->comboBoxFolder->clear();
-  ui->comboBoxFolder->insertItems(0, mDirectories);
+  ui->comboBoxFolder->insertItems(0, m_directories);
 }
 
 void CodeCreator::on_pushButtonSelectTemplateFolder_clicked()
@@ -290,10 +290,5 @@ void CodeCreator::on_pushButtonSelectTemplateFolder_clicked()
   }
 
   ui->lineEditTemplateFolder->setText(directory); // TODO relative path?
-  mCodeGenerator->setBasePath(directory);
-}
-
-void CodeCreator::on_pushButtonUpdatePreview_clicked()
-{
-  updatePreview();
+  m_codeGenerator->setBasePath(directory);
 }

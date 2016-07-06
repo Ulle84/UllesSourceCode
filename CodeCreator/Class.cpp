@@ -1042,7 +1042,13 @@ void Class::setClassName(const QString& className)
 
 void Class::setNamespaceNames(const QStringList& namespaceNames)
 {
-  m_namespaceNames = namespaceNames;
+  m_namespaceNames.clear();
+
+  for (auto it = namespaceNames.begin(); it != namespaceNames.end(); it++)
+  {
+    if (!it->isEmpty())
+      m_namespaceNames.append(*it);
+  }
 }
 
 void Class::setInterfaces(const QList<Interface> &interfaces)

@@ -28,7 +28,6 @@ private slots:
   void on_pushButtonStart_clicked();
   void on_pushButtonClearHistory_clicked();
   void on_pushButtonSelectTemplateFolder_clicked();
-  void on_pushButtonUpdatePreview_clicked();
 
   void updatePreview();
 
@@ -40,13 +39,13 @@ private:
   void initGenerators();
 
   Ui::CodeCreator* ui;
-  QMap<QString, QWidget*> mGenerators;
-  QWidget* mCurrentGenerator;
-  QStringList mDirectories;
-  QString mFileName;
-  QSettings* mSettings;
+  QMap<QString, QWidget*> m_generators;
+  QWidget* m_currentGenerator;
+  QStringList m_directories;
+  QString m_fileName;
+  QSettings* m_settings;
 
-  CodeGenerator* mCodeGenerator;
+  CodeGenerator* m_codeGenerator;
 };
 
 #endif // CODECREATOR_H

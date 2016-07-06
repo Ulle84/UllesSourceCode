@@ -407,6 +407,8 @@ void GeneratorClass::on_pushButtonInterfaces_clicked()
         m_interfaces.append(interfaceGui->interface());
       }
     }
+
+    emit optionsChanged();
   }
   else
   {
