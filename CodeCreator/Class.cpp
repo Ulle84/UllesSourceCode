@@ -788,11 +788,17 @@ QString Class::interfaceDeclarations()
 {
   QString code;
 
+  bool interfaceDeclarationExists = false;
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
   {
-    if (!it->isToImplement())
+    if (!it->isToImplement() || it->isEmpty())
     {
       continue;
+    }
+
+    if (interfaceDeclarationExists)
+    {
+      code.append("\n\n");
     }
 
     append(code, 1, "// implementation of interface ");
@@ -804,8 +810,9 @@ QString Class::interfaceDeclarations()
       append(code, 1, it2->declaration(true));
     }
 
-    code.append("\n");
+    interfaceDeclarationExists = true;
   }
+  code.append("\n");
 
   return code;
 }
@@ -847,7 +854,7 @@ bool Class::hasInterfaceToImplement()
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
   {
-    if (it->isToImplement())
+    if (it->isToImplement() && !it->isEmpty())
     {
       return true;
     }
