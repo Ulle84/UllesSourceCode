@@ -16,7 +16,6 @@ Class::Class(const QString& name)
     m_copyOperatorDeclarationType(DeclarationType::NoDeclaration),
     m_moveConstructorDeclarationType(DeclarationType::NoDeclaration),
     m_moveOperatorDeclarationType(DeclarationType::NoDeclaration),
-    m_overwriteExistingFiles(false),
     m_uppercaseHeaderGuard(false),
     m_singletonType(SingletonType::NoSingleton),
     m_dPointerSuffix("P"),
@@ -1100,11 +1099,6 @@ void Class::appendLine(QString& code, unsigned int indent, const QString& toAppe
 {
   append(code, indent, toAppend);
   code.append("\n");
-}
-
-void Class::setOverwriteExistingFiles(bool overwriteExistingFiles)
-{
-  m_overwriteExistingFiles = overwriteExistingFiles;
 }
 
 void Class::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)

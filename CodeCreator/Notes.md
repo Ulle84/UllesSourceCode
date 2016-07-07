@@ -1,6 +1,8 @@
 ﻿# Bugs
 
 # ToDo
+* change GeneratorInterface to new GeneratorI style
+  * save and load (xml) interface
 * Class Template
   * remove Class::checkOptions() -> must be handled in GUI
   * const method support
@@ -14,6 +16,7 @@
   * singleton and dPointer combined?
 * save current folder at folder selection
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
+* remove CodeGenerator and Options class, when not needed anymore
 
 # Ideas
 * type input (bool, int, double etc.) with suggestions and or combo-box
@@ -40,3 +43,5 @@
 * base implementation of GeneratorInterface
 * persistance of interface
 * implementation of interfaces
+* set splitter width
+* implement button define methods

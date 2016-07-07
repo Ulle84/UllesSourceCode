@@ -12,10 +12,9 @@
 #include "InterfaceGui.h"
 #include "WidgetListEditor.h"
 
-GeneratorClass::GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent) :
+GeneratorClass::GeneratorClass(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GeneratorClass),
-  m_codeGenerator(codeGenerator),
   m_widgetListEditor(NULL)
 {
   ui->setupUi(this);
@@ -169,7 +168,6 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
   c.setIncludeQObjectMacro(ui->checkBoxQObjectMacro->isChecked());
   c.setDeclareConstructorExplicit(ui->checkBoxExplicitConstructor->isChecked());
   c.setDeclareDestructorVirtual(ui->checkBoxVirtualDesctructor->isChecked());
-  c.setOverwriteExistingFiles(true);
 
   QString baseClass = ui->lineEditBaseClass->text();
   if (!baseClass.isEmpty())
@@ -184,18 +182,6 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
   {
     c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
   }
-
-  /*QList<Interface> interfaces;
-  QString interfaceText = ui->plainTextEditInterfaces->toPlainText();
-
-  if (!interfaceText.isEmpty())
-  {
-    QStringList interfaceList = interfaceText.split("\n");
-    for (auto it = interfaceList.begin(); it != interfaceList.end(); it++)
-    {
-      interfaces.append(Interface(*it, "void toDo();"));
-    }
-  }*/
 
   c.setInterfaces(m_interfaces);
 

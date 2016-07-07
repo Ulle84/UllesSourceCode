@@ -12,7 +12,6 @@
 #include "CodeCreator.h"
 #include "ui_CodeCreator.h"
 #include "CodeGenerator.h"
-#include "ClassAdvanced.h"
 #include "Generator.h"
 #include "Observer.h"
 #include "Singleton.h"
@@ -41,6 +40,8 @@ CodeCreator::CodeCreator(QWidget* parent) :
   initGenerators();
   readXml();
   updatePreview();
+
+  ui->splitter->setSizes(QList<int>() << 1 << 2);
 }
 
 CodeCreator::~CodeCreator()
@@ -53,15 +54,14 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::initGenerators()
 {
-  m_generators["Class"] = new GeneratorClass(m_codeGenerator, this);
-  /*mGenerators["ClassAdvanced"] = new ClassAdvanced(mCodeGenerator, this);
-  mGenerators["Interface"] = new GeneratorInterface(mCodeGenerator, this);
-  mGenerators["Observer"] = new Observer(mCodeGenerator, this);
-  mGenerators["CodeCreatorGenerator"] = new Generator(mCodeGenerator, this);
-  mGenerators["Singleton"] = new Singleton(mCodeGenerator, this);
-  mGenerators["Data"] = new Data(mCodeGenerator, this);
-  mGenerators["Decorator"] = new Decorator(mCodeGenerator, this);
-  mGenerators["State"] = new State(mCodeGenerator, this);*/
+  m_generators["Class"] = new GeneratorClass(this);
+  m_generators["Interface"] = new GeneratorInterface(this);
+  /*m_generators["Observer"] = new Observer(m_codeGenerator, this);
+  m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
+  m_generators["Singleton"] = new Singleton(m_codeGenerator, this);
+  m_generators["Data"] = new Data(m_codeGenerator, this);
+  m_generators["Decorator"] = new Decorator(m_codeGenerator, this);
+  m_generators["State"] = new State(m_codeGenerator, this);*/
 
   for (auto it = m_generators.begin(); it != m_generators.end(); it++)
   {

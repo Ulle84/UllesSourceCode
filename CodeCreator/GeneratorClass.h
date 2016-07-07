@@ -20,7 +20,7 @@ class GeneratorClass : public QWidget, public GeneratorI
   Q_OBJECT
 
 public:
-  explicit GeneratorClass(CodeGenerator* codeGenerator, QWidget *parent = 0);
+  explicit GeneratorClass(QWidget *parent = 0);
   ~GeneratorClass();
 
   // GeneratorI
@@ -43,7 +43,6 @@ private:
 
   Ui::GeneratorClass* ui;
 
-  CodeGenerator* m_codeGenerator;
   QCompleter* m_completer;
   QList<Interface> m_interfaces;
   WidgetListEditor* m_widgetListEditor;

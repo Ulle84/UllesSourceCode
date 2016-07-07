@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     InterfaceHelper.cpp \
     State.cpp \
     Options.cpp \
-    ClassAdvanced.cpp \
     Parameter.cpp \
     GeneratorInterface.cpp \
     Interface.cpp \
@@ -51,7 +50,6 @@ HEADERS  += CodeCreator.h \
     XmlHelper.h \
     InterfaceHelper.h \
     State.h \
-    ClassAdvanced.h \
     Parameter.h \
     GeneratorInterface.h \
     Interface.h \
@@ -75,7 +73,6 @@ FORMS    += CodeCreator.ui \
     Data.ui \
     Decorator.ui \
     State.ui \
-    ClassAdvanced.ui \
     GeneratorInterface.ui \
     GeneratorClass.ui \
     SelectorDeclarationType.ui \

@@ -25,7 +25,6 @@ public:
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
   void setIncludeQObjectMacro(bool includeQObjectMacro);
-  void setOverwriteExistingFiles(bool overwriteExistingFiles);
   void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
   void setMethods(const QList<Method>& methods);
 
@@ -132,7 +131,6 @@ private:
   DeclarationType m_copyOperatorDeclarationType;
   DeclarationType m_moveConstructorDeclarationType;
   DeclarationType m_moveOperatorDeclarationType;
-  bool m_overwriteExistingFiles;
   bool m_uppercaseHeaderGuard;
   SingletonType m_singletonType;
   DPointerType m_dPointerType;
