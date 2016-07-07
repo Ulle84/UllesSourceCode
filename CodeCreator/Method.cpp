@@ -92,9 +92,41 @@ QString Method::declaration(bool suppressVirtual) const
   return method;
 }
 
+QString Method::implementation(const QString& indent) const
+{
+  QString method = indent;
+
+  method.append(m_returnType);
+  method.append(" ");
+  method.append(m_name);
+  method.append("(");
+
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (it != begin())
+    {
+      method.append(", ");
+    }
+    method.append(it->toString(true));
+  }
+
+  method.append(")\n");
+  method.append(indent);
+  method.append("{\n\n");
+  method.append(indent);
+  method.append("}");
+
+  return method;
+}
+
 bool Method::isValid() const
 {
   return !m_name.isEmpty() && !m_returnType.isEmpty();
+}
+
+Method::Type Method::type() const
+{
+  return m_type;
 }
 
 void Method::setType(Method::Type type)
@@ -102,9 +134,19 @@ void Method::setType(Method::Type type)
   m_type = type;
 }
 
+QString Method::name() const
+{
+  return m_name;
+}
+
 void Method::setName(const QString &name)
 {
   m_name = name;
+}
+
+QString Method::returnType() const
+{
+  return m_returnType;
 }
 
 void Method::setReturnType(const QString &returnType)

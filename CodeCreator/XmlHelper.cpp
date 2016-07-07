@@ -1,9 +1,11 @@
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDebug>
 #include <QLineEdit>
 #include <QPlainTextEdit>
 #include <QStringList>
 
+#include "Interface.h"
 #include "SelectorDeclarationType.h"
 #include "SelectorDPointerType.h"
 #include "SelectorSingletonType.h"
@@ -135,4 +137,154 @@ void XmlHelper::writeXml(QXmlStreamWriter &xml, const QString &name, const Selec
 void XmlHelper::readXml(QXmlStreamReader &xml, SelectorDPointerType *selectorDPointerType)
 {
   selectorDPointerType->setDPointerType(static_cast<Class::DPointerType>(xml.readElementText().toInt()));
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter& xml, const QString& name, const QList<Interface>* interfaces)
+{
+  xml.writeStartElement(name);
+
+  for (auto it = interfaces->begin(); it != interfaces->end(); it++)
+  {
+    writeXml(xml, &(*it));
+  }
+
+  xml.writeEndElement();
+}
+
+void XmlHelper::readXml(QXmlStreamReader& xml, QList<Interface>* interfaces)
+{
+  interfaces->clear();
+
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Interface")
+    {
+      Interface interface;
+      readXml(xml, &interface);
+      interfaces->append(interface);
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter& xml, const Interface* interface)
+{
+  xml.writeStartElement("Interface");
+
+  xml.writeTextElement("Name", interface->name());
+  xml.writeTextElement("ToImplement", interface->isToImplement() ? "true" : "false");
+
+  for (auto it = interface->begin(); it != interface->end(); it++)
+  {
+    writeXml(xml, &(*it));
+  }
+
+  xml.writeEndElement();
+}
+
+void XmlHelper::readXml(QXmlStreamReader& xml, Interface* interface)
+{
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Name")
+    {
+      interface->setName(xml.readElementText());
+    }
+    else if (xml.name() == "ToImplement")
+    {
+      interface->setToImplement(xml.readElementText() == "true");
+    }
+    else if (xml.name() == "Method")
+    {
+      Method method;
+      readXml(xml, &method);
+      interface->append(method);
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter& xml, const Method* method)
+{
+  xml.writeStartElement("Method");
+
+  xml.writeTextElement("Type", QString::number(method->type()));
+  xml.writeTextElement("Name", method->name());
+  xml.writeTextElement("ReturnType", method->returnType());
+
+  for (auto it = method->begin(); it != method->end(); it++)
+  {
+    writeXml(xml, &(*it));
+  }
+
+  xml.writeEndElement();
+}
+
+void XmlHelper::readXml(QXmlStreamReader& xml, Method* method)
+{
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Type")
+    {
+      method->setType(static_cast<Method::Type>(xml.readElementText().toInt()));
+    }
+    else if (xml.name() == "Name")
+    {
+      method->setName(xml.readElementText());
+    }
+    else if (xml.name() == "ReturnType")
+    {
+      method->setReturnType(xml.readElementText());
+    }
+    else if (xml.name() == "Parameter")
+    {
+      Parameter parameter;
+      readXml(xml, &parameter);
+      method->append(parameter);
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter& xml, const Parameter* parameter)
+{
+  xml.writeStartElement("Parameter");
+
+  xml.writeTextElement("Type", parameter->type());
+  xml.writeTextElement("Name", parameter->name());
+  xml.writeTextElement("DefaultValue", parameter->defaultValue());
+
+  xml.writeEndElement();
+}
+
+void XmlHelper::readXml(QXmlStreamReader& xml, Parameter* parameter)
+{
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Type")
+    {
+      parameter->setType(xml.readElementText());
+    }
+    else if (xml.name() == "Name")
+    {
+      parameter->setName(xml.readElementText());
+    }
+    else if (xml.name() == "DefaultValue")
+    {
+      parameter->setDefaultValue(xml.readElementText());
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
 }

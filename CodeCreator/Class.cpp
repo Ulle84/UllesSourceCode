@@ -33,10 +33,8 @@ QString Class::name() const
   return m_name;
 }
 
-QString Class::createHeader()
+QString Class::declaration()
 {
-  checkOptions();
-
   QString code;
 
   code.append(headerGuardStart());
@@ -209,10 +207,8 @@ QString Class::createHeader()
   return code;
 }
 
-QString Class::createImplementation()
+QString Class::implementation()
 {
-  checkOptions();
-
   QString code;
 
   code.append(include(m_name, true, false));
@@ -313,34 +309,21 @@ QString Class::createImplementation()
     alreadyOneImplementationPresent = true;
   }
 
+  if (hasInterfaceToImplement())
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(interfaceImplementations());
+
+    alreadyOneImplementationPresent = true;
+  }
+
   code.append(namespaceEnd());
 
   return code;
-}
-
-bool Class::createFiles()
-{
-  if (!createHeaderFile())
-  {
-    return false;
-  }
-
-  if (!createImplementationFile())
-  {
-    return false;
-  }
-
-  return true;
-}
-
-bool Class::createHeaderFile()
-{
-  return createFile(FileType::Header);
-}
-
-bool Class::createImplementationFile()
-{
-  return createFile(FileType::Source);
 }
 
 QString Class::constructorDeclaration()
@@ -529,7 +512,7 @@ QString Class::copyOperatorImplementation()
   }
   else
   {
-    code.append(toDoImplementation(1));
+    append(code, 1, toDoImplementation());
   }
 
   code.append(closeBlock(1));
@@ -625,9 +608,10 @@ QString Class::destructorImplementation()
   {
     append(code, 1, "delete ");
     code.append(m_dPointerName);
-    code.append(";\n");
+    code.append(";");
   }
 
+  code.append("\n");
   code.append(closeBlock());
 
   return code;
@@ -756,7 +740,7 @@ QString Class::dPointerImplementation()
   code.append("\n");
   code.append(openBlock(0));
   code.append(section("public"));
-  append(code, 0, toDoImplementation());
+  append(code, 1, toDoImplementation());
   append(code, 0, "};\n");
 
   return code;
@@ -801,16 +785,50 @@ QString Class::interfaceDeclarations()
       code.append("\n\n");
     }
 
-    append(code, 1, "// implementation of interface ");
-    code.append(it->name());
-    code.append("\n");
+    append(code, 1, "// interface ");
+    code.append(it->name());    
 
     for (auto it2 = it->begin(); it2 != it->end(); it2++)
     {
+      code.append("\n");
       append(code, 1, it2->declaration(true));
     }
 
     interfaceDeclarationExists = true;
+  }
+  code.append("\n");
+
+  return code;
+}
+
+QString Class::interfaceImplementations()
+{
+  QString code;
+
+  bool interfaceImplementationExists = false;
+  for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
+  {
+    if (!it->isToImplement() || it->isEmpty())
+    {
+      continue;
+    }
+
+    if (interfaceImplementationExists)
+    {
+      code.append("\n\n");
+    }
+
+    for (auto it2 = it->begin(); it2 != it->end(); it2++)
+    {
+      if (it2 != it->begin())
+      {
+        code.append("\n\n");
+      }
+
+      code.append(it2->implementation(leadingWhitespace()));
+    }
+
+    interfaceImplementationExists = true;
   }
   code.append("\n");
 
@@ -861,61 +879,6 @@ bool Class::hasInterfaceToImplement()
   }
 
   return false;
-}
-
-bool Class::createFile(FileType fileType)
-{
-  QString suffix = getSuffix(fileType);
-
-  QString fileName = m_outputDirectory + m_name + suffix;
-
-  QFile file(fileName);
-
-  if (file.exists() && !m_overwriteExistingFiles)
-  {
-    return false;
-  }
-
-  if (!file.open(QIODevice::WriteOnly))
-  {
-    return false;
-  }
-
-  QTextStream textStream(&file);
-
-  if (fileType == FileType::Header)
-  {
-    textStream << createHeader();
-  }
-  else if (fileType == FileType::Source)
-  {
-    textStream << createImplementation();
-  }
-
-  file.close();
-
-  return true;
-}
-
-QString Class::getSuffix(Class::FileType fileType)
-{
-  QString suffix;
-
-  switch (fileType)
-  {
-  case FileType::Header:
-    suffix = ".h";
-    break;
-
-  case FileType::Source:
-    suffix = ".cpp";
-    break;
-
-  default:
-    suffix = ".h";
-  }
-
-  return suffix;
 }
 
 QString Class::classDeclaration()
@@ -1028,18 +991,17 @@ QString Class::moveRef()
   return code;
 }
 
-QString Class::toDo(const QString& task, unsigned int indent)
+QString Class::toDo(const QString& task)
 {
-  QString code = leadingWhitespace(1 + indent);
-  code.append("// TODO ");
+  QString code = ("// TODO ");
   code.append(task);
   code.append("\n");
   return code;
 }
 
-QString Class::toDoImplementation(unsigned int indent)
+QString Class::toDoImplementation()
 {
-  return toDo("do implementation", indent);
+  return toDo("do implementation");
 }
 
 void Class::setClassName(const QString& className)
@@ -1128,44 +1090,6 @@ void Class::setSingletonType(Class::SingletonType singletonType)
   m_singletonType = singletonType;
 }
 
-void Class::checkOptions()
-{
-  if (m_dPointerType != DPointerType::NoDPointer)
-  {
-    if (m_copyConstructorDeclarationType == DeclarationType::NoDeclaration)
-    {
-      m_copyConstructorDeclarationType = DeclarationType::Public;
-    }
-
-    if (m_copyOperatorDeclarationType == DeclarationType::NoDeclaration)
-    {
-      m_copyOperatorDeclarationType = DeclarationType::Public;
-    }
-
-    // TODO support move constructor/operator
-    m_moveConstructorDeclarationType = DeclarationType::NoDeclaration;
-    m_moveOperatorDeclarationType = DeclarationType::NoDeclaration;
-  }
-
-  if (m_singletonType != SingletonType::NoSingleton)
-  {
-    m_constructorDeclarationType = DeclarationType::Private;
-    m_destructorDeclarationType = DeclarationType::Private;
-    m_copyConstructorDeclarationType = DeclarationType::Private;
-    m_copyOperatorDeclarationType = DeclarationType::Private;
-
-    if (m_moveConstructorDeclarationType != DeclarationType::NoDeclaration)
-    {
-      m_moveConstructorDeclarationType = DeclarationType::Private;
-    }
-
-    if (m_moveOperatorDeclarationType != DeclarationType::NoDeclaration)
-    {
-      m_moveOperatorDeclarationType = DeclarationType::Private;
-    }
-  }
-}
-
 void Class::append(QString& code, unsigned int indent, const QString& toAppend)
 {
   code.append(leadingWhitespace(indent));
@@ -1176,11 +1100,6 @@ void Class::appendLine(QString& code, unsigned int indent, const QString& toAppe
 {
   append(code, indent, toAppend);
   code.append("\n");
-}
-
-void Class::setOutputDirectory(const QString& outputDirectory)
-{
-  m_outputDirectory = outputDirectory;
 }
 
 void Class::setOverwriteExistingFiles(bool overwriteExistingFiles)

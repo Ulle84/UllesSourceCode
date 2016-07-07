@@ -24,7 +24,6 @@ public:
   ~GeneratorClass();
 
   // GeneratorI
-  bool generate(const QString& folder);
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);
   QList<QPair<QString, QString> > generatedCode();
@@ -34,6 +33,7 @@ signals:
 
 private slots:
   void on_singleton_singletonTypeChanged(int singletonType);
+  void on_dPointer_dPointerTypeChanged(int dPointerType);
   void addInterface();
   void on_pushButtonInterfaces_clicked();
 

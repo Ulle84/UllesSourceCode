@@ -40,6 +40,7 @@ CodeCreator::CodeCreator(QWidget* parent) :
   m_codeGenerator = new CodeGenerator();
   initGenerators();
   readXml();
+  updatePreview();
 }
 
 CodeCreator::~CodeCreator()
@@ -135,7 +136,7 @@ void CodeCreator::on_pushButtonSelectFolder_clicked()
   updateComboBoxFolders();
 }
 
-void CodeCreator::on_pushButtonStart_clicked()
+void CodeCreator::on_pushButtonGenerate_clicked()
 {
   if (ui->comboBoxFolder->currentText().isEmpty())
   {
@@ -145,13 +146,44 @@ void CodeCreator::on_pushButtonStart_clicked()
     return;
   }
 
-  if (dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()])->generate(ui->comboBoxFolder->currentText()))
+  GeneratorI* generator = dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()]);
+
+  if (!generator)
   {
-    // TODO uncomment again
-    /*QMessageBox messageBox;
-    messageBox.setText(tr("Creation finished!"));
-    messageBox.exec();*/
+    return;
   }
+
+  QList<QPair<QString, QString> > code =  generator->generatedCode();
+
+  for (auto it = code.begin(); it != code.end(); it++)
+  {
+    QFile output(ui->comboBoxFolder->currentText() + QDir::separator() + it->first);
+
+    if (output.exists())
+    {
+      if (QMessageBox::No == QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(it->first), QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+      {
+        return;
+      }
+    }
+
+    if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+      QMessageBox mb;
+      mb.setText(tr("Cannot open output file %1!").arg(it->first));
+      mb.exec();
+      return;
+    }
+
+    QTextStream out(&output);
+    out << it->second;
+
+    output.close();
+  }
+
+  QMessageBox messageBox;
+  messageBox.setText(tr("Creation finished!"));
+  messageBox.exec();
 }
 
 void CodeCreator::on_pushButtonClearHistory_clicked()
@@ -207,12 +239,6 @@ bool CodeCreator::readXml()
     {
       ui->comboBoxFolder->setCurrentIndex(ui->comboBoxFolder->findText(xml.readElementText()));
     }
-    else if (xml.name() == "TemplateFolder")
-    {
-      QString templateFolder = xml.readElementText();
-      ui->lineEditTemplateFolder->setText(templateFolder);
-      m_codeGenerator->setBasePath(templateFolder);
-    }
     else if (m_generators.find(xml.name().toString()) != m_generators.end())
     {
       dynamic_cast<GeneratorI*>(m_generators.find(xml.name().toString()).value())->readXml(xml);
@@ -254,7 +280,6 @@ bool CodeCreator::writeXml()
   xml.writeEndElement(); // RecentFolders
 
   xml.writeTextElement("SelectedFolder", ui->comboBoxFolder->currentText());
-  xml.writeTextElement("TemplateFolder", ui->lineEditTemplateFolder->text());
 
   // generator settings
   for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
@@ -278,17 +303,4 @@ void CodeCreator::updateComboBoxFolders()
 
   ui->comboBoxFolder->clear();
   ui->comboBoxFolder->insertItems(0, m_directories);
-}
-
-void CodeCreator::on_pushButtonSelectTemplateFolder_clicked()
-{
-  QString directory = QFileDialog::getExistingDirectory(this, tr("Select template folder"));
-
-  if (directory.isEmpty())
-  {
-    return;
-  }
-
-  ui->lineEditTemplateFolder->setText(directory); // TODO relative path?
-  m_codeGenerator->setBasePath(directory);
 }

@@ -1,6 +1,7 @@
 #ifndef XMLHELPER_H
 #define XMLHELPER_H
 
+#include <QList>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
@@ -9,6 +10,9 @@ class QComboBox;
 class QLineEdit;
 class QPlainTextEdit;
 
+class Method;
+class Interface;
+class Parameter;
 class SelectorDeclarationType;
 class SelectorSingletonType;
 class SelectorDPointerType;
@@ -43,6 +47,22 @@ public:
   // SelectorDeclarationType
   static void writeXml(QXmlStreamWriter& xml, const QString& name, const SelectorDPointerType* selectorDPointerType);
   static void readXml(QXmlStreamReader& xml, SelectorDPointerType* selectorDPointerType);
+
+  // QList<Interface>
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QList<Interface>* interfaces);
+  static void readXml(QXmlStreamReader& xml, QList<Interface>* interfaces);
+
+  // Interface
+  static void writeXml(QXmlStreamWriter& xml, const Interface* interface);
+  static void readXml(QXmlStreamReader& xml, Interface* interface);
+
+  // Method
+  static void writeXml(QXmlStreamWriter& xml, const Method* method);
+  static void readXml(QXmlStreamReader& xml, Method* method);
+
+  // Parameter
+  static void writeXml(QXmlStreamWriter& xml, const Parameter* parameter);
+  static void readXml(QXmlStreamReader& xml, Parameter* parameter);
 };
 
 #endif // XMLHELPER_H

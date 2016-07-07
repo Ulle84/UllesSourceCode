@@ -62,151 +62,6 @@ GeneratorClass::~GeneratorClass()
   delete ui;
 }
 
-bool GeneratorClass::generate(const QString &folder)
-{
-  QString className = ui->lineEditName->text();
-
-  if (className.isEmpty())
-  {
-    QMessageBox mb;
-    mb.setText(tr("Please enter a name!"));
-    mb.exec();
-    return false;
-  }
-
-  Class c(className);
-  c.setConstructorDeclarationType(ui->constructor->declarationType());
-  c.setDestructorDeclarationType(ui->destructor->declarationType());
-  c.setCopyConstructorDeclarationType(ui->copyConstructor->declarationType());
-  c.setCopyOperatorDeclarationType(ui->copyOperator->declarationType());
-  c.setMoveConstructorDeclarationType(ui->moveConstructor->declarationType());
-  c.setMoveOperatorDeclarationType(ui->moveOperator->declarationType());
-  c.setSingletonType(ui->singleton->singletonType());
-  c.setDPointerType(ui->dPointer->dPointerType());
-  c.setOutputDirectory(folder);
-  c.setIncludeQObjectMacro(ui->checkBoxQObjectMacro->isChecked());
-  c.setDeclareConstructorExplicit(ui->checkBoxExplicitConstructor->isChecked());
-  c.setDeclareDestructorVirtual(ui->checkBoxVirtualDesctructor->isChecked());
-  c.setOverwriteExistingFiles(true);
-
-  QString baseClass = ui->lineEditBaseClass->text();
-  if (!baseClass.isEmpty())
-  {
-    Class baseClass(ui->lineEditBaseClass->text());
-    c.setBaseClass(&baseClass);
-  }
-
-  QString namespaces = ui->plainTextEditNamespaces->toPlainText();
-
-  if (!namespaces.isEmpty())
-  {
-    c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
-  }
-
-  /*QList<Interface> interfaces;
-  QString interfaceText = ui->plainTextEditInterfaces->toPlainText();
-
-  if (!interfaceText.isEmpty())
-  {
-    QStringList interfaceList = interfaceText.split("\n");
-    for (auto it = interfaceList.begin(); it != interfaceList.end(); it++)
-    {
-      interfaces.append(Interface(*it, "void toDo();"));
-    }
-  }*/
-
-  c.setInterfaces(m_interfaces);
-
-
-
-  /*qDebug() << c.createHeader();
-  qDebug() << "-----------------------------------------";
-  qDebug() << c.createImplementation();
-
-  ui->plainTextEditTestOutput->clear();
-  ui->plainTextEditTestOutput->appendPlainText(c.createHeader());
-  ui->plainTextEditTestOutput->appendPlainText("\n\n\n");
-  ui->plainTextEditTestOutput->appendPlainText(c.createImplementation());*/
-
-  return true;
-
-  /*if (ui->checkBoxInherit->isChecked() && ui->lineEditBaseClass->text().isEmpty())
-  {
-    QMessageBox mb;
-    mb.setText(tr("Please enter a base name!"));
-    mb.exec();
-    return false;
-  }
-
-  Options options;
-  options.folderOutput = folder;
-
-  options.files << "Template.cpp";
-  options.files << "Template.h";
-
-  if (ui->checkBoxUsePimpl->isChecked())
-  {
-    options.files << "TemplateImpl.h";
-  }
-
-  if (ui->checkBoxUsePimpl->isChecked())
-  {
-    if (ui->checkBoxDisableCopy->isChecked())
-    {
-      options.folderInput = "Class/pImplNoCopy/";
-    }
-    else
-    {
-      options.folderInput = "Class/pImpl/";
-    }
-  }
-  else
-  {
-    if (ui->checkBoxDisableCopy->isChecked())
-    {
-      options.folderInput = "Class/noCopy/";
-    }
-    else
-    {
-      options.folderInput = "Class/base/";
-    }
-  }
-
-  QString name = ui->lineEditName->text();
-  QString baseClass = ui->lineEditBaseClass->text();
-  QString include;
-  QString type = ui->comboBoxType->currentText();
-  options.searchAndReplace.append(qMakePair(QString("Template"), name));
-  if (ui->checkBoxInherit->isChecked())
-  {
-    if (baseClass.left(1) == "Q")
-    {
-      include = "<";
-      include.append(baseClass);
-      include.append(">");
-      options.searchAndReplace.append(qMakePair(QString("  Template()"), QString("  explicit %1(%2* parent = 0)").arg(name).arg(baseClass)));
-      options.searchAndReplace.append(qMakePair(QString("%1::%1()").arg(name), QString("%1::%1(%2* parent) :\n  %2(parent)").arg(name).arg(baseClass)));
-    }
-    else
-    {
-      include = "\"";
-      include.append(baseClass);
-      include.append(".h\"");
-    }
-
-    options.searchAndReplace.append(qMakePair(QString("class %1").arg(name), QString("#include %1\n\nclass %2 : %3 %5").arg(include).arg(name).arg(type).arg(baseClass)));
-  }
-
-  if (ui->checkBoxQObject->isChecked())
-  {
-    options.searchAndReplace.append(qMakePair(QString("public:"), QString("  Q_OBJECT\n\npublic:")));
-  }
-
-  options.sortSearchAndReplaceList();
-
-  return mCodeGenerator->copyFromTemplate(options);*/
-}
-
 void GeneratorClass::readXml(QXmlStreamReader &xml)
 {
   // TODO can this be be done with QMap<String, XmlBlubI> ?
@@ -268,10 +123,10 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->plainTextEditNamespaces);
     }
-    /*else if (xml.name() == "Interfaces")
+    else if (xml.name() == "Interfaces")
     {
-      XmlHelper::readXml(xml, ui->plainTextEditInterfaces);
-    }*/
+      XmlHelper::readXml(xml, &m_interfaces);
+    }
     else
     {
       xml.skipCurrentElement();
@@ -295,12 +150,11 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "VirtualDestructor", ui->checkBoxVirtualDesctructor);
   XmlHelper::writeXml(xml, "ExplicitConstructor", ui->checkBoxExplicitConstructor);
   XmlHelper::writeXml(xml, "Namespaces", ui->plainTextEditNamespaces);
-  //XmlHelper::writeXml(xml, "Interfaces", ui->plainTextEditInterfaces);
+  XmlHelper::writeXml(xml, "Interfaces", &m_interfaces);
 }
 
 QList<QPair<QString, QString> > GeneratorClass::generatedCode()
 {
-  // TODO revert code duplication ()!
   QString className = ui->lineEditName->text();
 
   Class c(className);
@@ -312,7 +166,6 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
   c.setMoveOperatorDeclarationType(ui->moveOperator->declarationType());
   c.setSingletonType(ui->singleton->singletonType());
   c.setDPointerType(ui->dPointer->dPointerType());
-  //c.setOutputDirectory(folder);
   c.setIncludeQObjectMacro(ui->checkBoxQObjectMacro->isChecked());
   c.setDeclareConstructorExplicit(ui->checkBoxExplicitConstructor->isChecked());
   c.setDeclareDestructorVirtual(ui->checkBoxVirtualDesctructor->isChecked());
@@ -347,8 +200,8 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
   c.setInterfaces(m_interfaces);
 
   QList<QPair<QString, QString> > code;
-  code.append(qMakePair(className + ".h", c.createHeader()));
-  code.append(qMakePair(className + ".cpp", c.createImplementation()));
+  code.append(qMakePair(className + ".h", c.declaration()));
+  code.append(qMakePair(className + ".cpp", c.implementation()));
   return code;
 }
 
@@ -374,6 +227,22 @@ void GeneratorClass::on_singleton_singletonTypeChanged(int singletonType)
   ui->copyOperator->setEnabled(enabled);
   ui->moveConstructor->setEnabled(enabled);
   ui->moveOperator->setEnabled(enabled);
+}
+
+void GeneratorClass::on_dPointer_dPointerTypeChanged(int dPointerType)
+{
+  if (dPointerType != Class::DPointerType::NoDPointer)
+  {
+    if (ui->copyConstructor->declarationType() == Class::DeclarationType::NoDeclaration)
+    {
+      ui->copyConstructor->setDeclarationType(Class::DeclarationType::Public);
+    }
+
+    if (ui->copyOperator->declarationType() == Class::DeclarationType::NoDeclaration)
+    {
+      ui->copyOperator->setDeclarationType(Class::DeclarationType::Public);
+    }
+  }
 }
 
 void GeneratorClass::addInterface()

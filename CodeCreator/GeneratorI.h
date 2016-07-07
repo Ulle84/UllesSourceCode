@@ -11,7 +11,6 @@ class GeneratorI {
 public:
   virtual ~GeneratorI(){}
 
-  virtual bool generate(const QString& folder) = 0;
   virtual void readXml(QXmlStreamReader& xml) = 0;
   virtual void writeXml(QXmlStreamWriter& xml) = 0;
   virtual QList<QPair<QString, QString> > generatedCode() = 0;

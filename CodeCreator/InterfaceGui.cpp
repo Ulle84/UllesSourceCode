@@ -23,7 +23,7 @@ void InterfaceGui::setInterface(const Interface &interface)
   m_interface = interface;
 
   ui->lineEditName->setText(m_interface.m_name);
-  ui->checkBox->setChecked(m_interface.m_implementInterface);
+  ui->checkBox->setChecked(m_interface.m_toImplement);
 }
 
 Interface InterfaceGui::interface()
@@ -77,7 +77,7 @@ void InterfaceGui::on_lineEditName_textEdited(const QString &name)
 
 void InterfaceGui::on_checkBox_clicked(bool checked)
 {
-  m_interface.m_implementInterface = checked;
+  m_interface.m_toImplement = checked;
 }
 
 void InterfaceGui::fillMethodList()

@@ -48,8 +48,6 @@ QList<QWidget*> WidgetListEditor::items()
     }
   }
 
-  qDebug() << list.count();
-
   return list;
 }
 

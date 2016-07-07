@@ -11,16 +11,17 @@ public:
   Interface();
   Interface(const QString& name, const QString& interface);
 
-  QString name();
+  QString name() const;
   void setName(const QString& name);
 
   QString toString();
 
-  bool isToImplement();
+  bool isToImplement() const;
+  void setToImplement(bool toImplement);
 
 private:
   QString m_name;
-  bool m_implementInterface;
+  bool m_toImplement;
 
   friend class InterfaceGui;
 };

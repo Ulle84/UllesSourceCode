@@ -12,11 +12,16 @@ public:
 
   bool isValid() const;
 
-  QString toString() const;
+  QString toString(bool suppressDefaultValue = false) const;
 
   QString type() const;
+  void setType(const QString& type);
+
   QString name() const;
+  void setName(const QString& name);
+
   QString defaultValue() const;
+  void setDefaultValue(const QString& defaultValue);
 
 private:
   QString m_type;

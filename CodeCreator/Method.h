@@ -13,6 +13,7 @@ public:
   Method(const QString& method);
 
   QString declaration(bool suppressVirtual = false) const;
+  QString implementation(const QString& indent) const;
 
   bool isValid() const;
 
@@ -22,8 +23,13 @@ public:
     Virtual,
     PureVirtual
   };
+  Type type() const;
   void setType(Type type);
+
+  QString name() const;
   void setName(const QString& name);
+
+  QString returnType() const;
   void setReturnType(const QString& returnType);
 
   enum DeclarationType

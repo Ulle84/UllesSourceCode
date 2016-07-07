@@ -3,12 +3,12 @@
 #include <QSTringList>
 
 Interface::Interface()
-  : m_implementInterface(true)
+  : m_toImplement(true)
 {
 }
 
 Interface::Interface(const QString &name, const QString &interface)
-  : m_implementInterface(true),
+  : m_toImplement(true),
     m_name(name)
 {
   QStringList methods = interface.split("\n");
@@ -25,7 +25,7 @@ Interface::Interface(const QString &name, const QString &interface)
   }
 }
 
-QString Interface::name()
+QString Interface::name() const
 {
   return m_name;
 }
@@ -52,7 +52,12 @@ QString Interface::toString()
   return interface;
 }
 
-bool Interface::isToImplement()
+bool Interface::isToImplement() const
 {
-  return m_implementInterface;
+  return m_toImplement;
+}
+
+void Interface::setToImplement(bool toImplement)
+{
+  m_toImplement = toImplement;
 }

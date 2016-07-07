@@ -1,20 +1,22 @@
 ﻿# Bugs
 
 # ToDo
-* preview of code for all generators - see GeneratorClass
-* live update for code-preview? (signal: codeUpdateRequired)
 * Class Template
+  * remove Class::checkOptions() -> must be handled in GUI
+  * const method support
+  * save to file -> generate
+  * implementation of  methods
   * methods
     * protected and private declarations
     * all implementations
   * finish GeneratorInterface
   * q-Pointer support -> pointing to overlaying class
   * singleton and dPointer combined?
-  * implementation of interfaces
 * save current folder at folder selection
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 
 # Ideas
+* type input (bool, int, double etc.) with suggestions and or combo-box
 * Templates -> generate project per template?
 * xml helper -> checkbox, lineedit, plaintextedit in xml und zurück -> static functions
 * template for exporting dll
@@ -36,3 +38,5 @@
 * singleton support -> override options (no public constructor etc.), before creating
 * d-Pointer support
 * base implementation of GeneratorInterface
+* persistance of interface
+* implementation of interfaces

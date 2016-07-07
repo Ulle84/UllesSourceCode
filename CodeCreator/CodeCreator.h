@@ -25,9 +25,8 @@ public:
 private slots:
   void on_comboBoxType_currentIndexChanged(const QString& type);
   void on_pushButtonSelectFolder_clicked();
-  void on_pushButtonStart_clicked();
+  void on_pushButtonGenerate_clicked();
   void on_pushButtonClearHistory_clicked();
-  void on_pushButtonSelectTemplateFolder_clicked();
 
   void updatePreview();
 

@@ -43,7 +43,6 @@ int main(int argc, char* argv[])
   test.setCopyOperatorDeclarationType(Class::DeclarationType::NoDeclaration);
   test.setMoveConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
   test.setMoveOperatorDeclarationType(Class::DeclarationType::NoDeclaration);
-  test.setOutputDirectory("D:\\ube\\Misc\\UllesSourceCode\\CodeCreator\\");
   test.setOverwriteExistingFiles(true);
 
   Class base("BaseClass");

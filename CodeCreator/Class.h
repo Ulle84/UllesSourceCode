@@ -14,11 +14,8 @@ public:
 
   QString name() const;
 
-  QString createHeader();
-  QString createImplementation();
-  bool createFiles();
-  bool createHeaderFile();
-  bool createImplementationFile();
+  QString declaration();
+  QString implementation();
 
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
@@ -28,7 +25,6 @@ public:
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
   void setIncludeQObjectMacro(bool includeQObjectMacro);
-  void setOutputDirectory(const QString& outputDirectory);
   void setOverwriteExistingFiles(bool overwriteExistingFiles);
   void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
   void setMethods(const QList<Method>& methods);
@@ -64,8 +60,6 @@ public:
   void setDPointerType(DPointerType dPointerType);
 
 private:
-  void checkOptions();
-
   void append(QString& code, unsigned int indent, const QString& toAppend);
   void appendLine(QString& code, unsigned int indent, const QString& toAppend);
 
@@ -84,8 +78,8 @@ private:
   QString closeBlock(unsigned int indent = 0);
   QString constRef();
   QString moveRef();
-  QString toDo(const QString& task, unsigned int indent = 0);
-  QString toDoImplementation(unsigned int indent = 0);
+  QString toDo(const QString& task);
+  QString toDoImplementation();
 
   QString constructorDeclaration();
   QString constructorImplementation();
@@ -116,19 +110,12 @@ private:
   QString dPointerInitialization(bool copyRhs);
 
   QString interfaceDeclarations();
+  QString interfaceImplementations();
 
   bool hasMethodDeclarations(Method::DeclarationType declarationType);
   QString methodDeclarations(Method::DeclarationType declarationType);
 
   bool hasInterfaceToImplement();
-
-  enum FileType
-  {
-    Header,
-    Source
-  };
-  bool createFile(FileType fileType);
-  QString getSuffix(FileType fileType);
 
   QString m_name;
   QStringList m_namespaceNames;
@@ -145,7 +132,6 @@ private:
   DeclarationType m_copyOperatorDeclarationType;
   DeclarationType m_moveConstructorDeclarationType;
   DeclarationType m_moveOperatorDeclarationType;
-  QString m_outputDirectory;
   bool m_overwriteExistingFiles;
   bool m_uppercaseHeaderGuard;
   SingletonType m_singletonType;
