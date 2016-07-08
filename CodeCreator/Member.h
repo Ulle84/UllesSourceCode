@@ -1,13 +1,24 @@
 #ifndef Member_h
 #define Member_h
 
-#include "Parameter.h"
+#include <QString>
 
-class Member : public Parameter
+class Member
 {
 public:
   Member();
   ~Member();
+
+  //QString toString(bool suppressDefaultValue = false) const;
+
+  QString type() const;
+  void setType(const QString& type);
+
+  QString name() const;
+  void setName(const QString& name);
+
+  QString defaultValue() const;
+  void setDefaultValue(const QString& defaultValue);
 
   enum DeclarationType
   {
@@ -19,6 +30,9 @@ public:
   void setDeclarationType(DeclarationType declarationType);
 
 private:
+  QString m_type;
+  QString m_name;
+  QString m_defaultValue;
   DeclarationType m_declarationType;
 };
 

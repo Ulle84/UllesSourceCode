@@ -11,13 +11,15 @@
 #include "Interface.h"
 #include "InterfaceGui.h"
 #include "MethodGui.h"
+#include "MemberGui.h"
 #include "WidgetListEditor.h"
 
 GeneratorClass::GeneratorClass(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GeneratorClass),
   m_widgetListEditorInterfaces(NULL),
-  m_widgetListEditorMethods(NULL)
+  m_widgetListEditorMethods(NULL),
+  m_widgetListEditorMembers(NULL)
 {
   ui->setupUi(this);
 
@@ -130,6 +132,10 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, &m_interfaces);
     }
+    else if (xml.name() == "Members")
+    {
+      XmlHelper::readXml(xml, &m_members);
+    }
     else
     {
       xml.skipCurrentElement();
@@ -154,7 +160,8 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "ExplicitConstructor", ui->checkBoxExplicitConstructor);
   XmlHelper::writeXml(xml, "Namespaces", ui->plainTextEditNamespaces);
   XmlHelper::writeXml(xml, &m_interface);
-  XmlHelper::writeXml(xml, "Interfaces", &m_interfaces);  
+  XmlHelper::writeXml(xml, "Interfaces", &m_interfaces);
+  XmlHelper::writeXml(xml, "Members", &m_members);
 }
 
 QList<QPair<QString, QString> > GeneratorClass::generatedCode()
@@ -249,6 +256,12 @@ void GeneratorClass::addMethod()
   dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(methodGui);
 }
 
+void GeneratorClass::addMember()
+{
+  MemberGui* memberGui = new MemberGui();
+  dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(memberGui);
+}
+
 void GeneratorClass::on_pushButtonInterfaces_clicked()
 {
   if (m_widgetListEditorInterfaces == NULL)
@@ -304,37 +317,84 @@ void GeneratorClass::fillMethodList()
   }
 }
 
+void GeneratorClass::fillMemberList()
+{
+  for (auto it = m_members.begin(); it != m_members.end(); it++)
+  {
+    MemberGui* memberGui = new MemberGui();
+    memberGui->setMember(*it);
+    m_widgetListEditorMembers->addItem(memberGui);
+  }
+}
+
 void GeneratorClass::on_pushButtonMethods_clicked()
 {
   if (m_widgetListEditorMethods == NULL)
+  {
+    m_widgetListEditorMethods = new WidgetListEditor(this);
+    m_widgetListEditorMethods->setButtonText(tr("add method"));
+    connect(m_widgetListEditorMethods, SIGNAL(addClicked()), this, SLOT(addMethod()));
+    fillMethodList();
+  }
+
+  m_widgetListEditorMethods->setWindowTitle(tr("methods of class %1").arg(ui->lineEditName->text()));
+
+  if (m_widgetListEditorMethods->exec() == QDialog::Accepted)
+  {
+    m_interface.clear();
+
+    QList<QWidget*> items = m_widgetListEditorMethods->items();
+
+    for (auto it = items.begin(); it != items.end(); it++)
     {
-      m_widgetListEditorMethods = new WidgetListEditor(this);
-      m_widgetListEditorMethods->setButtonText(tr("add method"));
-      m_widgetListEditorMethods->setWindowTitle(tr("methods of class %1").arg(ui->lineEditName->text()));
-      connect(m_widgetListEditorMethods, SIGNAL(addClicked()), this, SLOT(addMethod()));
-      fillMethodList();
-    }
-
-    if (m_widgetListEditorMethods->exec() == QDialog::Accepted)
-    {
-      m_interface.clear();
-
-      QList<QWidget*> items = m_widgetListEditorMethods->items();
-
-      for (auto it = items.begin(); it != items.end(); it++)
+      MethodGui* methodGui = dynamic_cast<MethodGui*>(*it);
+      if (methodGui)
       {
-        MethodGui* methodGui = dynamic_cast<MethodGui*>(*it);
-        if (methodGui)
-        {
-          m_interface.append(methodGui->method());
-        }
+        m_interface.append(methodGui->method());
       }
+    }
 
-      emit optionsChanged();
-    }
-    else
+    emit optionsChanged();
+  }
+  else
+  {
+    m_widgetListEditorMethods->clear();
+    fillMethodList();
+  }
+}
+
+void GeneratorClass::on_pushButtonMembers_clicked()
+{
+  if (m_widgetListEditorMembers == NULL)
+  {
+    m_widgetListEditorMembers = new WidgetListEditor(this);
+    m_widgetListEditorMembers->setButtonText(tr("add member"));
+    connect(m_widgetListEditorMembers, SIGNAL(addClicked()), this, SLOT(addMember()));
+    fillMemberList();
+  }
+
+  m_widgetListEditorMembers->setWindowTitle(tr("member of class %1").arg(ui->lineEditName->text()));
+
+  if (m_widgetListEditorMembers->exec() == QDialog::Accepted)
+  {
+    m_members.clear();
+
+    QList<QWidget*> items = m_widgetListEditorMembers->items();
+
+    for (auto it = items.begin(); it != items.end(); it++)
     {
-      m_widgetListEditorMethods->clear();
-      fillMethodList();
+      MemberGui* memberGui = dynamic_cast<MemberGui*>(*it);
+      if (memberGui)
+      {
+        m_members.append(memberGui->member());
+      }
     }
+
+    emit optionsChanged();
+  }
+  else
+  {
+    m_widgetListEditorMembers->clear();
+    fillMemberList();
+  }
 }

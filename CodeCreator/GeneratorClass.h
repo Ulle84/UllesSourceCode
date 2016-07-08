@@ -6,6 +6,7 @@
 
 #include "GeneratorI.h"
 #include "Interface.h"
+#include "Member.h"
 
 class QCompleter;
 class CodeGenerator;
@@ -36,21 +37,26 @@ private slots:
   void on_dPointer_dPointerTypeChanged(int dPointerType);
   void addInterface();
   void addMethod();
+  void addMember();
   void on_pushButtonInterfaces_clicked();
   void on_pushButtonMethods_clicked();
+  void on_pushButtonMembers_clicked();
 
 private:
   void setConnections();
   void fillInterfaceList();
   void fillMethodList();
+  void fillMemberList();
 
   Ui::GeneratorClass* ui;
 
   QCompleter* m_completer;
   QList<Interface> m_interfaces;
   Interface m_interface;
+  QList<Member> m_members;
   WidgetListEditor* m_widgetListEditorInterfaces;
   WidgetListEditor* m_widgetListEditorMethods;
+  WidgetListEditor* m_widgetListEditorMembers;
 };
 
 #endif // GENERATORCLASS_H

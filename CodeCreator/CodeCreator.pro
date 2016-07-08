@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     WidgetListItem.cpp \
     InterfaceGui.cpp \
     GeneratorData.cpp \
-    Member.cpp
+    Member.cpp \
+    MemberGui.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -67,7 +68,8 @@ HEADERS  += CodeCreator.h \
     InterfaceGui.h \
     GeneratorIOld.h \
     GeneratorData.h \
-    Member.h
+    Member.h \
+    MemberGui.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
@@ -85,7 +87,8 @@ FORMS    += CodeCreator.ui \
     WidgetListEditor.ui \
     WidgetListItem.ui \
     InterfaceGui.ui \
-    GeneratorData.ui
+    GeneratorData.ui \
+    MemberGui.ui
 
 OTHER_FILES += \
     ToDo.txt \

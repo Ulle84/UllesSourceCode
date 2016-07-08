@@ -16,27 +16,63 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_9">
+     <item row="7" column="1">
+      <widget class="SelectorDeclarationType" name="moveConstructor"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="SelectorDeclarationType" name="copyConstructor"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_12">
        <property name="text">
-        <string>move constructor</string>
+        <string>singleton</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
+     <item row="8" column="1">
+      <widget class="SelectorDeclarationType" name="moveOperator"/>
+     </item>
+     <item row="9" column="1">
+      <widget class="SelectorDPointerType" name="dPointer"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>base class</string>
+        <string>destructor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>methods</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="1">
+      <widget class="QPushButton" name="pushButtonMethods">
+       <property name="text">
+        <string>define methods</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>d-pointer</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="lineEditName"/>
      </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_10">
+     <item row="4" column="1">
+      <widget class="SelectorDeclarationType" name="destructor"/>
+     </item>
+     <item row="15" column="1">
+      <widget class="QPushButton" name="pushButtonInterfaces">
        <property name="text">
-        <string>move operator</string>
+        <string>define interfaces</string>
        </property>
       </widget>
      </item>
@@ -65,12 +101,6 @@
        </item>
       </layout>
      </item>
-     <item row="6" column="1">
-      <widget class="SelectorDeclarationType" name="copyOperator"/>
-     </item>
-     <item row="8" column="1">
-      <widget class="SelectorDeclarationType" name="moveOperator"/>
-     </item>
      <item row="6" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
@@ -78,10 +108,67 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_11">
+     <item row="10" column="1">
+      <widget class="SelectorSingletonType" name="singleton"/>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_13">
        <property name="text">
-        <string>d-pointer</string>
+        <string>further options</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>base class</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="QPlainTextEdit" name="plainTextEditNamespaces"/>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>namespaces</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEditBaseClass"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>copy constructor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="SelectorDeclarationType" name="copyOperator"/>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>move operator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="SelectorDeclarationType" name="constructor"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>move constructor</string>
        </property>
       </widget>
      </item>
@@ -92,97 +179,24 @@
        </property>
       </widget>
      </item>
-     <item row="10" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>singleton</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="0">
-      <widget class="QLabel" name="label_13">
-       <property name="text">
-        <string>further options</string>
-       </property>
-      </widget>
-     </item>
-     <item row="14" column="1">
-      <widget class="QPushButton" name="pushButtonInterfaces">
-       <property name="text">
-        <string>define interfaces</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>namespaces</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="1">
-      <widget class="SelectorSingletonType" name="singleton"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>copy constructor</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="SelectorDeclarationType" name="destructor"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEditBaseClass"/>
-     </item>
-     <item row="3" column="1">
-      <widget class="SelectorDeclarationType" name="constructor"/>
-     </item>
-     <item row="12" column="1">
-      <widget class="QPlainTextEdit" name="plainTextEditNamespaces"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="14" column="0">
+     <item row="15" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>interfaces</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="SelectorDeclarationType" name="copyConstructor"/>
-     </item>
-     <item row="7" column="1">
-      <widget class="SelectorDeclarationType" name="moveConstructor"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>destructor</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
-      <widget class="SelectorDPointerType" name="dPointer"/>
-     </item>
      <item row="13" column="0">
-      <widget class="QLabel" name="label_14">
+      <widget class="QLabel" name="label_15">
        <property name="text">
-        <string>methods</string>
+        <string>members</string>
        </property>
       </widget>
      </item>
      <item row="13" column="1">
-      <widget class="QPushButton" name="pushButtonMethods">
+      <widget class="QPushButton" name="pushButtonMembers">
        <property name="text">
-        <string>define methods</string>
+        <string>define members</string>
        </property>
       </widget>
      </item>

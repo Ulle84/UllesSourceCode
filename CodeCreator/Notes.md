@@ -1,7 +1,8 @@
 ﻿# Bugs
 
 # ToDo
-* class: support for members
+* class: new class Members with hasPublicMembers etc.
+* class: support for members (generation)
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes, when not needed anymore
 * remove Template directory
@@ -13,7 +14,6 @@
 * implementation of  methods -> return something valid for compiler - always mark as "ToDo"
 * type input (bool, int, double etc.) with suggestions and or combo-box
 * Templates -> generate project per template?
-* xml helper -> checkbox, lineedit, plaintextedit in xml und zurück -> static functions
 * template for exporting dll
 * more patterns
   * Factory
@@ -25,6 +25,8 @@
   * Composite
   * State
   * Proxy
+* parse class declarations (first write a own parser for something simple (JSON i. e.)) to instance of class
+*
 
 # Done
 * looking in wrong folder for templates -> needs to be configurable!!!
@@ -40,3 +42,4 @@
 * save and load (xml) interface
 * change GeneratorInterface to new GeneratorI style
 * full support for methods (gui + xml + code generation)
+* class: support for members (gui + xml)

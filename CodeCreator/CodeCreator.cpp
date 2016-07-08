@@ -290,9 +290,14 @@ bool CodeCreator::writeXml()
   // generator settings
   for (auto it = m_generators.begin(); it != m_generators.end(); ++it)
   {
-    xml.writeStartElement(it.key());
-    dynamic_cast<GeneratorI*>(it.value())->writeXml(xml);
-    xml.writeEndElement();
+    GeneratorI* generator = dynamic_cast<GeneratorI*>(it.value());
+
+    if (generator)
+    {
+      xml.writeStartElement(it.key());
+      generator->writeXml(xml);
+      xml.writeEndElement();
+    }
   }
 
   xml.writeEndElement(); // Settings

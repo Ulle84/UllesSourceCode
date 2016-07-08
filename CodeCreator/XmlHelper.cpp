@@ -10,6 +10,7 @@
 #include "SelectorDPointerType.h"
 #include "SelectorSingletonType.h"
 #include "XmlHelper.h"
+#include "Member.h"
 
 void XmlHelper::writeXml(QXmlStreamWriter& xml, const QString &name, const QCheckBox* checkBox)
 {
@@ -286,6 +287,76 @@ void XmlHelper::readXml(QXmlStreamReader& xml, Parameter* parameter)
     else if (xml.name() == "DefaultValue")
     {
       parameter->setDefaultValue(xml.readElementText());
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter &xml, const QString &name, const QList<Member> *members)
+{
+  xml.writeStartElement(name);
+
+  for (auto it = members->begin(); it != members->end(); it++)
+  {
+    writeXml(xml, &(*it));
+  }
+
+  xml.writeEndElement();
+}
+
+void XmlHelper::readXml(QXmlStreamReader &xml, QList<Member> *members)
+{
+  members->clear();
+
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Member")
+    {
+      Member member;
+      readXml(xml, &member);
+      members->append(member);
+    }
+    else
+    {
+      xml.skipCurrentElement();
+    }
+  }
+}
+
+void XmlHelper::writeXml(QXmlStreamWriter &xml, const Member *member)
+{
+  xml.writeStartElement("Member");
+
+  xml.writeTextElement("Type", member->type());
+  xml.writeTextElement("Name", member->name());
+  xml.writeTextElement("DefaultValue", member->defaultValue());
+  xml.writeTextElement("DeclarationType", QString::number(member->declarationType()));
+
+  xml.writeEndElement();
+}
+
+void XmlHelper::readXml(QXmlStreamReader &xml, Member *member)
+{
+  while (xml.readNextStartElement())
+  {
+    if (xml.name() == "Type")
+    {
+      member->setType(xml.readElementText());
+    }
+    else if (xml.name() == "Name")
+    {
+      member->setName(xml.readElementText());
+    }
+    else if (xml.name() == "DefaultValue")
+    {
+      member->setDefaultValue(xml.readElementText());
+    }
+    else if (xml.name() == "DeclarationType")
+    {
+      member->setDeclarationType(static_cast<Member::DeclarationType>(xml.readElementText().toInt()));
     }
     else
     {

@@ -11,6 +11,7 @@ class QLineEdit;
 class QPlainTextEdit;
 
 class Method;
+class Member;
 class Interface;
 class Parameter;
 class SelectorDeclarationType;
@@ -63,6 +64,14 @@ public:
   // Parameter
   static void writeXml(QXmlStreamWriter& xml, const Parameter* parameter);
   static void readXml(QXmlStreamReader& xml, Parameter* parameter);
+
+  // QList<Member>
+  static void writeXml(QXmlStreamWriter& xml, const QString& name, const QList<Member>* members);
+  static void readXml(QXmlStreamReader& xml, QList<Member>* members);
+
+  // Member
+  static void writeXml(QXmlStreamWriter& xml, const Member* member);
+  static void readXml(QXmlStreamReader& xml, Member* member);
 };
 
 #endif // XMLHELPER_H
