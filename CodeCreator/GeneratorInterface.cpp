@@ -36,9 +36,14 @@ void GeneratorInterface::readXml(QXmlStreamReader &xml)
     if (xml.name() == "Name")
     {
       XmlHelper::readXml(xml, ui->lineEditName);
-    }else if (xml.name() == "Prefix")
+    }
+    else if (xml.name() == "Prefix")
     {
       XmlHelper::readXml(xml, ui->checkBoxPostfix);
+    }
+    else if (xml.name() == "Interface")
+    {
+      XmlHelper::readXml(xml, &m_interface);
     }
     else
     {
@@ -51,6 +56,7 @@ void GeneratorInterface::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
   XmlHelper::writeXml(xml, "Prefix", ui->checkBoxPostfix);
+  XmlHelper::writeXml(xml, &m_interface);
 }
 
 QList<QPair<QString, QString> > GeneratorInterface::generatedCode()

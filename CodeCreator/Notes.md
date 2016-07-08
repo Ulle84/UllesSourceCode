@@ -1,9 +1,8 @@
 ﻿# Bugs
 
 # ToDo
-* change GeneratorInterface to new GeneratorI style
-  * save and load (xml) interface
 * Class Template
+  * full support for methods (gui + xml)
   * remove Class::checkOptions() -> must be handled in GUI
   * const method support
   * save to file -> generate
@@ -45,3 +44,5 @@
 * implementation of interfaces
 * set splitter width
 * implement button define methods
+* save and load (xml) interface
+* change GeneratorInterface to new GeneratorI style
