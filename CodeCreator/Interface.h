@@ -19,7 +19,21 @@ public:
   bool isToImplement() const;
   void setToImplement(bool toImplement);
 
+  bool hasPublicMethods() const;
+  QList<Method> publicMethods() const;
+
+  bool hasProtectedMethods() const;
+  QList<Method> protectedMethods() const;
+
+  bool hasPrivateMethods() const;
+  QList<Method> privateMethods() const;
+
+  void setAllMethodsPublicPureVirtual();
+
 private:
+  bool hasDeclarationType(Method::DeclarationType declarationType) const;
+  QList<Method> methods(Method::DeclarationType declarationType) const;
+
   QString m_name;
   bool m_toImplement;
 

@@ -22,6 +22,9 @@ public:
   void setMethod(const Method& method);
   Method method();
 
+  void setTypeVisible(bool visible);
+  void setDeclarationTypeVisible(bool visible);
+
 private slots:
   void on_comboBoxDeclarationType_currentIndexChanged(const QString &arg1);
   void on_comboBoxType_currentIndexChanged(const QString &arg1);

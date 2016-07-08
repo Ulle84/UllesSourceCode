@@ -35,17 +35,22 @@ private slots:
   void on_singleton_singletonTypeChanged(int singletonType);
   void on_dPointer_dPointerTypeChanged(int dPointerType);
   void addInterface();
+  void addMethod();
   void on_pushButtonInterfaces_clicked();
+  void on_pushButtonMethods_clicked();
 
 private:
   void setConnections();
   void fillInterfaceList();
+  void fillMethodList();
 
   Ui::GeneratorClass* ui;
 
   QCompleter* m_completer;
   QList<Interface> m_interfaces;
-  WidgetListEditor* m_widgetListEditor;
+  Interface m_interface;
+  WidgetListEditor* m_widgetListEditorInterfaces;
+  WidgetListEditor* m_widgetListEditorMethods;
 };
 
 #endif // GENERATORCLASS_H

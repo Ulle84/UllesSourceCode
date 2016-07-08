@@ -10,12 +10,14 @@
 #include "Class.h"
 #include "Interface.h"
 #include "InterfaceGui.h"
+#include "MethodGui.h"
 #include "WidgetListEditor.h"
 
 GeneratorClass::GeneratorClass(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GeneratorClass),
-  m_widgetListEditor(NULL)
+  m_widgetListEditorInterfaces(NULL),
+  m_widgetListEditorMethods(NULL)
 {
   ui->setupUi(this);
 
@@ -52,8 +54,6 @@ void GeneratorClass::setConnections()
   connect(ui->checkBoxExplicitConstructor, SIGNAL(clicked(bool)), this, SIGNAL(optionsChanged()));
 
   connect(ui->plainTextEditNamespaces, SIGNAL(textChanged()), this, SIGNAL(optionsChanged()));
-
-  // TODO interface change
 }
 
 GeneratorClass::~GeneratorClass()
@@ -122,6 +122,10 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->plainTextEditNamespaces);
     }
+    else if (xml.name() == "Interface")
+    {
+      XmlHelper::readXml(xml, &m_interface);
+    }
     else if (xml.name() == "Interfaces")
     {
       XmlHelper::readXml(xml, &m_interfaces);
@@ -149,7 +153,8 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "VirtualDestructor", ui->checkBoxVirtualDesctructor);
   XmlHelper::writeXml(xml, "ExplicitConstructor", ui->checkBoxExplicitConstructor);
   XmlHelper::writeXml(xml, "Namespaces", ui->plainTextEditNamespaces);
-  XmlHelper::writeXml(xml, "Interfaces", &m_interfaces);
+  XmlHelper::writeXml(xml, &m_interface);
+  XmlHelper::writeXml(xml, "Interfaces", &m_interfaces);  
 }
 
 QList<QPair<QString, QString> > GeneratorClass::generatedCode()
@@ -183,6 +188,7 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
     c.setNamespaceNames(ui->plainTextEditNamespaces->toPlainText().split("\n"));
   }
 
+  c.setInterface(m_interface);
   c.setInterfaces(m_interfaces);
 
   QList<QPair<QString, QString> > code;
@@ -237,22 +243,28 @@ void GeneratorClass::addInterface()
   dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(interfaceGui);
 }
 
+void GeneratorClass::addMethod()
+{
+  MethodGui* methodGui = new MethodGui();
+  dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(methodGui);
+}
+
 void GeneratorClass::on_pushButtonInterfaces_clicked()
 {
-  if (m_widgetListEditor == NULL)
+  if (m_widgetListEditorInterfaces == NULL)
   {
-    m_widgetListEditor = new WidgetListEditor(this);
-    m_widgetListEditor->setButtonText(tr("add interface"));
-    m_widgetListEditor->setWindowTitle(tr("interface editor"));
-    connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addInterface()));
+    m_widgetListEditorInterfaces = new WidgetListEditor(this);
+    m_widgetListEditorInterfaces->setButtonText(tr("add interface"));
+    m_widgetListEditorInterfaces->setWindowTitle(tr("interface editor"));
+    connect(m_widgetListEditorInterfaces, SIGNAL(addClicked()), this, SLOT(addInterface()));
     fillInterfaceList();
   }
 
-  if (m_widgetListEditor->exec() == QDialog::Accepted)
+  if (m_widgetListEditorInterfaces->exec() == QDialog::Accepted)
   {
     m_interfaces.clear();
 
-    QList<QWidget*> items = m_widgetListEditor->items();
+    QList<QWidget*> items = m_widgetListEditorInterfaces->items();
 
     for (auto it = items.begin(); it != items.end(); it++)
     {
@@ -267,7 +279,7 @@ void GeneratorClass::on_pushButtonInterfaces_clicked()
   }
   else
   {
-    m_widgetListEditor->clear();
+    m_widgetListEditorInterfaces->clear();
     fillInterfaceList();
   }
 }
@@ -278,6 +290,51 @@ void GeneratorClass::fillInterfaceList()
   {
     InterfaceGui* interfaceGui = new InterfaceGui();
     interfaceGui->setInterface(*it);
-    m_widgetListEditor->addItem(interfaceGui);
+    m_widgetListEditorInterfaces->addItem(interfaceGui);
   }
+}
+
+void GeneratorClass::fillMethodList()
+{
+  for (auto it = m_interface.begin(); it != m_interface.end(); it++)
+  {
+    MethodGui* methodGui = new MethodGui();
+    methodGui->setMethod(*it);
+    m_widgetListEditorMethods->addItem(methodGui);
+  }
+}
+
+void GeneratorClass::on_pushButtonMethods_clicked()
+{
+  if (m_widgetListEditorMethods == NULL)
+    {
+      m_widgetListEditorMethods = new WidgetListEditor(this);
+      m_widgetListEditorMethods->setButtonText(tr("add method"));
+      m_widgetListEditorMethods->setWindowTitle(tr("methods of class %1").arg(ui->lineEditName->text()));
+      connect(m_widgetListEditorMethods, SIGNAL(addClicked()), this, SLOT(addMethod()));
+      fillMethodList();
+    }
+
+    if (m_widgetListEditorMethods->exec() == QDialog::Accepted)
+    {
+      m_interface.clear();
+
+      QList<QWidget*> items = m_widgetListEditorMethods->items();
+
+      for (auto it = items.begin(); it != items.end(); it++)
+      {
+        MethodGui* methodGui = dynamic_cast<MethodGui*>(*it);
+        if (methodGui)
+        {
+          m_interface.append(methodGui->method());
+        }
+      }
+
+      emit optionsChanged();
+    }
+    else
+    {
+      m_widgetListEditorMethods->clear();
+      fillMethodList();
+    }
 }

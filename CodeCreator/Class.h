@@ -20,13 +20,13 @@ public:
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
   void setBaseClass(const Class* baseClass);
+  void setInterface(const Interface& interface);
   void setInterfaces(const QList<Interface> &interfaces);
   void setIndent(const QString& indent);
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
   void setIncludeQObjectMacro(bool includeQObjectMacro);
   void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
-  void setMethods(const QList<Method>& methods);
 
   enum DeclarationType
   {
@@ -111,14 +111,15 @@ private:
   QString interfaceDeclarations();
   QString interfaceImplementations();
 
-  bool hasMethodDeclarations(Method::DeclarationType declarationType);
-  QString methodDeclarations(Method::DeclarationType declarationType);
+  QString methodDeclarations(QList<Method> methods);
+  QString methodImplementations();
 
   bool hasInterfaceToImplement();
 
   QString m_name;
   QStringList m_namespaceNames;
   const Class* m_baseClass;
+  Interface m_interface;
   QList<Interface> m_interfaces;
   QString m_indent;
 
@@ -134,7 +135,6 @@ private:
   bool m_uppercaseHeaderGuard;
   SingletonType m_singletonType;
   DPointerType m_dPointerType;
-  QList<Method> m_methods;
   QString m_dPointerSuffix;
   QString m_dPointerName;
   QString m_rhs;

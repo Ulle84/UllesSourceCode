@@ -215,6 +215,7 @@ void XmlHelper::writeXml(QXmlStreamWriter& xml, const Method* method)
   xml.writeStartElement("Method");
 
   xml.writeTextElement("Type", QString::number(method->type()));
+  xml.writeTextElement("DeclarationType", QString::number(method->declarationType()));
   xml.writeTextElement("Name", method->name());
   xml.writeTextElement("ReturnType", method->returnType());
 
@@ -233,6 +234,10 @@ void XmlHelper::readXml(QXmlStreamReader& xml, Method* method)
     if (xml.name() == "Type")
     {
       method->setType(static_cast<Method::Type>(xml.readElementText().toInt()));
+    }
+    else if (xml.name() == "DeclarationType")
+    {
+      method->setDeclarationType(static_cast<Method::DeclarationType>(xml.readElementText().toInt()));
     }
     else if (xml.name() == "Name")
     {

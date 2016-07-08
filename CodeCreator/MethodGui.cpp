@@ -33,12 +33,39 @@ void MethodGui::setMethod(const Method &method)
 
   ui->lineEditName->setText(m_method.m_name);
   ui->lineEditReturnType->setText(m_method.m_returnType);
-  // TODO set state of combo boxes
+
+  for (int i = 0; i < ui->comboBoxType->count(); i++)
+  {
+    if (ui->comboBoxType->itemData(i).toInt() == m_method.type())
+    {
+      ui->comboBoxType->setCurrentIndex(i);
+      break;
+    }
+  }
+
+  for (int i = 0; i < ui->comboBoxDeclarationType->count(); i++)
+  {
+    if (ui->comboBoxDeclarationType->itemData(i).toInt() == m_method.declarationType())
+    {
+      ui->comboBoxDeclarationType->setCurrentIndex(i);
+      break;
+    }
+  }
 }
 
 Method MethodGui::method()
 {
   return m_method;
+}
+
+void MethodGui::setTypeVisible(bool visible)
+{
+  ui->comboBoxType->setVisible(visible);
+}
+
+void MethodGui::setDeclarationTypeVisible(bool visible)
+{
+  ui->comboBoxDeclarationType->setVisible(visible);
 }
 
 void MethodGui::on_comboBoxDeclarationType_currentIndexChanged(const QString &arg1)

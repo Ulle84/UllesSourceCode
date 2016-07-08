@@ -97,14 +97,15 @@ QString Class::declaration()
     m_sectionEmtpy = false;
   }
 
-  if (hasMethodDeclarations(Method::DeclarationType::Public))
+  if (m_interface.hasPublicMethods())
   {
-    if (!m_sectionEmtpy)
+    if(!m_sectionEmtpy)
     {
       code.append("\n");
     }
 
-    code.append(methodDeclarations(Method::DeclarationType::Public));
+    code.append(methodDeclarations(m_interface.publicMethods()));
+
     m_sectionEmtpy = false;
   }
 
@@ -119,6 +120,13 @@ QString Class::declaration()
     m_sectionEmtpy = false;
   }
 
+  if (m_interface.hasProtectedMethods())
+  {
+    code.append("\n");
+    code.append(section("protected"));
+    code.append(methodDeclarations(m_interface.protectedMethods()));
+  }
+
   if (m_constructorDeclarationType == DeclarationType::Private
       || m_copyConstructorDeclarationType == DeclarationType::Private
       || m_copyOperatorDeclarationType == DeclarationType::Private
@@ -126,10 +134,12 @@ QString Class::declaration()
       || m_moveOperatorDeclarationType == DeclarationType::Private
       || m_destructorDeclarationType == DeclarationType::Private
       || m_singletonType != SingletonType::NoSingleton
-      || m_dPointerType != DPointerType::NoDPointer)
+      || m_dPointerType != DPointerType::NoDPointer
+      || m_interface.hasPrivateMethods())
   {
     code.append("\n");
     code.append(section("private"));
+    m_sectionEmtpy = true;
   }
 
   if (m_constructorDeclarationType == DeclarationType::Private)
@@ -165,6 +175,18 @@ QString Class::declaration()
   if (m_destructorDeclarationType == DeclarationType::Private)
   {
     code.append(destructorDeclaration());
+    m_sectionEmtpy = false;
+  }
+
+  if (m_interface.hasPrivateMethods())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    code.append(methodDeclarations(m_interface.privateMethods()));
+
     m_sectionEmtpy = false;
   }
 
@@ -305,6 +327,18 @@ QString Class::implementation()
     }
 
     code.append(destructorImplementation());
+    alreadyOneImplementationPresent = true;
+  }
+
+  if (!m_interface.isEmpty())
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(methodImplementations());
+
     alreadyOneImplementationPresent = true;
   }
 
@@ -834,30 +868,34 @@ QString Class::interfaceImplementations()
   return code;
 }
 
-bool Class::hasMethodDeclarations(Method::DeclarationType declarationType)
-{
-  for (auto it = m_methods.begin(); it != m_methods.end(); it++)
-  {
-    if (it->declarationType() == declarationType)
-    {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-QString Class::methodDeclarations(Method::DeclarationType declarationType)
+QString Class::methodDeclarations(QList<Method> methods)
 {
   QString code;
 
-  for (auto it = m_methods.begin(); it != m_methods.end(); it++)
+  for (auto it = methods.begin(); it != methods.end(); it++)
   {
-    if (it->declarationType() == declarationType)
-    {
-      appendLine(code, 1, it->declaration());
-    }
+    code.append(leadingWhitespace(1));
+    code.append(it->declaration());
+    code.append("\n");
   }
+
+  return code;
+}
+
+QString Class::methodImplementations()
+{
+  QString code;
+
+  for (auto it = m_interface.begin(); it != m_interface.end(); it++)
+  {
+    if (it != m_interface.begin())
+    {
+      code.append("\n\n");
+    }
+
+    code.append(it->implementation(leadingWhitespace()));
+  }
+  code.append("\n");
 
   return code;
 }
@@ -1029,6 +1067,11 @@ void Class::setBaseClass(const Class* baseClass)
   m_baseClass = baseClass;
 }
 
+void Class::setInterface(const Interface& interface)
+{
+  m_interface = interface;
+}
+
 void Class::setIndent(const QString& indent)
 {
   m_indent = indent;
@@ -1104,11 +1147,6 @@ void Class::appendLine(QString& code, unsigned int indent, const QString& toAppe
 void Class::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)
 {
   m_uppercaseHeaderGuard = uppercaseHeaderGuard;
-}
-
-void Class::setMethods(const QList<Method>& methods)
-{
-  m_methods = methods;
 }
 
 QString Class::leadingWhitespace(unsigned int indent)

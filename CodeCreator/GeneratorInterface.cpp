@@ -75,6 +75,9 @@ QList<QPair<QString, QString> > GeneratorInterface::generatedCode()
   c.setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
   c.setDeclareDestructorVirtual(true);
 
+  m_interface.setAllMethodsPublicPureVirtual();
+  c.setInterface(m_interface);
+
   QList<QPair<QString, QString> > code;
   code.append(qMakePair(interfaceName + ".h", c.declaration()));
   return code;
@@ -118,6 +121,8 @@ void GeneratorInterface::on_pushButtonDefineMethods_clicked()
 void GeneratorInterface::addMethod()
 {
   MethodGui* methodGui = new MethodGui();
+  methodGui->setTypeVisible(false);
+  methodGui->setDeclarationTypeVisible(false);
   dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(methodGui);
 }
 
@@ -126,6 +131,8 @@ void GeneratorInterface::fillMethodList()
   for (auto it = m_interface.begin(); it != m_interface.end(); it++)
   {
     MethodGui* methodGui = new MethodGui();
+    methodGui->setTypeVisible(false);
+    methodGui->setDeclarationTypeVisible(false);
     methodGui->setMethod(*it);
     m_widgetListEditor->addItem(methodGui);
   }

@@ -14,7 +14,6 @@
 #include "CodeGenerator.h"
 #include "Generator.h"
 #include "Observer.h"
-#include "Singleton.h"
 #include "Options.h"
 #include "Data.h"
 #include "Decorator.h"
@@ -54,14 +53,13 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::initGenerators()
 {
-  m_generators["Class"] = new GeneratorClass(this);
-  m_generators["Interface"] = new GeneratorInterface(this);
-  /*m_generators["Observer"] = new Observer(m_codeGenerator, this);
-  m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
-  m_generators["Singleton"] = new Singleton(m_codeGenerator, this);
+  //m_generators["Class"] = new GeneratorClass(this);
+  //m_generators["Interface"] = new GeneratorInterface(this);
+  m_generators["Observer"] = new Observer(m_codeGenerator, this);
+  //m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
   m_generators["Data"] = new Data(m_codeGenerator, this);
   m_generators["Decorator"] = new Decorator(m_codeGenerator, this);
-  m_generators["State"] = new State(m_codeGenerator, this);*/
+  m_generators["State"] = new State(m_codeGenerator, this);
 
   for (auto it = m_generators.begin(); it != m_generators.end(); it++)
   {

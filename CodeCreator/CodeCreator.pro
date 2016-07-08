@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     CodeGenerator.cpp \
     Generator.cpp \
     Observer.cpp \
-    Singleton.cpp \
     Data.cpp \
     Decorator.cpp \
     XmlHelper.cpp \
@@ -37,13 +36,13 @@ SOURCES += main.cpp\
     MethodGui.cpp \
     WidgetListEditor.cpp \
     WidgetListItem.cpp \
-    InterfaceGui.cpp
+    InterfaceGui.cpp \
+    GeneratorData.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
     Generator.h \
     Observer.h \
-    Singleton.h \
     Options.h \
     Data.h \
     Decorator.h \
@@ -64,12 +63,13 @@ HEADERS  += CodeCreator.h \
     MethodGui.h \
     WidgetListEditor.h \
     WidgetListItem.h \
-    InterfaceGui.h
+    InterfaceGui.h \
+    GeneratorIOld.h \
+    GeneratorData.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \
     Observer.ui \
-    Singleton.ui \
     Data.ui \
     Decorator.ui \
     State.ui \
@@ -82,7 +82,8 @@ FORMS    += CodeCreator.ui \
     MethodGui.ui \
     WidgetListEditor.ui \
     WidgetListItem.ui \
-    InterfaceGui.ui
+    InterfaceGui.ui \
+    GeneratorData.ui
 
 OTHER_FILES += \
     ToDo.txt \

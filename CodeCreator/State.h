@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "GeneratorI.h"
+#include "GeneratorIOld.h"
 
 class CodeGenerator;
 
@@ -11,7 +11,7 @@ namespace Ui {
 class State;
 }
 
-class State : public QWidget, public GeneratorI
+class State : public QWidget, public GeneratorIOld
 {
   Q_OBJECT
 
@@ -19,7 +19,7 @@ public:
   explicit State(CodeGenerator* codeGenerator, QWidget *parent = 0);
   ~State();
 
-  // GeneratorI
+  // GeneratorIOld
   bool generate(const QString& folder);
   void readXml(QXmlStreamReader& xml);
   void writeXml(QXmlStreamWriter& xml);

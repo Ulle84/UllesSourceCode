@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "InterfaceGui.h"
 #include "ui_InterfaceGui.h"
 #include "WidgetListEditor.h"
@@ -67,6 +69,8 @@ void InterfaceGui::on_pushButtonMethods_clicked()
 void InterfaceGui::addMethod()
 {
   MethodGui* methodGui = new MethodGui();
+  methodGui->setTypeVisible(false);
+  methodGui->setDeclarationTypeVisible(false);
   m_widgetListEditor->addItem(methodGui);
 }
 
@@ -85,6 +89,8 @@ void InterfaceGui::fillMethodList()
   for (auto it = m_interface.begin(); it != m_interface.end(); it++)
   {
     MethodGui* methodGui = new MethodGui();
+    methodGui->setTypeVisible(false);
+    methodGui->setDeclarationTypeVisible(false);
     methodGui->setMethod(*it);
     m_widgetListEditor->addItem(methodGui);
   }
