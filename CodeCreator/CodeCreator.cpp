@@ -36,6 +36,7 @@ CodeCreator::CodeCreator(QWidget* parent) :
   }
 
   m_codeGenerator = new CodeGenerator();
+
   initGenerators();
   readXml();
   updatePreview();
@@ -53,7 +54,7 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::initGenerators()
 {
-  //m_generators["Class"] = new GeneratorClass(this);
+  m_generators["Class"] = new GeneratorClass(this);
   //m_generators["Interface"] = new GeneratorInterface(this);
   m_generators["Observer"] = new Observer(m_codeGenerator, this);
   //m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
@@ -83,7 +84,14 @@ void CodeCreator::updatePreview()
 {
   ui->plainTextEditPreview->clear();
 
-  QList<QPair<QString, QString> > code = dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()])->generatedCode();
+  GeneratorI* generator = dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()]);
+
+  if (!generator)
+  {
+    return;
+  }
+
+  QList<QPair<QString, QString> > code = generator->generatedCode();
 
   for (auto it = code.begin(); it != code.end(); it++)
   {

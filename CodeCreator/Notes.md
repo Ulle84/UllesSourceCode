@@ -1,6 +1,7 @@
 ﻿# Bugs
 
 # ToDo
+* class: support for members
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes, when not needed anymore
 * remove Template directory
