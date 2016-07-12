@@ -6,6 +6,7 @@
 
 #include "Interface.h"
 #include "Method.h"
+#include "Members.h"
 
 class Class
 {
@@ -27,6 +28,7 @@ public:
   void setDeclareDestructorVirtual(bool declareDestructorVirtual);
   void setIncludeQObjectMacro(bool includeQObjectMacro);
   void setUppercaseHeaderGuard(bool uppercaseHeaderGuard);
+  void setMembers(const Members& members);
 
   enum DeclarationType
   {
@@ -114,6 +116,8 @@ private:
   QString methodDeclarations(QList<Method> methods);
   QString methodImplementations();
 
+  QString memberDeclarations(QList<Member> members);
+
   bool hasInterfaceToImplement();
 
   QString m_name;
@@ -140,6 +144,7 @@ private:
   QString m_rhs;
   QString m_memberPrefix;
   bool m_sectionEmtpy;
+  Members m_members;
 };
 
 #endif // CLASS_H

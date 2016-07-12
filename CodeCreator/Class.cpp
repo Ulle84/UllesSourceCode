@@ -120,11 +120,48 @@ QString Class::declaration()
     m_sectionEmtpy = false;
   }
 
-  if (m_interface.hasProtectedMethods())
+  if (m_members.hasPublicMembers())
+  {
+    if(!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    code.append(memberDeclarations(m_members.publicMembers()));
+
+    m_sectionEmtpy = false;
+  }
+
+  if (m_interface.hasProtectedMethods()
+      || m_members.hasProtectedMembers())
   {
     code.append("\n");
     code.append(section("protected"));
+    m_sectionEmtpy = true;
+  }
+
+  if (m_interface.hasProtectedMethods())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
     code.append(methodDeclarations(m_interface.protectedMethods()));
+
+    m_sectionEmtpy = false;
+  }
+
+  if (m_members.hasProtectedMembers())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    code.append(memberDeclarations(m_members.protectedMembers()));
+
+    m_sectionEmtpy = false;
   }
 
   if (m_constructorDeclarationType == DeclarationType::Private
@@ -135,7 +172,8 @@ QString Class::declaration()
       || m_destructorDeclarationType == DeclarationType::Private
       || m_singletonType != SingletonType::NoSingleton
       || m_dPointerType != DPointerType::NoDPointer
-      || m_interface.hasPrivateMethods())
+      || m_interface.hasPrivateMethods()
+      || m_members.hasPrivateMembers())
   {
     code.append("\n");
     code.append(section("private"));
@@ -186,6 +224,18 @@ QString Class::declaration()
     }
 
     code.append(methodDeclarations(m_interface.privateMethods()));
+
+    m_sectionEmtpy = false;
+  }
+
+  if (m_members.hasPrivateMembers())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    code.append(memberDeclarations(m_members.privateMembers()));
 
     m_sectionEmtpy = false;
   }
@@ -900,6 +950,20 @@ QString Class::methodImplementations()
   return code;
 }
 
+QString Class::memberDeclarations(QList<Member> members)
+{
+  QString code;
+
+  for (auto it = members.begin(); it != members.end(); it++)
+  {
+    code.append(leadingWhitespace(1));
+    code.append(it->declaration());
+    code.append("\n");
+  }
+
+  return code;
+}
+
 bool Class::hasInterfaceToImplement()
 {
   if (m_interfaces.isEmpty())
@@ -1147,6 +1211,11 @@ void Class::appendLine(QString& code, unsigned int indent, const QString& toAppe
 void Class::setUppercaseHeaderGuard(bool uppercaseHeaderGuard)
 {
   m_uppercaseHeaderGuard = uppercaseHeaderGuard;
+}
+
+void Class::setMembers(const Members &members)
+{
+  m_members = members;
 }
 
 QString Class::leadingWhitespace(unsigned int indent)

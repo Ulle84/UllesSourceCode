@@ -1,13 +1,14 @@
 ﻿# Bugs
 
 # ToDo
-* class: new class Members with hasPublicMembers etc.
-* class: support for members (generation)
+* members: support for prefix
+* members: element initialization in constructors
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes, when not needed anymore
 * remove Template directory
 
 # Ideas
+* support for operators (<, >, ==, != etc.)
 * save current folder at folder selection
 * class: q-Pointer support -> pointing to overlaying class
 * const method support
@@ -25,8 +26,6 @@
   * Composite
   * State
   * Proxy
-* parse class declarations (first write a own parser for something simple (JSON i. e.)) to instance of class
-*
 
 # Done
 * looking in wrong folder for templates -> needs to be configurable!!!
@@ -42,4 +41,5 @@
 * save and load (xml) interface
 * change GeneratorInterface to new GeneratorI style
 * full support for methods (gui + xml + code generation)
-* class: support for members (gui + xml)
+* class: support for members (gui + xml + code generation)
+* class: new class Members with hasPublicMembers etc.

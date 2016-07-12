@@ -10,6 +10,18 @@ Member::~Member()
 
 }
 
+QString Member::declaration() const
+{
+  QString declaration;
+
+  declaration.append(m_type);
+  declaration.append(" ");
+  declaration.append(m_name);
+  declaration.append(";");
+
+  return declaration;
+}
+
 QString Member::type() const
 {
   return m_type;

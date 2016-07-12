@@ -6,7 +6,7 @@
 
 #include "GeneratorI.h"
 #include "Interface.h"
-#include "Member.h"
+#include "Members.h"
 
 class QCompleter;
 class CodeGenerator;
@@ -53,7 +53,7 @@ private:
   QCompleter* m_completer;
   QList<Interface> m_interfaces;
   Interface m_interface;
-  QList<Member> m_members;
+  Members m_members;
   WidgetListEditor* m_widgetListEditorInterfaces;
   WidgetListEditor* m_widgetListEditorMethods;
   WidgetListEditor* m_widgetListEditorMembers;

@@ -197,6 +197,7 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
 
   c.setInterface(m_interface);
   c.setInterfaces(m_interfaces);
+  c.setMembers(m_members);
 
   QList<QPair<QString, QString> > code;
   code.append(qMakePair(className + ".h", c.declaration()));

@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     InterfaceGui.cpp \
     GeneratorData.cpp \
     Member.cpp \
-    MemberGui.cpp
+    MemberGui.cpp \
+    Members.cpp
 
 HEADERS  += CodeCreator.h \
     CodeGenerator.h \
@@ -69,7 +70,8 @@ HEADERS  += CodeCreator.h \
     GeneratorIOld.h \
     GeneratorData.h \
     Member.h \
-    MemberGui.h
+    MemberGui.h \
+    Members.h
 
 FORMS    += CodeCreator.ui \
     Generator.ui \

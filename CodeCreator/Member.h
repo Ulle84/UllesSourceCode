@@ -9,7 +9,7 @@ public:
   Member();
   ~Member();
 
-  //QString toString(bool suppressDefaultValue = false) const;
+  QString declaration() const;
 
   QString type() const;
   void setType(const QString& type);
