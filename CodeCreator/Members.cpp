@@ -96,6 +96,19 @@ QList<Member> Members::privateMembers() const
   return members(Member::DeclarationType::Private);
 }
 
+bool Members::hasDefaultValues() const
+{
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (!it->defaultValue().isEmpty())
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool Members::hasDeclarationType(Member::DeclarationType declarationType) const
 {
   for (auto it = begin(); it != end(); it++)

@@ -1,11 +1,11 @@
 ﻿# Bugs
 
 # ToDo
-* members: element initialization in constructors
 * members: auto include headers of used members (?)
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes, when not needed anymore
 * remove Template directory
+* class: full move operator and move constructor support (with member copy etc.)
 
 # Ideas
 * support for operators (<, >, ==, != etc.)
@@ -45,3 +45,5 @@
 * class: new class Members with hasPublicMembers etc.
 * members: support for prefix
 * members: getter and setter
+* members: element initialization in constructors
+* members: if type contains '*' -> do not copy - mark as todo

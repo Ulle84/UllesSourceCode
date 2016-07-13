@@ -105,6 +105,46 @@ void Member::setType(const QString &type)
   return code;
 }
 
+QString Member::elementInitialisation(const QString& leadingIndent) const
+{
+  QString code = leadingIndent;
+
+  code.append(nameWithPrefix());
+  code.append("(");
+  code.append(m_defaultValue);
+  code.append(")");
+
+  return code;
+}
+
+QString Member::copyInitialisation(const QString &leadingIndent, const QString &rhs) const
+{
+  QString code = leadingIndent;
+
+  code.append(nameWithPrefix());
+  code.append("(");
+  code.append(rhs);
+  code.append(".");
+  code.append(nameWithPrefix());
+  code.append(")");
+
+  return code;
+}
+
+QString Member::copyAssignment(const QString &rhs) const
+{
+  QString code;
+
+  code.append(nameWithPrefix());
+  code.append(" = ");
+  code.append(rhs);
+  code.append(".");
+  code.append(nameWithPrefix());
+  code.append(";\n");
+
+  return code;
+}
+
 QString Member::type() const
 {
   return m_type;

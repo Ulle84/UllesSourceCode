@@ -25,6 +25,8 @@ public:
   QList<Member> protectedMembers() const;
   QList<Member> privateMembers() const;
 
+  bool hasDefaultValues() const;
+
 private:
   bool hasDeclarationType(Member::DeclarationType declarationType) const;
   QList<Member> members(Member::DeclarationType declarationType) const;

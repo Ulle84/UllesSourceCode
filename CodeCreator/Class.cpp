@@ -280,7 +280,7 @@ QString Class::declaration()
       code.append("\n");
     }
 
-   if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
+    if (m_singletonType == SingletonType::LazyProtectedWithQMutex)
     {
       code.append(leadingWhitespace(1));
       code.append("static QMutex ");
@@ -488,11 +488,52 @@ QString Class::constructorImplementation()
   code.append(m_name);
   code.append("::");
   code.append(m_name);
-  code.append("()\n");
+  code.append("()");
+
+  bool hasDefaultValues = m_members.hasDefaultValues();
+  bool hasElementInitialisers = hasDefaultValues || (m_dPointerType != DPointerType::NoDPointer);
+
+  if (hasElementInitialisers)
+  {
+    code.append(" :");
+  }
+
+  code.append("\n");
+
+  bool alredyOneInitialisationPresent = false;
+  if (hasDefaultValues)
+  {
+    for (auto it = m_members.begin(); it != m_members.end(); it++)
+    {
+      if (!it->defaultValue().isEmpty())
+      {
+        if (alredyOneInitialisationPresent)
+        {
+          code.append(",\n");
+        }
+
+        code.append(it->elementInitialisation(leadingWhitespace(1)));
+
+        alredyOneInitialisationPresent = true;
+      }
+    }
+  }
 
   if (m_dPointerType != DPointerType::NoDPointer)
   {
+    if (alredyOneInitialisationPresent)
+    {
+      code.append(",\n");
+    }
+
     code.append(dPointerInitialization(false));
+
+    alredyOneInitialisationPresent = true;
+  }
+
+  if (hasElementInitialisers)
+  {
+    code.append("\n");
   }
 
   code.append(emptyBlock());
@@ -534,11 +575,60 @@ QString Class::copyConstructorImplementation()
   code.append("::");
   code.append(m_name);
   code.append(constRef());
+
+  bool hasMembers = !m_members.isEmpty();
+  bool hasElementInitialisers = hasMembers || (m_dPointerType != DPointerType::NoDPointer);
+
+  if (hasElementInitialisers)
+  {
+    code.append(" :");
+  }
+
   code.append("\n");
+
+  bool alredyOneInitialisationPresent = false;
+  QList<Member> pointerMembers;
+  if (hasMembers)
+  {
+    for (auto it = m_members.begin(); it != m_members.end(); it++)
+    {
+      if (it->type().contains('*'))
+      {
+        pointerMembers.append(*it);
+        continue;
+      }
+
+      if (alredyOneInitialisationPresent)
+      {
+        code.append(",\n");
+      }
+
+      code.append(it->copyInitialisation(leadingWhitespace(1), m_rhs));
+
+      alredyOneInitialisationPresent = true;
+    }
+  }
 
   if (m_dPointerType != DPointerType::NoDPointer)
   {
+    if (alredyOneInitialisationPresent)
+    {
+      code.append(",\n");
+    }
+
     code.append(dPointerInitialization(true));
+
+    alredyOneInitialisationPresent = true;
+  }
+
+  if (hasElementInitialisers)
+  {
+    code.append("\n");
+  }
+
+  for (auto it = pointerMembers.begin(); it != pointerMembers.end(); it++)
+  {
+    append(code, 1, toDo("copy member '" + it->nameWithPrefix() + "'"));
   }
 
   code.append(emptyBlock());
@@ -641,7 +731,29 @@ QString Class::copyOperatorImplementation()
   }
   else
   {
-    append(code, 1, toDoImplementation());
+    if (m_members.isEmpty())
+    {
+      append(code, 2, toDoImplementation());
+    }
+    else
+    {
+      QList<Member> pointerMembers;
+      for (auto it = m_members.begin(); it != m_members.end(); it++)
+      {
+        if (it->type().contains('*'))
+        {
+          pointerMembers.append(*it);
+          continue;
+        }
+
+        append(code, 2, it->copyAssignment(m_rhs));
+      }
+
+      for (auto it = pointerMembers.begin(); it != pointerMembers.end(); it++)
+      {
+        append(code, 2, toDo("copy member '" + it->nameWithPrefix() + "'"));
+      }
+    }
   }
 
   code.append(closeBlock(1));
@@ -878,9 +990,8 @@ QString Class::dPointerImplementation()
 
 QString Class::dPointerInitialization(bool copyRhs)
 {
-  QString code;
+  QString code = leadingWhitespace(1);
 
-  append(code, 1, ": ");
   code.append(m_dPointerName);
   code.append("(new ");
   code.append(dPointerClass());
@@ -892,7 +1003,7 @@ QString Class::dPointerInitialization(bool copyRhs)
     code.append(".");
     code.append(m_dPointerName);
   }
-  code.append("))\n");
+  code.append("))");
 
   return code;
 }
@@ -915,7 +1026,7 @@ QString Class::interfaceDeclarations()
     }
 
     append(code, 1, "// interface ");
-    code.append(it->name());    
+    code.append(it->name());
 
     for (auto it2 = it->begin(); it2 != it->end(); it2++)
     {
@@ -1444,7 +1555,6 @@ QString Class::includes()
   {
     code.append(include(m_baseClass->name(), true, false));
     includeLineAdded = true;
-
   }
 
   for (auto it = m_interfaces.begin(); it != m_interfaces.end(); it++)
@@ -1454,8 +1564,13 @@ QString Class::includes()
       code.append(include(it->name(), true, false));
       includeLineAdded = true;
     }
-
   }
+
+  // TODO include headers of members
+  /*for (auto it = m_members.begin(); it != m_members.end(); it++)
+  {
+
+  }*/
 
   if (includeLineAdded)
   {

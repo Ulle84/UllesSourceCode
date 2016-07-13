@@ -17,11 +17,18 @@ public:
   QString getterImplementation(const QString& leadingIndent, const QString& singleIndent, const QString& className) const;
   QString setterImplementation(const QString& leadingIndent, const QString& singleIndent, const QString& className) const;
 
+  QString elementInitialisation(const QString &leadingIndent) const;
+  QString copyInitialisation(const QString &leadingIndent, const QString& rhs) const;
+  QString copyAssignment(const QString& rhs) const;
+
   QString type() const;
   void setType(const QString& type);
 
   QString name() const;
   void setName(const QString& name);
+
+  QString nameWithoutPrefix() const;
+  QString nameWithPrefix() const;
 
   QString defaultValue() const;
   void setDefaultValue(const QString& defaultValue);
@@ -42,8 +49,6 @@ public:
   void setDeclarationType(DeclarationType declarationType);
 
 private:
-  QString nameWithoutPrefix() const;
-  QString nameWithPrefix() const;
   QString upperCaseFirstLetter(const QString& string) const;
   QString setterSignature(const QString& className = QString()) const;
 
