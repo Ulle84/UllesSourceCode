@@ -45,6 +45,12 @@ class B
   
 };
 
+class ComplexClass:LUCENE_BASE, public CL_NS(util)::Compare::_base //<Token*>
+{
+public:
+  bool operator()( Token* t1, Token* t2 ) const;
+};
+
 // TODO template class
 
 #endif // A1_h

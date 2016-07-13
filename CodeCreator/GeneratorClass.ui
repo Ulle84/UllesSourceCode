@@ -221,6 +221,25 @@
    <header>SelectorSingletonType.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>lineEditName</tabstop>
+  <tabstop>lineEditBaseClass</tabstop>
+  <tabstop>constructor</tabstop>
+  <tabstop>destructor</tabstop>
+  <tabstop>copyConstructor</tabstop>
+  <tabstop>copyOperator</tabstop>
+  <tabstop>moveConstructor</tabstop>
+  <tabstop>moveOperator</tabstop>
+  <tabstop>dPointer</tabstop>
+  <tabstop>singleton</tabstop>
+  <tabstop>checkBoxQObjectMacro</tabstop>
+  <tabstop>checkBoxVirtualDesctructor</tabstop>
+  <tabstop>checkBoxExplicitConstructor</tabstop>
+  <tabstop>plainTextEditNamespaces</tabstop>
+  <tabstop>pushButtonMembers</tabstop>
+  <tabstop>pushButtonMethods</tabstop>
+  <tabstop>pushButtonInterfaces</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

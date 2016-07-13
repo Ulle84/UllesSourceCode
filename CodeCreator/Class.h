@@ -118,6 +118,12 @@ private:
 
   QString memberDeclarations(QList<Member> members);
 
+  QString getterDeclarations(QList<Member> members);
+  QString getterImplementations();
+
+  QString setterDeclarations(QList<Member> members);
+  QString setterImplementations();
+
   bool hasInterfaceToImplement();
 
   QString m_name;

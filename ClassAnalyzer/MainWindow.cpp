@@ -37,3 +37,26 @@ void MainWindow::on_pushButtonParseFolder_clicked()
 
   m_classAnalyzer.parseFolder(directory);
 }
+
+void MainWindow::on_pushButtonParseVernissage_clicked()
+{
+  QStringList folders;
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/DataTypes/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Exceptions/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Incl/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Math/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Monitoring/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/ServiceBus/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Socket/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/SystemConfig/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Thread/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Utilities/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Base/Value/");
+
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Foundation/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Incl/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Main/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/PlugIns/");
+  folders.append("D:/Workdir/VernissageKit/trunk/Vernissage/src/Store/");
+  m_classAnalyzer.parseFolders(folders);
+}

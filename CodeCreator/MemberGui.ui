@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
+    <width>621</width>
     <height>45</height>
    </rect>
   </property>
@@ -35,6 +35,20 @@
     <widget class="QLineEdit" name="lineEditDefaultValue">
      <property name="placeholderText">
       <string>default</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxGetter">
+     <property name="text">
+      <string>define getter</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxSetter">
+     <property name="text">
+      <string>define setter</string>
      </property>
     </widget>
    </item>

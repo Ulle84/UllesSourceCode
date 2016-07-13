@@ -9,14 +9,14 @@ namespace A
   
   namespace B
   {
-    class B1{};
+    class AB1{};
     
     namespace C
     {
       class ABC{};
     }
     
-    class B2{};
+    class AB2{};
   }
   namespace D
   {

@@ -89,11 +89,14 @@
 ; --------------------------------------------------------------------------------
 ; Syntax:   :*:falschgeschrieben::richtiggeschrieben
 ; --------------------------------------------------------------------------------
+:*:baord::board
 :*:geschreiben::geschrieben
 :*:gschrieben::geschrieben
 :*:Pyhton::Python
+:*:QSTring::QString
+:*:postion::position
 :*:widht::width
-:*:baord::board
+
 
 ; --------------------------------------------------------------------------------
 ; Komplexe Ausdruecke (teilweise mit Berechnungen)
@@ -128,6 +131,21 @@ return
 ; for loop iterator
 :*:it#::
 SendInput for (auto it = %clipboard%.begin(); it {!}= %clipboard%.end(); it{+}{+}){Enter}{{}{Enter}{Enter}{}}{Up}
+return
+
+; for loop iterator 2
+:*:it2#::
+SendInput for (auto it2 = %clipboard%.begin(); it2 {!}= %clipboard%.end(); it2{+}{+}){Enter}{{}{Enter}{Enter}{}}{Up}
+return
+
+; for loop iterator 3
+:*:it3#::
+SendInput for (auto it3 = %clipboard%.begin(); it3 {!}= %clipboard%.end(); it3{+}{+}){Enter}{{}{Enter}{Enter}{}}{Up}
+return
+
+; for loop iterator 4
+:*:it4#::
+SendInput for (auto it4 = %clipboard%.begin(); it4 {!}= %clipboard%.end(); it4{+}{+}){Enter}{{}{Enter}{Enter}{}}{Up}
 return
 
 ; code block in mark-down-syntax

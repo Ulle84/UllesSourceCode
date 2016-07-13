@@ -1,8 +1,8 @@
 ﻿# Bugs
 
 # ToDo
-* members: support for prefix
 * members: element initialization in constructors
+* members: auto include headers of used members (?)
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes, when not needed anymore
 * remove Template directory
@@ -43,3 +43,5 @@
 * full support for methods (gui + xml + code generation)
 * class: support for members (gui + xml + code generation)
 * class: new class Members with hasPublicMembers etc.
+* members: support for prefix
+* members: getter and setter

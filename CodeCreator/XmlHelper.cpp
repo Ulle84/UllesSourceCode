@@ -334,6 +334,8 @@ void XmlHelper::writeXml(QXmlStreamWriter &xml, const Member *member)
   xml.writeTextElement("Name", member->name());
   xml.writeTextElement("DefaultValue", member->defaultValue());
   xml.writeTextElement("DeclarationType", QString::number(member->declarationType()));
+  xml.writeTextElement("Getter", member->hasGetter() ? "true" : "false");
+  xml.writeTextElement("Setter", member->hasSetter() ? "true" : "false");
 
   xml.writeEndElement();
 }
@@ -357,6 +359,14 @@ void XmlHelper::readXml(QXmlStreamReader &xml, Member *member)
     else if (xml.name() == "DeclarationType")
     {
       member->setDeclarationType(static_cast<Member::DeclarationType>(xml.readElementText().toInt()));
+    }
+    else if (xml.name() == "Getter")
+    {
+      member->setGetter(xml.readElementText() == "true");
+    }
+    else if (xml.name() == "Setter")
+    {
+      member->setSetter(xml.readElementText() == "true");
     }
     else
     {

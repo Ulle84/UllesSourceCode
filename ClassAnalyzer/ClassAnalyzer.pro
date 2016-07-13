@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     ClassAnalyzer.cpp \
-    Class.cpp
+    Class.cpp \
+    Namespace.cpp
 
 HEADERS  += MainWindow.h \
     ClassAnalyzer.h \
-    Class.h
+    Class.h \
+    Namespace.h
 
 FORMS    += MainWindow.ui
 

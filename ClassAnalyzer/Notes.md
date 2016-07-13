@@ -1,6 +1,9 @@
 # ​ToDo
-* parse namespaces and attach to class name (fully qualified name)
+* parse list of folders
 * attach namespaces to base classes, if needed (how?)
+  - check if class is in same namespace
+  - check if class has already namespace-prefix
+  - do this for all namespaces from inner to outer
 * create links: base classes to derived classes
 * Show all classes in tree
   - sorted alphabetically
@@ -38,3 +41,4 @@ Done
 * remove comments before parsing (first remove block comments, than remove line comments) - be careful and test good!!!
 * ignore foward-declarations
 * parse base classes
+* parse namespaces and attach to class name (fully qualified name)

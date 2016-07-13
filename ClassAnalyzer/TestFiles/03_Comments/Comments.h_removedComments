@@ -1,3 +1,5 @@
+
+
 #ifndef A1_h
 #define A1_h
 
@@ -8,12 +10,20 @@
 
 
 
+int normalCode0 = 0;
 
 
- class A1 
-{
-public:
 
-};
+ int normalCode1 = 1; 
+
+
+
+
+
+int normalCode2 = 2;
+
+
+      
+int normalCode3 = 3;
 
 #endif 

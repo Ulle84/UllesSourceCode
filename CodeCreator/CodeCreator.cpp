@@ -156,10 +156,14 @@ void CodeCreator::on_pushButtonGenerate_clicked()
 
   if (!generator)
   {
+    QMessageBox mb;
+    mb.setText(tr("Internal problem!"));
+    mb.exec();
+    return;
     return;
   }
 
-  QList<QPair<QString, QString> > code =  generator->generatedCode();
+  QList<QPair<QString, QString> > code = generator->generatedCode();
 
   for (auto it = code.begin(); it != code.end(); it++)
   {

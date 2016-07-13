@@ -22,6 +22,7 @@ public:
 
 private slots:
   void on_pushButtonParseFolder_clicked();
+  void on_pushButtonParseVernissage_clicked();
 
 private:
   Ui::MainWindow *ui;

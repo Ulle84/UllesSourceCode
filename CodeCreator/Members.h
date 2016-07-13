@@ -11,6 +11,12 @@ public:
   Members();
   ~Members();
 
+  bool hasSetters() const;
+  bool hasGetters() const;
+
+  QList<Member> settableMembers() const;
+  QList<Member> gettableMembers() const;
+
   bool hasPublicMembers() const;
   bool hasProtectedMembers() const;
   bool hasPrivateMembers() const;

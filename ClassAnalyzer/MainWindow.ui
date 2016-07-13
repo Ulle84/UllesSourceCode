@@ -14,13 +14,33 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="pushButtonParseFolder">
       <property name="text">
-       <string>parse folder</string>
+       <string>select and parse folder</string>
       </property>
      </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButtonParseVernissage">
+      <property name="text">
+       <string>parse vernissage folders</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>

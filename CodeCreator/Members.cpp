@@ -10,6 +10,62 @@ Members::~Members()
 
 }
 
+bool Members::hasSetters() const
+{
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (it->hasSetter())
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool Members::hasGetters() const
+{
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (it->hasGetter())
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+QList<Member> Members::settableMembers() const
+{
+  QList<Member> members;
+
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (it->hasSetter())
+    {
+      members.append(*it);
+    }
+  }
+
+  return members;
+}
+
+QList<Member> Members::gettableMembers() const
+{
+  QList<Member> members;
+
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (it->hasGetter())
+    {
+      members.append(*it);
+    }
+  }
+
+  return members;
+}
+
 bool Members::hasPublicMembers() const
 {
   return hasDeclarationType(Member::DeclarationType::Public);

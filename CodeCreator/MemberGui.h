@@ -2,6 +2,7 @@
 #define MEMBERGUI_H
 
 #include <QWidget>
+#include <QString>
 
 #include "Member.h"
 

@@ -120,6 +120,28 @@ QString Class::declaration()
     m_sectionEmtpy = false;
   }
 
+  if (m_members.hasGetters())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+    code.append(getterDeclarations(m_members.gettableMembers()));
+
+    m_sectionEmtpy = false;
+  }
+
+  if (m_members.hasSetters())
+  {
+    if (!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+    code.append(setterDeclarations(m_members.settableMembers()));
+
+    m_sectionEmtpy = false;
+  }
+
   if (m_members.hasPublicMembers())
   {
     if(!m_sectionEmtpy)
@@ -400,6 +422,30 @@ QString Class::implementation()
     }
 
     code.append(interfaceImplementations());
+
+    alreadyOneImplementationPresent = true;
+  }
+
+  if (m_members.hasGetters())
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(getterImplementations());
+
+    alreadyOneImplementationPresent = true;
+  }
+
+  if (m_members.hasSetters())
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    code.append(setterImplementations());
 
     alreadyOneImplementationPresent = true;
   }
@@ -960,6 +1006,74 @@ QString Class::memberDeclarations(QList<Member> members)
     code.append(it->declaration());
     code.append("\n");
   }
+
+  return code;
+}
+
+QString Class::getterDeclarations(QList<Member> members)
+{
+  QString code;
+
+  for (auto it = members.begin(); it != members.end(); it++)
+  {
+    code.append(leadingWhitespace(1));
+    code.append(it->getterDeclaration());
+    code.append("\n");
+  }
+
+  return code;
+}
+
+QString Class::getterImplementations()
+{
+  QString code;
+
+  QList<Member> members = m_members.gettableMembers();
+
+  for (auto it = members.begin(); it != members.end(); it++)
+  {
+    if (it != members.begin())
+    {
+      code.append("\n\n");
+    }
+
+    code.append(it->getterImplementation(leadingWhitespace(), m_indent, m_name));
+  }
+  code.append("\n");
+
+  return code;
+}
+
+QString Class::setterDeclarations(QList<Member> members)
+{
+  QString code;
+
+  for (auto it = members.begin(); it != members.end(); it++)
+  {
+    code.append(leadingWhitespace(1));
+    code.append(it->setterDeclaration());
+    code.append("\n");
+  }
+
+  return code;
+}
+
+QString Class::setterImplementations()
+{
+  QString code;
+
+  QList<Member> members = m_members.settableMembers();
+
+  for (auto it = members.begin(); it != members.end(); it++)
+  {
+    if (it != members.begin())
+    {
+      code.append("\n\n");
+    }
+
+    code.append(it->setterImplementation(leadingWhitespace(), m_indent, m_name));
+  }
+  code.append("\n");
 
   return code;
 }
