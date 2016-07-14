@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     WidgetListEditor.cpp \
     WidgetListItem.cpp \
     InterfaceGui.cpp \
-    GeneratorData.cpp \
     Member.cpp \
     MemberGui.cpp \
     Members.cpp \
@@ -56,7 +55,6 @@ HEADERS  += CodeCreator.h \
     WidgetListEditor.h \
     WidgetListItem.h \
     InterfaceGui.h \
-    GeneratorData.h \
     Member.h \
     MemberGui.h \
     Members.h \
@@ -77,7 +75,6 @@ FORMS    += CodeCreator.ui \
     WidgetListEditor.ui \
     WidgetListItem.ui \
     InterfaceGui.ui \
-    GeneratorData.ui \
     MemberGui.ui \
     GeneratorTemplate.ui \
     GeneratorDecorator.ui \

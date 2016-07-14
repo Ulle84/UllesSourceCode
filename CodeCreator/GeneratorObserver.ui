@@ -14,25 +14,32 @@
    <string>GeneratorObserver</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEditObserver"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="lineEditSubject"/>
+   </item>
+   <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Subject</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="lineEditSubject"/>
-   </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Observer</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="lineEditObserver"/>
+   <item row="0" column="1">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>!!! under construction !!!</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
