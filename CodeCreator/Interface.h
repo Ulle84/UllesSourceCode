@@ -5,7 +5,7 @@
 
 #include "Method.h"
 
-class Interface : public QList<Method> // TODO really inherit of QList<Method> ?
+class Interface : public QList<Method>
 {
 public:
   Interface();

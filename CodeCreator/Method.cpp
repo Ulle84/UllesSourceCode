@@ -59,64 +59,66 @@ Method::Method(const QString &method)
 
 QString Method::declaration(bool suppressVirtual) const
 {
-  QString method;
+  QString code;
 
   if (m_type != Type::Normal && !suppressVirtual)
   {
-    method.append("virtual ");
+    code.append("virtual ");
   }
 
-  method.append(m_returnType);
-  method.append(" ");
-  method.append(m_name);
-  method.append("(");
+  code.append(m_returnType);
+  code.append(" ");
+  code.append(m_name);
+  code.append("(");
 
   for (auto it = begin(); it != end(); it++)
   {
     if (it != begin())
     {
-      method.append(", ");
+      code.append(", ");
     }
-    method.append(it->toString());
+    code.append(it->toString());
   }
 
-  method.append(")");
+  code.append(")");
 
   if (m_type == Type::PureVirtual && !suppressVirtual)
   {
-    method.append(" = 0");
+    code.append(" = 0");
   }
 
-  method.append(";");
+  code.append(";");
 
-  return method;
+  return code;
 }
 
-QString Method::implementation(const QString& indent) const
+QString Method::implementation(const QString& indent, const QString& className) const
 {
-  QString method = indent;
+  QString code = indent;
 
-  method.append(m_returnType);
-  method.append(" ");
-  method.append(m_name);
-  method.append("(");
+  code.append(m_returnType);
+  code.append(" ");
+  code.append(className);
+  code.append("::");
+  code.append(m_name);
+  code.append("(");
 
   for (auto it = begin(); it != end(); it++)
   {
     if (it != begin())
     {
-      method.append(", ");
+      code.append(", ");
     }
-    method.append(it->toString(true));
+    code.append(it->toString(true));
   }
 
-  method.append(")\n");
-  method.append(indent);
-  method.append("{\n\n");
-  method.append(indent);
-  method.append("}");
+  code.append(")\n");
+  code.append(indent);
+  code.append("{\n\n");
+  code.append(indent);
+  code.append("}");
 
-  return method;
+  return code;
 }
 
 bool Method::isValid() const

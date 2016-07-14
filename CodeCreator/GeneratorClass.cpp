@@ -5,8 +5,6 @@
 #include "GeneratorClass.h"
 #include "ui_GeneratorClass.h"
 #include "XmlHelper.h"
-#include "Options.h"
-#include "CodeGenerator.h"
 #include "Class.h"
 #include "Interface.h"
 #include "InterfaceGui.h"

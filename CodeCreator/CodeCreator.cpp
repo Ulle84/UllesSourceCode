@@ -12,7 +12,6 @@
 #include "ui_CodeCreator.h"
 
 #include "CodeCreator.h"
-#include "Options.h"
 #include "GeneratorInterface.h"
 #include "GeneratorClass.h"
 #include "GeneratorTemplate.h"

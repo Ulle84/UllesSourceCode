@@ -13,7 +13,7 @@ public:
   Method(const QString& method);
 
   QString declaration(bool suppressVirtual = false) const;
-  QString implementation(const QString& indent) const;
+  QString implementation(const QString& indent, const QString &className) const;
 
   bool isValid() const;
 

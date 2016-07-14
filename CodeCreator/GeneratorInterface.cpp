@@ -3,10 +3,7 @@
 
 #include "GeneratorInterface.h"
 #include "ui_GeneratorInterface.h"
-#include "Options.h"
-#include "CodeGenerator.h"
 #include "XmlHelper.h"
-#include "InterfaceHelper.h"
 #include "Class.h"
 #include "Interface.h"
 #include "Method.h"

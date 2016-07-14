@@ -2,20 +2,26 @@
 
 # ToDo
 ## Decorator
-* class: support for custom constructors
+* class: support for additional declarations QStringList if(declaration.startWith(m_className ... -> print after constructors
+* class: support for additional implementations QList<QStringList>
 * decorator: declare default constructor private?
 * decorator: implement custom cunstructor
+* complete generator for decorator
 
 ## Observer
-* class: support for custom method declarations (see Templates\Observer\TemplatesSubject.cpp)
+* class: support for custom method declarations
+  - see Templates\Observer\TemplatesSubject.cpp
+  - new member QStringList
 * complete generator for observer
 
 ## State
+* understand state pattern
 * complete generator for state
 
 ## Class
 * members: auto include headers of used members (?)
 * full move operator and move constructor support (with member copy etc.)
+* improve include handling - include of template parameters
 
 ## Misc
 * remove Template directory, when not needed anymore

@@ -1065,7 +1065,7 @@ QString Class::interfaceImplementations()
         code.append("\n\n");
       }
 
-      code.append(it2->implementation(leadingWhitespace()));
+      code.append(it2->implementation(leadingWhitespace(), m_name));
     }
 
     interfaceImplementationExists = true;
@@ -1100,7 +1100,7 @@ QString Class::methodImplementations()
       code.append("\n\n");
     }
 
-    code.append(it->implementation(leadingWhitespace()));
+    code.append(it->implementation(leadingWhitespace(), m_name));
   }
   code.append("\n");
 
@@ -1553,7 +1553,27 @@ QString Class::includes()
 
   if (m_baseClass != 0)
   {
-    code.append(include(m_baseClass->name(), true, false));
+    QString name = m_baseClass->name();
+
+    if (name.contains('<'))
+    {
+      name = name.left(name.indexOf('<'));
+    }
+
+    bool useSuffix = true;
+    bool useAngleBrackets = true;
+
+    if (name.startsWith("Q"))
+    {
+      useSuffix = false;
+    }
+    else
+    {
+      useAngleBrackets = false;
+    }
+
+    code.append(include(name, useSuffix, useAngleBrackets));
+
     includeLineAdded = true;
   }
 
