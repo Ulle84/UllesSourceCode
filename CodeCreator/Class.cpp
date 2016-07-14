@@ -686,7 +686,7 @@ QString Class::copyOperatorDeclaration()
   QString code = leadingWhitespace(1);
 
   code.append(m_name);
-  code.append("& operator= ");
+  code.append("& operator=");
   code.append(constRef());
 
   if (m_copyOperatorDeclarationType == DeclarationType::Private)
@@ -774,7 +774,7 @@ QString Class::moveOperatorDeclaration()
   QString code = leadingWhitespace(1);
 
   code.append(m_name);
-  code.append("& operator= ");
+  code.append("& operator=");
   code.append(moveRef());
 
   if (m_copyOperatorDeclarationType == DeclarationType::Private)

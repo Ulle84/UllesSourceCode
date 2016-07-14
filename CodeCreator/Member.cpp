@@ -1,9 +1,11 @@
 #include "Member.h"
+#include "StringHelper.h"
 
 Member::Member() :
   m_getter(false),
   m_setter(false),
-  m_prefix("m_")
+  m_prefix("m_"),
+  m_declarationType(DeclarationType::Private)
 {
   m_primitiveTypes.append("bool");
   m_primitiveTypes.append("int");
@@ -19,32 +21,32 @@ Member::~Member()
 
 QString Member::declaration() const
 {
-  QString declaration;
+  QString code;
 
-  declaration.append(m_type);
-  declaration.append(" ");
+  code.append(m_type);
+  code.append(" ");
 
   if (!m_name.startsWith(m_prefix))
   {
-    declaration.append(m_prefix);
+    code.append(m_prefix);
   }
 
-  declaration.append(m_name);
-  declaration.append(";");
+  code.append(m_name);
+  code.append(";");
 
-  return declaration;
+  return code;
 }
 
 QString Member::getterDeclaration() const
 {
-  QString declaration;
+  QString code;
 
-  declaration.append(m_type);
-  declaration.append(" ");
-  declaration.append(nameWithoutPrefix());
-  declaration.append("() const;");
+  code.append(m_type);
+  code.append(" ");
+  code.append(getterName());
+  code.append("() const;");
 
-  return declaration;
+  return code;
 }
 
 QString Member::setterDeclaration() const
@@ -60,7 +62,7 @@ QString Member::getterImplementation(const QString& leadingIndent, const QString
   code.append(" ");
   code.append(className);
   code.append("::");
-  code.append(nameWithoutPrefix());
+  code.append(getterName());
   code.append("() const\n");
   code.append(leadingIndent);
   code.append("{\n");
@@ -77,15 +79,6 @@ QString Member::getterImplementation(const QString& leadingIndent, const QString
 
 QString Member::setterImplementation(const QString& leadingIndent, const QString& singleIndent, const QString& className) const
 {
-/*
-void setType(const QString& type);
-
-void Member::setType(const QString &type)
-{
-  m_type = type;
-}
-*/
-
   QString code = leadingIndent;
 
   code.append(setterSignature(className));
@@ -229,18 +222,6 @@ QString Member::nameWithPrefix() const
   return name;
 }
 
-QString Member::upperCaseFirstLetter(const QString& string) const
-{
-  QString copy = string;
-
-  if (!copy.isEmpty())
-  {
-    copy[0] = copy[0].toUpper();
-  }
-
-  return copy;
-}
-
 QString Member::setterSignature(const QString& className) const
 {
   QString code;
@@ -256,7 +237,7 @@ QString Member::setterSignature(const QString& className) const
   }
 
   code.append("set");
-  code.append(upperCaseFirstLetter(nameWithoutPrefix()));
+  code.append(StringHelper::upperCaseFirstLetter(nameWithoutPrefix()));
   code.append("(");
 
   if (!primitiveType)
@@ -278,6 +259,23 @@ QString Member::setterSignature(const QString& className) const
   if (className.isEmpty())
   {
     code.append(";");
+  }
+
+  return code;
+}
+
+QString Member::getterName() const
+{
+  QString code;
+
+  if (m_type.toLower() == "bool")
+  {
+    code.append("is");
+    code.append(StringHelper::upperCaseFirstLetter(nameWithoutPrefix()));
+  }
+  else
+  {
+    code.append(nameWithoutPrefix());
   }
 
   return code;

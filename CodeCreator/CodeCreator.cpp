@@ -9,17 +9,16 @@
 #include <QDir>
 #include <QTextStream>
 
-#include "CodeCreator.h"
 #include "ui_CodeCreator.h"
-#include "CodeGenerator.h"
-#include "Generator.h"
-#include "Observer.h"
+
+#include "CodeCreator.h"
 #include "Options.h"
-#include "Data.h"
-#include "Decorator.h"
-#include "State.h"
 #include "GeneratorInterface.h"
 #include "GeneratorClass.h"
+#include "GeneratorTemplate.h"
+#include "GeneratorDecorator.h"
+#include "GeneratorObserver.h"
+#include "GeneratorState.h"
 
 CodeCreator::CodeCreator(QWidget* parent) :
   QWidget(parent),
@@ -35,8 +34,6 @@ CodeCreator::CodeCreator(QWidget* parent) :
     this->setGeometry(m_settings->value("windowGeometry").toRect());
   }
 
-  m_codeGenerator = new CodeGenerator();
-
   initGenerators();
   readXml();
   updatePreview();
@@ -48,19 +45,17 @@ CodeCreator::~CodeCreator()
 {
   m_settings->setValue("windowGeometry", this->geometry());
   writeXml();
-  delete m_codeGenerator;
   delete ui;
 }
 
 void CodeCreator::initGenerators()
 {
   m_generators["Class"] = new GeneratorClass(this);
-  //m_generators["Interface"] = new GeneratorInterface(this);
-  m_generators["Observer"] = new Observer(m_codeGenerator, this);
-  //m_generators["CodeCreatorGenerator"] = new Generator(m_codeGenerator, this);
-  m_generators["Data"] = new Data(m_codeGenerator, this);
-  m_generators["Decorator"] = new Decorator(m_codeGenerator, this);
-  m_generators["State"] = new State(m_codeGenerator, this);
+  m_generators["Generator"] = new GeneratorTemplate(this);
+  m_generators["Interface"] = new GeneratorInterface(this);
+  m_generators["Decorator"] = new GeneratorDecorator(this);
+  m_generators["Observer"] = new GeneratorObserver(this);
+  m_generators["State"] = new GeneratorState(this);
 
   for (auto it = m_generators.begin(); it != m_generators.end(); it++)
   {
@@ -127,6 +122,8 @@ void CodeCreator::on_comboBoxType_currentIndexChanged(const QString& type)
   m_currentGenerator->setVisible(false);
   m_currentGenerator = m_generators[type];
   m_currentGenerator->setVisible(true);
+
+  updatePreview();
 }
 
 void CodeCreator::on_pushButtonSelectFolder_clicked()

@@ -14,15 +14,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         CodeCreator.cpp \
-    CodeGenerator.cpp \
-    Generator.cpp \
-    Observer.cpp \
-    Data.cpp \
-    Decorator.cpp \
     XmlHelper.cpp \
-    InterfaceHelper.cpp \
-    State.cpp \
-    Options.cpp \
     Parameter.cpp \
     GeneratorInterface.cpp \
     Interface.cpp \
@@ -40,18 +32,15 @@ SOURCES += main.cpp\
     GeneratorData.cpp \
     Member.cpp \
     MemberGui.cpp \
-    Members.cpp
+    Members.cpp \
+    GeneratorTemplate.cpp \
+    GeneratorDecorator.cpp \
+    StringHelper.cpp \
+    GeneratorObserver.cpp \
+    GeneratorState.cpp
 
 HEADERS  += CodeCreator.h \
-    CodeGenerator.h \
-    Generator.h \
-    Observer.h \
-    Options.h \
-    Data.h \
-    Decorator.h \
     XmlHelper.h \
-    InterfaceHelper.h \
-    State.h \
     Parameter.h \
     GeneratorInterface.h \
     Interface.h \
@@ -67,18 +56,17 @@ HEADERS  += CodeCreator.h \
     WidgetListEditor.h \
     WidgetListItem.h \
     InterfaceGui.h \
-    GeneratorIOld.h \
     GeneratorData.h \
     Member.h \
     MemberGui.h \
-    Members.h
+    Members.h \
+    GeneratorTemplate.h \
+    GeneratorDecorator.h \
+    StringHelper.h \
+    GeneratorObserver.h \
+    GeneratorState.h
 
 FORMS    += CodeCreator.ui \
-    Generator.ui \
-    Observer.ui \
-    Data.ui \
-    Decorator.ui \
-    State.ui \
     GeneratorInterface.ui \
     GeneratorClass.ui \
     SelectorDeclarationType.ui \
@@ -90,7 +78,11 @@ FORMS    += CodeCreator.ui \
     WidgetListItem.ui \
     InterfaceGui.ui \
     GeneratorData.ui \
-    MemberGui.ui
+    MemberGui.ui \
+    GeneratorTemplate.ui \
+    GeneratorDecorator.ui \
+    GeneratorObserver.ui \
+    GeneratorState.ui
 
 OTHER_FILES += \
     ToDo.txt \
@@ -100,3 +92,6 @@ OTHER_FILES += \
 
 DISTFILES += \
     Notes.md
+
+RESOURCES += \
+    Resources.qrc

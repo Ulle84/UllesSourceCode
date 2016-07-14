@@ -1,10 +1,17 @@
 ﻿# Bugs
 
 # ToDo
+* class: support for custom constructors
+* decorator: declare default constructor private?
+* decorator: implement custom cunstructor
+
+* class: support for custom method declarations (see Templates\Observer\TemplatesSubject.cpp)
+* complete generator for observer
+* complete generator for state
+
 * members: auto include headers of used members (?)
 * remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
-* remove CodeGenerator, InterfaceHelper and Options (and all other) classes, when not needed anymore
-* remove Template directory
+* remove Template directory, when not needed anymore
 * class: full move operator and move constructor support (with member copy etc.)
 
 # Ideas
@@ -47,3 +54,5 @@
 * members: getter and setter
 * members: element initialization in constructors
 * members: if type contains '*' -> do not copy - mark as todo
+* class: getter for bool -> prefix is
+* remove CodeGenerator, InterfaceHelper and Options (and all other) classes

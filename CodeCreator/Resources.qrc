@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/files">
+        <file>GeneratorTemplate/GeneratorTemplate.cpp</file>
+        <file>GeneratorTemplate/GeneratorTemplate.h</file>
+        <file>GeneratorTemplate/GeneratorTemplate.ui</file>
+    </qresource>
+</RCC>

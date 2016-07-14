@@ -6,7 +6,6 @@
 #include <QString>
 #include <QSettings>
 
-class CodeGenerator;
 class Options;
 
 namespace Ui
@@ -43,8 +42,6 @@ private:
   QStringList m_directories;
   QString m_fileName;
   QSettings* m_settings;
-
-  CodeGenerator* m_codeGenerator;
 };
 
 #endif // CODECREATOR_H

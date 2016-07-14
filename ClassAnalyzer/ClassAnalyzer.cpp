@@ -51,9 +51,8 @@ void ClassAnalyzer::parseFolders(const QStringList& folders)
 
 void ClassAnalyzer::removeComments(QString& code)
 {
-  // first remove multi-line comments
-  // than remove single-line comments
   // DO NOT CHANGE ORDER!!!
+  removeSequences(code, "//*", "\n", false);
   removeSequences(code, "/*", "*/");
   removeSequences(code, "//", "\n", false);
 }
@@ -66,7 +65,7 @@ void ClassAnalyzer::removeSequences(QString& code, const QString& startTag, cons
   while (positionStart > -1)
   {
     // handle special case '//*'
-    if (startTag == "/*" && positionStart != 0)
+    /*if (startTag == "/*" && positionStart != 0)
     {
       if (code[positionStart - 1] == '/')
       {
@@ -74,7 +73,7 @@ void ClassAnalyzer::removeSequences(QString& code, const QString& startTag, cons
         positionStart = code.indexOf(startTag, positionStart);
         continue;
       }
-    }
+    }*/
 
     positionEnd = code.indexOf(endTag, positionStart + 1);
 

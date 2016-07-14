@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>45</height>
+    <width>749</width>
+    <height>38</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,12 @@
    </item>
    <item>
     <widget class="QLineEdit" name="lineEditType">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="placeholderText">
       <string>type</string>
      </property>
@@ -26,6 +32,12 @@
    </item>
    <item>
     <widget class="QLineEdit" name="lineEditName">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="placeholderText">
       <string>parameter name</string>
      </property>
@@ -33,6 +45,12 @@
    </item>
    <item>
     <widget class="QLineEdit" name="lineEditDefaultValue">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="placeholderText">
       <string>default</string>
      </property>

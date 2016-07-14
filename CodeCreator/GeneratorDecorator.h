@@ -1,6 +1,9 @@
-#ifndef GENERATORINTERFACE_H
-#define GENERATORINTERFACE_H
+#ifndef GeneratorDecorator_H
+#define GeneratorDecorator_H
 
+#include <QList>
+#include <QPair>
+#include <QString>
 #include <QWidget>
 
 #include "GeneratorI.h"
@@ -8,17 +11,18 @@
 
 class WidgetListEditor;
 
-namespace Ui {
-class GeneratorInterface;
+namespace Ui
+{
+  class GeneratorDecorator;
 }
 
-class GeneratorInterface : public QWidget, public GeneratorI
+class GeneratorDecorator : public QWidget, public GeneratorI
 {
   Q_OBJECT
 
 public:
-  explicit GeneratorInterface(QWidget *parent = 0);
-  ~GeneratorInterface();
+  explicit GeneratorDecorator(QWidget *parent = 0);
+  ~GeneratorDecorator();
 
   // GeneratorI
   void readXml(QXmlStreamReader& xml);
@@ -29,16 +33,16 @@ signals:
   void optionsChanged();
 
 private slots:
-  void on_pushButtonDefineMethods_clicked();
+  void on_pushButtonInterface_clicked();
   void addMethod();
 
 private:
   void fillMethodList();
 
-  Ui::GeneratorInterface* ui;
+  Ui::GeneratorDecorator* ui;
 
   WidgetListEditor* m_widgetListEditor;
   Interface m_interface;
 };
 
-#endif // GENERATORINTERFACE_H
+#endif // GeneratorDecorator_H

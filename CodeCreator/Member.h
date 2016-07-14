@@ -49,8 +49,8 @@ public:
   void setDeclarationType(DeclarationType declarationType);
 
 private:
-  QString upperCaseFirstLetter(const QString& string) const;
   QString setterSignature(const QString& className = QString()) const;
+  QString getterName() const;
 
   QString m_type;
   QString m_name;
