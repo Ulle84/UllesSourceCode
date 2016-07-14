@@ -1,18 +1,24 @@
 ﻿# Bugs
 
 # ToDo
+## Decorator
 * class: support for custom constructors
 * decorator: declare default constructor private?
 * decorator: implement custom cunstructor
 
+## Observer
 * class: support for custom method declarations (see Templates\Observer\TemplatesSubject.cpp)
 * complete generator for observer
+
+## State
 * complete generator for state
 
+## Class
 * members: auto include headers of used members (?)
-* remove template mechanism from existing generators -> create new generators with Prefix 'Generator'
+* full move operator and move constructor support (with member copy etc.)
+
+## Misc
 * remove Template directory, when not needed anymore
-* class: full move operator and move constructor support (with member copy etc.)
 
 # Ideas
 * support for operators (<, >, ==, != etc.)
