@@ -25,6 +25,8 @@
 
 ## Misc
 * remove Template directory, when not needed anymore
+* List-Widget - button duplicate
+* monotype font for code inputs
 
 # Ideas
 * support for operators (<, >, ==, != etc.)

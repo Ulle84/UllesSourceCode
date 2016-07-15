@@ -1,12 +1,14 @@
 #ifndef CLASS_H
 #define CLASS_H
 
+#include <QList>
 #include <QString>
 #include <QStringList>
 
 #include "Interface.h"
 #include "Method.h"
 #include "Members.h"
+#include "Declarations.h"
 
 class Class
 {
@@ -59,6 +61,9 @@ public:
     //InheritableDPointer
   };
   void setDPointerType(DPointerType dPointerType);
+
+  void setAdditionalDeclarations(const Declarations& additionalDeclarations);
+  void setAdditionalImplementations(const QList<QStringList>& additionalImplementations);
 
 private:
   void append(QString& code, unsigned int indent, const QString& toAppend);
@@ -151,6 +156,8 @@ private:
   QString m_memberPrefix;
   bool m_sectionEmtpy;
   Members m_members;
+  Declarations m_additionalDeclarations;
+  QList<QStringList> m_additionalImplementations;
 };
 
 #endif // CLASS_H

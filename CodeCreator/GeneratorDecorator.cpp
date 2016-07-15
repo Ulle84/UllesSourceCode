@@ -117,10 +117,20 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     Member member;
     member.setType(interfaceName + "*");
     member.setName(StringHelper::lowerCaseFirstLetter(componentName));
+
     Members members;
     members.append(member);
-
     c.setMembers(members);
+
+    QString declarationString = decoratorName;
+    declarationString.append("(");
+    declarationString.append(member.type());
+    declarationString.append(" ");
+    declarationString.append(member.name());
+    declarationString.append(");");
+
+    Declaration declaration;
+    declaration.setDeclaration(declarationString);
 
     code.append(qMakePair(decoratorName + ".h", c.declaration()));
     code.append(qMakePair(decoratorName + ".cpp", c.implementation()));

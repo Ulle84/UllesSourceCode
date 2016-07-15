@@ -36,7 +36,9 @@ SOURCES += main.cpp\
     GeneratorDecorator.cpp \
     StringHelper.cpp \
     GeneratorObserver.cpp \
-    GeneratorState.cpp
+    GeneratorState.cpp \
+    Declaration.cpp \
+    Declarations.cpp
 
 HEADERS  += CodeCreator.h \
     XmlHelper.h \
@@ -62,7 +64,9 @@ HEADERS  += CodeCreator.h \
     GeneratorDecorator.h \
     StringHelper.h \
     GeneratorObserver.h \
-    GeneratorState.h
+    GeneratorState.h \
+    Declaration.h \
+    Declarations.h
 
 FORMS    += CodeCreator.ui \
     GeneratorInterface.ui \

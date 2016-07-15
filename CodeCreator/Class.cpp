@@ -1609,3 +1609,13 @@ QString Class::section(const QString& sectionName)
   code.append(":\n");
   return code;
 }
+
+void Class::setAdditionalDeclarations(const Declarations& additionalDeclarations)
+{
+  m_additionalDeclarations = additionalDeclarations;
+}
+
+void Class::setAdditionalImplementations(const QList<QStringList>& additionalImplementations)
+{
+  m_additionalImplementations = additionalImplementations;
+}
