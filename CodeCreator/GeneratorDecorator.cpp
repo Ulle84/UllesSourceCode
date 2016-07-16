@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "ui_GeneratorDecorator.h"
 
 #include "Class.h"
@@ -77,7 +79,7 @@ void GeneratorDecorator::writeXml(QXmlStreamWriter &xml)
 
 QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
 {
-  QList<QPair<QString, QString> > code;
+  QList<QPair<QString, QString> > generatedCode;
 
   QString decoratorName = ui->lineEditDecorator->text();
   QString componentName = ui->lineEditComponent->text();
@@ -97,7 +99,7 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     m_interface.setAllMethodsPublicPureVirtual();
     c.setInterface(m_interface);
 
-    code.append(qMakePair(interfaceName + ".h", c.declaration()));
+    generatedCode.append(qMakePair(interfaceName + ".h", c.declaration()));
   }
 
   if (ui->checkBoxComponent->isChecked())
@@ -105,8 +107,8 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     Class c(componentName);
     c.setInterfaces(interfaces);
 
-    code.append(qMakePair(componentName + ".h", c.declaration()));
-    code.append(qMakePair(componentName + ".cpp", c.implementation()));
+    generatedCode.append(qMakePair(componentName + ".h", c.declaration()));
+    generatedCode.append(qMakePair(componentName + ".cpp", c.implementation()));
   }
 
   if (ui->checkBoxDecorator->isChecked())
@@ -132,11 +134,45 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     Declaration declaration;
     declaration.setDeclaration(declarationString);
 
-    code.append(qMakePair(decoratorName + ".h", c.declaration()));
-    code.append(qMakePair(decoratorName + ".cpp", c.implementation()));
+    Declarations declarations;
+    declarations.append(declaration);
+    c.setAdditionalDeclarations(declarations);
+
+    QStringList implementation;
+
+    QString code = decoratorName;
+    code.append("::");
+    code.append(decoratorName);
+    code.append("(");
+    code.append(member.type());
+    code.append(" ");
+    code.append(member.name());
+    code.append(") :");
+    implementation.append(code);
+
+    code = "  ";
+    code.append(member.nameWithPrefix());
+    code.append("(");
+    code.append(member.name());
+    code.append(")");
+    implementation.append(code);
+
+    code = "{";
+    implementation.append(code);
+
+    code = "}";
+    implementation.append(code);
+
+    QList<QStringList> implementations;
+    implementations.append(implementation);
+
+    c.setAdditionalImplementations(implementations);
+
+    generatedCode.append(qMakePair(decoratorName + ".h", c.declaration()));
+    generatedCode.append(qMakePair(decoratorName + ".cpp", c.implementation()));
   }
 
-  return code;
+  return generatedCode;
 }
 
 void GeneratorDecorator::on_pushButtonInterface_clicked()

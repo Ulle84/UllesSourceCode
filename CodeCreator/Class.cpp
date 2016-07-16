@@ -97,6 +97,24 @@ QString Class::declaration()
     m_sectionEmtpy = false;
   }
 
+  if (m_additionalDeclarations.hasPublicDeclarations())
+  {
+    if(!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    QList<Declaration> declarations = m_additionalDeclarations.publicDeclarations();
+
+    for (auto it = declarations.begin(); it != declarations.end(); it++)
+    {
+      append(code, 1, it->declaration());
+      code.append("\n");
+    }
+
+    m_sectionEmtpy = false;
+  }
+
   if (m_interface.hasPublicMethods())
   {
     if(!m_sectionEmtpy)
@@ -155,7 +173,8 @@ QString Class::declaration()
   }
 
   if (m_interface.hasProtectedMethods()
-      || m_members.hasProtectedMembers())
+      || m_members.hasProtectedMembers()
+      || m_additionalDeclarations.hasProtectedDeclarations())
   {
     code.append("\n");
     code.append(section("protected"));
@@ -170,6 +189,24 @@ QString Class::declaration()
     }
 
     code.append(methodDeclarations(m_interface.protectedMethods()));
+
+    m_sectionEmtpy = false;
+  }
+
+  if (m_additionalDeclarations.hasProtectedDeclarations())
+  {
+    if(!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    QList<Declaration> declarations = m_additionalDeclarations.protectedDeclarations();
+
+    for (auto it = declarations.begin(); it != declarations.end(); it++)
+    {
+      append(code, 1, it->declaration());
+      code.append("\n");
+    }
 
     m_sectionEmtpy = false;
   }
@@ -195,7 +232,8 @@ QString Class::declaration()
       || m_singletonType != SingletonType::NoSingleton
       || m_dPointerType != DPointerType::NoDPointer
       || m_interface.hasPrivateMethods()
-      || m_members.hasPrivateMembers())
+      || m_members.hasPrivateMembers()
+      || m_additionalDeclarations.hasPrivateDeclarations())
   {
     code.append("\n");
     code.append(section("private"));
@@ -235,6 +273,24 @@ QString Class::declaration()
   if (m_destructorDeclarationType == DeclarationType::Private)
   {
     code.append(destructorDeclaration());
+    m_sectionEmtpy = false;
+  }
+
+  if (m_additionalDeclarations.hasPrivateDeclarations())
+  {
+    if(!m_sectionEmtpy)
+    {
+      code.append("\n");
+    }
+
+    QList<Declaration> declarations = m_additionalDeclarations.privateDeclarations();
+
+    for (auto it = declarations.begin(); it != declarations.end(); it++)
+    {
+      append(code, 1, it->declaration());
+      code.append("\n");
+    }
+
     m_sectionEmtpy = false;
   }
 
@@ -446,6 +502,31 @@ QString Class::implementation()
     }
 
     code.append(setterImplementations());
+
+    alreadyOneImplementationPresent = true;
+  }
+
+  if (!m_additionalImplementations.isEmpty())
+  {
+    if (alreadyOneImplementationPresent)
+    {
+      code.append("\n");
+    }
+
+    for (auto it = m_additionalImplementations.begin(); it != m_additionalImplementations.end(); it++)
+    {
+      if (it != m_additionalImplementations.begin())
+      {
+        code.append("\n\n");
+      }
+
+      for (auto it2 = it->begin(); it2 != it->end(); it2++)
+      {
+        code.append(leadingWhitespace());
+        code.append(*it2);
+        code.append("\n");
+      }
+    }
 
     alreadyOneImplementationPresent = true;
   }

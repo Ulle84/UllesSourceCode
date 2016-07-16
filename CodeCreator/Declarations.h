@@ -15,6 +15,8 @@ public:
   bool hasProtectedDeclarations();
   bool hasPrivateDeclarations();
 
+  bool hasDeclaration(const QString& declarationName);
+
   QList<Declaration> publicDeclarations();
   QList<Declaration> protectedDeclarations();
   QList<Declaration> privateDeclarations();

@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "Declarations.h"
 
 Declarations::Declarations()
@@ -23,6 +25,19 @@ bool Declarations::hasProtectedDeclarations()
 bool Declarations::hasPrivateDeclarations()
 {
   return hasDeclarationType(Declaration::DeclarationType::Private);
+}
+
+bool Declarations::hasDeclaration(const QString &declarationName)
+{
+  for (auto it = begin(); it != end(); it++)
+  {
+    if (it->declaration().startsWith(declarationName))
+    {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 QList<Declaration> Declarations::publicDeclarations()
