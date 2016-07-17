@@ -138,8 +138,6 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     declarations.append(declaration);
     c.setAdditionalDeclarations(declarations);
 
-    QStringList implementation;
-
     QString code = decoratorName;
     code.append("::");
     code.append(decoratorName);
@@ -147,26 +145,13 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     code.append(member.type());
     code.append(" ");
     code.append(member.name());
-    code.append(") :");
-    implementation.append(code);
-
-    code = "  ";
+    code.append(") :\n  ");
     code.append(member.nameWithPrefix());
     code.append("(");
     code.append(member.name());
-    code.append(")");
-    implementation.append(code);
+    code.append(")\n{\n}");
 
-    code = "{";
-    implementation.append(code);
-
-    code = "}";
-    implementation.append(code);
-
-    QList<QStringList> implementations;
-    implementations.append(implementation);
-
-    c.setAdditionalImplementations(implementations);
+    c.setAdditionalImplementations(QStringList() << code);
 
     generatedCode.append(qMakePair(decoratorName + ".h", c.declaration()));
     generatedCode.append(qMakePair(decoratorName + ".cpp", c.implementation()));

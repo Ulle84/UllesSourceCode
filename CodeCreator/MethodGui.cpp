@@ -31,8 +31,8 @@ void MethodGui::setMethod(const Method &method)
 {
   m_method = method;
 
-  ui->lineEditName->setText(m_method.m_name);
-  ui->lineEditReturnType->setText(m_method.m_returnType);
+  ui->lineEditName->setText(m_method.name());
+  ui->lineEditReturnType->setText(m_method.returnType());
 
   for (int i = 0; i < ui->comboBoxType->count(); i++)
   {
@@ -70,22 +70,22 @@ void MethodGui::setDeclarationTypeVisible(bool visible)
 
 void MethodGui::on_comboBoxDeclarationType_currentIndexChanged(const QString &arg1)
 {
-  m_method.m_declarationType = static_cast<Method::DeclarationType>(ui->comboBoxDeclarationType->itemData(ui->comboBoxDeclarationType->currentIndex()).toInt());
+  m_method.setDeclarationType(static_cast<Method::DeclarationType>(ui->comboBoxDeclarationType->itemData(ui->comboBoxDeclarationType->currentIndex()).toInt()));
 }
 
 void MethodGui::on_comboBoxType_currentIndexChanged(const QString &arg1)
 {
-  m_method.m_type = static_cast<Method::Type>(ui->comboBoxType->itemData(ui->comboBoxType->currentIndex()).toInt());
+  m_method.setType(static_cast<Method::Type>(ui->comboBoxType->itemData(ui->comboBoxType->currentIndex()).toInt()));
 }
 
 void MethodGui::on_lineEditReturnType_textEdited(const QString &returnType)
 {
-  m_method.m_returnType = returnType;
+  m_method.setReturnType(returnType);
 }
 
 void MethodGui::on_lineEditName_textEdited(const QString &name)
 {
-  m_method.m_name = name;
+  m_method.setName(name);
 }
 
 void MethodGui::on_pushButtonParameters_clicked()

@@ -114,7 +114,21 @@ QString Method::implementation(const QString& indent, const QString& className) 
 
   code.append(")\n");
   code.append(indent);
-  code.append("{\n\n");
+  code.append("{\n");
+
+  if (!m_declarationBody.isEmpty())
+  {
+    QStringList splitted = m_declarationBody.split('\n');
+
+    for (auto it = splitted.begin(); it != splitted.end(); it++)
+    {
+      code.append(indent);
+      code.append(*it);
+      code.append("\n");
+    }
+  }
+
+  code.append("\n");
   code.append(indent);
   code.append("}");
 
@@ -164,4 +178,9 @@ Method::DeclarationType Method::declarationType() const
 void Method::setDeclarationType(Method::DeclarationType declarationType)
 {
   m_declarationType = declarationType;
+}
+
+void Method::setDeclarationBody(const QString &declarationBody)
+{
+  m_declarationBody = declarationBody;
 }

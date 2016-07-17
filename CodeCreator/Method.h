@@ -41,13 +41,14 @@ public:
   DeclarationType declarationType() const;
   void setDeclarationType(DeclarationType declarationType);
 
+  void setDeclarationBody(const QString& declarationBody);
+
 private:
   QString m_name;
   QString m_returnType;
+  QString m_declarationBody;
   Type m_type;
   DeclarationType m_declarationType;
-
-  friend class MethodGui;
 };
 
 #endif // METHOD_H

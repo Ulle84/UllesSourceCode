@@ -63,7 +63,7 @@ public:
   void setDPointerType(DPointerType dPointerType);
 
   void setAdditionalDeclarations(const Declarations& additionalDeclarations);
-  void setAdditionalImplementations(const QList<QStringList>& additionalImplementations);
+  void setAdditionalImplementations(const QStringList additionalImplementations);
 
 private:
   void append(QString& code, unsigned int indent, const QString& toAppend);
@@ -157,7 +157,7 @@ private:
   bool m_sectionEmtpy;
   Members m_members;
   Declarations m_additionalDeclarations;
-  QList<QStringList> m_additionalImplementations;
+  QStringList m_additionalImplementations;
 };
 
 #endif // CLASS_H

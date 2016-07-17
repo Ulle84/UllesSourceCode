@@ -520,7 +520,9 @@ QString Class::implementation()
         code.append("\n\n");
       }
 
-      for (auto it2 = it->begin(); it2 != it->end(); it2++)
+      QStringList splitted = it->split("\n");
+
+      for (auto it2 = splitted.begin(); it2 != splitted.end(); it2++)
       {
         code.append(leadingWhitespace());
         code.append(*it2);
@@ -1696,7 +1698,7 @@ void Class::setAdditionalDeclarations(const Declarations& additionalDeclarations
   m_additionalDeclarations = additionalDeclarations;
 }
 
-void Class::setAdditionalImplementations(const QList<QStringList>& additionalImplementations)
+void Class::setAdditionalImplementations(const QStringList additionalImplementations)
 {
   m_additionalImplementations = additionalImplementations;
 }
