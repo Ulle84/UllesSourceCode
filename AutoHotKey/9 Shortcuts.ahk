@@ -118,6 +118,11 @@ return
 SendInput {[}{]}(%clipboard%)
 return
 
+; redmine link from clipboard in mark-down-syntax
+:*:rm#::
+SendInput {[}Redmine{]}(%clipboard%)
+return
+
 ; member asignment
 :*:ma#::
 SendInput m_%clipboard% = %clipboard%{;}

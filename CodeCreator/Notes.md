@@ -2,8 +2,6 @@
 
 # ToDo
 ## Decorator
-* class: support for additional declarations QStringList if(declaration.startWith(m_className ... -> print after constructors
-* class: support for additional implementations QList<QStringList>
 * decorator: declare default constructor private?
 * decorator: implement custom cunstructor
 * complete generator for decorator
@@ -29,6 +27,7 @@
 * monotype font for code inputs
 * check of codec of generated files are correct - use UTF-8 if possible for Visual-Studio and QtCreator
 * use interface editor consequently
+* namespace support for all generators
 
 # Ideas
 * support for operators (<, >, ==, != etc.)
@@ -72,3 +71,5 @@
 * members: if type contains '*' -> do not copy - mark as todo
 * class: getter for bool -> prefix is
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes
+* class: support for additional declarations QStringList if(declaration.startWith(m_className ... -> print after constructors
+* class: support for additional implementations QList<QStringList>

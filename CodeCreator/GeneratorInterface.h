@@ -6,10 +6,9 @@
 #include "GeneratorI.h"
 #include "Interface.h"
 
-class WidgetListEditor;
-
-namespace Ui {
-class GeneratorInterface;
+namespace Ui
+{
+  class GeneratorInterface;
 }
 
 class GeneratorInterface : public QWidget, public GeneratorI
@@ -28,17 +27,8 @@ public:
 signals:
   void optionsChanged();
 
-private slots:
-  void on_pushButtonDefineMethods_clicked();
-  void addMethod();
-
 private:
-  void fillMethodList();
-
   Ui::GeneratorInterface* ui;
-
-  WidgetListEditor* m_widgetListEditor;
-  Interface m_interface;
 };
 
 #endif // GENERATORINTERFACE_H

@@ -7,7 +7,6 @@
 #include <QWidget>
 
 #include "GeneratorI.h"
-#include "Interface.h"
 
 class WidgetListEditor;
 
@@ -32,17 +31,8 @@ public:
 signals:
   void optionsChanged();
 
-private slots:
-  void on_pushButtonInterface_clicked();
-  void addMethod();
-
 private:
-  void fillMethodList();
-
   Ui::GeneratorState* ui;
-
-  WidgetListEditor* m_widgetListEditor;
-  Interface m_interface;
 };
 
 #endif // GeneratorState_H

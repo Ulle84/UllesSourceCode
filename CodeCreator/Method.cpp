@@ -7,9 +7,11 @@ Method::Method()
 
 }
 
-Method::Method(const QString &method)
+Method::Method(const QString& methodDeclaration, const QString& implementationBody)
 {
-  QString copy = method;
+  m_implementationBody = implementationBody;
+
+  QString copy = methodDeclaration;
   copy.replace(";", "");
   copy.replace("=", " = ");
   copy = copy.simplified();
@@ -116,15 +118,20 @@ QString Method::implementation(const QString& indent, const QString& className) 
   code.append(indent);
   code.append("{\n");
 
-  if (!m_declarationBody.isEmpty())
+  if (!m_implementationBody.isEmpty())
   {
-    QStringList splitted = m_declarationBody.split('\n');
+    QStringList splitted = m_implementationBody.split('\n');
 
     for (auto it = splitted.begin(); it != splitted.end(); it++)
     {
+      if (it != splitted.begin())
+      {
+        code.append("\n");
+      }
+
       code.append(indent);
-      code.append(*it);
-      code.append("\n");
+      code.append("  ");
+      code.append(*it);      
     }
   }
 
@@ -180,7 +187,7 @@ void Method::setDeclarationType(Method::DeclarationType declarationType)
   m_declarationType = declarationType;
 }
 
-void Method::setDeclarationBody(const QString &declarationBody)
+void Method::setImplementationBody(const QString &implementationBody)
 {
-  m_declarationBody = declarationBody;
+  m_implementationBody = implementationBody;
 }

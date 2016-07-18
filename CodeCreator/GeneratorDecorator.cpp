@@ -13,8 +13,7 @@
 
 GeneratorDecorator::GeneratorDecorator(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::GeneratorDecorator),
-  m_widgetListEditor(NULL)
+  ui(new Ui::GeneratorDecorator)
 {
   ui->setupUi(this);
 
@@ -24,6 +23,8 @@ GeneratorDecorator::GeneratorDecorator(QWidget *parent) :
   connect(ui->checkBoxComponent, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
   connect(ui->checkBoxDecorator, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
   connect(ui->checkBoxInterface, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
+
+  connect(ui->interfaceEditor, SIGNAL(interfaceChanged()), this, SIGNAL(optionsChanged()));
 }
 
 GeneratorDecorator::~GeneratorDecorator()
@@ -45,7 +46,9 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
     }
     else if (xml.name() == "Interface")
     {
-      XmlHelper::readXml(xml, &m_interface);
+      Interface interface;
+      XmlHelper::readXml(xml, &interface);
+      ui->interfaceEditor->setInterface(interface);
     }
     else if(xml.name() == "CreateComponent")
     {
@@ -70,7 +73,7 @@ void GeneratorDecorator::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Component", ui->lineEditComponent);
   XmlHelper::writeXml(xml, "Decorator", ui->lineEditDecorator);
-  XmlHelper::writeXml(xml, &m_interface);
+  XmlHelper::writeXml(xml, &ui->interfaceEditor->interface());
 
   XmlHelper::writeXml(xml, "CreateComponent", ui->checkBoxComponent);
   XmlHelper::writeXml(xml, "CreateDecorator", ui->checkBoxDecorator);
@@ -84,20 +87,17 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
   QString decoratorName = ui->lineEditDecorator->text();
   QString componentName = ui->lineEditComponent->text();
   QString interfaceName = ui->lineEditComponent->text() + "I";
-  m_interface.setName(interfaceName);
+
+  Interface interface = ui->interfaceEditor->interface();
+  interface.setName(interfaceName);
 
   QList<Interface> interfaces;
-  interfaces.append(m_interface);
+  interfaces.append(interface);
 
   if (ui->checkBoxInterface->isChecked())
   {
     Class c(interfaceName);
-
-    /*c.setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
-    c.setDeclareDestructorVirtual(true);
-
-    m_interface.setAllMethodsPublicPureVirtual();*/
-    c.setInterface(m_interface, true);
+    c.setInterface(interface, true);
 
     generatedCode.append(qMakePair(interfaceName + ".h", c.declaration()));
   }
@@ -158,59 +158,4 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
   }
 
   return generatedCode;
-}
-
-void GeneratorDecorator::on_pushButtonInterface_clicked()
-{
-  if (m_widgetListEditor == NULL)
-  {
-    m_widgetListEditor = new WidgetListEditor(this);
-    m_widgetListEditor->setButtonText(tr("add method"));
-    m_widgetListEditor->setWindowTitle(tr("interface editor"));
-    connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addMethod()));
-    fillMethodList();
-  }
-
-  if (m_widgetListEditor->exec() == QDialog::Accepted)
-  {
-    m_interface.clear();
-
-    QList<QWidget*> items = m_widgetListEditor->items();
-
-    for (auto it = items.begin(); it != items.end(); it++)
-    {
-      MethodGui* methodGui = dynamic_cast<MethodGui*>(*it);
-      if (methodGui)
-      {
-        m_interface.append(methodGui->method());
-      }
-    }
-
-    emit optionsChanged();
-  }
-  else
-  {
-    m_widgetListEditor->clear();
-    fillMethodList();
-  }
-}
-
-void GeneratorDecorator::addMethod()
-{
-  MethodGui* methodGui = new MethodGui();
-  methodGui->setTypeVisible(false);
-  methodGui->setDeclarationTypeVisible(false);
-  dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(methodGui);
-}
-
-void GeneratorDecorator::fillMethodList()
-{
-  for (auto it = m_interface.begin(); it != m_interface.end(); it++)
-  {
-    MethodGui* methodGui = new MethodGui();
-    methodGui->setTypeVisible(false);
-    methodGui->setDeclarationTypeVisible(false);
-    methodGui->setMethod(*it);
-    m_widgetListEditor->addItem(methodGui);
-  }
 }

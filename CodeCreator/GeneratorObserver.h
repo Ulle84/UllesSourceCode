@@ -30,6 +30,10 @@ signals:
   void optionsChanged();
 
 private:
+  QString registerObserverCode();
+  QString unregisterObserverCode();
+  QString notifyObserversCode();
+
   Ui::GeneratorObserver* ui;
 };
 
