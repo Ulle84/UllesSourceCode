@@ -20,6 +20,7 @@
 * members: auto include headers of used members (?)
 * full move operator and move constructor support (with member copy etc.)
 * improve include handling - include of template parameters
+* optional: create ui file
 
 ## Misc
 * remove Template directory, when not needed anymore
