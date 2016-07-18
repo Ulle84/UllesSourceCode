@@ -6,52 +6,76 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>214</height>
+    <width>486</width>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>GeneratorObserver</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="lineEditSubject"/>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label_3">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>!!! under construction !!!</string>
+      <string>observable subject</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="checkBoxSubject">
+     <property name="text">
+      <string>generate subject</string>
      </property>
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QCheckBox" name="checkBoxObserver">
+    <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Observer</string>
+      <string>observers</string>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QLineEdit" name="lineEditObserver"/>
+    <widget class="QPlainTextEdit" name="plainTextEditObservers"/>
    </item>
-   <item row="3" column="0">
-    <widget class="QCheckBox" name="checkBoxInterface">
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Interface</string>
+      <string>observer interface</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEditSubject"/>
+   </item>
+   <item row="1" column="2">
     <widget class="InterfaceEditor" name="interfaceEditor">
      <property name="text">
       <string>define interface</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="checkBoxSubject">
+   <item row="7" column="0" colspan="2">
+    <widget class="QCheckBox" name="checkBoxTest">
      <property name="text">
-      <string>Subject</string>
+      <string>generate test code</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="lineEditObserver"/>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QCheckBox" name="checkBoxObserver">
+     <property name="text">
+      <string>generate observers</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QCheckBox" name="checkBoxInterface">
+     <property name="text">
+      <string>generate observer interface</string>
      </property>
     </widget>
    </item>

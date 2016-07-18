@@ -161,15 +161,25 @@ void CodeCreator::on_pushButtonGenerate_clicked()
 
   QList<QPair<QString, QString> > code = generator->generatedCode();
 
+  bool overwriteAllFiles = false;
   for (auto it = code.begin(); it != code.end(); it++)
   {
     QFile output(ui->comboBoxFolder->currentText() + QDir::separator() + it->first);
 
-    if (output.exists())
-    {
-      if (QMessageBox::No == QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(it->first), QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
+    if (output.exists() && !overwriteAllFiles)
+    {      
+      int response = QMessageBox::warning(this, tr("File already exist!"), tr("Do you want to overwrite the existing file %1?").arg(it->first), QMessageBox::No | QMessageBox::NoToAll | QMessageBox::Yes | QMessageBox::YesToAll, QMessageBox::No);
+      if (response == QMessageBox::NoToAll)
       {
         return;
+      }
+      else if(response == QMessageBox::No)
+      {
+        continue;
+      }
+      else if (response == QMessageBox::YesToAll)
+      {
+        overwriteAllFiles = true;
       }
     }
 

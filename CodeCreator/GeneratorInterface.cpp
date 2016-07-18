@@ -52,7 +52,8 @@ void GeneratorInterface::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Name", ui->lineEditName);
   XmlHelper::writeXml(xml, "Prefix", ui->checkBoxPostfix);
-  XmlHelper::writeXml(xml, &ui->interfaceEditor->interface());
+  Interface interface = ui->interfaceEditor->interface();
+  XmlHelper::writeXml(xml, &interface);
 }
 
 QList<QPair<QString, QString> > GeneratorInterface::generatedCode()

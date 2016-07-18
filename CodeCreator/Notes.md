@@ -8,10 +8,7 @@
 * decorator: declare default constructor private?
 * decorator: implement custom cunstructor
 * complete generator for decorator
-
-## Observer
-* test generator
-* support for multiple observers
+* test code
 
 ## State
 * understand state pattern
@@ -50,32 +47,3 @@
   * Composite
   * State
   * Proxy
-
-# Done
-* looking in wrong folder for templates -> needs to be configurable!!!
-* namespace
-* no template files -> write code instead -> much more flexible
-* singleton support -> override options (no public constructor etc.), before creating
-* d-Pointer support
-* base implementation of GeneratorInterface
-* persistance of interface
-* implementation of interfaces
-* set splitter width
-* implement button define methods
-* save and load (xml) interface
-* change GeneratorInterface to new GeneratorI style
-* full support for methods (gui + xml + code generation)
-* class: support for members (gui + xml + code generation)
-* class: new class Members with hasPublicMembers etc.
-* members: support for prefix
-* members: getter and setter
-* members: element initialization in constructors
-* members: if type contains '*' -> do not copy - mark as todo
-* class: getter for bool -> prefix is
-* remove CodeGenerator, InterfaceHelper and Options (and all other) classes
-* class: support for additional declarations QStringList if(declaration.startWith(m_className ... -> print after constructors
-* class: support for additional implementations QList<QStringList>
-* class: support for forward declarations
-* class: support for additional declaration includes - #include <algorithm> for example
-* class: support for additional implementation includes - #include <algorithm> for example
-* complete generator for observer

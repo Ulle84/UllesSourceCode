@@ -73,7 +73,8 @@ void GeneratorDecorator::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Component", ui->lineEditComponent);
   XmlHelper::writeXml(xml, "Decorator", ui->lineEditDecorator);
-  XmlHelper::writeXml(xml, &ui->interfaceEditor->interface());
+  Interface interface = ui->interfaceEditor->interface();
+  XmlHelper::writeXml(xml, &interface);
 
   XmlHelper::writeXml(xml, "CreateComponent", ui->checkBoxComponent);
   XmlHelper::writeXml(xml, "CreateDecorator", ui->checkBoxDecorator);

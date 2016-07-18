@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     GeneratorState.cpp \
     Declaration.cpp \
     Declarations.cpp \
-    InterfaceEditor.cpp
+    InterfaceEditor.cpp \
+    CodeHelper.cpp
 
 HEADERS  += CodeCreator.h \
     XmlHelper.h \
@@ -68,7 +69,8 @@ HEADERS  += CodeCreator.h \
     GeneratorState.h \
     Declaration.h \
     Declarations.h \
-    InterfaceEditor.h
+    InterfaceEditor.h \
+    CodeHelper.h
 
 FORMS    += CodeCreator.ui \
     GeneratorInterface.ui \

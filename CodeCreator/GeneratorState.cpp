@@ -68,7 +68,8 @@ void GeneratorState::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "State", ui->lineEditState);
   XmlHelper::writeXml(xml, "Context", ui->lineEditContext);
-  XmlHelper::writeXml(xml, &ui->interfaceEditor->interface());
+  Interface interface = ui->interfaceEditor->interface();
+  XmlHelper::writeXml(xml, &interface);
 
   XmlHelper::writeXml(xml, "CreateState", ui->checkBoxState);
   XmlHelper::writeXml(xml, "CreateContext", ui->checkBoxContext);

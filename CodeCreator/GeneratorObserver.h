@@ -33,6 +33,7 @@ private:
   QString registerObserverCode();
   QString unregisterObserverCode();
   QString notifyObserversCode();
+  QString testCode();
 
   Ui::GeneratorObserver* ui;
 };

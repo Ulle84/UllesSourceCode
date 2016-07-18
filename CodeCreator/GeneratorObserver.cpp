@@ -1,6 +1,7 @@
 #include "ui_GeneratorObserver.h"
 
 #include "Class.h"
+#include "CodeHelper.h"
 #include "GeneratorObserver.h"
 #include "XmlHelper.h"
 
@@ -16,8 +17,11 @@ GeneratorObserver::GeneratorObserver(QWidget *parent) :
   connect(ui->checkBoxSubject, SIGNAL(clicked()), this, SIGNAL(optionsChanged()));
   connect(ui->checkBoxObserver, SIGNAL(clicked()), this, SIGNAL(optionsChanged()));
   connect(ui->checkBoxInterface, SIGNAL(clicked()), this, SIGNAL(optionsChanged()));
+  connect(ui->checkBoxTest, SIGNAL(clicked()), this, SIGNAL(optionsChanged()));
 
   connect(ui->interfaceEditor, SIGNAL(interfaceChanged()), this, SIGNAL(optionsChanged()));
+
+  connect(ui->plainTextEditObservers, SIGNAL(textChanged()), this, SIGNAL(optionsChanged()));
 }
 
 QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
@@ -31,8 +35,8 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
   {
     Interface interface;
     interface.setName(subject + "I");
-    interface.append(Method("bool registerObserver(const " + observer + "I* observer)", registerObserverCode()));
-    interface.append(Method("bool unregisterObserver(const " + observer + "I* observer)", unregisterObserverCode()));
+    interface.append(Method("bool registerObserver(" + observer + "I* observer)", registerObserverCode()));
+    interface.append(Method("bool unregisterObserver(" + observer + "I* observer)", unregisterObserverCode()));
     interface.append(Method("bool notifyObservers()", notifyObserversCode()));
 
     Class i(subject + "I");
@@ -46,7 +50,7 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
     c.setImplementationIncludes(QStringList() << "<algorithm>" << "\"" + observer + "I.h\"");
 
     Member member;
-    member.setType("std::vector<const " + observer + "I*>");
+    member.setType("std::vector<" + observer + "I*>");
     member.setName("observers");
 
     Members members;
@@ -54,18 +58,6 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
     c.setMembers(members);
 
     code.append(qMakePair(i.name() + ".h", i.declaration()));
-    code.append(qMakePair(c.name() + ".h", c.declaration()));
-    code.append(qMakePair(c.name() + ".cpp", c.implementation()));
-
-  }
-
-  if (ui->checkBoxObserver->isChecked())
-  {
-    Class c(observer);
-    Interface interface = ui->interfaceEditor->interface();
-    interface.setName(observer + "I");
-    c.setInterfaces(QList<Interface>() << interface);
-
     code.append(qMakePair(c.name() + ".h", c.declaration()));
     code.append(qMakePair(c.name() + ".cpp", c.implementation()));
   }
@@ -78,6 +70,30 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
     code.append(qMakePair(c.name() + ".h", c.declaration()));
   }
 
+  if (ui->checkBoxObserver->isChecked())
+  {
+    Interface interface = ui->interfaceEditor->interface();
+    interface.setName(observer + "I");
+
+    QStringList observers = ui->plainTextEditObservers->toPlainText().split('\n');
+
+    for (auto it = observers.begin(); it != observers.end(); it++)
+    {
+      Class c(*it);
+      c.setInterfaces(QList<Interface>() << interface);
+
+      code.append(qMakePair(c.name() + ".h", c.declaration()));
+      code.append(qMakePair(c.name() + ".cpp", c.implementation()));
+    }
+  }
+
+
+
+  if (ui->checkBoxTest->isChecked())
+  {
+    code.append(qMakePair(QString("test.cpp"), testCode()));
+  }
+
   return code;
 }
 
@@ -85,7 +101,7 @@ QString GeneratorObserver::registerObserverCode()
 {
   QString code;
 
-  code.append("if (observer != nullptr)\n");
+  code.append("if (observer != " + CodeHelper::nullPointer() + ")\n");
   code.append("{\n");
   code.append("  if (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end())\n");
   code.append("  {\n");
@@ -94,7 +110,7 @@ QString GeneratorObserver::registerObserverCode()
   code.append("  }\n");
   code.append("}\n");
   code.append("\n");
-  code.append("return false");
+  code.append("return false;");
 
   return code;
 }
@@ -103,7 +119,7 @@ QString GeneratorObserver::unregisterObserverCode()
 {
   QString code;
 
-  code.append("if (observer != nullptr)\n");
+  code.append("if (observer != " + CodeHelper::nullPointer() + ")\n");
   code.append("{\n");
   code.append("  for (auto it = m_observers.begin(); it != m_observers.end(); it++)\n");
   code.append("  {\n");
@@ -131,6 +147,7 @@ QString GeneratorObserver::notifyObserversCode()
   Interface interface = ui->interfaceEditor->interface();
   for (auto it = interface.begin(); it != interface.end(); it++)
   {
+    // TODO check against nullptr?
     code.append("  (*it)->");
     code.append(it->name());
     code.append("();\n");
@@ -138,6 +155,34 @@ QString GeneratorObserver::notifyObserversCode()
 
   code.append("}");
 
+
+  return code;
+}
+
+QString GeneratorObserver::testCode()
+{
+  QString code;
+
+  code.append("#include \"" + ui->lineEditSubject->text() + ".h\"\n");
+  code.append("#include \"" + ui->lineEditObserver->text() + ".h\"\n");
+  code.append("\n");
+  code.append(ui->lineEditSubject->text() + "I* s= new " + ui->lineEditSubject->text() + "();\n");
+  code.append(ui->lineEditObserver->text() + "I* o1 = new " + ui->lineEditObserver->text() + "();\n");
+  code.append(ui->lineEditObserver->text() + "I* o2 = new " + ui->lineEditObserver->text() + "();\n");
+  code.append("\n");
+  code.append("s->registerObserver(o1);\n");
+  code.append("s->registerObserver(o2);\n");
+  code.append("\n");
+  code.append("s->notifyObservers();\n");
+  code.append("\n");
+  code.append("s->unregisterObserver(o2);\n");
+  code.append("delete o2;\n");
+  code.append("\n");
+  code.append("s->notifyObservers();\n");
+  code.append("\n");
+  code.append("s->unregisterObserver(o1);\n");
+  code.append("delete o1;\n");
+  code.append("delete s;\n");
 
   return code;
 }
@@ -159,6 +204,10 @@ void GeneratorObserver::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml,  ui->lineEditObserver);
     }
+    else if (xml.name() == "Observers")
+    {
+      XmlHelper::readXml(xml, ui->plainTextEditObservers);
+    }
     else if (xml.name() == "ObserverInterface")
     {
       Interface interface;
@@ -177,6 +226,10 @@ void GeneratorObserver::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml,  ui->checkBoxInterface);
     }
+    else if (xml.name() == "CreateTestCode")
+    {
+      XmlHelper::readXml(xml,  ui->checkBoxTest);
+    }
     else
     {
       xml.skipCurrentElement();
@@ -188,8 +241,11 @@ void GeneratorObserver::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Subject", ui->lineEditSubject);
   XmlHelper::writeXml(xml, "Observer", ui->lineEditObserver);
-  XmlHelper::writeXml(xml, &ui->interfaceEditor->interface(), "ObserverInterface");
+  XmlHelper::writeXml(xml, "Observers", ui->plainTextEditObservers);
+  Interface interface = ui->interfaceEditor->interface();
+  XmlHelper::writeXml(xml, &interface);
   XmlHelper::writeXml(xml, "CreateSubject", ui->checkBoxSubject);
   XmlHelper::writeXml(xml, "CreateObserver", ui->checkBoxObserver);
   XmlHelper::writeXml(xml, "CreateInterface", ui->checkBoxInterface);
+  XmlHelper::writeXml(xml, "CreateTestCode", ui->checkBoxTest);
 }
