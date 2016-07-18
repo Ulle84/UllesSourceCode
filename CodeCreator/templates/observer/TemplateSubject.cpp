@@ -1,7 +1,7 @@
 #include <algorithm>
 
 #include "TemplateSubject.h"
-#include "ITemplateObserver.h"
+#include "TemplateObserverI.h"
 
 TemplateSubject::TemplateSubject()
 {
@@ -11,7 +11,7 @@ TemplateSubject::~TemplateSubject()
 {
 }
 
-bool TemplateSubject::registerObserver(ITemplateObserver* observer)
+bool TemplateSubject::registerObserver(TemplateObserverI* observer)
 {
   bool returnValue = false;
 
@@ -27,7 +27,7 @@ bool TemplateSubject::registerObserver(ITemplateObserver* observer)
   return returnValue;
 }
 
-bool TemplateSubject::unregisterObserver(ITemplateObserver* observer)
+bool TemplateSubject::unregisterObserver(TemplateObserverI* observer)
 {
   bool returnValue = false;
 

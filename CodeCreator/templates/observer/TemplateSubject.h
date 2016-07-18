@@ -3,23 +3,23 @@
 
 #include <vector>
 
-#include "ITemplateSubject.h"
+#include "TemplateSubjectI.h"
 
-class ITemplateObserver;
+class TemplateObserverI;
 
-class TemplateSubject : public ITemplateSubject
+class TemplateSubject : public TemplateSubjectI
 {
 public:
   TemplateSubject();
   ~TemplateSubject();
 
-  // ITemplateSubject
-  bool registerObserver(ITemplateObserver* observer);
-  bool unregisterObserver(ITemplateObserver* observer);
+  // TemplateSubjectI
+  bool registerObserver(TemplateObserverI* observer);
+  bool unregisterObserver(TemplateObserverI* observer);
   void notifyObservers();
 
 private:
-  std::vector<ITemplateObserver*> mObservers;
+  std::vector<TemplateObserverI*> mObservers;
 };
 
 #endif // TEMPLATESUBJECT_H

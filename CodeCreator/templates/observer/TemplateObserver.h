@@ -1,15 +1,15 @@
 #ifndef TEMPLATEOBSERVER_H
 #define TEMPLATEOBSERVER_H
 
-#include "ITemplateObserver.h"
+#include "TemplateObserverI.h"
 
-class TemplateObserver : public ITemplateObserver
+class TemplateObserver : public TemplateObserverI
 {
 public:
   TemplateObserver();
   ~TemplateObserver();
   
-  // ITemplateObserver
+  // TemplateObserverI
   void notify();
 };
 

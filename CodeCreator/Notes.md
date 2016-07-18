@@ -1,16 +1,17 @@
 ﻿# Bugs
 
 # ToDo
+## General
+* CodeHelper -> get Interfacename etc --> all conventions (trailing I etc) should be encapsulated -> same procedure for member
+
 ## Decorator
 * decorator: declare default constructor private?
 * decorator: implement custom cunstructor
 * complete generator for decorator
 
 ## Observer
-* class: support for custom method declarations
-  - see Templates\Observer\TemplatesSubject.cpp
-  - new member QStringList
-* complete generator for observer
+* test generator
+* support for multiple observers
 
 ## State
 * understand state pattern
@@ -74,3 +75,7 @@
 * remove CodeGenerator, InterfaceHelper and Options (and all other) classes
 * class: support for additional declarations QStringList if(declaration.startWith(m_className ... -> print after constructors
 * class: support for additional implementations QList<QStringList>
+* class: support for forward declarations
+* class: support for additional declaration includes - #include <algorithm> for example
+* class: support for additional implementation includes - #include <algorithm> for example
+* complete generator for observer

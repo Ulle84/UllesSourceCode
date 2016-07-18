@@ -1,15 +1,15 @@
-#ifndef COMPONENT_H
-#define COMPONENT_H
+#ifndef Component_h
+#define Component_h
 
-#include "IComponent.h"
+#include "ComponentI.h"
 
-class Component : public IComponent
+class Component : public ComponentI
 {
 public:
   Component();
   ~Component();
 
-  // IComponent
+  // ComponentI
 };
 
-#endif // COMPONENT_H
+#endif // Component_h

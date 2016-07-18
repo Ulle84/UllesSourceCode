@@ -64,6 +64,10 @@ public:
 
   void setAdditionalDeclarations(const Declarations& additionalDeclarations);
   void setAdditionalImplementations(const QStringList additionalImplementations);
+  void setForwardDeclaredClasses(const QStringList& forwardDeclaredClasses);
+
+  void setDeclarationIncludes(const QStringList& declarationIncludes);
+  void setImplementationIncludes(const QStringList& implementationIncludes);
 
 private:
   void append(QString& code, unsigned int indent, const QString& toAppend);
@@ -158,6 +162,9 @@ private:
   Members m_members;
   Declarations m_additionalDeclarations;
   QStringList m_additionalImplementations;
+  QStringList m_forwardDeclaredClasses;
+  QStringList m_declarationIncludes;
+  QStringList m_implementationIncludes;
 };
 
 #endif // CLASS_H

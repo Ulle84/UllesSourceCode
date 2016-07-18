@@ -29,7 +29,6 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
 
   if (ui->checkBoxSubject->isChecked())
   {
-
     Interface interface;
     interface.setName(subject + "I");
     interface.append(Method("bool registerObserver(const " + observer + "I* observer)", registerObserverCode()));
@@ -38,9 +37,21 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
 
     Class i(subject + "I");
     i.setInterface(interface, true);
+    i.setForwardDeclaredClasses(QStringList() << observer + "I");
 
     Class c(subject);
     c.setInterfaces(QList<Interface>() << interface);
+    c.setForwardDeclaredClasses(QStringList() << observer + "I");
+    c.setDeclarationIncludes(QStringList() << "<vector>");
+    c.setImplementationIncludes(QStringList() << "<algorithm>" << "\"" + observer + "I.h\"");
+
+    Member member;
+    member.setType("std::vector<const " + observer + "I*>");
+    member.setName("observers");
+
+    Members members;
+    members.append(member);
+    c.setMembers(members);
 
     code.append(qMakePair(i.name() + ".h", i.declaration()));
     code.append(qMakePair(c.name() + ".h", c.declaration()));
@@ -51,6 +62,9 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
   if (ui->checkBoxObserver->isChecked())
   {
     Class c(observer);
+    Interface interface = ui->interfaceEditor->interface();
+    interface.setName(observer + "I");
+    c.setInterfaces(QList<Interface>() << interface);
 
     code.append(qMakePair(c.name() + ".h", c.declaration()));
     code.append(qMakePair(c.name() + ".cpp", c.implementation()));
@@ -69,45 +83,39 @@ QList<QPair<QString, QString> > GeneratorObserver::generatedCode()
 
 QString GeneratorObserver::registerObserverCode()
 {
-/*
-bool returnValue = false;
+  QString code;
 
-  if (observer != nullptr)
-  {
-    if (std::find(mObservers.begin(), mObservers.end(), observer) == mObservers.end())
-    {
-      mObservers.push_back(observer);
-      returnValue = true;
-    }
-  }
-
-  return returnValue;*/
-
-  QString code = "tst registerObserverCode";
+  code.append("if (observer != nullptr)\n");
+  code.append("{\n");
+  code.append("  if (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end())\n");
+  code.append("  {\n");
+  code.append("    m_observers.push_back(observer);\n");
+  code.append("    return true;\n");
+  code.append("  }\n");
+  code.append("}\n");
+  code.append("\n");
+  code.append("return false");
 
   return code;
 }
 
 QString GeneratorObserver::unregisterObserverCode()
 {
-  /*
-bool returnValue = false;
+  QString code;
 
-  if (observer != nullptr)
-  {
-    for (auto it = mObservers.begin(); it != mObservers.end(); it++)
-    {
-      if (*it == observer)
-      {
-        mObservers.erase(it);
-        returnValue = true;
-        break;
-      }
-    }
-  }
-
-  return returnValue;*/
-  QString code = "tst unregisterObserverCode";
+  code.append("if (observer != nullptr)\n");
+  code.append("{\n");
+  code.append("  for (auto it = m_observers.begin(); it != m_observers.end(); it++)\n");
+  code.append("  {\n");
+  code.append("    if (*it == observer)\n");
+  code.append("    {\n");
+  code.append("      m_observers.erase(it);\n");
+  code.append("      return true;\n");
+  code.append("    }\n");
+  code.append("  }\n");
+  code.append("}\n");
+  code.append("\n");
+  code.append("return false;\n");
 
   return code;
 }

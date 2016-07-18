@@ -1,18 +1,18 @@
-#ifndef DECORATOR_H
-#define DECORATOR_H
+#ifndef Decorator_h
+#define Decorator_h
 
-#include "IComponent.h"
+#include "ComponentI.h"
 
-class Decorator : public IComponent
+class Decorator : public ComponentI
 {
 public:
-  Decorator(IComponent* component);
+  Decorator(ComponentI* component);
   ~Decorator();
 
-  // IComponent
+  // ComponentI
     
 private:
-  IComponent* mComponent;
+  ComponentI* m_component;
 };
 
-#endif // DECORATOR_H
+#endif // Decorator_h

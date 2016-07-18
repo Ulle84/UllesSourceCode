@@ -45,6 +45,30 @@ QString Class::declaration()
   }
 
   code.append(includes());
+
+  if (!m_declarationIncludes.isEmpty())
+  {
+    for (auto it = m_declarationIncludes.begin(); it != m_declarationIncludes.end(); it++)
+    {
+      code.append("#include ");
+      code.append(*it);
+      code.append("\n");
+    }
+    code.append("\n");
+  }
+
+  if (!m_forwardDeclaredClasses.isEmpty())
+  {
+    // TODO namespace support -> put foward-declarations in namespace-blocks
+    for (auto it = m_forwardDeclaredClasses.begin(); it != m_forwardDeclaredClasses.end(); it++)
+    {
+      code.append("class ");
+      code.append(*it);
+      code.append(";\n");
+    }
+    code.append("\n");
+  }
+
   code.append(namespaceStart());
   code.append(classDeclaration());
 
@@ -359,6 +383,17 @@ QString Class::declaration()
 QString Class::implementation()
 {
   QString code;
+
+  if (!m_implementationIncludes.isEmpty())
+  {
+    for (auto it = m_implementationIncludes.begin(); it != m_implementationIncludes.end(); it++)
+    {
+      code.append("#include ");
+      code.append(*it);
+      code.append("\n");
+    }
+    code.append("\n");
+  }
 
   code.append(include(m_name, true, false));
   code.append("\n");
@@ -1709,4 +1744,19 @@ void Class::setAdditionalDeclarations(const Declarations& additionalDeclarations
 void Class::setAdditionalImplementations(const QStringList additionalImplementations)
 {
   m_additionalImplementations = additionalImplementations;
+}
+
+void Class::setForwardDeclaredClasses(const QStringList& forwardDeclaredClasses)
+{
+  m_forwardDeclaredClasses = forwardDeclaredClasses;
+}
+
+void Class::setDeclarationIncludes(const QStringList& declarationIncludes)
+{
+  m_declarationIncludes = declarationIncludes;
+}
+
+void Class::setImplementationIncludes(const QStringList& implementationIncludes)
+{
+  m_implementationIncludes = implementationIncludes;
 }
