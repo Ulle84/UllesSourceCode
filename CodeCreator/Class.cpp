@@ -1439,9 +1439,17 @@ void Class::setBaseClass(const Class* baseClass)
   m_baseClass = baseClass;
 }
 
-void Class::setInterface(const Interface& interface)
+void Class::setInterface(const Interface& interface, bool handleAsInterface)
 {
   m_interface = interface;
+
+  if (handleAsInterface)
+  {
+    setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
+    setDeclareDestructorVirtual(true);
+
+    m_interface.setAllMethodsPublicPureVirtual();
+  }
 }
 
 void Class::setIndent(const QString& indent)

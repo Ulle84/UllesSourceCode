@@ -6,28 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>407</width>
-    <height>148</height>
+    <width>466</width>
+    <height>214</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>GeneratorObserver</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QCheckBox" name="checkBoxObserver">
-     <property name="text">
-      <string>Observer</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="checkBoxSubject">
-     <property name="text">
-      <string>Subject</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="1">
     <widget class="QLineEdit" name="lineEditSubject"/>
    </item>
@@ -35,6 +21,13 @@
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>!!! under construction !!!</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="checkBoxObserver">
+     <property name="text">
+      <string>Observer</string>
      </property>
     </widget>
    </item>
@@ -49,14 +42,28 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QPushButton" name="pushButtonInterface">
+    <widget class="InterfaceEditor" name="interfaceEditor">
      <property name="text">
       <string>define interface</string>
      </property>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="checkBoxSubject">
+     <property name="text">
+      <string>Subject</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>InterfaceEditor</class>
+   <extends>QPushButton</extends>
+   <header>InterfaceEditor.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

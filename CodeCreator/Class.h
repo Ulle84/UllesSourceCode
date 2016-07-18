@@ -23,7 +23,7 @@ public:
   void setClassName(const QString& className);
   void setNamespaceNames(const QStringList& namespaceNames);
   void setBaseClass(const Class* baseClass);
-  void setInterface(const Interface& interface);
+  void setInterface(const Interface& interface, bool handleAsInterface = false);
   void setInterfaces(const QList<Interface> &interfaces);
   void setIndent(const QString& indent);
   void setDeclareConstructorExplicit(bool declareConstructorExplicit);

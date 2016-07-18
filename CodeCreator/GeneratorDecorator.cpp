@@ -93,11 +93,11 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
   {
     Class c(interfaceName);
 
-    c.setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
+    /*c.setConstructorDeclarationType(Class::DeclarationType::NoDeclaration);
     c.setDeclareDestructorVirtual(true);
 
-    m_interface.setAllMethodsPublicPureVirtual();
-    c.setInterface(m_interface);
+    m_interface.setAllMethodsPublicPureVirtual();*/
+    c.setInterface(m_interface, true);
 
     generatedCode.append(qMakePair(interfaceName + ".h", c.declaration()));
   }

@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     GeneratorObserver.cpp \
     GeneratorState.cpp \
     Declaration.cpp \
-    Declarations.cpp
+    Declarations.cpp \
+    InterfaceEditor.cpp
 
 HEADERS  += CodeCreator.h \
     XmlHelper.h \
@@ -66,7 +67,8 @@ HEADERS  += CodeCreator.h \
     GeneratorObserver.h \
     GeneratorState.h \
     Declaration.h \
-    Declarations.h
+    Declarations.h \
+    InterfaceEditor.h
 
 FORMS    += CodeCreator.ui \
     GeneratorInterface.ui \
@@ -83,7 +85,8 @@ FORMS    += CodeCreator.ui \
     GeneratorTemplate.ui \
     GeneratorDecorator.ui \
     GeneratorObserver.ui \
-    GeneratorState.ui
+    GeneratorState.ui \
+    InterfaceEditor.ui
 
 OTHER_FILES += \
     ToDo.txt \

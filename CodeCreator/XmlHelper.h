@@ -54,7 +54,7 @@ public:
   static void readXml(QXmlStreamReader& xml, QList<Interface>* interfaces);
 
   // Interface
-  static void writeXml(QXmlStreamWriter& xml, const Interface* interface);
+  static void writeXml(QXmlStreamWriter& xml, const Interface* interface, const QString& name = "Interface"); // TODO define all other functions the same way
   static void readXml(QXmlStreamReader& xml, Interface* interface);
 
   // Method

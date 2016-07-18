@@ -27,6 +27,8 @@
 * remove Template directory, when not needed anymore
 * List-Widget - button duplicate
 * monotype font for code inputs
+* check of codec of generated files are correct - use UTF-8 if possible for Visual-Studio and QtCreator
+* use interface editor consequently
 
 # Ideas
 * support for operators (<, >, ==, != etc.)

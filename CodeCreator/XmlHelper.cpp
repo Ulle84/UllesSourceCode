@@ -171,9 +171,9 @@ void XmlHelper::readXml(QXmlStreamReader& xml, QList<Interface>* interfaces)
   }
 }
 
-void XmlHelper::writeXml(QXmlStreamWriter& xml, const Interface* interface)
+void XmlHelper::writeXml(QXmlStreamWriter& xml, const Interface* interface, const QString& name)
 {
-  xml.writeStartElement("Interface");
+  xml.writeStartElement(name);
 
   xml.writeTextElement("Name", interface->name());
   xml.writeTextElement("ToImplement", interface->isToImplement() ? "true" : "false");
