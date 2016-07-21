@@ -38,15 +38,13 @@ void ClassAnalyzer::parseFolders(const QStringList& folders)
       parseFile(it2.next());
     }
 
-    postProcessBaseClasses();
   }
 
-  for (auto it = m_classes.begin(); it != m_classes.end(); it++)
-  {
-    qDebug() << it->header() << it->name() << it->baseClasses();
-  }
+  postProcessBaseClasses();
 
-  qDebug() << "found" << m_classes.size() << "classes";
+  printAllClasses();
+
+  printFilesWithMoreThanOneClassDeclaration();
 }
 
 void ClassAnalyzer::removeComments(QString& code)
@@ -130,8 +128,9 @@ void ClassAnalyzer::parseFile(const QString& fileName)
 
   int position = 0;
 
+  int numberOfClassDeclarationsPerFile = 0;
   while (position > -1)
-  {
+  {    
     position = code.indexOf(QRegExp("\\sclass\\s"), position + 1);
 
     if (position > -1)
@@ -182,12 +181,16 @@ void ClassAnalyzer::parseFile(const QString& fileName)
         }
       }
 
+      numberOfClassDeclarationsPerFile++;
+
       QString classDeclaration = code.mid(position, posNextOpeningCurlyBracket - position);
       removeSequences(classDeclaration, "<", ">");
 
       parseClassDeclaration(classDeclaration.simplified(), position);
     }
   }
+
+  m_numberOfClassesPerFile.insert(numberOfClassDeclarationsPerFile, fileName);
 
   //qDebug() << "finished parsing file";
 }
@@ -443,6 +446,34 @@ void ClassAnalyzer::postProcessBaseClasses()
       }
 
       it->setBaseClasses(baseClasses);
+    }
+  }
+}
+
+void ClassAnalyzer::printAllClasses()
+{
+  for (auto it = m_classes.begin(); it != m_classes.end(); it++)
+  {
+    qDebug() << it->header() << it->name() << it->baseClasses();
+  }
+
+  qDebug() << "found" << m_classes.size() << "classes";
+}
+
+void ClassAnalyzer::printFilesWithMoreThanOneClassDeclaration()
+{
+  QList<unsigned int> keys = m_numberOfClassesPerFile.keys();
+
+  for (auto it = keys.rbegin(); it != keys.rend(); it++)
+  {
+    if (*it > 1)
+    {
+      QStringList headers = m_numberOfClassesPerFile.values(*it);
+
+      for (auto it2 = headers.begin(); it2 != headers.end(); it2++)
+      {
+        qDebug() << *it << "classes defined in " << *it2;
+      }
     }
   }
 }

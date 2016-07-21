@@ -6,6 +6,7 @@
 #include <QString>
 #include <QPair>
 #include <QStringList>
+#include <QMultiMap>
 
 #include "Class.h"
 #include "Namespace.h"
@@ -31,10 +32,13 @@ private:
   QVector<int> positions(const QString& code, const QString& token, bool isRegExp = false);
   QString namespaceName(const QString& code, int startPos, int stopPos);
   void postProcessBaseClasses();
+  void printAllClasses();
+  void printFilesWithMoreThanOneClassDeclaration();
 
   QList<Class> m_classes;
   QList<Namespace> m_namespaces;
   QString m_currentFile;
+  QMultiMap<unsigned int, QString> m_numberOfClassesPerFile;
 };
 
 #endif // CLASSANALYZER_H
