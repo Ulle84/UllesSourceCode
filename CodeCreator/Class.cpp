@@ -1,5 +1,7 @@
+#include <QDate>
 #include <QDebug>
 #include <QFile>
+#include <QProcessEnvironment>
 #include <QTextStream>
 
 #include "Class.h"
@@ -35,6 +37,8 @@ QString Class::name() const
 QString Class::declaration()
 {
   QString code;
+
+  code.append(creationComment());
 
   code.append(headerGuardStart());
 
@@ -1446,6 +1450,36 @@ QString Class::toDo(const QString& task)
 QString Class::toDoImplementation()
 {
   return toDo("do implementation");
+}
+
+QString Class::creationComment()
+{
+  QString code;
+
+  code.append("// created on ");
+  code.append(QDate::currentDate().toString("yyyy-MM-dd"));
+  code.append(" by ");
+  code.append(userName());
+  code.append("\n\n");
+
+  return code;
+}
+
+QString Class::userName()
+{
+  QString userName;
+
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  if (env.contains("username"))
+  {
+    userName = env.value("username");
+  }
+  else if (env.contains("user"))
+  {
+    userName = env.value("user");
+  }
+
+  return userName;
 }
 
 void Class::setClassName(const QString& className)

@@ -90,6 +90,8 @@ private:
   QString moveRef();
   QString toDo(const QString& task);
   QString toDoImplementation();
+  QString creationComment();
+  QString userName();
 
   QString constructorDeclaration();
   QString constructorImplementation();
