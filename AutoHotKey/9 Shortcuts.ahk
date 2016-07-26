@@ -8,7 +8,6 @@
 ; --------------------------------------------------------------------------------
 ; Mitarbeiter (alphabetisch nach hotstring sortiert - hotstring = Kuerzel)
 ; --------------------------------------------------------------------------------
-:*:aw#::Adam Wykrota
 :*:bto#::Boni Tom
 :*:dst#::Dirk Stahl
 :*:lpc#::Long-Phi Chau
@@ -23,13 +22,20 @@
 ; --------------------------------------------------------------------------------
 ; Abkuerzungen (alphabetisch nach hotstring sortiert)
 ; --------------------------------------------------------------------------------
+:*:+#::*{Space}
 :*:<#::&lt;
 :*:>#::&gt;
 :*:-#::--------------------------------------------------------------------------------
 :*:_#::________________________________________________________________________________
 :*:as#::* formated by AStyle
+:*:ahk#::AutoHotKey
+:*:bp#::bool breakPoint = true;{F9}
 :*:bzgl#::bezüglich
 :*:cc#::* code cleaned
+:*:cql#::const QList<>&{Left}{Left}
+:*:cqs#::const QString&
+:*:cqsl#::const QStringList&
+:*:eof#::end of file - only comments following
 :*:fyi#::for your information
 :*:ggf#::gegebenfalls
 :*:ic#::{+} initial commit
@@ -39,17 +45,24 @@
 :*:mail#::Ulrich.Belitz@ScientaOmicron.com
 :*:mfg#::Mit freundlichen Grüßen
 :*:nc#::no comment
+:*:nec#::necessary
 :*:qd#::qDebug() << ""{;}{Left}{Left}
+:*:ql#::QList<>{Left}
+:*:qm#::QMap<>{Left}
+:*:qs#::QString
+:*:qsl#::QStringList
 :*:so#::ScientaOmicron
 :*:rf#::return false{;}
 :*:rt#::return true{;}
-:*:st#::bool stop = true;
 :*:san#::// TODO @all SANITIZE:{Space}
-:*:td#::// TODO @ube:{Space}
+:*:td#::// TODO{Space}
+:*:tda#::// TODO @all:{Space}
 :*:tdc#::// TODO change after testing
 :*:tdd#::// TODO delete
-:*:tdr#::// TODO remove this line after testing
 :*:tdi#::// TODO implement this functionality
+:*:tdn#::// TODO is this necessary?
+:*:tdr#::// TODO remove this line after testing
+:*:tdu#::// TODO @ube:{Space}
 :*:uc#::* under construction
 :*:vd#::Vielen Dank{!}
 :*:vdiv#::Vielen Dank im Voraus{!}
@@ -57,43 +70,15 @@
 :*:zdi#::Zu Deiner Information
 
 ; --------------------------------------------------------------------------------
-; HTML-Codevervollstaendigung (alphabetisch nach hotstring sortiert)
-; --------------------------------------------------------------------------------
-;   :*b0:<a:: href=""></a>{left 6}
-;   :*b0:<body::></body>{left 7}
-;   :*b0:<br:: />
-;   :*b0:<code::></code>{left 7}
-;   :*b0:<div::>`n`n</div>{left 6}{up 1}
-;   :*b0:<h1::></h1>{left 5}
-;   :*b0:<h2::></h2>{left 5}
-;   :*b0:<h3::></h3>{left 5}
-;   :*b0:<h4::></h4>{left 5}
-;   :*b0:<h5::></h5>{left 5}
-;   :*b0:<h6::></h6>{left 5}
-;   :*b0:<head::></head>{left 7}
-;   :*b0:<hr:: />
-;   :*b0:<html::></html>{left 7}
-;   :*b0:<img:: src="" title="" />{left 13}
-;   :*b0:<li::></li>{left 5}
-;   :*b0:<ol::></ol>{left 5}
-;   :*b0:<span::></span>{left 7}
-;   :*b0:<table::></table>{left 8}
-;   :*b0:<title::></title>{left 8}
-;   :*b0:<td::></td>{left 5}
-;   :*b0:<th::></th>{left 5}
-;   :*b0:<tr::></tr>{left 5}
-;   :*b0:<ul::>`n`n</ul>{left 5}{up 1}
-
-; --------------------------------------------------------------------------------
 ; Autokorrektur
 ; --------------------------------------------------------------------------------
 ; Syntax:   :*:falschgeschrieben::richtiggeschrieben
+; trigger is not case sensitive
 ; --------------------------------------------------------------------------------
 :*:baord::board
 :*:geschreiben::geschrieben
 :*:gschrieben::geschrieben
 :*:Pyhton::Python
-:*:QSTring::QString
 :*:postion::position
 :*:widht::width
 
@@ -109,18 +94,13 @@ SendInput {#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}
 return
 
 ; image from clipboard in mark-down-syntax
-:*:img#::
+:*:i#::
 SendInput {!}{[}{]}(%clipboard%)
 return
 
 ; link from clipboard in mark-down-syntax
-:*:link#::
+:*:l#::
 SendInput {[}{]}(%clipboard%)
-return
-
-; redmine link from clipboard in mark-down-syntax
-:*:rm#::
-SendInput {[}Redmine{]}(%clipboard%)
 return
 
 ; member asignment
@@ -129,7 +109,7 @@ SendInput m_%clipboard% = %clipboard%{;}
 return
 
 ; redmine link from clipboard in mark-down-syntax
-:*:rlink#::
+:*:rml#::
 SendInput {[}Redmine{]}(%clipboard%)
 return
 
@@ -154,7 +134,7 @@ SendInput for (auto it4 = %clipboard%.begin(); it4 {!}= %clipboard%.end(); it4{+
 return
 
 ; code block in mark-down-syntax
-:*:code#::
+:*:c#::
 SendInput {ASC 96}{ASC 96}{ASC 96}{Enter}{Enter}{ASC 96}{ASC 96}{ASC 96}{Up}
 return
 
@@ -212,7 +192,7 @@ FormatTime, CurrentDateTime,, yyyy-MM-dd
 SendInput rem %CurrentDateTime% UBE
 return
 
-:*:sig#:: ; signutare
+:*:sig#:: ; signature
 FormatTime, CurrentDateTime,, yyyy-MM-dd (ddd) HH:mm
 SendInput %CurrentDateTime% UBE
 return
@@ -239,8 +219,9 @@ return
 :*:d#::{[}{]}{left 1}
 :*:f#::false
 :*:g#::{Space}{|}{|}{Space}
+:*:h#::{Space}{&}{&}{Space}
+:*:j#::m_
 :*:t#::true
-:*:*#::[*]{Space}
 
 :*:dox#::
 (
@@ -284,6 +265,36 @@ return
 *trigger:* 
 *findings:*  
 )
+
+;end of file - only comments following  
+
+; --------------------------------------------------------------------------------
+; HTML-Codevervollstaendigung (alphabetisch nach hotstring sortiert)
+; --------------------------------------------------------------------------------
+;   :*b0:<a:: href=""></a>{left 6}
+;   :*b0:<body::></body>{left 7}
+;   :*b0:<br:: />
+;   :*b0:<code::></code>{left 7}
+;   :*b0:<div::>`n`n</div>{left 6}{up 1}
+;   :*b0:<h1::></h1>{left 5}
+;   :*b0:<h2::></h2>{left 5}
+;   :*b0:<h3::></h3>{left 5}
+;   :*b0:<h4::></h4>{left 5}
+;   :*b0:<h5::></h5>{left 5}
+;   :*b0:<h6::></h6>{left 5}
+;   :*b0:<head::></head>{left 7}
+;   :*b0:<hr:: />
+;   :*b0:<html::></html>{left 7}
+;   :*b0:<img:: src="" title="" />{left 13}
+;   :*b0:<li::></li>{left 5}
+;   :*b0:<ol::></ol>{left 5}
+;   :*b0:<span::></span>{left 7}
+;   :*b0:<table::></table>{left 8}
+;   :*b0:<title::></title>{left 8}
+;   :*b0:<td::></td>{left 5}
+;   :*b0:<th::></th>{left 5}
+;   :*b0:<tr::></tr>{left 5}
+;   :*b0:<ul::>`n`n</ul>{left 5}{up 1}
 
 ; --------------------------------------------------------------------------------
 ; Hotkeys

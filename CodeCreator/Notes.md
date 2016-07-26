@@ -29,6 +29,7 @@
 * namespace support for all generators
 
 # Ideas
+* single line head-comment (created on date by author)
 * support for operators (<, >, ==, != etc.)
 * save current folder at folder selection
 * class: q-Pointer support -> pointing to overlaying class
