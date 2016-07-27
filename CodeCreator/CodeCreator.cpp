@@ -12,6 +12,7 @@
 #include "ui_CodeCreator.h"
 
 #include "CodeCreator.h"
+#include "GeneratorAbstractFactory.h"
 #include "GeneratorInterface.h"
 #include "GeneratorClass.h"
 #include "GeneratorTemplate.h"
@@ -49,6 +50,7 @@ CodeCreator::~CodeCreator()
 
 void CodeCreator::initGenerators()
 {
+  m_generators["AbstractFactory"] = new GeneratorAbstractFactory(this);
   m_generators["Class"] = new GeneratorClass(this);
   m_generators["Generator"] = new GeneratorTemplate(this);
   m_generators["Interface"] = new GeneratorInterface(this);
