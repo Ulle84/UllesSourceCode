@@ -1458,8 +1458,8 @@ QString Class::creationComment()
 
   code.append("// created on ");
   code.append(QDate::currentDate().toString("yyyy-MM-dd"));
-  code.append(" by ");
-  code.append(userName());
+  /*code.append(" by ");
+  code.append(userName());*/
   code.append("\n\n");
 
   return code;

@@ -29,6 +29,7 @@
 * namespace support for all generators
 
 # Ideas
+* save and laod interfaces - define a interface with the interface-generator and use it in class-generator for example
 * single line head-comment (created on date by author)
 * support for operators (<, >, ==, != etc.)
 * save current folder at folder selection
