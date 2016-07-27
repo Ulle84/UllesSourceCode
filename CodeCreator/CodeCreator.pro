@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     Declaration.cpp \
     Declarations.cpp \
     InterfaceEditor.cpp \
-    CodeHelper.cpp
+    CodeHelper.cpp \
+    GeneratorAbstractFactory.cpp \
+    InterfaceListEditor.cpp
 
 HEADERS  += CodeCreator.h \
     XmlHelper.h \
@@ -70,7 +72,9 @@ HEADERS  += CodeCreator.h \
     Declaration.h \
     Declarations.h \
     InterfaceEditor.h \
-    CodeHelper.h
+    CodeHelper.h \
+    GeneratorAbstractFactory.h \
+    InterfaceListEditor.h
 
 FORMS    += CodeCreator.ui \
     GeneratorInterface.ui \
@@ -88,7 +92,9 @@ FORMS    += CodeCreator.ui \
     GeneratorDecorator.ui \
     GeneratorObserver.ui \
     GeneratorState.ui \
-    InterfaceEditor.ui
+    InterfaceEditor.ui \
+    GeneratorAbstractFactory.ui \
+    InterfaceListEditor.ui
 
 OTHER_FILES += \
     ToDo.txt \
