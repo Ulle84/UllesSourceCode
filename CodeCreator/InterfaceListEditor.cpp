@@ -9,7 +9,9 @@ InterfaceListEditor::InterfaceListEditor(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::InterfaceListEditor),
   m_widgetListEditor(NULL),
-  m_toImplementAvailable(true)
+  m_toImplementAvailable(true),
+  m_dialogTitle(tr("interface editor")),
+  m_buttonText(tr("add interface"))
 {
   ui->setupUi(this);
 }
@@ -53,13 +55,31 @@ void InterfaceListEditor::setToImplementAvailable(bool available)
   m_toImplementAvailable = available;
 }
 
+void InterfaceListEditor::setDialogTitle(const QString& title)
+{
+  if (m_widgetListEditor)
+  {
+    m_widgetListEditor->setWindowTitle(title);
+  }
+  m_dialogTitle = title;
+}
+
+void InterfaceListEditor::setButtonText(const QString& buttonText)
+{
+  if (m_widgetListEditor)
+  {
+    m_widgetListEditor->setButtonText(buttonText);
+  }
+  m_buttonText = buttonText;
+}
+
 void InterfaceListEditor::on_pushButtonInterfaceList_clicked()
 {
   if (m_widgetListEditor == NULL)
   {
     m_widgetListEditor = new WidgetListEditor(this);
-    m_widgetListEditor->setButtonText(tr("add interface"));
-    m_widgetListEditor->setWindowTitle(tr("interface editor"));
+    m_widgetListEditor->setButtonText(m_buttonText);
+    m_widgetListEditor->setWindowTitle(m_dialogTitle);
     connect(m_widgetListEditor, SIGNAL(addClicked()), this, SLOT(addInterface()));
     fillInterfaceList();
   }

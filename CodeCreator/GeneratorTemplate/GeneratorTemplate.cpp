@@ -1,5 +1,6 @@
 #include "ui_GeneratorTemplate.h"
 
+#include "Class.h"
 #include "GeneratorTemplate.h"
 #include "XmlHelper.h"
 
@@ -43,8 +44,10 @@ QList<QPair<QString, QString> > GeneratorTemplate::generatedCode()
 {
   QString name = ui->lineEditName->text();
 
+  Class c(name);
+
   QList<QPair<QString, QString> > code;
-  code.append(qMakePair(name + ".h", QString("TODO Declaration")));
-  code.append(qMakePair(name + ".cpp", QString("TODO Implementation")));
+  code.append(qMakePair(name + ".h", c.declaration()));
+  code.append(qMakePair(name + ".cpp", c.implementation()));
   return code;
 }

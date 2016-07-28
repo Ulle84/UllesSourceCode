@@ -9,6 +9,7 @@ WidgetListEditor::WidgetListEditor(QWidget *parent) :
   ui(new Ui::WidgetListEditor)
 {
   ui->setupUi(this);
+  ui->pushButtonAdd->setText("test");
 }
 
 WidgetListEditor::~WidgetListEditor()

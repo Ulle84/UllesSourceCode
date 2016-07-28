@@ -25,8 +25,9 @@ public:
   void setInterfaceList(const QList<Interface>& interfaceList);
 
   void setText(const QString& text);
-
   void setToImplementAvailable(bool available);
+  void setDialogTitle(const QString& title);
+  void setButtonText(const QString& buttonText);
 
 signals:
   void interfaceListChanged();
@@ -43,6 +44,9 @@ private:
   WidgetListEditor* m_widgetListEditor;
   QList<Interface> m_interfaceList;
   bool m_toImplementAvailable;
+
+  QString m_dialogTitle;
+  QString m_buttonText;
 };
 
 #endif // INTERFACELISTEDITOR_H

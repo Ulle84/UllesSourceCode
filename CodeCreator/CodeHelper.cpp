@@ -10,3 +10,13 @@ QString CodeHelper::nullPointer()
   return "nullptr";
 #endif
 }
+
+QString CodeHelper::interfaceName(const QString& className)
+{
+  QString interfaceName = className;
+  if (!interfaceName.endsWith('I'))
+  {
+    interfaceName.append('I');
+  }
+  return interfaceName;
+}
