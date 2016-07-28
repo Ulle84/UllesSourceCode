@@ -16,5 +16,7 @@
   * moderate (gathering information, for example)
   * easy (, for example)
   * very easy (repeated action - filling in Stundenzettel, for example)
+* Tags: by the way, during compilation run
+* Time estimation: 1min, 2min, 3min, 4min, 5min, 10min, 15min, 20min, 30min, 60min etc.
 
 # Done

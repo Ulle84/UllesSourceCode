@@ -22,6 +22,8 @@ public:
   void setInterface(const Interface& interface);
   Interface interface();
 
+  void setToImplementAvailable(bool available);
+
 private slots:
   void on_pushButtonMethods_clicked();
   void addMethod();

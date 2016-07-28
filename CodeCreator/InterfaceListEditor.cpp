@@ -8,7 +8,8 @@
 InterfaceListEditor::InterfaceListEditor(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::InterfaceListEditor),
-  m_widgetListEditor(NULL)
+  m_widgetListEditor(NULL),
+  m_toImplementAvailable(true)
 {
   ui->setupUi(this);
 }
@@ -31,6 +32,25 @@ void InterfaceListEditor::setInterfaceList(const QList<Interface> &interfaceList
 void InterfaceListEditor::setText(const QString &text)
 {
   ui->pushButtonInterfaceList->setText(text);
+}
+
+void InterfaceListEditor::setToImplementAvailable(bool available)
+{
+  if (m_widgetListEditor != NULL)
+  {
+    QList<QWidget*> items = m_widgetListEditor->items();
+
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+      InterfaceGui* interfaceGui = dynamic_cast<InterfaceGui*>(*it);
+      if (interfaceGui)
+      {
+        interfaceGui->setToImplementAvailable(available);
+      }
+    }
+  }
+
+  m_toImplementAvailable = available;
 }
 
 void InterfaceListEditor::on_pushButtonInterfaceList_clicked()
@@ -71,6 +91,7 @@ void InterfaceListEditor::on_pushButtonInterfaceList_clicked()
 void InterfaceListEditor::addInterface()
 {
   InterfaceGui* interfaceGui = new InterfaceGui();
+  interfaceGui->setToImplementAvailable(m_toImplementAvailable);
   dynamic_cast<WidgetListEditor*>(QObject::sender())->addItem(interfaceGui);
 }
 
@@ -80,6 +101,7 @@ void InterfaceListEditor::fillInterfaceList()
   {
     InterfaceGui* interfaceGui = new InterfaceGui();
     interfaceGui->setInterface(*it);
+    interfaceGui->setToImplementAvailable(m_toImplementAvailable);
     m_widgetListEditor->addItem(interfaceGui);
   }
 }

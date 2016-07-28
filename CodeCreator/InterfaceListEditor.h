@@ -26,6 +26,8 @@ public:
 
   void setText(const QString& text);
 
+  void setToImplementAvailable(bool available);
+
 signals:
   void interfaceListChanged();
 
@@ -40,6 +42,7 @@ private:
 
   WidgetListEditor* m_widgetListEditor;
   QList<Interface> m_interfaceList;
+  bool m_toImplementAvailable;
 };
 
 #endif // INTERFACELISTEDITOR_H

@@ -29,12 +29,15 @@
 :*:_#::________________________________________________________________________________
 :*:as#::* formated by AStyle
 :*:ahk#::AutoHotKey
+:*:av#::available
 :*:bp#::bool breakPoint = true;{F9}
 :*:bzgl#::bezüglich
 :*:cc#::* code cleaned
 :*:cql#::const QList<>&{Left}{Left}
 :*:cqs#::const QString&
 :*:cqsl#::const QStringList&
+:*:edp#::ESpDepthProfile
+:*:en#::enabled
 :*:eof#::end of file - only comments following
 :*:fyi#::for your information
 :*:ggf#::gegebenfalls
@@ -89,7 +92,7 @@
 
 ; daily notes
 :*:dn#::
-FormatTime, CurrentDateTime,, dd.MM.yyyy
+FormatTime, CurrentDateTime,, ddd dd.MM.yyyy
 SendInput {#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}
 return
 

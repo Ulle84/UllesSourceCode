@@ -33,6 +33,11 @@ Interface InterfaceGui::interface()
   return m_interface;
 }
 
+void InterfaceGui::setToImplementAvailable(bool available)
+{
+  ui->checkBox->setVisible(available);
+}
+
 void InterfaceGui::on_pushButtonMethods_clicked()
 {
   if (!m_widgetListEditor)

@@ -54,7 +54,7 @@ void GeneratorClass::setConnections()
 
   connect(ui->plainTextEditNamespaces, SIGNAL(textChanged()), this, SIGNAL(optionsChanged()));
 
-  connect(ui->pushButtonInterfaces, SIGNAL(interfaceListChanged()), this, SIGNAL(optionsChanged()));
+  connect(ui->interfaceListEditor, SIGNAL(interfaceListChanged()), this, SIGNAL(optionsChanged()));
 }
 
 GeneratorClass::~GeneratorClass()
@@ -131,7 +131,7 @@ void GeneratorClass::readXml(QXmlStreamReader &xml)
     {
       QList<Interface> interfaces;
       XmlHelper::readXml(xml, &interfaces);
-      ui->pushButtonInterfaces->setInterfaceList(interfaces);
+      ui->interfaceListEditor->setInterfaceList(interfaces);
     }
     else if (xml.name() == "Members")
     {
@@ -161,7 +161,7 @@ void GeneratorClass::writeXml(QXmlStreamWriter &xml)
   XmlHelper::writeXml(xml, "ExplicitConstructor", ui->checkBoxExplicitConstructor);
   XmlHelper::writeXml(xml, "Namespaces", ui->plainTextEditNamespaces);
   XmlHelper::writeXml(xml, &m_interface);
-  QList<Interface> interfaceList = ui->pushButtonInterfaces->interfaceList();
+  QList<Interface> interfaceList = ui->interfaceListEditor->interfaceList();
   XmlHelper::writeXml(xml, "Interfaces", &interfaceList);
   XmlHelper::writeXml(xml, "Members", &m_members);
 }
@@ -198,7 +198,7 @@ QList<QPair<QString, QString> > GeneratorClass::generatedCode()
   }
 
   c.setInterface(m_interface);
-  c.setInterfaces(ui->pushButtonInterfaces->interfaceList());
+  c.setInterfaces(ui->interfaceListEditor->interfaceList());
   c.setMembers(m_members);
 
   QList<QPair<QString, QString> > code;
