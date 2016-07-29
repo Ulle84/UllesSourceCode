@@ -78,6 +78,9 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
+        <widget class="QComboBox" name="comboBoxPreview"/>
+       </item>
+       <item>
         <widget class="QPlainTextEdit" name="plainTextEditPreview">
          <property name="font">
           <font>

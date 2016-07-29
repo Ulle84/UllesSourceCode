@@ -26,6 +26,7 @@ private slots:
   void on_pushButtonSelectFolder_clicked();
   void on_pushButtonGenerate_clicked();
   void on_pushButtonClearHistory_clicked();
+  void on_comboBoxPreview_currentIndexChanged(int index);
 
   void updatePreview();
 

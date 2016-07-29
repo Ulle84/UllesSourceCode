@@ -78,6 +78,9 @@ void CodeCreator::initGenerators()
 
 void CodeCreator::updatePreview()
 {
+  QString currentFile = ui->comboBoxPreview->currentText();
+  ui->comboBoxPreview->clear();
+
   ui->plainTextEditPreview->clear();
 
   GeneratorI* generator = dynamic_cast<GeneratorI*>(m_generators[ui->comboBoxType->currentText()]);
@@ -91,20 +94,21 @@ void CodeCreator::updatePreview()
 
   for (auto it = code.begin(); it != code.end(); it++)
   {
-    if (it != code.begin())
-    {
-      ui->plainTextEditPreview->appendPlainText("\n\n");
-    }
+    ui->comboBoxPreview->addItem(it->first, it->second);
+  }
 
-    ui->plainTextEditPreview->appendPlainText("--------------------------------------------------------------------------------");
-    ui->plainTextEditPreview->appendPlainText(it->first);
-    ui->plainTextEditPreview->appendPlainText("--------------------------------------------------------------------------------");
-    ui->plainTextEditPreview->appendPlainText(it->second);
+  int index = ui->comboBoxPreview->findText(currentFile);
+  qDebug() << currentFile;
+  qDebug() << index;
+
+  if (index > -1)
+  {
+    ui->comboBoxPreview->setCurrentIndex(index);
   }
 
   // scroll to top
-  QScrollBar* vScrollBar = ui->plainTextEditPreview->verticalScrollBar();
-  vScrollBar->triggerAction(QScrollBar::SliderToMinimum);
+  /*QScrollBar* vScrollBar = ui->plainTextEditPreview->verticalScrollBar();
+  vScrollBar->triggerAction(QScrollBar::SliderToMinimum);*/
 }
 
 void CodeCreator::on_comboBoxType_currentIndexChanged(const QString& type)
@@ -326,4 +330,9 @@ void CodeCreator::updateComboBoxFolders()
 
   ui->comboBoxFolder->clear();
   ui->comboBoxFolder->insertItems(0, m_directories);
+}
+
+void CodeCreator::on_comboBoxPreview_currentIndexChanged(int index)
+{
+  ui->plainTextEditPreview->setPlainText(ui->comboBoxPreview->itemData(index).toString());
 }
