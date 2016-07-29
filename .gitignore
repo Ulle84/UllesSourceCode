@@ -18,6 +18,7 @@ ReservationsToExcel/Output/*
 TuKi/ArticleList/Data/*
 TuKi/TuKi-Basar/Data/*
 TuKi/ArticleList/DataArchive/*
+PrivateData/*
 
 # special files
 CodeCreator/Settings.xml
