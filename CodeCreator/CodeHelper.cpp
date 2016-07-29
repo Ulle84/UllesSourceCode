@@ -20,3 +20,22 @@ QString CodeHelper::interfaceName(const QString& className)
   }
   return interfaceName;
 }
+
+QString CodeHelper::classNameToHeader(const QString& className, bool useBrackets)
+{
+  QString header;
+
+  header.append(useBrackets ? "<" : "\"");
+  header.append(className);
+
+  if (!useBrackets)
+  {
+    header.append(".h");
+  }
+
+  header.append(useBrackets ? ">" : "\"");
+
+
+
+  return header;
+}

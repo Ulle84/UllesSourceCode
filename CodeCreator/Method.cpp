@@ -118,7 +118,37 @@ QString Method::implementation(const QString& indent, const QString& className) 
   code.append(indent);
   code.append("{\n");
 
-  if (!m_implementationBody.isEmpty())
+  if (m_implementationBody.isEmpty())
+  {
+    QString defaultValue;
+    if (m_returnType == "double" || m_returnType == "float")
+    {
+      defaultValue = "0.0";
+    }
+    else if (m_returnType.contains("int") || m_returnType.contains("long") || m_returnType.contains("short") || m_returnType.contains("char"))
+    {
+      defaultValue = "0";
+    }
+    else if (m_returnType.contains("string"))
+    {
+      defaultValue = "\"\"";
+    }
+    else if (m_returnType.contains("bool"))
+    {
+      defaultValue = "false";
+    }
+    // TODO add more types
+
+    if (!defaultValue.isEmpty())
+    {
+      code.append(indent);
+      code.append("  ");
+      code.append("return ");
+      code.append(defaultValue);
+      code.append("; // TODO implementation");
+    }
+  }
+  else
   {
     QStringList splitted = m_implementationBody.split('\n');
 
@@ -131,7 +161,7 @@ QString Method::implementation(const QString& indent, const QString& className) 
 
       code.append(indent);
       code.append("  ");
-      code.append(*it);      
+      code.append(*it);
     }
   }
 

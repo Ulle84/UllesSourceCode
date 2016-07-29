@@ -2,6 +2,8 @@
 
 # ToDo
 ## General
+* Preview-Area -> ComboBox on top with selection of files?
+* check occurences of friend classes
 * CodeHelper -> get Interfacename etc --> all conventions (trailing I etc) should be encapsulated -> same procedure for member
 
 ## Decorator
