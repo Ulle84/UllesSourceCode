@@ -6,6 +6,7 @@
 * CodeHelper -> get Interfacename etc --> all conventions (trailing I etc) should be encapsulated -> same procedure for member
 
 ## Decorator
+* !!! Next TODO !!!
 * decorator: declare default constructor private?
 * decorator: implement custom cunstructor
 * complete generator for decorator
@@ -30,7 +31,6 @@
 
 # Ideas
 * save and laod interfaces - define a interface with the interface-generator and use it in class-generator for example
-* single line head-comment (created on date by author)
 * support for operators (<, >, ==, != etc.)
 * save current folder at folder selection
 * class: q-Pointer support -> pointing to overlaying class
