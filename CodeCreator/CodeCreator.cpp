@@ -98,8 +98,6 @@ void CodeCreator::updatePreview()
   }
 
   int index = ui->comboBoxPreview->findText(currentFile);
-  qDebug() << currentFile;
-  qDebug() << index;
 
   if (index > -1)
   {

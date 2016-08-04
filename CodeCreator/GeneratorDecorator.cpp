@@ -18,10 +18,9 @@ GeneratorDecorator::GeneratorDecorator(QWidget *parent) :
   ui->setupUi(this);
 
   connect(ui->lineEditComponent, SIGNAL(textEdited(QString)), this, SIGNAL(optionsChanged()));
-  connect(ui->lineEditDecorator, SIGNAL(textEdited(QString)), this, SIGNAL(optionsChanged()));
+  connect(ui->plainTextEditDecorators, SIGNAL(textChanged()), this, SIGNAL(optionsChanged()));
 
   connect(ui->checkBoxComponent, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
-  connect(ui->checkBoxDecorator, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
   connect(ui->checkBoxInterface, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
 
   connect(ui->interfaceEditor, SIGNAL(interfaceChanged()), this, SIGNAL(optionsChanged()));
@@ -40,9 +39,9 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->lineEditComponent);
     }
-    else if(xml.name() == "Decorator")
+    else if(xml.name() == "Decorators")
     {
-      XmlHelper::readXml(xml, ui->lineEditDecorator);
+      XmlHelper::readXml(xml, ui->plainTextEditDecorators);
     }
     else if (xml.name() == "Interface")
     {
@@ -53,10 +52,6 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
     else if(xml.name() == "CreateComponent")
     {
       XmlHelper::readXml(xml, ui->checkBoxComponent);
-    }
-    else if(xml.name() == "CreateDecorator")
-    {
-      XmlHelper::readXml(xml, ui->checkBoxDecorator);
     }
     else if(xml.name() == "CreateInterface")
     {
@@ -72,12 +67,11 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
 void GeneratorDecorator::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Component", ui->lineEditComponent);
-  XmlHelper::writeXml(xml, "Decorator", ui->lineEditDecorator);
+  XmlHelper::writeXml(xml, "Decorators", ui->plainTextEditDecorators);
   Interface interface = ui->interfaceEditor->interface();
   XmlHelper::writeXml(xml, &interface);
 
   XmlHelper::writeXml(xml, "CreateComponent", ui->checkBoxComponent);
-  XmlHelper::writeXml(xml, "CreateDecorator", ui->checkBoxDecorator);
   XmlHelper::writeXml(xml, "CreateInterface", ui->checkBoxInterface);
 }
 
@@ -85,7 +79,6 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
 {
   QList<QPair<QString, QString> > generatedCode;
 
-  QString decoratorName = ui->lineEditDecorator->text();
   QString componentName = ui->lineEditComponent->text();
   QString interfaceName = ui->lineEditComponent->text() + "I";
 
@@ -112,9 +105,16 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     generatedCode.append(qMakePair(componentName + ".cpp", c.implementation()));
   }
 
-  if (ui->checkBoxDecorator->isChecked())
+  QStringList decoratorNames = ui->plainTextEditDecorators->toPlainText().split('\n');
+
+  for (auto it = decoratorNames.begin(); it != decoratorNames.end(); ++it)
   {
-    Class c(decoratorName);
+    if (it->isEmpty())
+    {
+      continue;
+    }
+
+    Class c(*it);
     c.setInterfaces(interfaces);
 
     Member member;
@@ -125,7 +125,7 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     members.append(member);
     c.setMembers(members);
 
-    QString declarationString = decoratorName;
+    QString declarationString = *it;
     declarationString.append("(");
     declarationString.append(member.type());
     declarationString.append(" ");
@@ -139,9 +139,9 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
     declarations.append(declaration);
     c.setAdditionalDeclarations(declarations);
 
-    QString code = decoratorName;
+    QString code = *it;
     code.append("::");
-    code.append(decoratorName);
+    code.append(*it);
     code.append("(");
     code.append(member.type());
     code.append(" ");
@@ -154,8 +154,8 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
 
     c.setAdditionalImplementations(QStringList() << code);
 
-    generatedCode.append(qMakePair(decoratorName + ".h", c.declaration()));
-    generatedCode.append(qMakePair(decoratorName + ".cpp", c.implementation()));
+    generatedCode.append(qMakePair(*it + ".h", c.declaration()));
+    generatedCode.append(qMakePair(*it + ".cpp", c.implementation()));
   }
 
   return generatedCode;

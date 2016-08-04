@@ -14,15 +14,15 @@
    <string>GeneratorDecorator</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="checkBoxDecorator">
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="lineEditComponent"/>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>decorator</string>
+      <string>!!! under construction !!! checkboxes?</string>
      </property>
     </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QLineEdit" name="lineEditDecorator"/>
    </item>
    <item row="2" column="0">
     <widget class="QCheckBox" name="checkBoxComponent">
@@ -31,27 +31,27 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
-    <widget class="QLineEdit" name="lineEditComponent"/>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>decorators</string>
+     </property>
+    </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="2">
+    <widget class="QPlainTextEdit" name="plainTextEditDecorators"/>
+   </item>
+   <item row="1" column="0">
     <widget class="QCheckBox" name="checkBoxInterface">
      <property name="text">
       <string>interface</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
+   <item row="1" column="2">
     <widget class="InterfaceEditor" name="interfaceEditor">
      <property name="text">
       <string>define interface</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>!!! under construction !!!</string>
      </property>
     </widget>
    </item>
