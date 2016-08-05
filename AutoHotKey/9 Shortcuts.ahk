@@ -1,85 +1,9 @@
-﻿; search help topic: hotstring
-
-; most of the hotstrings are triggered with #
-
-; 2012-06-05 16:43 UBE
-; bei mehrfach deklarierten Befehlen entscheidet das erste Vorkommen (first come, first serve)
-
-; --------------------------------------------------------------------------------
-; Mitarbeiter (alphabetisch nach hotstring sortiert - hotstring = Kuerzel)
-; --------------------------------------------------------------------------------
-:*:bto#::Boni Tom
-:*:dst#::Dirk Stahl
-:*:lpc#::Long-Phi Chau
-:*:pb#::Peter Baumann
-:*:pz#::Philipp Zeigermann
-:*:she#::Siegfried Heinrich
-:*:rh#::Ragnar Hoffmann
-:*:tr#::Thomas Roth
-:*:ube#::Ulrich Belitz
-:*:uf#::Uwe Fuchs
-
-; --------------------------------------------------------------------------------
-; Abkuerzungen (alphabetisch nach hotstring sortiert)
-; --------------------------------------------------------------------------------
-:*:+#::*{Space}
-:*:<#::&lt;
-:*:>#::&gt;
-:*:-#::--------------------------------------------------------------------------------
-:*:_#::________________________________________________________________________________
-:*:as#::* formated by AStyle
-:*:ahk#::AutoHotKey
-:*:av#::available
-:*:bp#::bool breakPoint = true;{F9}
-:*:bzgl#::bezüglich
-:*:cc#::* code cleaned
-:*:cql#::const QList<>&{Left}{Left}
-:*:cqs#::const QString&
-:*:cqsl#::const QStringList&
-:*:edp#::ESpDepthProfile
-:*:en#::enabled
-:*:eof#::end of file - only comments following
-:*:fyi#::for your information
-:*:ggf#::gegebenfalls
-:*:ic#::{+} initial commit
-:*:ich#::ich (Ulrich Belitz)
-:*:id#::id=""
-:*:lg#::Liebe Grüße`nUlle
-:*:mail#::Ulrich.Belitz@ScientaOmicron.com
-:*:mfg#::Mit freundlichen Grüßen
-:*:nc#::no comment
-:*:nec#::necessary
-:*:qd#::qDebug() << ""{;}{Left}{Left}
-:*:ql#::QList<>{Left}
-:*:qm#::QMap<>{Left}
-:*:qs#::QString
-:*:qsl#::QStringList
-:*:so#::ScientaOmicron
-:*:rf#::return false{;}
-:*:rt#::return true{;}
-:*:san#::// TODO @all SANITIZE:{Space}
-:*:td#::// TODO{Space}
-:*:tda#::// TODO @all:{Space}
-:*:tdc#::// TODO change after testing
-:*:tdci#::// TODO correct implementation
-:*:tdd#::// TODO delete
-:*:tdi#::// TODO implement this functionality
-:*:tdn#::// TODO is this necessary?
-:*:tdr#::// TODO remove this line after testing
-:*:tdu#::// TODO @ube:{Space}
-:*:tdv#::// TODO verify correct behavior
-:*:uc#::* under construction
-:*:vd#::Vielen Dank{!}
-:*:vdiv#::Vielen Dank im Voraus{!}
-:*:zb#::zum Beispiel
-:*:zdi#::Zu Deiner Information
-
-; --------------------------------------------------------------------------------
-; Autokorrektur
-; --------------------------------------------------------------------------------
-; Syntax:   :*:falschgeschrieben::richtiggeschrieben
+﻿;-------------------------------------------------------------------------------
+; auto correction
+;-------------------------------------------------------------------------------
+; Syntax:   :*:typedWrong::typedCorrectly
 ; trigger is not case sensitive
-; --------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 :*:baord::board
 :*:geschreiben::geschrieben
 :*:gschrieben::geschrieben
@@ -87,36 +11,70 @@
 :*:postion::position
 :*:widht::width
 
+;-------------------------------------------------------------------------------
+; hotstrings - triggered with '#'
+;-------------------------------------------------------------------------------
 
-; --------------------------------------------------------------------------------
-; Komplexe Ausdruecke (teilweise mit Berechnungen)
-; --------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+; Programming
+;-------------------------------------------------------------------------------
+:*:7#::{{}{}}{left}
+:*:8#::(){left}
+:*:a#::{&}{&}{Space}
+:*:b#::{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 1}{End}
+:*:bp#::bool breakPoint = true;{F9}
+:*:c#::''{Left}
+:*:cql#::const QList<>&{Left}{Left}
+:*:cqs#::const QString&
+:*:cqsl#::const QStringList&
+:*:d#::{[}{]}{left 1}
+:*:dw#::do{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{Enter}while(){End}{left 1}
+:*:e#::else{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 1}{End}
+:*:ei#::else if{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 1}{End}
+:*:eq#::{Space}=={Space}
+:*:f#::false
+:*:fo#::for (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
+:*:foi#::for (int i = 0{;} i < {;} {+ 2}i){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
+:*:foj#::for (int j = 0{;} j < {;} {+ 2}j){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
+:*:fok#::for (int k = 0{;} k < {;} {+ 2}k){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
+:*:fol#::for (int l = 0{;} l < {;} {+ 2}l){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
+:*:g#::{{}{}}{left}
+:*:h#::[]{Left}
+:*:i#::if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
+:*:id#::id=""
+:*:ie#::if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{Enter}else{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 7}{End}{left 1}
+:*:j#::(){left}
+:*:m#::m_
+:*:o#::{|}{|}{Space}
+:*:qd#::qDebug() << {;}{Left 1}
+:*:qds#::qDebug() << ""{;}{Left 2}
+:*:ql#::QList<>{Left}
+:*:qm#::QMap<>{Left}
+:*:qs#::QString
+:*:qsl#::QStringList
+:*:r#::return {;}{Left}
+:*:rc#::return ''{;}{Left 2}
+:*:rf#::return false{;}
+:*:ro#::return 0{;}
+:*:roo#::return 0.0{;}
+:*:rs#::return ""{;}{Left 2}
+:*:rt#::return true{;}
+:*:s#::""{Left}
+:*:t#::true
+:*:ä#::<>{left}
+:*:ö#::(){left}
+:*:ü#::{{}{}}{left}
 
-; daily notes
-:*:dn#::
-FormatTime, CurrentDateTime,, ddd dd.MM.yyyy
-SendInput {#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}
-return
+;:*:"::""{Left}
+;:*:'::''{Left}
+;:*:(::(){Left}
+;:*:<::<>{Left}
+;:*:[::[]{Left}
+;:*:{::{{}{}}{Left}
 
 ; dynamic cast
 :*:dc#::
-SendInput %clipboard%* p%clipboard% = dynamic_cast<%clipboard%*>();{Enter}if(p%clipboard%){Enter}{{}{Enter}{Enter}{}}{up 4}{End}{left 2}
-;SendInput %clipboard%* p%clipboard% = dynamic_cast<%clipboard%*>();{Enter}if (p%clipboard%){Enter}{{}{up 3}{End}{left 2}
-return
-
-; image from clipboard in mark-down-syntax
-:*:i#::
-SendInput {!}{[}{]}(%clipboard%)
-return
-
-; if block
-:*:if#::
-SendInput if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
-return
-
-; if-else block
-:*:ife#::
-SendInput if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{Enter}else{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 7}{End}{left 1}
+SendInput %clipboard%* p%clipboard% = dynamic_cast<%clipboard%*>(){;}{Enter}if (p%clipboard%){Enter}{{}{Enter}{Enter}{}}{up 4}{End}{left 2}
 return
 
 ; #include "clipboard"
@@ -125,23 +83,8 @@ SendInput {#}include "%clipboard%"
 return
 
 ; #include <clipboard>
-:*:in<#::
+:*:inc#::
 SendInput {#}include <%clipboard%>
-return
-
-; link from clipboard in mark-down-syntax
-:*:l#::
-SendInput {[}{]}(%clipboard%)
-return
-
-; member asignment
-:*:ma#::
-SendInput m_%clipboard% = %clipboard%{;}
-return
-
-; redmine link from clipboard in mark-down-syntax
-:*:rl#::
-SendInput {[}Redmine{]}(%clipboard%)
 return
 
 ; for loop iterator
@@ -184,9 +127,9 @@ return
 SendInput for (auto it4 = %clipboard%.begin(); it4 {!}= %clipboard%.end(); {+}{+}it4){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
 return
 
-; code block in mark-down-syntax
-:*:c#::
-SendInput {ASC 96}{ASC 96}{ASC 96}{Enter}{Enter}{ASC 96}{ASC 96}{ASC 96}{Up}
+; member asignment
+:*:ma#::
+SendInput m_%clipboard% = %clipboard%{;}
 return
 
 ; hashtag
@@ -194,23 +137,112 @@ return
 SendInput //{Space}{#}_UBE{Space}
 return
 
-:*:dt#::
-FormatTime, CurrentDateTime,, yyyy-MM-dd
-SendInput %CurrentDateTime%
+
+;-------------------------------------------------------------------------------
+; TODO
+;-------------------------------------------------------------------------------
+;:*:td#::// TODO{Space}
+;:*:tda#::// TODO @all:{Space}
+;:*:tdc#::// TODO change after testing
+;:*:tdci#::// TODO correct implementation
+;:*:tdd#::// TODO delete
+;:*:tdi#::// TODO implement this functionality
+;:*:tdn#::// TODO is this necessary?
+;:*:tdr#::// TODO remove this line after testing
+;:*:tds#::// TODO @all SANITIZE:{Space}
+;:*:tdu#::// TODO @ube:{Space}
+;:*:tdv#::// TODO verify correct behavior
+
+;-------------------------------------------------------------------------------
+; Commit Comments
+;-------------------------------------------------------------------------------
+:*:as#::* formated by AStyle
+:*:cc#::* code cleaned
+:*:ic#::{+} initial commit
+:*:po#::* performance optimization
+:*:uc#::* under construction
+
+;-------------------------------------------------------------------------------
+; Markdown
+;-------------------------------------------------------------------------------
+
+; code block
+:*:co#::
+SendInput {ASC 96}{ASC 96}{ASC 96}{Enter}{Enter}{ASC 96}{ASC 96}{ASC 96}{Up}
 return
 
+; daily notes
+:*:dn#::
+FormatTime, CurrentDateTime,, ddd dd.MM.yyyy
+SendInput {#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}
+return
+
+; image
+:*:img#::
+SendInput {!}{[}{]}(%clipboard%)
+return
+
+; link
+:*:l#::
+SendInput {[}{]}(%clipboard%)
+return
+
+; redmine link
+:*:rl#::
+SendInput {[}Redmine{]}(%clipboard%)
+return
+
+;-------------------------------------------------------------------------------
+; Signatures
+;-------------------------------------------------------------------------------
+
+; rem signuture
+:*:rsig#::
+FormatTime, CurrentDateTime,, yyyy-MM-dd HH:mm
+SendInput rem %CurrentDateTime% UBE
+return
+
+; rem signature short
+:*:rsigs#::
+FormatTime, CurrentDateTime,, yyyy-MM-dd
+SendInput rem %CurrentDateTime% UBE
+return
+
+; signature
+:*:sig#::
+FormatTime, CurrentDateTime,, yyyy-MM-dd (ddd) HH:mm
+SendInput %CurrentDateTime% UBE
+return
+
+; signature short
+:*:sigs#::
+FormatTime, CurrentDateTime,, yyyy-MM-dd
+SendInput %CurrentDateTime% UBE
+return
+
+;-------------------------------------------------------------------------------
+; eMail
+;-------------------------------------------------------------------------------
+:*:int#::Hallo ,`n`n`n`nGruß`nUlrich`n`nTelefon: 306`nRaum: B 208{up 8}{End}{left 1}
+:*:intf#::Hallo Frau ,`n`n`n`nHerzliche Grüße`nUlrich Belitz`n`nTelefon: 306`nRaum: B 208{up 8}{End}{left 1}
+:*:inth#::Hallo Herr ,`n`n`n`nHerzliche Grüße`nUlrich Belitz`n`nTelefon: 306`nRaum: B 208{up 8}{End}{left 1}
+:*:mail#::Ulrich.Belitz@ScientaOmicron.com
+:*:sgf#::Sehr geehrte Frau ,`n`n`n`nMit freundlichen Grüßen`nUlrich Belitz{up 5}{End}{left 1}
+:*:sgh#::Sehr geehrter Herr ,`n`n`n`nMit freundlichen Grüßen`nUlrich Belitz{up 5}{End}{left 1}
+
+;-------------------------------------------------------------------------------
+; Date & Time
+;-------------------------------------------------------------------------------
+
+; current date
 :*:date#::
 FormatTime, CurrentDateTime,, dd.MM.yyyy
 SendInput %CurrentDateTime%
 return
 
-:*:time#::
-FormatTime, CurrentDateTime,, hh:mm
-SendInput %CurrentDateTime%
-return
-
-:*:now#::
-FormatTime, CurrentDateTime,, dd.MM.yyyy HH:mm
+; current date and time
+:*:dt#::
+FormatTime, CurrentDateTime,, yyyy-MM-dd
 SendInput %CurrentDateTime%
 return
 
@@ -226,6 +258,16 @@ FormatTime, Tomorrow, %var1%, dddd dd.MM.yyyy
 SendInput morgen (%Tomorrow%)
 return
 
+:*:now#::
+FormatTime, CurrentDateTime,, dd.MM.yyyy HH:mm
+SendInput %CurrentDateTime%
+return
+
+:*:time#::
+FormatTime, CurrentDateTime,, hh:mm
+SendInput %CurrentDateTime%
+return
+
 :*:übermorgen#::
 var1 =  ; Make it blank so that the below will use the current time instead.
 var1 += 2, days
@@ -233,83 +275,32 @@ FormatTime, Tomorrow, %var1%, dddd dd.MM.yyyy
 SendInput übermorgen (%Tomorrow%)
 return
 
-:*:rsig#:: ; rem signuture
-FormatTime, CurrentDateTime,, yyyy-MM-dd HH:mm
-SendInput rem %CurrentDateTime% UBE
-return
+;-------------------------------------------------------------------------------
+; Misc
+;-------------------------------------------------------------------------------
+:*:-#::--------------------------------------------------------------------------------
+:*:_#::________________________________________________________________________________
+:*:ahk#::AutoHotKey
+:*:av#::available
+:*:bzgl#::bezüglich
+:*:edp#::ESpDepthProfile
+:*:en#::enabled
+:*:eof#::end of file - only comments following
+:*:fyi#::for your information
+:*:ggf#::gegebenfalls
+:*:ich#::ich (Ulrich Belitz)
+:*:lg#::Liebe Grüße`nUlle
+:*:mfg#::Mit freundlichen Grüßen
+:*:nc#::no comment
+:*:nec#::necessary
+:*:so#::ScientaOmicron
+:*:vd#::Vielen Dank{!}
+:*:vdiv#::Vielen Dank im Voraus{!}
+:*:w#::while (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
+:*:zb#::zum Beispiel
+:*:zdi#::Zu Deiner Information
 
-:*:rsigs#:: ; rem signature short
-FormatTime, CurrentDateTime,, yyyy-MM-dd
-SendInput rem %CurrentDateTime% UBE
-return
-
-:*:sig#:: ; signature
-FormatTime, CurrentDateTime,, yyyy-MM-dd (ddd) HH:mm
-SendInput %CurrentDateTime% UBE
-return
-
-:*:sigs#:: ; signature short
-FormatTime, CurrentDateTime,, yyyy-MM-dd
-SendInput %CurrentDateTime% UBE
-return
-
-; --------------------------------------------------------------------------------
-; eMail Signaturen
-; --------------------------------------------------------------------------------
-:*:int#::Hallo ,`n`n`n`nGruß`nUlrich`n`nTelefon: 306`nRaum: B 208{up 8}{End}{left 1}
-:*:intf#::Hallo Frau ,`n`n`n`nHerzliche Grüße`nUlrich Belitz`n`nTelefon: 306`nRaum: B 208{up 8}{End}{left 1}
-:*:inth#::Hallo Herr ,`n`n`n`nHerzliche Grüße`nUlrich Belitz`n`nTelefon: 306`nRaum: B 208{up 8}{End}{left 1}
-:*:sgh#::Sehr geehrter Herr ,`n`n`n`nMit freundlichen Grüßen`nUlrich Belitz{up 5}{End}{left 1}
-:*:sgf#::Sehr geehrte Frau ,`n`n`n`nMit freundlichen Grüßen`nUlrich Belitz{up 5}{End}{left 1}
-
-; --------------------------------------------------------------------------------
-; Templates for Programming
-; --------------------------------------------------------------------------------
-:*:a#::{{}
-:*:s#::{}}
-:*:d#::{[}{]}{left 1}
-:*:f#::false
-:*:g#::{Space}{|}{|}{Space}
-:*:h#::{Space}{&}{&}{Space}
-:*:j#::m_
-:*:t#::true
-
-:*:dox#::
-(
-/**
-* \brief  Exemplarische Funktion
-*
-*         Diese Funktion gibt den übergebenen Parameter
-*         auf der Konsole aus.
-*
-* \param      parameter   Auszugebender Parameter
-* \return                 Status-Code
-*
-*/
-)
-
-:*:80#::
-(
-0        1         2         3         4         5         6         7         8
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
-)
-
-:*:120#::
-(
-0        1         2         3         4         5         6         7         8         9        10        11        12 
-123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-)
-
-:*:/*#::
-(
-/*******************************************************************************
-
-*******************************************************************************/
-)
-
-; --------------------------------------------------------------------------------
-; Sonstiges
-; --------------------------------------------------------------------------------
+; bug report for redmine
 :*:bug#::
 (
 *pre-condition:* 
@@ -318,6 +309,39 @@ return
 )
 
 ;end of file - only comments following  
+
+;:*:dox#::
+;(
+;/**
+;* \brief  Exemplarische Funktion
+;*
+;*         Diese Funktion gibt den übergebenen Parameter
+;*         auf der Konsole aus.
+;*
+;* \param      parameter   Auszugebender Parameter
+;* \return                 Status-Code
+;*
+;*/
+;)
+
+;:*:80#::
+;(
+;0        1         2         3         4         5         6         7         8
+;12345678901234567890123456789012345678901234567890123456789012345678901234567890
+;)
+
+;:*:120#::
+;(
+;0        1         2         3         4         5         6         7         8         9        10        11        12 
+;123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+;)
+
+;:*:/*#::
+;(
+;/*******************************************************************************
+;
+;*******************************************************************************/
+;)
 
 ; --------------------------------------------------------------------------------
 ; HTML-Codevervollstaendigung (alphabetisch nach hotstring sortiert)

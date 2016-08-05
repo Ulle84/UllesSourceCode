@@ -2,6 +2,7 @@
 
 # ToDo
 ## General
+* ask user: add files to existing pro/cmake/vcproj file?
 * check occurences of friend classes
 * CodeHelper -> get Interfacename etc --> all conventions (trailing I etc) should be encapsulated -> same procedure for member
 

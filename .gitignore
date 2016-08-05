@@ -1,6 +1,6 @@
 # file types
 .DS_Store
-*.pro.user
+*.user
 *.o
 *.plist
 *.autosave
