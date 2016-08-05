@@ -61,11 +61,13 @@
 :*:td#::// TODO{Space}
 :*:tda#::// TODO @all:{Space}
 :*:tdc#::// TODO change after testing
+:*:tdci#::// TODO correct implementation
 :*:tdd#::// TODO delete
 :*:tdi#::// TODO implement this functionality
 :*:tdn#::// TODO is this necessary?
 :*:tdr#::// TODO remove this line after testing
 :*:tdu#::// TODO @ube:{Space}
+:*:tdv#::// TODO verify correct behavior
 :*:uc#::* under construction
 :*:vd#::Vielen Dank{!}
 :*:vdiv#::Vielen Dank im Voraus{!}
@@ -96,9 +98,35 @@ FormatTime, CurrentDateTime,, ddd dd.MM.yyyy
 SendInput {#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}
 return
 
+; dynamic cast
+:*:dc#::
+SendInput %clipboard%* p%clipboard% = dynamic_cast<%clipboard%*>();{Enter}if(p%clipboard%){Enter}{{}{Enter}{Enter}{}}{up 4}{End}{left 2}
+;SendInput %clipboard%* p%clipboard% = dynamic_cast<%clipboard%*>();{Enter}if (p%clipboard%){Enter}{{}{up 3}{End}{left 2}
+return
+
 ; image from clipboard in mark-down-syntax
 :*:i#::
 SendInput {!}{[}{]}(%clipboard%)
+return
+
+; if block
+:*:if#::
+SendInput if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
+return
+
+; if-else block
+:*:ife#::
+SendInput if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{Enter}else{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 7}{End}{left 1}
+return
+
+; #include "clipboard"
+:*:in#::
+SendInput {#}include "%clipboard%"
+return
+
+; #include <clipboard>
+:*:in<#::
+SendInput {#}include <%clipboard%>
 return
 
 ; link from clipboard in mark-down-syntax
@@ -112,28 +140,48 @@ SendInput m_%clipboard% = %clipboard%{;}
 return
 
 ; redmine link from clipboard in mark-down-syntax
-:*:rml#::
+:*:rl#::
 SendInput {[}Redmine{]}(%clipboard%)
 return
 
 ; for loop iterator
 :*:it#::
-SendInput for (auto it = %clipboard%.begin(); it {!}= %clipboard%.end(); {+}{+}it){Enter}{{}{Enter}{Enter}{}}{Up}
+SendInput for (it = %clipboard%.begin(); it {!}= %clipboard%.end(); {+}{+}it){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
 return
 
 ; for loop iterator 2
 :*:it2#::
-SendInput for (auto it2 = %clipboard%.begin(); it2 {!}= %clipboard%.end(); {+}{+}it2){Enter}{{}{Enter}{Enter}{}}{Up}
+SendInput for (it2 = %clipboard%.begin(); it2 {!}= %clipboard%.end(); {+}{+}it2){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
 return
 
 ; for loop iterator 3
 :*:it3#::
-SendInput for (auto it3 = %clipboard%.begin(); it3 {!}= %clipboard%.end(); {+}{+}it3){Enter}{{}{Enter}{Enter}{}}{Up}
+SendInput for (it3 = %clipboard%.begin(); it3 {!}= %clipboard%.end(); {+}{+}it3){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
 return
 
 ; for loop iterator 4
 :*:it4#::
-SendInput for (auto it4 = %clipboard%.begin(); it4 {!}= %clipboard%.end(); {+}{+}it4){Enter}{{}{Enter}{Enter}{}}{Up}
+SendInput for (it4 = %clipboard%.begin(); it4 {!}= %clipboard%.end(); {+}{+}it4){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
+return
+
+; for loop iterator - auto
+:*:ita#::
+SendInput for (auto it = %clipboard%.begin(); it {!}= %clipboard%.end(); {+}{+}it){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
+return
+
+; for loop iterator 2 - auto
+:*:ita2#::
+SendInput for (auto it2 = %clipboard%.begin(); it2 {!}= %clipboard%.end(); {+}{+}it2){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
+return
+
+; for loop iterator 3 - auto
+:*:ita3#::
+SendInput for (auto it3 = %clipboard%.begin(); it3 {!}= %clipboard%.end(); {+}{+}it3){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
+return
+
+; for loop iterator 4 - auto
+:*:ita4#::
+SendInput for (auto it4 = %clipboard%.begin(); it4 {!}= %clipboard%.end(); {+}{+}it4){Enter}{{}{Enter}{Enter}{}}{Up}{Tab}
 return
 
 ; code block in mark-down-syntax

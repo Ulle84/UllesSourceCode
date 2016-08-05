@@ -3,6 +3,10 @@
 # ToDo
 
 # Ideas
+* two modes
+  * existing files: do moderate cleaning -> indentation
+  * new generated files from me: do complete cleaning
+
 * Try to put AStyle in resources and run via QProcess class -> one unified tool for Cleaning Code
 * option-file -> use option file of AStyle and extend it
 * two modes: gui and console
