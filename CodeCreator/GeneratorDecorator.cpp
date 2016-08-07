@@ -18,10 +18,12 @@ GeneratorDecorator::GeneratorDecorator(QWidget *parent) :
   ui->setupUi(this);
 
   connect(ui->lineEditComponent, SIGNAL(textEdited(QString)), this, SIGNAL(optionsChanged()));
+  connect(ui->lineEditDecorator, SIGNAL(textEdited(QString)), this, SIGNAL(optionsChanged()));
   connect(ui->plainTextEditDecorators, SIGNAL(textChanged()), this, SIGNAL(optionsChanged()));
 
-  connect(ui->checkBoxComponent, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
   connect(ui->checkBoxInterface, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->checkBoxComponent, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
+  connect(ui->checkBoxDecorator, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()));
 
   connect(ui->interfaceEditor, SIGNAL(interfaceChanged()), this, SIGNAL(optionsChanged()));
 }
@@ -43,6 +45,10 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
     {
       XmlHelper::readXml(xml, ui->plainTextEditDecorators);
     }
+    else if(xml.name() == "Decorator")
+    {
+      XmlHelper::readXml(xml, ui->lineEditDecorator);
+    }
     else if (xml.name() == "Interface")
     {
       Interface interface;
@@ -52,6 +58,10 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
     else if(xml.name() == "CreateComponent")
     {
       XmlHelper::readXml(xml, ui->checkBoxComponent);
+    }
+    else if(xml.name() == "CreateDecorator")
+    {
+      XmlHelper::readXml(xml, ui->checkBoxDecorator);
     }
     else if(xml.name() == "CreateInterface")
     {
@@ -67,12 +77,14 @@ void GeneratorDecorator::readXml(QXmlStreamReader &xml)
 void GeneratorDecorator::writeXml(QXmlStreamWriter &xml)
 {
   XmlHelper::writeXml(xml, "Component", ui->lineEditComponent);
+  XmlHelper::writeXml(xml, "Decorator", ui->lineEditDecorator);
   XmlHelper::writeXml(xml, "Decorators", ui->plainTextEditDecorators);
   Interface interface = ui->interfaceEditor->interface();
   XmlHelper::writeXml(xml, &interface);
 
   XmlHelper::writeXml(xml, "CreateComponent", ui->checkBoxComponent);
   XmlHelper::writeXml(xml, "CreateInterface", ui->checkBoxInterface);
+  XmlHelper::writeXml(xml, "CreateDecorator", ui->checkBoxDecorator);
 }
 
 QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
@@ -98,6 +110,16 @@ QList<QPair<QString, QString> > GeneratorDecorator::generatedCode()
 
   if (ui->checkBoxComponent->isChecked())
   {
+    Class c(componentName);
+    c.setInterfaces(interfaces);
+
+    generatedCode.append(qMakePair(componentName + ".h", c.declaration()));
+    generatedCode.append(qMakePair(componentName + ".cpp", c.implementation()));
+  }
+
+  if (ui->checkBoxDecorator->isChecked())
+  {
+    // TODO
     Class c(componentName);
     c.setInterfaces(interfaces);
 
