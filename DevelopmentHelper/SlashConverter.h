@@ -20,6 +20,8 @@ private slots:
   void on_pushButtonConvertToBackslash_clicked();
   void on_pushButtonConvertToFowardSlash_clicked();
 
+  void on_pushButtonConvertToDoubleBackslash_clicked();
+
 private:
   void updateText(const QString& text);
 

@@ -27,8 +27,16 @@ void SlashConverter::on_pushButtonConvertToFowardSlash_clicked()
   updateText(converted);
 }
 
+void SlashConverter::on_pushButtonConvertToDoubleBackslash_clicked()
+{
+  QString converted = ui->lineEdit->text().replace("\\", "\\\\");
+  updateText(converted);
+}
+
 void SlashConverter::updateText(const QString& text)
 {
   ui->lineEdit->setText(text);
   QApplication::clipboard()->setText(text);
 }
+
+

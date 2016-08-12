@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>339</width>
-    <height>41</height>
+    <width>459</width>
+    <height>44</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,14 +20,21 @@
    <item>
     <widget class="QPushButton" name="pushButtonConvertToBackslash">
      <property name="text">
-      <string>convert to \</string>
+      <string>convert / to \</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="pushButtonConvertToFowardSlash">
      <property name="text">
-      <string>convert to /</string>
+      <string>convert \ to /</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonConvertToDoubleBackslash">
+     <property name="text">
+      <string>convert \ to \\</string>
      </property>
     </widget>
    </item>

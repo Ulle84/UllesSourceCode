@@ -10,6 +10,7 @@
 :*:Pyhton::Python
 :*:postion::position
 :*:widht::width
+:*:nicth::nicht
 
 ;-------------------------------------------------------------------------------
 ; hotstrings - triggered with '#'
@@ -18,33 +19,16 @@
 ;-------------------------------------------------------------------------------
 ; Programming
 ;-------------------------------------------------------------------------------
-:*:7#::{{}{}}{left}
-:*:8#::(){left}
 :*:a#::{&}{&}{Space}
-:*:b#::{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 1}{End}
 :*:bp#::bool breakPoint = true;{F9}
 :*:c#::''{Left}
 :*:cql#::const QList<>&{Left}{Left}
 :*:cqs#::const QString&
 :*:cqsl#::const QStringList&
-:*:d#::{[}{]}{left 1}
-:*:dw#::do{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{Enter}while(){End}{left 1}
-:*:e#::else{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 1}{End}
-:*:ei#::else if{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 1}{End}
-:*:eq#::{Space}=={Space}
+:*:en#::!={Space}
+:*:eq#::=={Space}
 :*:f#::false
-:*:fo#::for (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
-:*:foi#::for (int i = 0{;} i < {;} {+ 2}i){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
-:*:foj#::for (int j = 0{;} j < {;} {+ 2}j){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
-:*:fok#::for (int k = 0{;} k < {;} {+ 2}k){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
-:*:fol#::for (int l = 0{;} l < {;} {+ 2}l){Enter}{{}{Enter}{Tab}{Enter}{Backspace 2}{}}{up 3}{End}{left 6}
-:*:g#::{{}{}}{left}
-:*:h#::[]{Left}
-:*:i#::if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
-:*:id#::id=""
-:*:ie#::if (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{Enter}else{Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 7}{End}{left 1}
-:*:j#::(){left}
-:*:m#::m_
+:*:ls#::L""{Left}
 :*:o#::{|}{|}{Space}
 :*:qd#::qDebug() << {;}{Left 1}
 :*:qds#::qDebug() << ""{;}{Left 2}
@@ -61,16 +45,7 @@
 :*:rt#::return true{;}
 :*:s#::""{Left}
 :*:t#::true
-:*:ä#::<>{left}
-:*:ö#::(){left}
-:*:ü#::{{}{}}{left}
 
-;:*:"::""{Left}
-;:*:'::''{Left}
-;:*:(::(){Left}
-;:*:<::<>{Left}
-;:*:[::[]{Left}
-;:*:{::{{}{}}{Left}
 
 ; dynamic cast
 :*:dc#::
@@ -137,22 +112,6 @@ return
 SendInput //{Space}{#}_UBE{Space}
 return
 
-
-;-------------------------------------------------------------------------------
-; TODO
-;-------------------------------------------------------------------------------
-;:*:td#::// TODO{Space}
-;:*:tda#::// TODO @all:{Space}
-;:*:tdc#::// TODO change after testing
-;:*:tdci#::// TODO correct implementation
-;:*:tdd#::// TODO delete
-;:*:tdi#::// TODO implement this functionality
-;:*:tdn#::// TODO is this necessary?
-;:*:tdr#::// TODO remove this line after testing
-;:*:tds#::// TODO @all SANITIZE:{Space}
-;:*:tdu#::// TODO @ube:{Space}
-;:*:tdv#::// TODO verify correct behavior
-
 ;-------------------------------------------------------------------------------
 ; Commit Comments
 ;-------------------------------------------------------------------------------
@@ -174,7 +133,7 @@ return
 ; daily notes
 :*:dn#::
 FormatTime, CurrentDateTime,, ddd dd.MM.yyyy
-SendInput {#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}
+SendInput {Enter}{#}{#} %CurrentDateTime%{Esc}{Enter}*{Space}Administratives{Enter}{Space 2}*{Space}{Enter}{Backspace 2}*{Space}Build & Release{Enter}{Space 2}*{Space}{Enter}{Backspace 2}*{Space}MatrixKit{Enter}{Space 2}*{Space}{Enter}{Backspace 2}*{Space}VernissageKit{Enter}{Space 2}*{Space}{Enter}{Backspace 2}
 return
 
 ; image
@@ -191,6 +150,16 @@ return
 :*:rl#::
 SendInput {[}Redmine{]}(%clipboard%)
 return
+
+;-------------------------------------------------------------------------------
+; Textile
+;-------------------------------------------------------------------------------
+:*:cpp#::<pre><code class="cpp">{Enter 2}</code></pre>{Up}
+:*:tab#::|_. A |_. B |_. C |{Enter}| A | B | C |{Enter}|/2. row span | B | C |{Enter}|\2. col span |
+:*:tl#::""{:}http{: 2}//link{shift down}{left 12}{shift up}
+:*:tn#::{{}{{}thumbnail(){}}{}}{left 3}
+:*:wp#::[[id|description]]{left 2}{shift down}{left 11}{shift up}
+:*:xml#::<pre><code class="xml">{Enter 2}</code></pre>{Up}
 
 ;-------------------------------------------------------------------------------
 ; Signatures
@@ -234,45 +203,38 @@ return
 ; Date & Time
 ;-------------------------------------------------------------------------------
 
-; current date
-:*:date#::
-FormatTime, CurrentDateTime,, dd.MM.yyyy
-SendInput %CurrentDateTime%
-return
-
-; current date and time
-:*:dt#::
+; today
+:*:tod#::
 FormatTime, CurrentDateTime,, yyyy-MM-dd
 SendInput %CurrentDateTime%
 return
 
-:*:heute#::
-FormatTime, CurrentDateTime,, dddd dd.MM.yyyy
-SendInput heute (%CurrentDateTime%)
-return
-
-:*:morgen#::
+; tomorrow
+:*:tom#::
 var1 =  ; Make it blank so that the below will use the current time instead.
 var1 += 1, days
-FormatTime, Tomorrow, %var1%, dddd dd.MM.yyyy
-SendInput morgen (%Tomorrow%)
+FormatTime, Tomorrow, %var1%, yyyy-MM-dd
+SendInput %Tomorrow%
 return
 
-:*:now#::
-FormatTime, CurrentDateTime,, dd.MM.yyyy HH:mm
+; yesterday
+:*:yes#::
+var1 =  ; Make it blank so that the below will use the current time instead.
+var1 += -1, days
+FormatTime, Yesterday, %var1%, yyyy-MM-dd
+SendInput %Yesterday%
+return
+
+; current date and time
+:*:dt#::
+FormatTime, CurrentDateTime,, yyyy-MM-dd hh:mm
 SendInput %CurrentDateTime%
 return
 
-:*:time#::
+; current time
+:*:ti#::
 FormatTime, CurrentDateTime,, hh:mm
 SendInput %CurrentDateTime%
-return
-
-:*:übermorgen#::
-var1 =  ; Make it blank so that the below will use the current time instead.
-var1 += 2, days
-FormatTime, Tomorrow, %var1%, dddd dd.MM.yyyy
-SendInput übermorgen (%Tomorrow%)
 return
 
 ;-------------------------------------------------------------------------------
@@ -280,9 +242,13 @@ return
 ;-------------------------------------------------------------------------------
 :*:-#::--------------------------------------------------------------------------------
 :*:_#::________________________________________________________________________________
+:*:adm#::Administratives
 :*:ahk#::AutoHotKey
 :*:av#::available
+:*:br#::Build & Release
 :*:bzgl#::bezüglich
+:*:ci#::Continous Improvement
+:*:du#::Danke{Space}und{Space}
 :*:edp#::ESpDepthProfile
 :*:en#::enabled
 :*:eof#::end of file - only comments following
@@ -291,24 +257,51 @@ return
 :*:ich#::ich (Ulrich Belitz)
 :*:lg#::Liebe Grüße`nUlle
 :*:mfg#::Mit freundlichen Grüßen
+:*:mk#::MatrixKit
 :*:nc#::no comment
 :*:nec#::necessary
+:*:shs#::siehe anhängenden Screenshot
 :*:so#::ScientaOmicron
+:*:unnec#::unnecessary
+:*:v#::Vernissage
 :*:vd#::Vielen Dank{!}
 :*:vdiv#::Vielen Dank im Voraus{!}
-:*:w#::while (){Enter}{{}{Enter}{Tab}{Enter}{Backspace}{Backspace}{}}{up 3}{End}{left 1}
+:*:vis#::visible
+:*:visu#::visualization
+:*:vk#::VernissageKit
+:*:vs#::Visual Studio
+:*:vs13#::Visual Studio 2013
 :*:zb#::zum Beispiel
 :*:zdi#::Zu Deiner Information
 
 ; bug report for redmine
 :*:bug#::
 (
-*pre-condition:* 
-*trigger:* 
-*findings:*  
+*software version:*
+*pre-condition:*
+*expected behaviour:*
+*trigger:*
+*findings:*
+*log-file/trace:*
+*screenshot:*
 )
 
-;end of file - only comments following  
+;end of file - only comments following
+
+;-------------------------------------------------------------------------------
+; TODO -> moved to Visual Assist Snippets
+;-------------------------------------------------------------------------------
+;:*:td#::// TODO{Space}
+;:*:tda#::// TODO @all:{Space}
+;:*:tdc#::// TODO change after testing
+;:*:tdci#::// TODO correct implementation
+;:*:tdd#::// TODO delete
+;:*:tdi#::// TODO implement this functionality
+;:*:tdn#::// TODO is this necessary?
+;:*:tdr#::// TODO remove this line after testing
+;:*:tds#::// TODO @all SANITIZE:{Space}
+;:*:tdu#::// TODO @ube:{Space}
+;:*:tdv#::// TODO verify correct behavior
 
 ;:*:dox#::
 ;(

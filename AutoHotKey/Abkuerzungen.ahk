@@ -6,29 +6,6 @@
 ; bei mehrfach deklarierten Befehlen entscheidet das erste Vorkommen (first come, first serve)
 
 ; --------------------------------------------------------------------------------
-; Vitronic Mitarbeiter (alphabetisch nach hotstring sortiert - hotstring = Kuerzel)
-; --------------------------------------------------------------------------------
-:*:ab#::Steffen Auerbach
-:*:aj#::Andreas Jung
-:*:bra#::Benjamin Rathner
-:*:cbo#::Carsten Born
-:*:cu#::Carsten Ullrich
-:*:dh#::Dennis Heilmann
-:*:dmi#::Dimiter Mishev
-:*:ff#::Frank Fohler
-:*:hf#::Heiko Frohn
-:*:hk#::Harald Kirstein
-:*:jkl#::Johann Klamer
-:*:jok#::Johannes Kilian
-:*:jsh#::Juri Schädlich
-:*:lha#::Lars Haag
-:*:nl#::Norbert Lehn
-:*:spt#::Simon Pietsch
-:*:tfr#::Thomas Freundlich
-:*:tkb#::Thorsten Kaib
-:*:ube#::Ulrich Belitz
-
-; --------------------------------------------------------------------------------
 ; Abkuerzungen (alphabetisch nach hotstring sortiert)
 ; --------------------------------------------------------------------------------
 :*:<#::&lt;
