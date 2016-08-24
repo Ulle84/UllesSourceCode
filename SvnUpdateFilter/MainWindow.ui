@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>703</width>
-    <height>415</height>
+    <width>854</width>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPlainTextEdit" name="plainTextEditSource">
+     <widget class="QPlainTextEdit" name="plainTextEditInput">
       <property name="font">
        <font>
         <family>Courier New</family>
@@ -24,17 +24,23 @@
        </font>
       </property>
       <property name="placeholderText">
-       <string>please paste visual studio output here</string>
+       <string>input</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPlainTextEdit" name="plainTextEditDestination">
+     <widget class="QPlainTextEdit" name="plainTextEditOutput">
       <property name="font">
        <font>
         <family>Courier New</family>
         <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string>output</string>
       </property>
      </widget>
     </item>
@@ -45,7 +51,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>703</width>
+     <width>854</width>
      <height>21</height>
     </rect>
    </property>

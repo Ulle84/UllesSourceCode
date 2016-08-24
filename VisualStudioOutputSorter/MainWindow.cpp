@@ -1,4 +1,5 @@
 #include <QtAlgorithms>
+#include <QSettings>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -12,27 +13,35 @@ bool compareOutputStrings(const QString& s1, const QString& s2)
 }
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+  QMainWindow(parent),
+  ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
+
+  /*m_settings = new QSettings("Ulle", "VisualStudioOutputSorter", this);
+
+  if (m_settings->contains("geometry"))
+  {
+    setGeometry(m_settings->value("geometry").toRect());
+  }*/
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+  m_settings->setValue("geometry", geometry());
+  delete ui;
 }
 
 void MainWindow::sortLines()
 {
-    qStableSort(m_textLines.begin(), m_textLines.end(), compareOutputStrings);
+  qStableSort(m_textLines.begin(), m_textLines.end(), compareOutputStrings);
 }
 
 void MainWindow::on_plainTextEditSource_textChanged()
 {
-    m_textLines = ui->plainTextEditSource->toPlainText().split("\n");
+  m_textLines = ui->plainTextEditSource->toPlainText().split("\n");
 
-    sortLines();
+  sortLines();
 
-    ui->plainTextEditDestination->setPlainText(m_textLines.join("\n"));
+  ui->plainTextEditDestination->setPlainText(m_textLines.join("\n"));
 }
