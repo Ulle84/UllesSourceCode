@@ -1,6 +1,7 @@
 ﻿# Bugs
 
 # ToDo
+* continue in method MainWindow::on_pushButtonSwitch_clicked()
 
 # Ideas
 

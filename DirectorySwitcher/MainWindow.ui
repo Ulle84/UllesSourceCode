@@ -6,66 +6,115 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>466</height>
+    <width>810</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>base directory</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit"/>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEditBaseDirectory"/>
       </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pushButtonSelectDirectory">
         <property name="text">
          <string>select</string>
         </property>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
+      <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>base name</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_2"/>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEditBaseName"/>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QListWidget" name="listWidget"/>
-      </item>
-      <item>
-       <widget class="QPlainTextEdit" name="plainTextEditInformation"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="pushButtonCheckDirectory">
       <property name="text">
-       <string>switch to directory</string>
+       <string>check directory</string>
       </property>
      </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Directories</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QListWidget" name="listWidgetProjects"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonSwitch">
+           <property name="text">
+            <string>switch to selected directory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonCreateNew">
+           <property name="text">
+            <string>create new directory</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Information</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>ID</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditId"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="plainTextEditInformation"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonSave">
+           <property name="text">
+            <string>save</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -74,7 +123,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>558</width>
+     <width>810</width>
      <height>21</height>
     </rect>
    </property>
