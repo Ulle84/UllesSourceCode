@@ -17,6 +17,8 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
+  void setWorkingDirectory(const QString& workingDirectory);
+
 private slots:
   void on_pushButtonSelectDirectory_clicked();
   void on_pushButtonCheckDirectory_clicked();

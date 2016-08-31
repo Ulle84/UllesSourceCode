@@ -1,9 +1,9 @@
 ﻿# Bugs
 
 # ToDo
-* continue in method MainWindow::on_pushButtonSwitch_clicked()
 
 # Ideas
+* command-line parameter -> folder -> set basePath and baseName depending on folder
 
 # Done
 

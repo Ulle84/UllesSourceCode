@@ -48,6 +48,20 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
+void MainWindow::setWorkingDirectory(const QString& workingDirectory)
+{
+  QDir workDir(workingDirectory);
+
+  if (workDir.exists())
+  {
+    ui->lineEditBaseName->setText(workDir.dirName());
+    workDir.cdUp();
+    ui->lineEditBaseDirectory->setText(workDir.absolutePath());
+  }
+
+  checkDirectory();
+}
+
 void MainWindow::on_pushButtonSelectDirectory_clicked()
 {
   QString directory = QFileDialog::getExistingDirectory(this, tr("select directoy"), ui->lineEditBaseDirectory->text());
