@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <QDebug>
 #include <QStringList>
 #include <QVector>
@@ -11,13 +13,41 @@ CodeCleaner::CodeCleaner(QString string) :
 
 void CodeCleaner::process()
 {
-  removeLineDelimiters();
-  removeDoubleEmptyLines();
-  removeEmptyLinesBeforeClosingBracket();
-  removeEmptyLinesAfterOpeningBracket();
-  removeUnnecessaryNamespaceStuff();
-  removeUnnecessaryStuff();
-  moveCommaToRightPlace();
+  if (m_options.m_removeLineDelimiters)
+  {
+    std::cout << "CodeCleaner: remove line delimters" << std::endl;
+    removeLineDelimiters();
+  }
+  if (m_options.m_removeDoubleEmptyLines)
+  {
+    std::cout << "CodeCleaner: remove double empty lines" << std::endl;
+    removeDoubleEmptyLines();
+  }
+  if (m_options.m_removeEmptyLinesBeforeClosingBracket)
+  {
+    std::cout << "CodeCleaner: remove empty lines before closing bracket" << std::endl;
+    removeEmptyLinesBeforeClosingBracket();
+  }
+  if (m_options.m_removeEmptyLinesAfterOpeningBracket)
+  {
+    std::cout << "CodeCleaner: remove empty lines after opening bracket" << std::endl;
+    removeEmptyLinesAfterOpeningBracket();
+  }
+  if (m_options.m_removeUnnecessaryNamespaceStuff)
+  {
+    std::cout << "CodeCleaner: remove unnecessary namespace stuff" << std::endl;
+    removeUnnecessaryNamespaceStuff();
+  }
+  if (m_options.m_removeUnnecessaryStuff)
+  {
+    std::cout << "CodeCleaner: remove unnecessary stuff" << std::endl;
+    removeUnnecessaryStuff();
+  }
+  if (m_options.m_moveCommaToRightPlace)
+  {
+    std::cout << "CodeCleaner: move comma into right place" << std::endl;
+    moveCommaToRightPlace();
+  }
 }
 
 void CodeCleaner::removeDoubleEmptyLines()
@@ -167,4 +197,9 @@ QString CodeCleaner::createString(QString characters, unsigned int length)
 QString CodeCleaner::getCode()
 {
   return m_string;
+}
+
+void CodeCleaner::setOptions(const Options& options)
+{
+  m_options = options;
 }

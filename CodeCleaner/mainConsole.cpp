@@ -1,16 +1,35 @@
+#include <iostream>
+
 #include <QDebug>
 #include <QString>
 #include <QStringList>
 #include <QFile>
 #include <QTextStream>
+#include <QProcess>
 
 #include "CodeCleaner.h"
+#include "Options.h"
 
 int main(int argc, char* argv[])
 {
+  Options options;
+
   for (int i = 1; i < argc; i++)
   {
-    QString fileName(argv[i]);
+    QString argument = argv[i];
+
+    if (argument == "-r")
+    {
+      //rigorousMode
+      std::cout << "CodeCleaner: switching on rigorousMode" << std::endl;
+      options.enableAll();
+
+      continue;
+    }
+
+    QString fileName(argument);
+
+    std::cout << "CodeCleaner: working on file: " << fileName.toStdString() << std::endl;
 
     QStringList allowedExtensions;
     allowedExtensions << ".cpp" << ".hpp" << ".h";
@@ -28,7 +47,7 @@ int main(int argc, char* argv[])
 
     if (!hasAllowedExtension)
     {
-      qDebug() << "file has unallowed extension:" << fileName;
+      std::cout << "CodeCleaner: file has unallowed extension" << std::endl;
       continue;
     }
 
@@ -36,15 +55,34 @@ int main(int argc, char* argv[])
 
     if (!file.exists())
     {
-      qDebug() << "file does not exist:" << fileName;
+      std::cout << "CodeCleaner: file does not exist" << std::endl;
       continue;
     }
 
-    qDebug() << "processing file:" << fileName;
+    std::cout << "CodeCleaner: calling AStyle" << std::endl;
+
+    QStringList aStyleArguments;
+
+    if (fileName.endsWith(".cpp"))
+    {
+      aStyleArguments << "--options=AStyleOptionsCpp.txt";
+    }
+    else if (fileName.endsWith(".hpp"))
+    {
+      aStyleArguments << "--options=AStyleOptionsH.txt";
+    }
+    else if (fileName.endsWith(".h"))
+    {
+      aStyleArguments << "--options=AStyleOptionsH.txt";
+    }
+
+    aStyleArguments << fileName;
+
+    QProcess::execute("AStyle.exe", aStyleArguments);
 
     if (!file.open(QFile::ReadWrite | QFile::Text))
     {
-      qDebug() << "can not open file:" << fileName;
+      std::cout << "CodeCleaner: can not open file" << std::endl;
       continue;
     }
 
@@ -53,6 +91,7 @@ int main(int argc, char* argv[])
     QString fileContent = textStream.readAll();
 
     CodeCleaner codeCleaner(fileContent);
+    codeCleaner.setOptions(options);
     codeCleaner.process();
     QString modifiedContent = codeCleaner.getCode();
 
@@ -60,10 +99,11 @@ int main(int argc, char* argv[])
     {
       file.resize(0); // clears the file
       textStream << modifiedContent;
+      std::cout << "CodeCleaner: file modified" << std::endl;
     }
     else
     {
-      qDebug() << "file is unchanged";
+      std::cout << "CodeCleaner: file is unchanged" << std::endl;
     }
 
     file.close();

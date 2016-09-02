@@ -25,7 +25,6 @@ private slots:
   void on_listWidgetProjects_currentTextChanged(const QString &currentText);
   void on_pushButtonSave_clicked();
   void on_pushButtonSwitch_clicked();
-
   void on_pushButtonCreateNew_clicked();
 
 private:

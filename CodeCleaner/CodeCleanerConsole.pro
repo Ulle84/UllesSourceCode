@@ -10,10 +10,14 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += mainConsole.cpp \
-    CodeCleaner.cpp
+    CodeCleaner.cpp \
+    Options.cpp
 
 HEADERS += \
-    CodeCleaner.h
+    CodeCleaner.h \
+    Options.h
 
 DISTFILES += \
     Notes.md
+
+RESOURCES +=

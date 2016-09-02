@@ -1,6 +1,7 @@
 ﻿# Bugs
 
 # ToDo
+* strg+s -> call slot save information
 
 # Ideas
 * command-line parameter -> folder -> set basePath and baseName depending on folder

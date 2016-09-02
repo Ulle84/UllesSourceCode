@@ -142,21 +142,11 @@ void MainWindow::on_pushButtonSave_clicked()
     showUserMessage(tr("select item in list first!"));
   }
 
-  QFile file(m_currentInfoFile);
-
-  if (!file.open(QIODevice::WriteOnly))
-  {
-    qDebug() << tr("file %1 could not be opened").arg(m_currentInfoFile);
-    return;
-  }
-
-  QTextStream out(&file);
-
-  out << "ID: " << ui->lineEditId->text() << "\n\n";
-
-  out << ui->plainTextEditInformation->toPlainText();
-
-  file.close();
+  InfoFile infoFile;
+  infoFile.setPath(m_currentInfoFile);
+  infoFile.setId(ui->lineEditId->text());
+  infoFile.setContent(ui->plainTextEditInformation->toPlainText());
+  infoFile.writeToFile();
 }
 
 void MainWindow::on_pushButtonSwitch_clicked()

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/AStyle">
+        <file alias="ArgumentPrinter">resources/Test/ArgumentPrinter.exe</file>
+    </qresource>
+</RCC>

@@ -4,6 +4,8 @@
 #include <QChar>
 #include <QString>
 
+#include "Options.h"
+
 class CodeCleaner
 {
 public:
@@ -11,6 +13,8 @@ public:
 
   void process();
   QString getCode();
+
+  void setOptions(const Options& options);
 
 private:
   void removeDoubleEmptyLines();
@@ -25,6 +29,8 @@ private:
   QString createString(QString characters, unsigned int length);
 
   QString m_string;
+
+  Options m_options;
 };
 
 #endif // CODECLEANER_H
