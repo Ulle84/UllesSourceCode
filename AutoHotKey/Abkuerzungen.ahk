@@ -15,14 +15,14 @@
 :*:acq#::ViAcqui
 :*:adm#::Administrator
 :*:cl#::class=""
-:*:bzgl#::bezüglich
+:*:bzgl#::bezï¿½glich
 :*:fyi#::for your information
 :*:ggf#::gegebenfalls
 :*:ic#::[*] initial commit
 :*:ich#::ich (Ulrich Belitz)
 :*:id#::id=""
-:*:lg#::Liebe Grüße`nUlle
-:*:mfg#::Mit freundlichen Grüßen
+:*:lg#::Liebe Grï¿½ï¿½e`nUlle
+:*:mfg#::Mit freundlichen Grï¿½ï¿½en
 :*:mv#::Matrix Vision
 :*:nc#::no comment
 :*:pob#::[*] preparation of build
@@ -133,11 +133,11 @@ FormatTime, Tomorrow, %var1%, dddd dd.MM.yyyy
 SendInput morgen (%Tomorrow%)
 return
 
-:*:übermorgen#::
+:*:ï¿½bermorgen#::
 var1 =  ; Make it blank so that the below will use the current time instead.
 var1 += 2, days
 FormatTime, Tomorrow, %var1%, dddd dd.MM.yyyy
-SendInput übermorgen (%Tomorrow%)
+SendInput ï¿½bermorgen (%Tomorrow%)
 return
 
 :*:rsig#:: ; rem signuture
@@ -163,9 +163,9 @@ return
 ; --------------------------------------------------------------------------------
 ; eMail Signaturen
 ; --------------------------------------------------------------------------------
-:*:int#::Hallo ,`n`n`n`nGruß`nUlrich`n`nTelefon: 386`nRaum: 14-OG3-VL-01{up 8}{End}{left 1}
-:*:sgh#::Sehr geehrter Herr ,`n`n`n`nMit freundlichen Grüßen`nUlrich Belitz{up 5}{End}{left 1}
-:*:sgf#::Sehr geehrte Frau ,`n`n`n`nMit freundlichen Grüßen`nUlrich Belitz{up 5}{End}{left 1}
+:*:int#::Hallo ,`n`n`n`nGruï¿½`nUlrich`n`nTelefon: 386`nRaum: 14-OG3-VL-01{up 8}{End}{left 1}
+:*:sgh#::Sehr geehrter Herr ,`n`n`n`nMit freundlichen Grï¿½ï¿½en`nUlrich Belitz{up 5}{End}{left 1}
+:*:sgf#::Sehr geehrte Frau ,`n`n`n`nMit freundlichen Grï¿½ï¿½en`nUlrich Belitz{up 5}{End}{left 1}
 
 ; --------------------------------------------------------------------------------
 ; Templates for Programming
@@ -183,7 +183,7 @@ return
 /**
 * \brief  Exemplarische Funktion
 *
-*         Diese Funktion gibt den übergebenen Parameter
+*         Diese Funktion gibt den ï¿½bergebenen Parameter
 *         auf der Konsole aus.
 *
 * \param      parameter   Auszugebender Parameter
@@ -216,5 +216,6 @@ return
 ; Sonstiges
 ; --------------------------------------------------------------------------------
 :*:jira#::
-SendInput Die Aufgabe wurde erledigt.`n`nBitte das Paket %clipboard% verwenden.`n`nBitte verifizieren und Vorgang schließen.
+SendInput Die Aufgabe wurde erledigt.`n`nBitte das Paket %clipboard% verwenden.`n`nBitte verifizieren und Vorgang schlieï¿½en.
 return
+:*:test::testc
