@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class TreeModel;
+class ProxyModel;
 
 namespace Ui {
 class MainWindow;
@@ -17,9 +18,13 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
+private slots:
+  void on_lineEdit_textChanged(const QString& searchString);
+
 private:
   Ui::MainWindow *ui;
   TreeModel* m_treeModel;
+  ProxyModel* m_proxyModel;
 };
 
 #endif // MAINWINDOW_H

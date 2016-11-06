@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 
 #include "TreeModel.h"
+#include "ProxyModel.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -9,12 +10,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  TreeModel* m_treeModel = new TreeModel();
-  ui->treeView->setModel(m_treeModel);
+  m_treeModel = new TreeModel(this);
+  m_proxyModel = new ProxyModel(this);
+
+  m_proxyModel->setSourceModel(m_treeModel);
+
+  ui->treeView->setModel(m_proxyModel);
+  ui->treeView->expandAll();
 }
 
 MainWindow::~MainWindow()
 {
   delete m_treeModel;
   delete ui;
+}
+
+void MainWindow::on_lineEdit_textChanged(const QString& searchString)
+{
+  m_proxyModel->setSearchString(searchString);
 }

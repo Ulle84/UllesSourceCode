@@ -17,12 +17,14 @@ SOURCES += main.cpp\
     WorkManager.cpp \
     ToDoItem.cpp \
     TreeItem.cpp \
-    TreeModel.cpp
+    TreeModel.cpp \
+    ProxyModel.cpp
 
 HEADERS  += MainWindow.h \
     WorkManager.h \
     ToDoItem.h \
     TreeItem.h \
-    TreeModel.h
+    TreeModel.h \
+    ProxyModel.h
 
 FORMS    += MainWindow.ui
