@@ -3,6 +3,7 @@
 #include <QModelIndex>
 
 #include "ProxyModel.h"
+#include "TreeItem.h"
 
 ProxyModel::ProxyModel(QObject* parent) :
   QSortFilterProxyModel(parent)
@@ -12,19 +13,27 @@ ProxyModel::ProxyModel(QObject* parent) :
 
 bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-  // look if one of the child nodes contains the search string, return immediatly true, if a match was found
+  QList<TreeItem*> treeItems;
 
-  // TODO get "own" QModelIndex and iterate (recursivly) over all children
+  treeItems.append(static_cast<TreeItem*>(sourceModel()->index(sourceRow, 0, sourceParent).internalPointer()));
 
+  while (!treeItems.isEmpty())
+  {
+    if (treeItems.first()->data(0).toString().contains(m_searchString, Qt::CaseInsensitive))
+    {
+      return true;
+    }
+    else
+    {
+      if (treeItems.first()->childCount() > 0)
+      {
+        treeItems.append(treeItems.first()->childItems());
+      }
+    }
+    treeItems.removeFirst();
+  }
 
-
-  qDebug() << "sourceRow" << sourceRow;
-
-  QString title = sourceModel()->data(sourceModel()->index(sourceRow, 0, sourceParent)).toString();
-
-  qDebug() << "title" << title;
-
-  return title.contains(m_searchString, Qt::CaseInsensitive);
+  return false;
 }
 
 void ProxyModel::setSearchString(const QString& searchString)

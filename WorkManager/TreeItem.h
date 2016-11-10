@@ -13,6 +13,7 @@ public:
   void appendChild(TreeItem *child);
 
   TreeItem* child(int row);
+  QList<TreeItem*> childItems();
   int childCount() const;
   int columnCount() const;
   QVariant data(int column) const;

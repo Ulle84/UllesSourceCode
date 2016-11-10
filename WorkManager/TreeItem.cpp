@@ -21,6 +21,11 @@ TreeItem *TreeItem::child(int row)
   return m_childItems.value(row);
 }
 
+QList<TreeItem *> TreeItem::childItems()
+{
+  return m_childItems;
+}
+
 int TreeItem::childCount() const
 {
   return m_childItems.count();

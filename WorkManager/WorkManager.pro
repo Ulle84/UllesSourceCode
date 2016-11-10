@@ -28,3 +28,6 @@ HEADERS  += MainWindow.h \
     ProxyModel.h
 
 FORMS    += MainWindow.ui
+
+DISTFILES += \
+    Notes.md
