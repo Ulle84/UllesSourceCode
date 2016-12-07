@@ -6,7 +6,6 @@
 
 #include "TreeItem.h"
 
-
 class TreeModel : public QAbstractItemModel
 {
     Q_OBJECT

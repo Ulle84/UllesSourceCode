@@ -1,16 +1,20 @@
 // see http://doc.qt.io/qt-4.8/qt-itemviews-simpletreemodel-example.html
 
 #include <QString>
+#include <QDebug>
 
 #include "TreeModel.h"
+#include "ToDoItem.h"
 
 
 TreeModel::TreeModel(QObject *parent)
   : QAbstractItemModel(parent)
 {
   QList<QVariant> rootData;
-  rootData << "Title";
-  rootItem = new TreeItem(rootData);
+  ToDoItem toDoItem;
+  toDoItem.setTitle("Title");
+  toDoItem.setDueDate(QDate::currentDate());
+  rootItem = new TreeItem(toDoItem);
   setupModelData(rootItem);
 }
 
@@ -105,14 +109,15 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     return QVariant();
   }
 
-  if (role != Qt::DisplayRole)
+  if (role == Qt::DisplayRole)
+  {
+    TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+    return item->data(index.column());
+  }
+  else
   {
     return QVariant();
   }
-
-  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-
-  return item->data(index.column());
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
@@ -129,7 +134,15 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 {
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
-    return rootItem->data(section);
+    QStringList nameOfAttributes = ToDoItem::nameOfAttributes();
+    if (section < nameOfAttributes.length())
+    {
+      return nameOfAttributes.at(section);
+    }
+    else
+    {
+      return QVariant();
+    }
   }
 
   return QVariant();
@@ -137,18 +150,18 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 
 void TreeModel::setupModelData(TreeItem *parent)
 {
-  TreeItem* livingRoom = new TreeItem(QList<QVariant>() << QString("Living Room"), parent);
+  TreeItem* livingRoom = new TreeItem(ToDoItem("Living Room"), parent);
   parent->appendChild(livingRoom);
 
-  livingRoom->appendChild(new TreeItem(QList<QVariant>() << QString("clean up"), livingRoom));
+  livingRoom->appendChild(new TreeItem(ToDoItem("clean up"), livingRoom));
 
-  TreeItem* kitchen = new TreeItem(QList<QVariant>() << QString("Kitchen"), parent);
+  TreeItem* kitchen = new TreeItem(ToDoItem("Kitchen"), parent);
   parent->appendChild(kitchen);
 
-  TreeItem* whashTheDishes = new TreeItem(QList<QVariant>() << QString("whash the dishes"), kitchen);
+  TreeItem* whashTheDishes = new TreeItem(ToDoItem("whash the dishes"), kitchen);
   kitchen->appendChild(whashTheDishes);
 
-  whashTheDishes->appendChild(new TreeItem(QList<QVariant>() << QString("step 1"), whashTheDishes));
-  whashTheDishes->appendChild(new TreeItem(QList<QVariant>() << QString("step 2"), whashTheDishes));
-  whashTheDishes->appendChild(new TreeItem(QList<QVariant>() << QString("step 3"), whashTheDishes));
+  whashTheDishes->appendChild(new TreeItem(ToDoItem("step 1"), whashTheDishes));
+  whashTheDishes->appendChild(new TreeItem(ToDoItem("step 2"), whashTheDishes));
+  whashTheDishes->appendChild(new TreeItem(ToDoItem("step 3"), whashTheDishes));
 }

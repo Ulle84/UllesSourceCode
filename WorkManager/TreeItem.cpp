@@ -1,8 +1,10 @@
+#include <QDebug>
+
 #include "TreeItem.h"
 
-TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent) :
+TreeItem::TreeItem(const ToDoItem& toDoItem, TreeItem *parent) :
   m_parentItem(parent),
-  m_itemData(data)
+  m_toDoItem(toDoItem)
 {
 }
 
@@ -43,12 +45,12 @@ int TreeItem::row() const
 
 int TreeItem::columnCount() const
 {
-  return m_itemData.count();
+  return ToDoItem::numberOfAttributes();
 }
 
 QVariant TreeItem::data(int column) const
 {
-  return m_itemData.value(column);
+  return m_toDoItem.data(column);
 }
 
 TreeItem *TreeItem::parent()

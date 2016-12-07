@@ -4,10 +4,12 @@
 #include <QList>
 #include <QVariant>
 
+#include "ToDoItem.h"
+
 class TreeItem
 {
 public:
-  TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
+  TreeItem(const ToDoItem& toDoItem, TreeItem *parent = 0);
   ~TreeItem();
 
   void appendChild(TreeItem *child);
@@ -22,7 +24,7 @@ public:
 
 private:
   QList<TreeItem*> m_childItems;
-  QList<QVariant> m_itemData;
+  ToDoItem m_toDoItem;
   TreeItem* m_parentItem;
 };
 

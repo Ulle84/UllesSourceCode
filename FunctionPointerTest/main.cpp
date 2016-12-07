@@ -21,7 +21,7 @@ void MyClass::printDoublesDirectly(double value1, double value2)
 
 void MyClass::printDoublesIndirectly(double value1, double value2)
 {
-    void (*funcptr)(double, double) = printDoublesDirectly;
+    void (*funcptr)(double, double) = printDoublesDirectly;m
 
     (*funcptr)(value1, value2);
 }

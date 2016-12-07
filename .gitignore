@@ -12,6 +12,7 @@
 # folders
 build/*
 QtTestProgramms/build/*
+TuKi/build/*
 test/*
 CodeCreator/testOutput/*
 ReservationsToExcel/Input/*
