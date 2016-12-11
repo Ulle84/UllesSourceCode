@@ -9,8 +9,9 @@ ToDoItem::ToDoItem()
 
 }
 
-ToDoItem::ToDoItem(const QString &title, const QDate &dueDate) :
+ToDoItem::ToDoItem(const QString &title, const QString& description, const QDate &dueDate) :
   m_title(title),
+  m_description(description),
   m_dueDate(dueDate)
 {
 }

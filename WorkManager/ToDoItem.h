@@ -17,7 +17,7 @@ public:
   };
 
   ToDoItem();
-  ToDoItem(const QString& title, const QDate& dueDate = QDate());
+  ToDoItem(const QString& title, const QString& description = QString(), const QDate& dueDate = QDate());
 
   QVariant data(int column) const;
 

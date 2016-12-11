@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->treeView->expandAll();
 
   // call this connect after setting the model!
-  /*connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onTreeViewSelectionChanged);*/
+  connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onTreeViewSelectionChanged);
 }
 
 MainWindow::~MainWindow()
@@ -53,27 +53,19 @@ void MainWindow::on_lineEdit_textChanged(const QString& searchString)
 
 void MainWindow::onTreeViewSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-  return;
-
-  if (deselected.indexes().length() > 0)
+  if (!deselected.isEmpty())
   {
     QModelIndex deselectedIndex = m_proxyModel->mapSelectionToSource(deselected).indexes().first();
 
-    if (deselectedIndex.isValid())
-    {
-      ToDoItem *item = static_cast<ToDoItem*>(deselectedIndex.internalPointer());
-      item->setDescription(ui->plainTextEdit->toPlainText());
-    }
+    TreeItem *item = static_cast<TreeItem*>(deselectedIndex.internalPointer());
+    item->toDoItem()->setDescription(ui->plainTextEdit->toPlainText());
   }
 
-  if (selected.indexes().length() > 0)
+  if (!selected.isEmpty())
   {
     QModelIndex selectedIndex = m_proxyModel->mapSelectionToSource(selected).indexes().first();
 
-    if (selectedIndex.isValid())
-    {
-      ToDoItem *item = static_cast<ToDoItem*>(selectedIndex.internalPointer());
-      ui->plainTextEdit->setPlainText(item->description());
-    }
+    TreeItem *item = static_cast<TreeItem*>(selectedIndex.internalPointer());
+    ui->plainTextEdit->setPlainText(item->toDoItem()->description());
   }
 }

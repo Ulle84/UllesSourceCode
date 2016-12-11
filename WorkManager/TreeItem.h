@@ -9,7 +9,7 @@
 class TreeItem
 {
 public:
-  TreeItem(const ToDoItem& toDoItem, TreeItem *parent = 0);
+  TreeItem(ToDoItem* toDoItem, TreeItem *parent = nullptr);
   ~TreeItem();
 
   void appendChild(TreeItem *child);
@@ -22,9 +22,11 @@ public:
   int row() const;
   TreeItem* parent();
 
+  ToDoItem* toDoItem();
+
 private:
   QList<TreeItem*> m_childItems;
-  ToDoItem m_toDoItem;
+  ToDoItem* m_toDoItem;
   TreeItem* m_parentItem;
 };
 

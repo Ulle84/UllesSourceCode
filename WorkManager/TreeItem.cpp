@@ -2,14 +2,19 @@
 
 #include "TreeItem.h"
 
-TreeItem::TreeItem(const ToDoItem& toDoItem, TreeItem *parent) :
+TreeItem::TreeItem(ToDoItem* toDoItem, TreeItem* parent) :
   m_parentItem(parent),
   m_toDoItem(toDoItem)
 {
+  if (parent != nullptr)
+  {
+    parent->appendChild(this);
+  }
 }
 
 TreeItem::~TreeItem()
 {
+  delete m_toDoItem;
   qDeleteAll(m_childItems);
 }
 
@@ -50,10 +55,15 @@ int TreeItem::columnCount() const
 
 QVariant TreeItem::data(int column) const
 {
-  return m_toDoItem.data(column);
+  return m_toDoItem->data(column);
 }
 
 TreeItem *TreeItem::parent()
 {
   return m_parentItem;
+}
+
+ToDoItem *TreeItem::toDoItem()
+{
+  return m_toDoItem;
 }

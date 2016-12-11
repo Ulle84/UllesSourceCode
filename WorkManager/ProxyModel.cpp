@@ -13,11 +13,6 @@ ProxyModel::ProxyModel(QObject* parent) :
 
 bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-  if (!sourceParent.isValid())
-  {
-    return false;
-  }
-
   QList<TreeItem*> treeItems;
 
   treeItems.append(static_cast<TreeItem*>(sourceModel()->index(sourceRow, 0, sourceParent).internalPointer()));

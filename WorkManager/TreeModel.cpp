@@ -10,11 +10,7 @@
 TreeModel::TreeModel(QObject *parent)
   : QAbstractItemModel(parent)
 {
-  QList<QVariant> rootData;
-  ToDoItem toDoItem;
-  toDoItem.setTitle("Title");
-  toDoItem.setDueDate(QDate::currentDate());
-  rootItem = new TreeItem(toDoItem);
+  rootItem = new TreeItem(new ToDoItem());
   setupModelData(rootItem);
 }
 
@@ -150,18 +146,13 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 
 void TreeModel::setupModelData(TreeItem *parent)
 {
-  TreeItem* livingRoom = new TreeItem(ToDoItem("Living Room"), parent);
-  parent->appendChild(livingRoom);
+  TreeItem* a = new TreeItem(new ToDoItem("alpha"), parent);
+  TreeItem* a1 = new TreeItem(new ToDoItem("alpha1"), a);
+  TreeItem* a2 = new TreeItem(new ToDoItem("alpha2"), a);
+  TreeItem* a3 = new TreeItem(new ToDoItem("alpha3"), a);
 
-  livingRoom->appendChild(new TreeItem(ToDoItem("clean up"), livingRoom));
-
-  TreeItem* kitchen = new TreeItem(ToDoItem("Kitchen"), parent);
-  parent->appendChild(kitchen);
-
-  TreeItem* whashTheDishes = new TreeItem(ToDoItem("whash the dishes"), kitchen);
-  kitchen->appendChild(whashTheDishes);
-
-  whashTheDishes->appendChild(new TreeItem(ToDoItem("step 1"), whashTheDishes));
-  whashTheDishes->appendChild(new TreeItem(ToDoItem("step 2"), whashTheDishes));
-  whashTheDishes->appendChild(new TreeItem(ToDoItem("step 3"), whashTheDishes));
+  TreeItem* b = new TreeItem(new ToDoItem("beta"), parent);
+  TreeItem* b1 = new TreeItem(new ToDoItem("beta1"), b);
+  TreeItem* b2 = new TreeItem(new ToDoItem("beta2"), b);
+  TreeItem* b3 = new TreeItem(new ToDoItem("beta3"), b);
 }
