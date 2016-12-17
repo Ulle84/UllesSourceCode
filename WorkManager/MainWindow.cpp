@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QSettings>
+#include <QAction>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -35,6 +36,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
   // call this connect after setting the model!
   connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onTreeViewSelectionChanged);
+
+  ui->treeView->setSelectionMode(QAbstractItemView::SingleSelection);
+  ui->treeView->setDragEnabled(true);
+  ui->treeView->setAcceptDrops(true);
+  ui->treeView->setDropIndicatorShown(true);
+
+  m_actionNew = new QAction(tr("add new item"), this);
+  //m_actionNew->setShortcut(QKeySequence::New, QKeySequence::Open);
+  //m_actionNew->setShortcut(Qt::Key_Control + Qt::Key_N);
+  m_actionNew->setShortcut(QString("Strg+N"));
+  connect(m_actionNew, &QAction::triggered, this, &MainWindow::addNewItem);
 }
 
 MainWindow::~MainWindow()
@@ -68,4 +80,9 @@ void MainWindow::onTreeViewSelectionChanged(const QItemSelection &selected, cons
     TreeItem *item = static_cast<TreeItem*>(selectedIndex.internalPointer());
     ui->plainTextEdit->setPlainText(item->toDoItem()->description());
   }
+}
+
+void MainWindow::addNewItem()
+{
+  qDebug() << "add new item";
 }

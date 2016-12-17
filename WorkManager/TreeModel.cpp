@@ -98,6 +98,29 @@ int TreeModel::columnCount(const QModelIndex &parent) const
   }
 }
 
+Qt::DropActions TreeModel::supportedDropActions() const
+{
+  // TODO copy?
+ return  Qt::CopyAction | Qt::MoveAction;
+}
+
+Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
+{
+  /*if (!index.isValid())
+  {
+    return 0;
+  }
+
+  return Qt::ItemIsEnabled | Qt::ItemIsSelectable;*/
+
+  Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+
+       if (index.isValid())
+           return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+       else
+           return Qt::ItemIsDropEnabled | defaultFlags;
+}
+
 QVariant TreeModel::data(const QModelIndex &index, int role) const
 {
   if (!index.isValid())
@@ -114,16 +137,6 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
   {
     return QVariant();
   }
-}
-
-Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
-{
-  if (!index.isValid())
-  {
-    return 0;
-  }
-
-  return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const

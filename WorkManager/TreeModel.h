@@ -21,6 +21,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
+    Qt::DropActions supportedDropActions() const;
+
 private:
     void setupModelData(TreeItem *parent);
 

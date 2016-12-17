@@ -1,0 +1,20 @@
+QWidget {
+    /*font: bold 30px;    */
+/*    background-color: red;*/
+/*border-radius: 7px;*/
+}
+
+QLineEdit[input="wrong"] {
+  background-color: red;
+}
+
+QPushButton {
+  background-color: red;
+    border-style: outset;
+    border-width: 2px;
+    
+    border-color: beige;
+    /*font: bold 14px;*/
+    /*min-width: 10em;*/
+    padding: 6px;
+}
