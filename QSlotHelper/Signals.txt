@@ -1,0 +1,201 @@
+QCalendarWidget
+activated(const QDate &date)
+clicked(const QDate &date)
+currentPageChanged(int year, int month)
+selectionChanged()
+
+QCheckBox
+stateChanged(int state)
+clicked(bool checked)
+pressed()
+released()
+toggled(bool checked)
+
+QComboBox
+activated(int index)
+activated(const QString &text)
+currentIndexChanged(int index)
+currentIndexChanged(const QString &text)
+currentTextChanged(const QString &text)
+editTextChanged(const QString &text)
+highlighted(int index)
+highlighted(const QString &text)
+
+QDateEdit
+dateChanged(const QDate &date)
+dateTimeChanged(const QDateTime &datetime)
+editingFinished()
+timeChanged(const QTime &time)
+
+QDateTimeEdit
+dateChanged(const QDate &date)
+dateTimeChanged(const QDateTime &datetime)
+editingFinished()
+timeChanged(const QTime &time)
+
+QDoubleSpinBox
+editingFinished()
+valueChanged(double d)
+valueChanged(const QString &text)
+
+QGroupBox
+clicked(bool checked)
+toggled(bool on)
+
+QLabel
+linkActivated(const QString &link)
+linkHovered(const QString &link)
+
+QLineEdit
+cursorPositionChanged(int old, int new)
+editingFinished()
+returnPressed()
+selectionChanged()
+textChanged(const QString& text)
+textEdited(const QString& text)
+
+QListView
+activated(const QModelIndex &index)
+clicked(const QModelIndex &index)
+doubleClicked(const QModelIndex &index)
+entered(const QModelIndex &index)
+iconSizeChanged(const QSize &size)
+indexesMoved(const QModelIndexList &indexes)
+pressed(const QModelIndex &index)
+viewportEntered()
+
+QListWidget
+currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+currentRowChanged(int currentRow)
+currentTextChanged(const QString &currentText)
+itemActivated(QListWidgetItem *item)
+itemChanged(QListWidgetItem *item)
+itemClicked(QListWidgetItem *item)
+itemDoubleClicked(QListWidgetItem *item)
+itemEntered(QListWidgetItem *item)
+itemPressed(QListWidgetItem *item)
+itemSelectionChanged()
+activated(const QModelIndex &index)
+clicked(const QModelIndex &index)
+doubleClicked(const QModelIndex &index)
+entered(const QModelIndex &index)
+iconSizeChanged(const QSize &size)
+indexesMoved(const QModelIndexList &indexes)
+pressed(const QModelIndex &index)
+viewportEntered()
+
+QPlainTextEdit
+blockCountChanged(int newBlockCount)
+copyAvailable(bool yes)
+cursorPositionChanged()
+modificationChanged(bool changed)
+redoAvailable(bool available)
+selectionChanged()
+textChanged()
+undoAvailable(bool available)
+updateRequest(const QRect &rect, int dy)
+
+QPushButton
+clicked(bool checked)
+pressed()
+released()
+toggled(bool checked)
+
+QSpinBox
+valueChanged(int i)
+valueChanged(const QString &text)
+editingFinished()
+
+QTableView
+activated(const QModelIndex &index)
+clicked(const QModelIndex &index)
+doubleClicked(const QModelIndex &index)
+entered(const QModelIndex &index)
+iconSizeChanged(const QSize &size)
+pressed(const QModelIndex &index)
+viewportEntered()
+
+QTabWidget
+currentChanged(int index)
+tabBarClicked(int index)
+tabBarDoubleClicked(int index)
+tabCloseRequested(int index)
+
+QTextBrowser
+anchorClicked(const QUrl &link)
+backwardAvailable(bool available)
+forwardAvailable(bool available)
+highlighted(const QUrl &link)
+highlighted(const QString &link)
+historyChanged()
+sourceChanged(const QUrl &src)
+copyAvailable(bool yes)
+currentCharFormatChanged(const QTextCharFormat &f)
+cursorPositionChanged()
+redoAvailable(bool available)
+selectionChanged()
+textChanged()
+undoAvailable(bool available)
+
+QTextEdit
+copyAvailable(bool yes)
+currentCharFormatChanged(const QTextCharFormat &f)
+cursorPositionChanged()
+redoAvailable(bool available)
+selectionChanged()
+textChanged()
+undoAvailable(bool available)
+
+QTimeEdit
+dateChanged(const QDate &date)
+dateTimeChanged(const QDateTime &datetime)
+timeChanged(const QTime &time)
+editingFinished()
+
+QToolButton
+triggered(QAction *action)
+clicked(bool checked)
+pressed()
+released()
+toggled(bool checked)
+
+QTreeView
+collapsed(const QModelIndex &index)
+expanded(const QModelIndex &index)
+activated(const QModelIndex &index)
+clicked(const QModelIndex &index)
+doubleClicked(const QModelIndex &index)
+entered(const QModelIndex &index)
+iconSizeChanged(const QSize &size)
+pressed(const QModelIndex &index)
+viewportEntered()
+
+QTreeWidget
+currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+itemActivated(QTreeWidgetItem *item, int column)
+itemChanged(QTreeWidgetItem *item, int column)
+itemClicked(QTreeWidgetItem *item, int column)
+itemCollapsed(QTreeWidgetItem *item)
+itemDoubleClicked(QTreeWidgetItem *item, int column)
+itemEntered(QTreeWidgetItem *item, int column)
+itemExpanded(QTreeWidgetItem *item)
+itemPressed(QTreeWidgetItem *item, int column)
+itemSelectionChanged()
+collapsed(const QModelIndex &index)
+expanded(const QModelIndex &index)
+activated(const QModelIndex &index)
+clicked(const QModelIndex &index)
+doubleClicked(const QModelIndex &index)
+entered(const QModelIndex &index)
+iconSizeChanged(const QSize &size)
+pressed(const QModelIndex &index)
+viewportEntered()
+
+QWidget
+customContextMenuRequested(const QPoint &pos)
+windowIconChanged(const QIcon &icon)
+windowTitleChanged(const QString &title)
+
+QObject
+destroyed(QObject *obj)
+objectNameChanged(const QString &objectName)
