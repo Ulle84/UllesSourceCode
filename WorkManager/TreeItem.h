@@ -30,4 +30,4 @@ private:
   TreeItem* m_parentItem;
 };
 
-#endif // TREEITEM_H
+#endif

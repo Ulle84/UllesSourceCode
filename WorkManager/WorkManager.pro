@@ -14,14 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    WorkManager.cpp \
     ToDoItem.cpp \
     TreeItem.cpp \
     TreeModel.cpp \
     ProxyModel.cpp
 
 HEADERS  += MainWindow.h \
-    WorkManager.h \
     ToDoItem.h \
     TreeItem.h \
     TreeModel.h \

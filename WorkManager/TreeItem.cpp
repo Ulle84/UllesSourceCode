@@ -50,7 +50,7 @@ int TreeItem::row() const
 
 int TreeItem::columnCount() const
 {
-  return ToDoItem::numberOfAttributes();
+  return ToDoItem::ColumnCount;
 }
 
 QVariant TreeItem::data(int column) const

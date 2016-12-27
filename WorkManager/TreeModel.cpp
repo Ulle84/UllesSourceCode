@@ -10,13 +10,13 @@
 TreeModel::TreeModel(QObject *parent)
   : QAbstractItemModel(parent)
 {
-  rootItem = new TreeItem(new ToDoItem());
-  setupModelData(rootItem);
+  m_rootItem = new TreeItem(new ToDoItem());
+  setupModelData(m_rootItem);
 }
 
 TreeModel::~TreeModel()
 {
-  delete rootItem;
+  delete m_rootItem;
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const
@@ -30,7 +30,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 
   if (!parent.isValid())
   {
-    parentItem = rootItem;
+    parentItem = m_rootItem;
   }
   else
   {
@@ -58,7 +58,7 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
   TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
   TreeItem *parentItem = childItem->parent();
 
-  if (parentItem == rootItem)
+  if (parentItem == m_rootItem)
   {
     return QModelIndex();
   }
@@ -76,7 +76,7 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 
   if (!parent.isValid())
   {
-    parentItem = rootItem;
+    parentItem = m_rootItem;
   }
   else
   {
@@ -94,7 +94,7 @@ int TreeModel::columnCount(const QModelIndex &parent) const
   }
   else
   {
-    return rootItem->columnCount();
+    return m_rootItem->columnCount();
   }
 }
 
@@ -143,14 +143,13 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 {
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
-    QStringList nameOfAttributes = ToDoItem::nameOfAttributes();
-    if (section < nameOfAttributes.length())
+    if (section == ToDoItem::Title)
     {
-      return nameOfAttributes.at(section);
+      return tr("title");
     }
-    else
+    else if (section == ToDoItem::DueDate)
     {
-      return QVariant();
+      return tr("due date");
     }
   }
 
@@ -159,13 +158,13 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 
 void TreeModel::setupModelData(TreeItem *parent)
 {
-  TreeItem* a = new TreeItem(new ToDoItem("alpha"), parent);
-  TreeItem* a1 = new TreeItem(new ToDoItem("alpha1"), a);
-  TreeItem* a2 = new TreeItem(new ToDoItem("alpha2"), a);
-  TreeItem* a3 = new TreeItem(new ToDoItem("alpha3"), a);
+  TreeItem* a = new TreeItem(new ToDoItem("alpha", "adesc"), parent);
+  TreeItem* a1 = new TreeItem(new ToDoItem("alpha1", "a1desc"), a);
+  TreeItem* a2 = new TreeItem(new ToDoItem("alpha2", "a2desc"), a);
+  TreeItem* a3 = new TreeItem(new ToDoItem("alpha3", "a3desc"), a);
 
-  TreeItem* b = new TreeItem(new ToDoItem("beta"), parent);
-  TreeItem* b1 = new TreeItem(new ToDoItem("beta1"), b);
-  TreeItem* b2 = new TreeItem(new ToDoItem("beta2"), b);
-  TreeItem* b3 = new TreeItem(new ToDoItem("beta3"), b);
+  TreeItem* b = new TreeItem(new ToDoItem("beta", "bdesc"), parent);
+  TreeItem* b1 = new TreeItem(new ToDoItem("beta1", "b1desc"), b);
+  TreeItem* b2 = new TreeItem(new ToDoItem("beta2", "b2desc"), b);
+  TreeItem* b3 = new TreeItem(new ToDoItem("beta3", "b3desc"), b);
 }

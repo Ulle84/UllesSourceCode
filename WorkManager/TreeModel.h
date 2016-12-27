@@ -26,7 +26,7 @@ public:
 private:
     void setupModelData(TreeItem *parent);
 
-    TreeItem *rootItem;
+    TreeItem* m_rootItem;
 };
 
-#endif // TREEMODEL_H
+#endif

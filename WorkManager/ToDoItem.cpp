@@ -2,8 +2,6 @@
 
 #include "ToDoItem.h"
 
-QStringList ToDoItem::m_attributes = QStringList() << "title" << "due date";
-
 ToDoItem::ToDoItem()
 {
 
@@ -18,14 +16,37 @@ ToDoItem::ToDoItem(const QString &title, const QString& description, const QDate
 
 QVariant ToDoItem::data(int column) const
 {
-  switch (column)
+  if (column == Title)
   {
-  case Title:
-    return title();
-
-  case DueDate:
-    return dueDate().toString("yyyy-MM-dd");
+    return m_title;
   }
+  else if (column == DueDate)
+  {
+    return m_dueDate.toString("yyyy-MM-dd");
+  }
+  else
+  {
+    return QVariant();
+  }
+}
+
+bool ToDoItem::setData(int column, const QVariant& data)
+{
+  if (column == Title)
+  {
+    m_title = data.toString();
+  }
+  else if (column == DueDate)
+  {
+    m_dueDate = data.toDate();
+  }
+  else
+  {
+    // column does not exist
+    return false;
+  }
+
+  return true;
 }
 
 QString ToDoItem::title() const
@@ -56,14 +77,4 @@ QDate ToDoItem::dueDate() const
 void ToDoItem::setDueDate(const QDate &dueDate)
 {
   m_dueDate = dueDate;
-}
-
-QStringList ToDoItem::nameOfAttributes()
-{
-  return m_attributes;
-}
-
-int ToDoItem::numberOfAttributes()
-{
-  return m_attributes.length();
 }

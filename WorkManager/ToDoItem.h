@@ -10,16 +10,18 @@
 class ToDoItem
 {
 public:
-  enum Attributes
+  enum Column
   {
     Title = 0,
-    DueDate
+    DueDate,
+    ColumnCount // this must always be the last element in enum and must be equal to number of columns!
   };
 
   ToDoItem();
-  ToDoItem(const QString& title, const QString& description = QString(), const QDate& dueDate = QDate());
+  ToDoItem(const QString& title, const QString& description = QString(), const QDate& dueDate = QDate::currentDate());
 
   QVariant data(int column) const;
+  bool setData(int column, const QVariant& data);
 
   QString title() const;
   void setTitle(const QString& title);
@@ -30,14 +32,10 @@ public:
   QDate dueDate() const;
   void setDueDate(const QDate& dueDate);
 
-  static QStringList nameOfAttributes();
-  static int numberOfAttributes();
-
 private:
   QString m_title;
   QString m_description;
   QDate m_dueDate;
-  static QStringList m_attributes;
 };
 
-#endif // TODOITEM_H
+#endif
