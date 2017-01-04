@@ -24,6 +24,11 @@ public:
 
   ToDoItem* toDoItem();
 
+  bool insertChildren(int position, int count, int columns);
+  bool removeChildren(int position, int count);
+
+  QString toString(int indentationLevel);
+
 private:
   QList<TreeItem*> m_childItems;
   ToDoItem* m_toDoItem;

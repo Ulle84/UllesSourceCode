@@ -67,3 +67,52 @@ ToDoItem *TreeItem::toDoItem()
 {
   return m_toDoItem;
 }
+
+bool TreeItem::insertChildren(int position, int count, int columns)
+{
+  if (position < 0 || position > m_childItems.size())
+  {
+    return false;
+  }
+
+  for (int row = 0; row < count; ++row)
+  {
+    TreeItem *item = new TreeItem(new ToDoItem("inserted"), this);
+    //m_parentItem->m_childItems.insert(position, item);
+    //m_childItems.insert(position, item);
+  }
+
+  return true;
+}
+
+QString TreeItem::toString(int indentationLevel)
+{
+  QString string;
+
+  for (int i = 0; i < indentationLevel; ++i)
+  {
+    string.append("  ");
+  }
+  string.append(m_toDoItem->title());
+  string.append('\n');
+
+  for (auto it = m_childItems.begin(); it != m_childItems.end(); ++it)
+  {
+    string.append((*it)->toString(indentationLevel + 1));
+  }
+}
+
+bool TreeItem::removeChildren(int position, int count)
+{
+    if (position < 0 || position + count > m_childItems.size())
+    {
+        return false;
+    }
+
+    for (int row = 0; row < count; ++row)
+    {
+        delete m_childItems.takeAt(position);
+    }
+
+    return true;
+}

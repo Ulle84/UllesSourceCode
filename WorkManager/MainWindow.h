@@ -24,10 +24,21 @@ public:
 
 private slots:
   void on_lineEdit_textChanged(const QString& searchString);
+  void on_actionAddChild_triggered();
+  void on_actionAddSibling_triggered();
+  void on_actionMoveUp_triggered();
+  void on_actionMoveDown_triggered();
+  void on_actionMoveLeft_triggered();
+  void on_actionMoveRight_triggered();
+  void on_actionDelete_triggered();
+
   void onTreeViewSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
-  void addNewItem();
+
+  void on_pushButton_clicked();
 
 private:
+  void addNode(const QModelIndex& modelIndexParent);
+
   Ui::MainWindow* ui;
 
   TreeModel* m_treeModel;

@@ -101,7 +101,12 @@ int TreeModel::columnCount(const QModelIndex &parent) const
 Qt::DropActions TreeModel::supportedDropActions() const
 {
   // TODO copy?
- return  Qt::CopyAction | Qt::MoveAction;
+  return  Qt::CopyAction | Qt::MoveAction;
+}
+
+QString TreeModel::toString()
+{
+  return m_rootItem->toString(0);
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
@@ -113,12 +118,19 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
 
   return Qt::ItemIsEnabled | Qt::ItemIsSelectable;*/
 
-  Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+  /*Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
        if (index.isValid())
            return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
        else
-           return Qt::ItemIsDropEnabled | defaultFlags;
+           return Qt::ItemIsDropEnabled | defaultFlags;*/
+
+  if (!index.isValid())
+  {
+    return 0;
+  }
+
+  return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
@@ -167,4 +179,43 @@ void TreeModel::setupModelData(TreeItem *parent)
   TreeItem* b1 = new TreeItem(new ToDoItem("beta1", "b1desc"), b);
   TreeItem* b2 = new TreeItem(new ToDoItem("beta2", "b2desc"), b);
   TreeItem* b3 = new TreeItem(new ToDoItem("beta3", "b3desc"), b);
+}
+
+bool TreeModel::insertRows(int position, int rows, const QModelIndex& parent)
+{
+  TreeItem *parentItem = getItem(parent);
+
+  beginInsertRows(parent, position, position + rows - 1);
+  bool success = parentItem->insertChildren(position, rows, m_rootItem->columnCount());
+  endInsertRows();
+
+  return success;
+}
+
+bool TreeModel::removeRows(int position, int rows, const QModelIndex& parent)
+{
+  qDebug() << "removeRows own impl";
+
+  TreeItem *parentItem = getItem(parent);
+  bool success = true;
+
+  beginRemoveRows(parent, position, position + rows - 1);
+  success = parentItem->removeChildren(position, rows);
+  endRemoveRows();
+
+  return success;
+}
+
+TreeItem* TreeModel::getItem(const QModelIndex &index) const
+{
+  if (index.isValid())
+  {
+    TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+    if (item)
+    {
+      return item;
+    }
+  }
+
+  return m_rootItem;
 }
