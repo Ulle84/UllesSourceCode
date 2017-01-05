@@ -2,6 +2,9 @@
 
 require_once '../ExternalResources/PHPMailer/PHPMailerAutoload.php';
 require_once 'UniqueIdList.php';
+require_once 'Settings.php';
+
+$settings = new Settings();
 
 $hostname = $_SERVER['HTTP_HOST'];
 $path = dirname($_SERVER['PHP_SELF']);
@@ -33,13 +36,13 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     $body = 'Liebe(r) Verkäufer(in),<br /><br />';
     $body .= 'unter dem nachfolgenden Link steht ab sofort Ihre persönliche Online-Artikelliste bereit. <br/>';
     $body .= $link;
-    $body .= '<br/><br/>Bitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 12.11.2015  ein.<br /><br />';
+    $body .= '<br/><br/>Bitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum ' . $settings->deadline . '  ein.<br /><br />';
     $body .= 'Ihr TuKi-Team';
 
     $altBody = 'Liebe(r) Verkäufer(in),\n\n';
     $altBody .= 'unter dem nachfolgenden Link steht ab sofort Ihre persönliche Online-Artikelliste bereit.\n';
     $altBody .= $url;
-    $altBody .= '\n\nBitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum 12.11.2015  ein.\n\n';
+    $altBody .= '\n\nBitte tragen Sie dort alle Ihre zu verkaufenden Artikel mit Preisen bis zum ' . $settings->deadline . ' ein.\n\n';
     $altBody .= 'Ihr TuKi-Team';
 
     $mail = new PHPMailer;
@@ -49,7 +52,7 @@ foreach ($mailAddresses as $sellerNumber => $mailAddress) {
     $mail->Host = 'smtp.1und1.de'; // Specify main and backup server
     $mail->SMTPAuth = true; // Enable SMTP authentication
     $mail->Username = 'tuki@tv-hechtsheim.de'; // SMTP username
-    $mail->Password = 'tuki1882'; // SMTP password
+    $mail->Password = '.2881vT!'; // SMTP password
     $mail->SMTPSecure = 'ssl'; // Enable encryption, 'ssl' also accepted
     $mail->Port = "465";
 

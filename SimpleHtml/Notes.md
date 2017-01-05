@@ -111,6 +111,7 @@ ToDos/Ideas
   * code highlighting
     * table headers
     * source code
+  * automatic indentation
 * Check if Notepad++ and other editors might be able to support the syntax
 
 h1(Test)
