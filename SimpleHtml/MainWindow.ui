@@ -20,7 +20,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QPlainTextEdit" name="plainTextEditInput">
+      <widget class="QTextEdit" name="textEditInput">
        <property name="font">
         <font>
          <family>Monaco</family>
@@ -30,7 +30,7 @@
       </widget>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_1">
         <attribute name="title">
@@ -54,6 +54,9 @@
              <family>Monaco</family>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     Converter.cpp \
     Viewer.cpp \
     Editor.cpp \
-    Attribute.cpp
+    Attribute.cpp \
+    Highlighter.cpp
 
 HEADERS  += MainWindow.h \
     Converter.h \
     Viewer.h \
     Editor.h \
-    Attribute.h
+    Attribute.h \
+    Highlighter.h
 
 FORMS    += MainWindow.ui
 

@@ -279,3 +279,43 @@ Defines teletype text
 <var>	Defines a variable
 <video>	Defines a video or movie
 <wbr>	Defines a possible line-break
+
+
+
+Input Backup
+h1(hello world)
+h2(test)
+
+p(a((href=http://www.google.de)a link to google))
+
+p(writing HTML is so b(comfortable) and b(easy!))
+
+pre((style=background-color: lightblue)
+some code
+over two lines
+what about a method
+)
+
+p(here is some code(code inside the text))
+
+
+hr()
+table(
+  tr(th(header 1) th(header2))
+  tr(td(line 1, column 1) td(line 1, column 2))
+  tr(td(line 2, column 1) td(line 2, column 2))
+)
+
+ul(
+li(test)
+li(test2)
+li(subtest)
+  ul(
+   li(subtest)
+  )
+)
+
+ol(
+  li(test)
+  li(test2)
+)

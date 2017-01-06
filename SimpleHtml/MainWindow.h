@@ -7,6 +7,8 @@
 
 class QSettings;
 
+class Highlighter;
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,13 +22,14 @@ public:
   ~MainWindow();
 
 private slots:
-  void on_plainTextEditInput_textChanged();
+  void on_textEditInput_textChanged();
 
 private:
   Ui::MainWindow *ui;
 
   QSettings* m_settings;
   Converter m_converter;
+  Highlighter* m_highlighter;
 };
 
 #endif // MAINWINDOW_H

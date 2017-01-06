@@ -1,5 +1,6 @@
 #include <QSettings>
 
+#include "Highlighter.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -16,21 +17,29 @@ MainWindow::MainWindow(QWidget *parent) :
     setGeometry(m_settings->value("geometry").toRect());
   }
 
-  ui->plainTextEditInput->setPlainText(m_settings->value("input").toString());
+  if (m_settings->contains("splitter"))
+  {
+    ui->splitter->restoreGeometry(m_settings->value("splitter").toByteArray());
+  }
+
+  ui->textEditInput->setPlainText(m_settings->value("input").toString());
 
   ui->tabWidget->setTabText(0, tr("Preview"));
   ui->tabWidget->setTabText(1, tr("HTML Code"));
+
+  m_highlighter = new Highlighter(ui->textEditInput->document());
 }
 
 MainWindow::~MainWindow()
 {
   m_settings->setValue("geometry", geometry());
-  m_settings->setValue("input", ui->plainTextEditInput->toPlainText());
+  m_settings->setValue("input", ui->textEditInput->toPlainText());
+  m_settings->setValue("splitter", ui->splitter->saveGeometry());
   delete ui;
 }
 
-void MainWindow::on_plainTextEditInput_textChanged()
+void MainWindow::on_textEditInput_textChanged()
 {
-  ui->plainTextEditOutput->setPlainText(m_converter.toHtml(ui->plainTextEditInput->toPlainText()));
-  ui->textBrowserResult->setHtml(m_converter.toHtml(ui->plainTextEditInput->toPlainText()));
+  ui->plainTextEditOutput->setPlainText(m_converter.toHtml(ui->textEditInput->toPlainText()));
+  ui->textBrowserResult->setHtml(m_converter.toHtml(ui->textEditInput->toPlainText()));
 }
