@@ -18,6 +18,8 @@ Regeln:
 
 Festlegungen
 * keine Shortcuts -> Einheitlichkeit an vorderster Stelle - Support für schnelles Schreiben durch Editor und Code-Vervollständigung
+* wenn in Tabelle - Tabellen-Editor Shortcut (cmd+e) aufrufen
+* wenn in Liste -> Listen-Editor per Shortcut aufrufen
 
 Syntax benötigt für:
 * Überschriften
@@ -101,7 +103,7 @@ ToDos/Ideas
   * Ctrl+Click on link opens link in default browser
   * highlight doubled defined options in red - example: div((width=400)(border=true)(width=500)some text. Options for width are conflicting) - hovering over highligted text shows problem
   * highlight if some tags are define doubled, for example the title-tag. 
-  * preview on hover over table
+  * preview on hover over table/image/link
   * different colors for different columns inside table (use some different colors, which are doubled if table gets very wide)
   * block highlighting: tables and lists etc. are highlighted
   * code completion
@@ -112,7 +114,12 @@ ToDos/Ideas
     * table headers
     * source code
   * automatic indentation
-* Check if Notepad++ and other editors might be able to support the syntax
+  * implement zoomIn/Out -> available for QTextEdit
+  * drag and drop an image to text
+  * line numbers http://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
+  * highlight current line http://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
+  * mark h1-h6 in seperate color
+  * create clickable table of content
 
 h1(Test)
 h2(blub)

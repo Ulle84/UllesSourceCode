@@ -37,6 +37,7 @@ private:
   QTextCharFormat quotationFormat;
   QTextCharFormat functionFormat;
   QTextCharFormat parameterFormat;
+  QTextCharFormat headerFormat;
 };
 
 #endif

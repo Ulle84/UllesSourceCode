@@ -1,18 +1,22 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <QWidget>
+#include <QTextEdit>
 
-class Editor : public QWidget
+class QKeyEvent;
+
+class Editor : public QTextEdit
 {
   Q_OBJECT
 
 public:
   explicit Editor(QWidget *parent = 0);
 
-signals:
+protected:
+  virtual void keyPressEvent(QKeyEvent *e) override;
 
-public slots:
+private slots:
+  void onTextChanged();
 };
 
 #endif

@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     Viewer.cpp \
     Editor.cpp \
     Attribute.cpp \
-    Highlighter.cpp
+    Highlighter.cpp \
+    QColorEx.cpp
 
 HEADERS  += MainWindow.h \
     Converter.h \
     Viewer.h \
     Editor.h \
     Attribute.h \
-    Highlighter.h
+    Highlighter.h \
+    QColorEx.h
 
 FORMS    += MainWindow.ui
 

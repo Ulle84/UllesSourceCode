@@ -1,6 +1,7 @@
 #include <QDebug>
 
 #include "Highlighter.h"
+#include "QColorEx.h"
 
 Highlighter::Highlighter(QTextDocument *parent) :
   QSyntaxHighlighter(parent)
@@ -14,8 +15,18 @@ void Highlighter::init()
   HighlightingRule rule;
 
   functionFormat.setForeground(Qt::blue);
-  rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
+  rule.pattern = QRegExp("\\b[A-Za-z0-9]+(?=\\()");
   rule.format = functionFormat;
+  highlightingRules.append(rule);
+
+  headerFormat.setForeground(QBrush(QColorEx::orange()));
+  rule.pattern = QRegExp("\\bh[1-6]+(?=\\()");
+
+  // TODO also mark the caption itself
+  // attention: opneing and closing paranthesis must be countet
+  // e.g. h1(hello world u(test) continue)
+  // the hightlighting may not stop at the first closing parenthesis but must stop at second
+  rule.format = headerFormat;
   highlightingRules.append(rule);
 
   keywordFormat.setForeground(Qt::darkBlue);
