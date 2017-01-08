@@ -65,15 +65,14 @@ void Highlighter::init()
   rule.format = parameterFormat;
   highlightingRules.append(rule);
 
-  multiLineCommentFormat.setForeground(Qt::red);
+  multiLineCommentFormat.setForeground(Qt::darkGreen);
+  commentStartExpression = QRegExp("\\(\\(\\(");
+  commentEndExpression = QRegExp("\\)\\)\\)");
 
-  quotationFormat.setForeground(Qt::darkGreen);
+  /*quotationFormat.setForeground(Qt::darkGreen);
   rule.pattern = QRegExp("\".*\"");
   rule.format = quotationFormat;
-  highlightingRules.append(rule);
-
-  commentStartExpression = QRegExp("/\\*");
-  commentEndExpression = QRegExp("\\*/");
+  highlightingRules.append(rule);*/
 }
 
 void Highlighter::highlightBlock(const QString &text)
@@ -93,7 +92,7 @@ void Highlighter::highlightBlock(const QString &text)
     }
   }
 
-  /*setCurrentBlockState(0);
+  setCurrentBlockState(0);
 
   int startIndex = 0;
   if (previousBlockState() != 1)
@@ -116,5 +115,5 @@ void Highlighter::highlightBlock(const QString &text)
     }
     setFormat(startIndex, commentLength, multiLineCommentFormat);
     startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
-  }*/
+  }
 }

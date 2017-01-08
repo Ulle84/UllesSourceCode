@@ -10,6 +10,8 @@ Converter::Converter()
 
 QString Converter::toHtml(const QString &simpleHtml)
 {
+  QString input = removeComments(simpleHtml);
+
   QString string = "<html>\n<head>\n</head>\n<body>";
 
   QList<QString> tags;
@@ -17,15 +19,15 @@ QString Converter::toHtml(const QString &simpleHtml)
   QChar c;
   bool lastCharWasOpeningBracket = false;
 
-  for (int i = 0; i < simpleHtml.size(); ++i)
+  for (int i = 0; i < input.size(); ++i)
   {
-    c = simpleHtml[i];
+    c = input[i];
 
     if (c == '(')
     {
       if (lastCharWasOpeningBracket)
       {
-        Attribute attribute = parseAttribute(simpleHtml, i);
+        Attribute attribute = parseAttribute(input, i);
         if (attribute.isValid())
         {
           string.insert(string.length() - 1, QString(" %1=\"%2\"").arg(attribute.name()).arg(attribute.value()));
@@ -37,7 +39,7 @@ QString Converter::toHtml(const QString &simpleHtml)
       }
       else
       {
-        QString tag = parseTag(simpleHtml, i);
+        QString tag = parseTag(input, i);
 
         tags.append(tag);
 
@@ -77,10 +79,35 @@ QString Converter::toHtml(const QString &simpleHtml)
   return string;
 }
 
-QString Converter::indent(int indentationLevel)
+QString Converter::removeComments(const QString &simpleHtml)
+{
+  // TODO nested comments?
+  // this part here might be easy, but what about the code-highlighting?
+
+  QString string = simpleHtml;
+
+  int beginIndex = string.indexOf(m_beginComment);
+  int endIndex = -1;
+
+  while (beginIndex >= 0)
+  {
+    endIndex = string.indexOf(m_endComment, beginIndex + m_beginComment.length());
+
+    if (endIndex >= 0)
+    {
+      string.remove(beginIndex, endIndex - beginIndex + m_endComment.length());
+    }
+
+    beginIndex = string.indexOf(m_beginComment, beginIndex + 1);
+  }
+
+  return string;
+}
+
+/*QString Converter::indent(int indentationLevel)
 {
   return QString(indentationLevel * m_indent, ' ');
-}
+}*/
 
 QString Converter::parseTag(const QString &simpleHtml, int position)
 {
@@ -161,7 +188,7 @@ Attribute Converter::parseAttribute(const QString &simpleHtml, int &position)
   return Attribute(name, value);
 }
 
-QString Converter::endTag(const QString &startTag)
+/*QString Converter::endTag(const QString &startTag)
 {
   if (startTag.isEmpty())
   {
@@ -172,4 +199,4 @@ QString Converter::endTag(const QString &startTag)
 
   string.insert(startTag.length() - 2, '/');
   return string;
-}
+}*/
