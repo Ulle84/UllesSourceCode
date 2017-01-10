@@ -92,7 +92,6 @@ ToDos/Ideas
 * SimplifiedHtmlViewer
 * SimplifiedHtmlEditor
   * Opening bracket is automatically completed by closing bracket, except, if inside ''.
-  * double ' if inputted
   * If the cursor is directly next to opening bracket the closig bracket is highlighted
   * If the cursor is directly next to closing bracket, the opening bracket and corresponding keyword is highlighted.
   * Use different colors for bracket highlighting: option brackets have another color than tag brackets, normal brackets have a third color.
