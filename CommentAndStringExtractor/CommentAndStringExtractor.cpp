@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "CommentAndStringExtractor.h"
 
 CommentAndStringExtractor::CommentAndStringExtractor()
@@ -17,7 +19,7 @@ void CommentAndStringExtractor::process(QString &code)
   {
     if (parseState == ParseState::Normal)
     {
-      if (code[i] == '"')
+      if (code[i] == '"' && peekPrevious(code, i) != QChar('\\'))
       {
         startIndex = i;
         parseState = ParseState::InsideString;
@@ -29,7 +31,8 @@ void CommentAndStringExtractor::process(QString &code)
     {
       if (code[i] == '"' && peekPrevious(code, i) != QChar('\\'))
       {
-        // TODO append substring to m_strings and remove substring
+        m_strings.append(code.mid(startIndex + 1, i - startIndex - 1));
+        code.remove(startIndex + 1, i - startIndex - 1);
         parseState = ParseState::Normal;
         continue;
       }
