@@ -2,6 +2,7 @@
 #define EDITOR_H
 
 #include <QTextEdit>
+#include <QList>
 
 class QKeyEvent;
 
@@ -17,6 +18,12 @@ protected:
 
 private slots:
   void onTextChanged();
+  void onCursorPositionChanged();
+
+private:
+  int indexOfMatchingClosingParenthesis(const QString& code, int index);
+  int indexOfMatchingOpeningParenthesis(const QString& code, int index);
+  void highlightIndices(QList<int> indices);
 };
 
 #endif
