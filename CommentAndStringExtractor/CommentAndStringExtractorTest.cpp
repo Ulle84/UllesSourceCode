@@ -31,6 +31,7 @@ CommentAndStringExtractorTest::CommentAndStringExtractorTest()
 void CommentAndStringExtractorTest::lineComments()
 {
   QString code = "//test001\n//test002 \"not a string\"";
+  //QString code = "//test001\n//test002 not a string";
   CommentAndStringExtractor commentAndStringExtractor;
   commentAndStringExtractor.process(code);
 
@@ -39,6 +40,7 @@ void CommentAndStringExtractorTest::lineComments()
   QStringList expectedLineComments;
   expectedLineComments << "test001";
   expectedLineComments << "test002 \"not a string\"";
+  //expectedLineComments << "test002 not a string";
 
   QCOMPARE(commentAndStringExtractor.m_lineComments, expectedLineComments);
 }

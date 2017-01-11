@@ -15,6 +15,9 @@ private:
   QChar peekPrevious(const QString& code, int index);
   QChar peekNext(const QString& code, int index);
 
+  QString parseNextWord(const QString& code, int& index);
+  QString parsePreviousWord(const QString& code, int& index);
+
   enum class ParseState
   {
     Normal,
