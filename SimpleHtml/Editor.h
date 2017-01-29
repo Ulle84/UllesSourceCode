@@ -23,7 +23,15 @@ private slots:
 private:
   int indexOfMatchingClosingParenthesis(const QString& code, int index);
   int indexOfMatchingOpeningParenthesis(const QString& code, int index);
-  void highlightIndices(QList<int> indices);
+
+  enum class HighlightingType
+  {
+    MachtingParenthesis,
+    MismachtingParenthesis
+  };
+
+
+  void highlightIndices(QList<int> indices, HighlightingType highlightingType);
 };
 
 #endif

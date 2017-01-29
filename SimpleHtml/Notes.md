@@ -1,5 +1,9 @@
 title(SimpleHTML)
 
+ToDo
+* find matching parenthesis
+* find surrounding tag
+
 SimpleHTML
 * Ziel: einfach, einheitlich, kompakt und schnell schreiben, ohne viel neue Syntax zu erlernen.
 * Output: HTML

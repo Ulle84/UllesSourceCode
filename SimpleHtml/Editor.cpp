@@ -100,17 +100,25 @@ void Editor::onCursorPositionChanged()
   if (toPlainText().at(cursor.position()) == '(')
   {
     int index = indexOfMatchingClosingParenthesis(toPlainText(), cursor.position());
-    if (index != -1)
+    if (index == -1)
     {
-      highlightIndices(QList<int>() << cursor.position() << index);
+      highlightIndices(QList<int>() << cursor.position(), HighlightingType::MismachtingParenthesis);
+    }
+    else
+    {
+      highlightIndices(QList<int>() << cursor.position() << index, HighlightingType::MachtingParenthesis);
     }
   }
   else if (toPlainText().at(cursor.position()) == ')')
   {
     int index = indexOfMatchingOpeningParenthesis(toPlainText(), cursor.position());
-    if (index != -1)
+    if (index == -1)
     {
-      highlightIndices(QList<int>() << cursor.position() << index);
+      highlightIndices(QList<int>() << cursor.position(), HighlightingType::MismachtingParenthesis);
+    }
+    else
+    {
+      highlightIndices(QList<int>() << cursor.position() << index, HighlightingType::MachtingParenthesis);
     }
   }
   else
@@ -165,13 +173,22 @@ int Editor::indexOfMatchingOpeningParenthesis(const QString &code, int index)
   return -1;
 }
 
-void Editor::highlightIndices(QList<int> indices)
+void Editor::highlightIndices(QList<int> indices, HighlightingType highlightingType)
 {
   QList<QTextEdit::ExtraSelection> selections;
 
   QTextEdit::ExtraSelection selection;
   QTextCharFormat format = selection.format;
-  format.setBackground(Qt::green);
+
+  if (highlightingType == HighlightingType::MachtingParenthesis)
+  {
+    format.setBackground(Qt::green);
+  }
+  else if (highlightingType == HighlightingType::MismachtingParenthesis)
+  {
+    format.setBackground(Qt::red);
+  }
+
   selection.format = format;
 
   QTextCursor cursor = textCursor();
