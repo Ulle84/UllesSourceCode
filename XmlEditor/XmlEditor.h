@@ -16,7 +16,7 @@ public:
   ~XmlEditor();
 
 protected:
-  virtual void keyPressEvent(QKeyEvent *e) override;
+  void keyPressEvent(QKeyEvent *e) override;
 
 private slots:
   void onTextChanged();
