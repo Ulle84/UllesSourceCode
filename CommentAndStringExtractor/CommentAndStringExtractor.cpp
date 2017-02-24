@@ -48,6 +48,7 @@ void CommentAndStringExtractor::process(QString &code)
       {
         m_strings.append(code.mid(startIndex, i - startIndex));
         code.remove(startIndex, i - startIndex);
+        i = startIndex;
         parseState = ParseState::Normal;
         continue;
       }
@@ -59,6 +60,7 @@ void CommentAndStringExtractor::process(QString &code)
       {
         m_lineComments.append(code.mid(startIndex, i - startIndex));
         code.remove(startIndex, i - startIndex);
+        i = startIndex;
         parseState = ParseState::Normal;
         continue;
       }
@@ -66,6 +68,7 @@ void CommentAndStringExtractor::process(QString &code)
       {
         m_lineComments.append(code.mid(startIndex, i - startIndex + 1));
         code.remove(startIndex, i - startIndex + 1);
+        i = startIndex;
         parseState = ParseState::Normal;
         continue;
       }
@@ -77,8 +80,8 @@ void CommentAndStringExtractor::process(QString &code)
       {
         m_blockComments.append(code.mid(startIndex, i - startIndex));
         code.remove(startIndex, i - startIndex);
+        i = startIndex;
         parseState = ParseState::Normal;
-        i++;
         continue;
       }
     }
@@ -102,7 +105,7 @@ QChar CommentAndStringExtractor::peekPrevious(const QString &code, int index)
 
 QChar CommentAndStringExtractor::peekNext(const QString &code, int index)
 {
-  if (index >= code.length())
+  if (index + 1 >= code.length())
   {
     return QChar('\0');
   }

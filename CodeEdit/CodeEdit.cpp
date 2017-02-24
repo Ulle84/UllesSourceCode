@@ -17,6 +17,60 @@ CodeEdit::CodeEdit(QWidget *parent) :
 
 }
 
+void CodeEdit::searchText(const QString &text, bool caseSenstive)
+{
+  m_searchText = text;
+
+  //ui->results->setVisible(!m_searchText.isEmpty());
+
+  // TODO is this correct?
+  document->undo();
+
+  m_startPositions.clear();
+
+  if (m_searchText.isEmpty())
+  {
+    updateResultLabel(-1);
+    return;
+  }
+
+  QTextCursor highlightCursor(document);
+  QTextCursor cursor(document);
+
+  cursor.beginEditBlock();
+
+  QTextCharFormat plainFormat(highlightCursor.charFormat());
+  QTextCharFormat colorFormat = plainFormat;
+  colorFormat.setForeground(Qt::red);
+
+  while (!highlightCursor.isNull() && !highlightCursor.atEnd())
+  {
+    highlightCursor = document->find(m_searchText, highlightCursor, caseSenstive ? QTextDocument::FindCaseSensitively : QTextDocument::FindFlags());
+
+    if (!highlightCursor.isNull())
+    {
+      highlightCursor.mergeCharFormat(colorFormat);
+      m_startPositions.append(highlightCursor.position() - m_searchText.length());
+    }
+  }
+
+  cursor.endEditBlock();
+
+  if (!m_startPositions.isEmpty())
+  {
+    markSearchResult(0);
+  }
+  else
+  {
+    updateResultLabel(-1);
+  }
+
+
+
+
+  //ui->results->setVisible(!m_startPositions.isEmpty());
+}
+
 void CodeEdit::keyPressEvent(QKeyEvent *e)
 {
   if (e->key() == Qt::Key_Tab)

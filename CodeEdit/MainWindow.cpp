@@ -33,3 +33,8 @@ MainWindow::~MainWindow()
   delete m_syntaxHighlighter;
   delete ui;
 }
+
+void MainWindow::on_lineEdit_textChanged(const QString &arg1)
+{
+
+}

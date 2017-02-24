@@ -2,6 +2,7 @@
 #define CODEEDIT_H
 
 #include <QTextEdit>
+#include <QString>
 
 class CodeEdit : public QTextEdit
 {
@@ -9,6 +10,8 @@ class CodeEdit : public QTextEdit
 
 public:
   explicit CodeEdit(QWidget *parent = 0);
+
+  void searchText(const QString& text, bool caseSenstive);
 
 protected:
   virtual void keyPressEvent(QKeyEvent *e) override;
@@ -27,6 +30,8 @@ private:
   };
 
   void highlightIndices(QList<int> indices, HighlightingType highlightingType);
+
+  QString m_searchText;
 };
 
 #endif
