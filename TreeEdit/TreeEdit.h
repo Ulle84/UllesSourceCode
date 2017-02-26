@@ -25,6 +25,8 @@ public:
   QByteArray headerState() const;
   void setHeaderState(const QByteArray& headerState);
 
+  void setMaxIndentation(unsigned int maxIndentation);
+
 private slots:
   void on_lineEditSearch_textChanged(const QString &arg1);
 
@@ -33,6 +35,8 @@ private:
 
   TreeModel* m_treeModel;
   ProxyModel* m_proxyModel;
+
+  unsigned int m_maxIndentation = std::numeric_limits<unsigned int>::max();
 };
 
 #endif

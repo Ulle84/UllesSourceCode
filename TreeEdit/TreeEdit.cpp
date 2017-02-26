@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QDebug>
 
 #include "TreeModel.h"
 #include "ProxyModel.h"
@@ -58,6 +59,19 @@ bool TreeEdit::addChildNode()
   QModelIndex index = ui->treeView->selectionModel()->currentIndex();
   QAbstractItemModel *model = ui->treeView->model();
 
+  int currentIndentation = 0;
+  QModelIndex parent = index.parent();
+  while (parent.isValid())
+  {
+    currentIndentation++;
+    parent = parent.parent();
+  }
+
+  if (currentIndentation >= m_maxIndentation)
+  {
+    return false;
+  }
+
   if (model->columnCount(index) == 0) {
       if (!model->insertColumn(0, index))
           return false;
@@ -97,6 +111,11 @@ QByteArray TreeEdit::headerState() const
 void TreeEdit::setHeaderState(const QByteArray &headerState)
 {
   ui->treeView->header()->restoreState(headerState);
+}
+
+void TreeEdit::setMaxIndentation(unsigned int maxIndentation)
+{
+  m_maxIndentation = maxIndentation;
 }
 
 void TreeEdit::on_lineEditSearch_textChanged(const QString &searchText)
