@@ -98,3 +98,8 @@ void TreeEdit::setHeaderState(const QByteArray &headerState)
 {
   ui->treeView->header()->restoreState(headerState);
 }
+
+void TreeEdit::on_lineEditSearch_textChanged(const QString &searchText)
+{
+    m_proxyModel->setSearchString(searchText);
+}

@@ -25,6 +25,9 @@ public:
   QByteArray headerState() const;
   void setHeaderState(const QByteArray& headerState);
 
+private slots:
+  void on_lineEditSearch_textChanged(const QString &arg1);
+
 private:
   Ui::TreeEdit *ui;
 

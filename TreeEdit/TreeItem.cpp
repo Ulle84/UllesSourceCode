@@ -106,3 +106,24 @@ bool TreeItem::setData(int column, const QVariant &value)
     m_itemData[column] = value;
     return true;
 }
+
+bool TreeItem::stringContained(const QString &searchString, Qt::CaseSensitivity caseSensitivity)
+{
+  for (auto it : m_itemData)
+  {
+    if (it.toString().contains(searchString, caseSensitivity))
+    {
+      return true;
+    }
+  }
+
+  for (auto it : m_childItems)
+  {
+    if (it->stringContained(searchString, caseSensitivity))
+    {
+      return true;
+    }
+  }
+
+  return false;
+}

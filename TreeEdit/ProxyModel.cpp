@@ -13,10 +13,7 @@ ProxyModel::ProxyModel(QObject* parent) :
 
 bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-  return true;
-
-  // TODO implement functionality
-
+  return static_cast<TreeItem*>(sourceModel()->index(sourceRow, 0, sourceParent).internalPointer())->stringContained(m_searchString);
 
   /*QList<TreeItem*> treeItems;
 
@@ -24,7 +21,7 @@ bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
 
   while (!treeItems.isEmpty())
   {
-    if (treeItems.first()->data(0).toString().contains(m_searchString, Qt::CaseInsensitive))
+    if (treeItems.first()->stringContained(m_searchString))
     {
       return true;
     }

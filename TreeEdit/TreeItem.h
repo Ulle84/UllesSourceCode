@@ -24,6 +24,8 @@ public:
     int childNumber() const;
     bool setData(int column, const QVariant &value);
 
+    bool stringContained(const QString& searchString, Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
+
 private:
     QList<TreeItem*> m_childItems;
     QVector<QVariant> m_itemData;
