@@ -100,6 +100,8 @@ QString TreeItem::toString(int indentationLevel)
   {
     string.append((*it)->toString(indentationLevel + 1));
   }
+
+  return string;
 }
 
 bool TreeItem::removeChildren(int position, int count)
