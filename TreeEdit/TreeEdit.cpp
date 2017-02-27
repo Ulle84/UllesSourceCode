@@ -51,19 +51,24 @@ bool TreeEdit::addNode()
   return true;
 }
 
+int TreeEdit::indentation(const QModelIndex& modelIndex)
+{
+  int indent = 0;
+  QModelIndex parent = modelIndex.parent();
+  while (parent.isValid())
+  {
+    indent++;
+    parent = parent.parent();
+  }
+
+  return indent;
+}
+
 bool TreeEdit::addChildNode()
 {
   QModelIndex index = ui->treeView->selectionModel()->currentIndex();
 
-  unsigned int currentIndentation = 0;
-  QModelIndex parent = index.parent();
-  while (parent.isValid())
-  {
-    currentIndentation++;
-    parent = parent.parent();
-  }
-
-  if (currentIndentation >= m_maxIndentation)
+  if (indentation(index) >= m_maxIndentation)
   {
     return false;
   }
@@ -110,15 +115,28 @@ bool TreeEdit::moveUp()
 
 bool TreeEdit::moveLeft()
 {
-  qDebug() << "move left";
-  return true;
+  QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+
+  if (indentation(index) <= 0)
+  {
+    qDebug() << "moving left not possible - already a top level element";
+    return false;
+  }
+
+  return m_treeModel->moveLeft(selectedIndex());
 }
 
 bool TreeEdit::moveRight()
 {
-  // check max indentation first
-  qDebug() << "move right";
-  return true;
+  QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+
+  if (indentation(index) >= m_maxIndentation)
+  {
+    qDebug() << "moving right not possible because maxIndentation level of" << m_maxIndentation << "is reached";
+    return false;
+  }
+
+  return m_treeModel->moveRight(selectedIndex());
 }
 
 QByteArray TreeEdit::headerState() const

@@ -33,8 +33,11 @@ public:
     bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
+    // TODO make enum and move-method public and delete this methods?
     bool moveUp(const QModelIndex &index);
     bool moveDown(const QModelIndex &index);
+    bool moveRight(const QModelIndex &index);
+    bool moveLeft(const QModelIndex &index);
 
 private:
     enum class MoveDirection

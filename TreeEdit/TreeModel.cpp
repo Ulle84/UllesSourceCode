@@ -237,8 +237,20 @@ bool TreeModel::moveDown(const QModelIndex &index)
   return move(index, MoveDirection::Down);
 }
 
+bool TreeModel::moveRight(const QModelIndex &index)
+{
+  return move(index, MoveDirection::Right);
+}
+
+bool TreeModel::moveLeft(const QModelIndex &index)
+{
+  return move(index, MoveDirection::Left);
+}
+
 bool TreeModel::move(const QModelIndex &index, MoveDirection moveDirection)
 {
+  // TODO moveDirection right and left
+
   int currentPosition = index.row();
   int newPosition = 0;
   TreeItem* treeItem = getItem(index.parent());
@@ -256,6 +268,13 @@ bool TreeModel::move(const QModelIndex &index, MoveDirection moveDirection)
       return false;
 
     newPosition = currentPosition + 2;
+  }
+  else if (moveDirection == MoveDirection::Right)
+  {
+    if (currentPosition == 0)
+      return false;
+
+    //newPosition = currentPosition - 1;
   }
 
   if (!beginMoveRows(index.parent(), currentPosition, currentPosition, index.parent(), newPosition))

@@ -37,6 +37,7 @@ private slots:
 
 private:
   QModelIndex selectedIndex();
+  int indentation(const QModelIndex& modelIndex);
 
   Ui::TreeEdit *ui;
 

@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeEdit->setHeaderState(m_settings->value("headerState").toByteArray());
   }
 
-  ui->treeEdit->setMaxIndentation(10);
+  ui->treeEdit->setMaxIndentation(2);
 }
 
 MainWindow::~MainWindow()
