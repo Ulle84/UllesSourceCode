@@ -22,6 +22,11 @@ public:
   bool addChildNode();
   bool removeNode();
 
+  bool moveDown();
+  bool moveUp();
+  bool moveLeft();
+  bool moveRight();
+
   QByteArray headerState() const;
   void setHeaderState(const QByteArray& headerState);
 
@@ -31,6 +36,8 @@ private slots:
   void on_lineEditSearch_textChanged(const QString &arg1);
 
 private:
+  QModelIndex selectedIndex();
+
   Ui::TreeEdit *ui;
 
   TreeModel* m_treeModel;

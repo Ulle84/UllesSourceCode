@@ -25,6 +25,7 @@ public:
     bool setData(int column, const QVariant &value);
 
     bool stringContained(const QString& searchString, Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
+    bool moveChild(int currentPosition, int newPosition);
 
 private:
     QList<TreeItem*> m_childItems;

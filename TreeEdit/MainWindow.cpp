@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
   {
     ui->treeEdit->setHeaderState(m_settings->value("headerState").toByteArray());
   }
+
+  ui->treeEdit->setMaxIndentation(10);
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +33,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAddNewNode_triggered()
 {
-    ui->treeEdit->addNode();
+  ui->treeEdit->addNode();
 }
 
 void MainWindow::on_actionAddNewChildNode_triggered()
@@ -41,5 +43,25 @@ void MainWindow::on_actionAddNewChildNode_triggered()
 
 void MainWindow::on_actionRemoveNode_triggered()
 {
-    ui->treeEdit->removeNode();
+  ui->treeEdit->removeNode();
+}
+
+void MainWindow::on_actionMoveUp_triggered()
+{
+  ui->treeEdit->moveUp();
+}
+
+void MainWindow::on_actionMoveDown_triggered()
+{
+  ui->treeEdit->moveDown();
+}
+
+void MainWindow::on_actionMoveLeft_triggered()
+{
+  ui->treeEdit->moveLeft();
+}
+
+void MainWindow::on_actionMoveRight_triggered()
+{
+  ui->treeEdit->moveRight();
 }

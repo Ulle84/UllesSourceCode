@@ -36,6 +36,10 @@
     <addaction name="actionAddNewNode"/>
     <addaction name="actionAddNewChildNode"/>
     <addaction name="actionRemoveNode"/>
+    <addaction name="actionMoveUp"/>
+    <addaction name="actionMoveDown"/>
+    <addaction name="actionMoveLeft"/>
+    <addaction name="actionMoveRight"/>
    </widget>
    <addaction name="menuEdit"/>
   </widget>
@@ -70,6 +74,38 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Backspace</string>
+   </property>
+  </action>
+  <action name="actionMoveUp">
+   <property name="text">
+    <string>Move up</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Up</string>
+   </property>
+  </action>
+  <action name="actionMoveDown">
+   <property name="text">
+    <string>Move down</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Down</string>
+   </property>
+  </action>
+  <action name="actionMoveLeft">
+   <property name="text">
+    <string>Move left</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Left</string>
+   </property>
+  </action>
+  <action name="actionMoveRight">
+   <property name="text">
+    <string>Move right</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Right</string>
    </property>
   </action>
  </widget>

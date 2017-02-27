@@ -33,8 +33,12 @@ public:
     bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
+    bool moveUp(const QModelIndex &index);
+    bool moveDown(const QModelIndex &index);
+
 private:
     void setupModelData(const QStringList &lines, TreeItem *parent);
+    bool move(const QModelIndex &index, int currentPosition, int newPosition);
     TreeItem *getItem(const QModelIndex &index) const;
 
     TreeItem *m_rootItem;
