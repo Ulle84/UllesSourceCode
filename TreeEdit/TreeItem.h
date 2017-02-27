@@ -20,9 +20,12 @@ public:
     bool insertColumns(int position, int columns);
     TreeItem *parent();
     bool removeChildren(int position, int count);
+    TreeItem* takeChild(int position);
     bool removeColumns(int position, int columns);
     int childNumber() const;
     bool setData(int column, const QVariant &value);
+    void appendChild(TreeItem* child);
+    bool insertChild(int position, TreeItem* child);
 
     bool stringContained(const QString& searchString, Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
     bool moveChild(int currentPosition, int newPosition);

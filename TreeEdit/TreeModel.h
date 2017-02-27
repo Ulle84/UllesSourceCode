@@ -48,7 +48,7 @@ private:
       Right
     };
 
-    bool move (const QModelIndex &index, MoveDirection moveDirection);
+    bool move (const QModelIndex &modelIndex, MoveDirection moveDirection);
     void setupModelData(const QStringList &lines, TreeItem *parent);
 
     TreeItem *getItem(const QModelIndex &index) const;

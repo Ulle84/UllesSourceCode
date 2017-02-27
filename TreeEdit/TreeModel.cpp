@@ -247,13 +247,16 @@ bool TreeModel::moveLeft(const QModelIndex &index)
   return move(index, MoveDirection::Left);
 }
 
-bool TreeModel::move(const QModelIndex &index, MoveDirection moveDirection)
+bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
 {
   // TODO moveDirection right and left
+  // TODO select item after moving around
+  // TODO new node and new child node have different selecting behaviour after adding
 
-  int currentPosition = index.row();
+  int currentPosition = modelIndex.row();
   int newPosition = 0;
-  TreeItem* treeItem = getItem(index.parent());
+  TreeItem* treeItem = getItem(modelIndex.parent());
+  QModelIndex destinationParent = modelIndex.parent();
 
   if (moveDirection == MoveDirection::Up)
   {
@@ -274,13 +277,29 @@ bool TreeModel::move(const QModelIndex &index, MoveDirection moveDirection)
     if (currentPosition == 0)
       return false;
 
-    //newPosition = currentPosition - 1;
+    destinationParent = index(modelIndex.row() - 1, modelIndex.column(), destinationParent);
+  }
+  else if (moveDirection == MoveDirection::Left)
+  {
+    destinationParent = destinationParent.parent();
+    newPosition = 0; // TODO calculate depending on parent row
   }
 
-  if (!beginMoveRows(index.parent(), currentPosition, currentPosition, index.parent(), newPosition))
+  if (!beginMoveRows(modelIndex.parent(), currentPosition, currentPosition, destinationParent, newPosition))
     return false;
 
-  treeItem->moveChild(currentPosition, moveDirection == MoveDirection::Down ? newPosition - 1 : newPosition);
+  if (moveDirection == MoveDirection::Down || moveDirection == MoveDirection::Up)
+  {
+    treeItem->moveChild(currentPosition, moveDirection == MoveDirection::Down ? newPosition - 1 : newPosition);
+  }
+  else if (moveDirection == MoveDirection::Right)
+  {
+    getItem(destinationParent)->appendChild(treeItem->takeChild(currentPosition));
+  }
+  else if (moveDirection == MoveDirection::Left)
+  {
+    getItem(destinationParent)->insertChild(newPosition, treeItem->takeChild(currentPosition));
+  }
 
   endMoveRows();
 

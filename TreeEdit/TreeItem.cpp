@@ -84,6 +84,11 @@ bool TreeItem::removeChildren(int position, int count)
   return true;
 }
 
+TreeItem *TreeItem::takeChild(int position)
+{
+  return m_childItems.takeAt(position);
+}
+
 bool TreeItem::removeColumns(int position, int columns)
 {
   if (position < 0 || position + columns > m_itemData.size())
@@ -105,6 +110,21 @@ bool TreeItem::setData(int column, const QVariant &value)
 
   m_itemData[column] = value;
   return true;
+}
+
+void TreeItem::appendChild(TreeItem *child)
+{
+  m_childItems.append(child);
+}
+
+bool TreeItem::insertChild(int position, TreeItem *child)
+{
+  if (position < 0 || position > m_childItems.length())
+  {
+    return false;
+  }
+
+  m_childItems.insert(position, child);
 }
 
 bool TreeItem::stringContained(const QString &searchString, Qt::CaseSensitivity caseSensitivity)

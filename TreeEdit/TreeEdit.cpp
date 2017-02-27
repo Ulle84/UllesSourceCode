@@ -132,7 +132,7 @@ bool TreeEdit::moveRight()
 
   if (indentation(index) >= m_maxIndentation)
   {
-    qDebug() << "moving right not possible because maxIndentation level of" << m_maxIndentation << "is reached";
+    qDebug() << "moving right not possible - max indentation level of" << m_maxIndentation << "reached";
     return false;
   }
 
