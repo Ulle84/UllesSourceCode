@@ -37,8 +37,17 @@ public:
     bool moveDown(const QModelIndex &index);
 
 private:
+    enum class MoveDirection
+    {
+      Up,
+      Down,
+      Left,
+      Right
+    };
+
+    bool move (const QModelIndex &index, MoveDirection moveDirection);
     void setupModelData(const QStringList &lines, TreeItem *parent);
-    bool move(const QModelIndex &index, int currentPosition, int newPosition);
+
     TreeItem *getItem(const QModelIndex &index) const;
 
     TreeItem *m_rootItem;

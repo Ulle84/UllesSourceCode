@@ -229,29 +229,39 @@ void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
 
 bool TreeModel::moveUp(const QModelIndex &index)
 {
-  int currentPosition = index.row();
-
-  if (currentPosition == 0)
-    return false;
-
-  int newPosition = currentPosition - 1;
-
-  return move(index.parent(), currentPosition, newPosition);
+  return move(index, MoveDirection::Up);
 }
 
 bool TreeModel::moveDown(const QModelIndex &index)
 {
-  // TODO implement move down
-  return false;
+  return move(index, MoveDirection::Down);
 }
 
-bool TreeModel::move(const QModelIndex &index, int currentPosition, int newPosition)
+bool TreeModel::move(const QModelIndex &index, MoveDirection moveDirection)
 {
-  if (!beginMoveRows(index, currentPosition, currentPosition, index, newPosition))
+  int currentPosition = index.row();
+  int newPosition = 0;
+  TreeItem* treeItem = getItem(index.parent());
+
+  if (moveDirection == MoveDirection::Up)
+  {
+    if (currentPosition == 0)
+      return false;
+
+    newPosition = currentPosition - 1;
+  }
+  else if (moveDirection == MoveDirection::Down)
+  {
+    if (currentPosition >= treeItem->childCount() - 1)
+      return false;
+
+    newPosition = currentPosition + 2;
+  }
+
+  if (!beginMoveRows(index.parent(), currentPosition, currentPosition, index.parent(), newPosition))
     return false;
 
-  TreeItem* treeItem = getItem(index);
-  treeItem->moveChild(currentPosition, newPosition);
+  treeItem->moveChild(currentPosition, moveDirection == MoveDirection::Down ? newPosition - 1 : newPosition);
 
   endMoveRows();
 
