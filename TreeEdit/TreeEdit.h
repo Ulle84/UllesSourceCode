@@ -3,11 +3,18 @@
 
 #include <QWidget>
 
+// TODO move left does not work correctly
+// TODO move right does not work correctly
+// TODO save to file
+// TODO load from file
+// TODO store state of collapsed
+
 class TreeModel;
 class ProxyModel;
 
-namespace Ui {
-class TreeEdit;
+namespace Ui
+{
+  class TreeEdit;
 }
 
 class TreeEdit : public QWidget
