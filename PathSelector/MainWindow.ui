@@ -16,7 +16,17 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="PathSelector" name="widget" native="true"/>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>clear history</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="PathSelector" name="pathSelector1" native="true"/>
+    </item>
+    <item>
+     <widget class="PathSelector" name="pathSelector2" native="true"/>
     </item>
    </layout>
   </widget>

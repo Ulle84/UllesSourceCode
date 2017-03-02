@@ -18,11 +18,35 @@ PathSelector::~PathSelector()
 bool PathSelector::setPath(const QString &path)
 {
   ui->comboBox->setCurrentText(path);
+  ui->comboBox->insertItem(0, ui->comboBox->currentText());
 }
 
 QString PathSelector::path()
 {
   return ui->comboBox->currentText();
+}
+
+void PathSelector::setPathType(PathSelector::PathType pathType)
+{
+  m_pathType = pathType;
+}
+
+void PathSelector::setLabelText(const QString &text)
+{
+  ui->label->setText(text);
+}
+
+void PathSelector::setButtonText(const QString &text)
+{
+  ui->pushButton->setText(text);
+}
+
+void PathSelector::clearHistory(int leftItems)
+{
+  while (ui->comboBox->count() > leftItems)
+  {
+    ui->comboBox->removeItem(leftItems);
+  }
 }
 
 /*void PathSelector::on_lineEdit_textChanged(const QString& path)
@@ -36,43 +60,19 @@ QString PathSelector::path()
 
 void PathSelector::on_pushButton_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("select file"), ui->comboBox->currentText());
+  QString path;
 
-  if (!fileName.isEmpty())
+  if (m_pathType == PathType::File)
   {
-    ui->comboBox->setCurrentText(fileName);
-    ui->comboBox->insertItem(0, ui->comboBox->currentText());
-
-    /*if (ui->comboBox->currentText() != fileName)
-    {
-      if (!ui->comboBox->currentText().isEmpty())
-        ui->comboBox->insertItem(0, ui->comboBox->currentText());
-      ui->comboBox->setCurrentText(fileName);
-    }*/
-
+    path = QFileDialog::getOpenFileName(this, tr("select file"), ui->comboBox->currentText());
   }
-}
-
-void PathSelector::on_comboBox_currentIndexChanged(int index)
-{
-
-  //ui->comboBox->mov
-}
-
-void PathSelector::on_comboBox_activated(int index)
-{
-  /*if (index < 1)
+  else if (m_pathType == PathType::Directory)
   {
-    return;
+    path = QFileDialog::getExistingDirectory(this, tr("select directory"), ui->comboBox->currentText());
   }
 
-  QString currentText = ui->comboBox->itemText(index);
-  ui->comboBox->removeItem(index);
-  ui->comboBox->insertItem(0, currentText);*/
-}
-
-void PathSelector::on_comboBox_activated(const QString &selectedText)
-{
-    //ui->comboBox->insertItem(0, selectedText);
-
+  if (!path.isEmpty())
+  {
+    setPath(path);
+  }
 }

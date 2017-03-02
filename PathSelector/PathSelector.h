@@ -1,10 +1,10 @@
 #ifndef PATHSELECTOR_H
 #define PATHSELECTOR_H
 
-// TODO order items in combobox by last usage - latest should be on top
-// TODO provide clearHistory method
+// TODO order items in combobox by last usage - latest should be on top - not possible?
 // TODO save state
 // TODO load state
+// TODO set background color of lineEdit to red, if path does not exist
 
 /* Idea
    instead of combobox:
@@ -35,17 +35,24 @@ public:
   bool setPath(const QString& path);
   QString path();
 
+  enum class PathType
+  {
+    Directory,
+    File
+  };
+  void setPathType(PathType pathType);
+
+  void setLabelText(const QString& text);
+  void setButtonText(const QString& text);
+
+  void clearHistory(int leftItems = 0);
+
 private slots:
-  //void on_lineEdit_textChanged(const QString& path);
   void on_pushButton_clicked();
-  void on_comboBox_currentIndexChanged(int index);
-
-  void on_comboBox_activated(int index);
-
-  void on_comboBox_activated(const QString &selectedText);
 
 private:
   Ui::PathSelector *ui;
+  PathType m_pathType = PathType::Directory;
 };
 
-#endif // PATHSELECTOR_H
+#endif
