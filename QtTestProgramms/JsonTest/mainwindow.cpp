@@ -60,13 +60,29 @@ QByteArray MainWindow::createTestObjectString()
   jsonSubObject["string"] = QString("helloWorld");
 
   jsonObject["arrayTest"] = jsonArray;
+
+  QJsonArray jsonArrayMixed;
+  jsonArrayMixed.append(100);
+  jsonArrayMixed.append(10.0);
+  jsonArrayMixed.append(true);
+  jsonArrayMixed.append("string");
+
+  QJsonArray jsonArrayOneEntry;
+  jsonArrayOneEntry.append(true);
+
+  QJsonArray jsonArrayObjects;
+  QJsonObject object1;
+  object1["test1"] = "helloWorld";
+  QJsonObject object2;
+  object2["test1"] = true;
+  jsonArrayObjects.append(object1);
+  jsonArrayObjects.append(object2);
+
+  jsonObject["arrayTestMixed"] = jsonArrayMixed;
+
   jsonObject["jsonSubObject"] = jsonSubObject;
-
-  for (int i = 0; i < 3; i++)
-  {
-    qDebug() << jsonObject["arrayTest"].toArray()[i].toDouble();
-  }
-
+  jsonObject["jsonArrayObjects"] = jsonArrayObjects;
+  jsonObject["jsonArrayOneEntry"] = jsonArrayOneEntry;
 
   QJsonDocument jsonDocument(jsonObject);
   return jsonDocument.toJson();

@@ -6,6 +6,7 @@
 
 #include "TreeEdit.h"
 #include "ui_TreeEdit.h"
+#include <QJsonDocument>
 
 TreeEdit::TreeEdit(QWidget *parent) :
   QWidget(parent),
@@ -162,4 +163,10 @@ void TreeEdit::on_lineEditSearch_textChanged(const QString &searchText)
 QModelIndex TreeEdit::selectedIndex()
 {
   return m_proxyModel->mapToSource(ui->treeView->selectionModel()->currentIndex());
+}
+
+void TreeEdit::on_pushButton_clicked()
+{
+  QJsonDocument jsonDocument(m_treeModel->toJson());
+  ui->plainTextEdit->setPlainText(jsonDocument.toJson());
 }

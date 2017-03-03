@@ -1,6 +1,7 @@
 #include "TreeItem.h"
 
 #include <QStringList>
+#include <QJsonArray>
 
 TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parent)
 {
@@ -10,6 +11,31 @@ TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parent)
 TreeItem::~TreeItem()
 {
   qDeleteAll(m_childItems);
+}
+
+QJsonObject TreeItem::toJson()
+{
+  QJsonObject json;
+
+  json["title"] = m_itemData[0].toString();
+  json["description"] = m_itemData[1].toString();
+
+  if (m_childItems.length() > 0)
+  {
+    QJsonArray ja;
+    for (auto it : m_childItems)
+    {
+      ja.append(it->toJson());
+    }
+    json["children"] = ja;
+  }
+
+  return json;
+}
+
+void TreeItem::fromJson(const QJsonObject &json)
+{
+
 }
 
 TreeItem *TreeItem::child(int number)

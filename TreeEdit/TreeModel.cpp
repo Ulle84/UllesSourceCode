@@ -21,6 +21,16 @@ TreeModel::~TreeModel()
   delete m_rootItem;
 }
 
+QJsonObject TreeModel::toJson()
+{
+  return m_rootItem->toJson();
+}
+
+void TreeModel::fromJson(const QJsonObject& json)
+{
+
+}
+
 int TreeModel::columnCount(const QModelIndex & /* parent */) const
 {
   return m_rootItem->columnCount();

@@ -42,6 +42,8 @@ public:
 private slots:
   void on_lineEditSearch_textChanged(const QString &arg1);
 
+  void on_pushButton_clicked();
+
 private:
   QModelIndex selectedIndex();
   int indentation(const QModelIndex& modelIndex);

@@ -4,6 +4,7 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
+#include <QJsonObject>
 
 class TreeItem;
 
@@ -14,6 +15,9 @@ class TreeModel : public QAbstractItemModel
 public:
     TreeModel(const QStringList &headers, const QString &data, QObject *parent = 0);
     ~TreeModel();
+
+    QJsonObject toJson();
+    void fromJson(const QJsonObject& json);
 
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
