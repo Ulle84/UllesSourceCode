@@ -35,7 +35,7 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
     // TODO make enum and move-method public and delete this methods?
-    bool moveUp(const QModelIndex &index);
+    bool moveUp(const QModelIndex &modelIndex);
     bool moveDown(const QModelIndex &index);
     bool moveRight(const QModelIndex &index);
     bool moveLeft(const QModelIndex &index);
@@ -44,6 +44,9 @@ public:
     QJsonObject toJson();
     void writeFile();
     QJsonObject readFile();
+
+signals:
+    void resetRequired();
 
 private:
     enum class MoveDirection

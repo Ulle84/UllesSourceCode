@@ -1,6 +1,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QJsonDocument>
+#include <QInputDialog>
 
 #include "TreeModel.h"
 #include "ProxyModel.h"
@@ -14,12 +15,7 @@ TreeEdit::TreeEdit(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  m_treeModel = new TreeModel(this);
-  m_proxyModel = new ProxyModel(this);
-  m_proxyModel->setSourceModel(m_treeModel);
-
-  ui->treeView->setModel(m_proxyModel);
-  ui->treeView->expandAll();
+  setupModel();
 }
 
 TreeEdit::~TreeEdit()
@@ -30,7 +26,6 @@ TreeEdit::~TreeEdit()
 bool TreeEdit::addNode()
 {
   QModelIndex index = ui->treeView->selectionModel()->currentIndex();
-
 
   if (!m_proxyModel->insertRow(index.row()+1, index.parent()))
     return false;
@@ -70,26 +65,28 @@ int TreeEdit::indentation(const QModelIndex& modelIndex)
   return indent;
 }
 
-
-
 bool TreeEdit::removeNode()
 {
   QModelIndex index = ui->treeView->selectionModel()->currentIndex();
 
   return m_proxyModel->removeRow(index.row(), index.parent());
-
-  //updateActions();
 }
 
 bool TreeEdit::insertColumn()
 {
+  bool inputOk;
+  QString columnName = QInputDialog::getText(this, tr("input column name"), tr("column name"), QLineEdit::Normal, QString(), &inputOk);
+
+  if (!inputOk || columnName.isEmpty())
+  {
+    return false;
+  }
+
   int column = ui->treeView->selectionModel()->currentIndex().column();
 
-  // Insert a column in the parent item.
   bool changed = m_proxyModel->insertColumn(column + 1);
   if (changed)
-      m_proxyModel->setHeaderData(column + 1, Qt::Horizontal, QVariant("[No header]"), Qt::EditRole);
-
+    m_proxyModel->setHeaderData(column + 1, Qt::Horizontal, columnName, Qt::EditRole);
 
   return changed;
 }
@@ -97,12 +94,7 @@ bool TreeEdit::insertColumn()
 bool TreeEdit::removeColumn()
 {
   int column = ui->treeView->selectionModel()->currentIndex().column();
-
-  // Insert columns in each child of the parent item.
   bool changed = m_proxyModel->removeColumn(column);
-
-
-
   return changed;
 }
 
@@ -162,6 +154,25 @@ void TreeEdit::on_lineEditSearch_textChanged(const QString &searchText)
   m_proxyModel->setSearchString(searchText);
 }
 
+void TreeEdit::onTreeViewSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+
+  if (!deselected.isEmpty())
+  {
+    QModelIndex deselectedIndex = m_proxyModel->mapSelectionToSource(deselected).indexes().first();
+
+  }
+
+  if (!selected.isEmpty())
+  {
+    QModelIndex selectedIndex = m_proxyModel->mapSelectionToSource(selected).indexes().first();
+
+    qDebug() << "new selected index:" << selectedIndex;
+    qDebug() << "parent of new selected index:" << selectedIndex.parent();
+    qDebug() << "";
+  }
+}
+
 QModelIndex TreeEdit::selectedIndex()
 {
   return m_proxyModel->mapToSource(ui->treeView->selectionModel()->currentIndex());
@@ -169,21 +180,41 @@ QModelIndex TreeEdit::selectedIndex()
 
 void TreeEdit::on_pushButton_clicked()
 {
-  QJsonDocument jsonDocument(m_treeModel->toJson());
-  ui->plainTextEdit->setPlainText(jsonDocument.toJson());
+
+
+
+
+  // save content of current model - create new model with same content
+  /*m_treeModel->writeFile(); // TODO do directly - not via file
+  TreeModel* treeModel = new TreeModel(this);
+
+  m_proxyModel->setSourceModel(treeModel);
+  ui->treeView->setModel(treeModel);
+  connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TreeEdit::onTreeViewSelectionChanged);
+
+
+
+  delete m_treeModel;
+  m_treeModel = treeModel;*/
 }
 
-void TreeEdit::on_pushButton_2_clicked()
+void TreeEdit::onResetRequired()
 {
-  m_treeModel->writeFile();
+  delete m_treeModel;
+  delete m_proxyModel;
+
+  setupModel();
 }
 
-void TreeEdit::on_pushButton_3_clicked()
+void TreeEdit::setupModel()
 {
-  insertColumn();
-}
+  m_treeModel = new TreeModel(this);
+  m_proxyModel = new ProxyModel(this);
+  m_proxyModel->setSourceModel(m_treeModel);
 
-void TreeEdit::on_pushButton_4_clicked()
-{
-  removeColumn();
+  ui->treeView->setModel(m_proxyModel);
+  ui->treeView->expandAll();
+
+  connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TreeEdit::onTreeViewSelectionChanged);
+  connect(m_treeModel, &TreeModel::resetRequired, this, &TreeEdit::onResetRequired);
 }

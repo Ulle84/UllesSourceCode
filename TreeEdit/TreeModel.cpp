@@ -229,59 +229,76 @@ bool TreeModel::moveLeft(const QModelIndex &index)
 
 bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
 {
-  // TODO moveDirection right and left
-  // TODO select item after moving around
-  // TODO new node and new child node have different selecting behaviour after adding
-
-  int currentPosition = modelIndex.row();
-  int newPosition = 0;
-  TreeItem* treeItem = getItem(modelIndex.parent());
+  int sourcePosition = modelIndex.row();
+  int destinationPosition = 0;
+  QModelIndex sourceParent = modelIndex.parent();
   QModelIndex destinationParent = modelIndex.parent();
 
   if (moveDirection == MoveDirection::Up)
   {
-    if (currentPosition == 0)
+    if (sourcePosition == 0)
       return false;
 
-    newPosition = currentPosition - 1;
+    destinationPosition = sourcePosition - 1;
   }
   else if (moveDirection == MoveDirection::Down)
   {
-    if (currentPosition >= treeItem->childCount() - 1)
+    if (sourcePosition >= getItem(sourceParent)->childCount() - 1)
       return false;
 
-    newPosition = currentPosition + 2;
+    destinationPosition = sourcePosition + 2;
   }
   else if (moveDirection == MoveDirection::Right)
   {
-    if (currentPosition == 0)
+    if (sourcePosition == 0)
+    {
+      qDebug() << "moving right not possible!";
       return false;
+    }
 
-    destinationParent = index(modelIndex.row() - 1, modelIndex.column(), destinationParent);
+    destinationPosition = 0; // TODO define correctly
+    destinationParent = index(sourcePosition - 1, 0, destinationParent);
+    //destinationParent ->
   }
   else if (moveDirection == MoveDirection::Left)
   {
     destinationParent = destinationParent.parent();
-    newPosition = 0; // TODO calculate depending on parent row
+    destinationPosition = 0; // TODO calculate depending on parent row
   }
 
-  if (!beginMoveRows(modelIndex.parent(), currentPosition, currentPosition, destinationParent, newPosition))
+  qDebug() << "sourceParent:" << sourceParent;
+  qDebug() << "sourcePosition:" << sourcePosition;
+  qDebug() << "destinationParent:" << destinationParent;
+  qDebug() << "destinationPosition:" << destinationPosition;
+  qDebug() << "";
+
+
+  // beginMoveRows currently only works if sourceParent == destinationParent
+  if (!beginMoveRows(sourceParent, sourcePosition, sourcePosition, destinationParent, destinationPosition))
+  {
+    qDebug() << "move failed";
     return false;
+  }
+
+
+
 
   if (moveDirection == MoveDirection::Down || moveDirection == MoveDirection::Up)
   {
-    treeItem->moveChild(currentPosition, moveDirection == MoveDirection::Down ? newPosition - 1 : newPosition);
+    getItem(destinationParent)->moveChild(sourcePosition, moveDirection == MoveDirection::Down ? destinationPosition - 1 : destinationPosition);
   }
   else if (moveDirection == MoveDirection::Right)
   {
-    getItem(destinationParent)->appendChild(treeItem->takeChild(currentPosition));
-  }
-  else if (moveDirection == MoveDirection::Left)
-  {
-    getItem(destinationParent)->insertChild(newPosition, treeItem->takeChild(currentPosition));
+    //getItem(destinationParent)->appendChild(getItem(sourceParent)->takeChild(sourcePosition));
+    getItem(destinationParent)->insertChild(0, getItem(sourceParent)->takeChild(sourcePosition));
   }
 
   endMoveRows();
+
+  if (moveDirection == MoveDirection::Right)
+  {
+    emit resetRequired();
+  }
 
   return true;
 }

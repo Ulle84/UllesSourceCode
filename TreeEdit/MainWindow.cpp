@@ -65,3 +65,13 @@ void MainWindow::on_actionMoveRight_triggered()
 {
   ui->treeEdit->moveRight();
 }
+
+void MainWindow::on_actionInsertColunn_triggered()
+{
+  ui->treeEdit->insertColumn();
+}
+
+void MainWindow::on_actionRemoveColumn_triggered()
+{
+  ui->treeEdit->removeColumn();
+}

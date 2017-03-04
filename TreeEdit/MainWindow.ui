@@ -40,6 +40,8 @@
     <addaction name="actionMoveDown"/>
     <addaction name="actionMoveLeft"/>
     <addaction name="actionMoveRight"/>
+    <addaction name="actionInsertColunn"/>
+    <addaction name="actionRemoveColumn"/>
    </widget>
    <addaction name="menuEdit"/>
   </widget>
@@ -106,6 +108,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Right</string>
+   </property>
+  </action>
+  <action name="actionInsertColunn">
+   <property name="text">
+    <string>Insert colunn</string>
+   </property>
+  </action>
+  <action name="actionRemoveColumn">
+   <property name="text">
+    <string>Remove column</string>
    </property>
   </action>
  </widget>

@@ -19,18 +19,14 @@ public:
 
 private slots:
   void on_actionAddNewNode_triggered();
-
   void on_actionAddNewChildNode_triggered();
-
   void on_actionRemoveNode_triggered();
-
   void on_actionMoveUp_triggered();
-
   void on_actionMoveDown_triggered();
-
   void on_actionMoveLeft_triggered();
-
   void on_actionMoveRight_triggered();
+  void on_actionInsertColunn_triggered();
+  void on_actionRemoveColumn_triggered();
 
 private:
   Ui::MainWindow *ui;

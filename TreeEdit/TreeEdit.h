@@ -2,6 +2,7 @@
 #define TREEEDIT_H
 
 #include <QWidget>
+#include <QItemSelection>
 
 // TODO move left does not work correctly
 // TODO move right does not work correctly
@@ -10,6 +11,7 @@
 // TODO store state of collapsed
 // TODO activate/deactivate actions depending on selected tree-item
 // TODO add new column - ask for column header at creation
+// TODO disable search filter before moving
 
 class TreeModel;
 class ProxyModel;
@@ -44,17 +46,13 @@ public:
   void setMaxIndentation(unsigned int maxIndentation);
 
 private slots:
-  void on_lineEditSearch_textChanged(const QString &arg1);
-
+  void on_lineEditSearch_textChanged(const QString &searchText);
+  void onTreeViewSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
   void on_pushButton_clicked();
-
-  void on_pushButton_2_clicked();
-
-  void on_pushButton_3_clicked();
-
-  void on_pushButton_4_clicked();
+  void onResetRequired();
 
 private:
+  void setupModel();
   QModelIndex selectedIndex();
   int indentation(const QModelIndex& modelIndex);
 

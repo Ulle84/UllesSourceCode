@@ -9,7 +9,6 @@ int TreeItem::counter = 0;
 TreeItem::TreeItem(const QJsonObject &json, TreeItem *parent)
 {
   counter++;
-  // TODO call append child directly here?
 
   m_parentItem = parent;
 
@@ -89,7 +88,6 @@ bool TreeItem::insertChildren(int position, int count, int columns)
 
   for (int row = 0; row < count; ++row) {
     QJsonArray attributes;
-    //QVariantList data;
     for (int column = 0; column < columns; ++column) {
       attributes.append(counter);
     }
