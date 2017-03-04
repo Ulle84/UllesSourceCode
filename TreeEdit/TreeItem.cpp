@@ -4,13 +4,18 @@
 
 #include "TreeItem.h"
 
-int TreeItem::counter = 0;
+int TreeItem::m_idCounter = 0;
 
 TreeItem::TreeItem(const QJsonObject &json, TreeItem *parent)
 {
-  counter++;
-
   m_parentItem = parent;
+
+  m_id = json["id"].toInt();
+
+  if (m_id >= m_idCounter)
+  {
+    m_idCounter = m_id + 1;
+  }
 
   if (json.contains("attributes") && json["attributes"].isArray())
   {
@@ -38,6 +43,7 @@ QJsonObject TreeItem::toJson()
 {
   QJsonObject json;
 
+  json["id"] = m_id;
   json["attributes"] = QJsonArray::fromVariantList(m_itemData);
 
   if (m_childItems.length() > 0)
@@ -89,11 +95,12 @@ bool TreeItem::insertChildren(int position, int count, int columns)
   for (int row = 0; row < count; ++row) {
     QJsonArray attributes;
     for (int column = 0; column < columns; ++column) {
-      attributes.append(counter);
+      attributes.append(m_idCounter);
     }
 
     QJsonObject object;
     object["attributes"] = attributes;
+    object["id"] = m_idCounter++;
 
     TreeItem *item = new TreeItem(object, this);
     m_childItems.insert(position, item);
@@ -207,4 +214,9 @@ bool TreeItem::moveChild(int currentPosition, int newPosition)
     return false;
 
   m_childItems.move(currentPosition, newPosition);
+}
+
+int TreeItem::id()
+{
+  return m_id;
 }

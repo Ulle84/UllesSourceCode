@@ -5,6 +5,7 @@
 
 #include "TreeModel.h"
 #include "ProxyModel.h"
+#include "TreeItem.h"
 
 #include "TreeEdit.h"
 #include "ui_TreeEdit.h"
@@ -167,8 +168,12 @@ void TreeEdit::onTreeViewSelectionChanged(const QItemSelection &selected, const 
   {
     QModelIndex selectedIndex = m_proxyModel->mapSelectionToSource(selected).indexes().first();
 
+    //selectedIndex
+
     qDebug() << "new selected index:" << selectedIndex;
     qDebug() << "parent of new selected index:" << selectedIndex.parent();
+    TreeItem *item = static_cast<TreeItem*>(selectedIndex.internalPointer());
+    qDebug() << "id:" << item->id();
     qDebug() << "";
   }
 }
@@ -178,28 +183,11 @@ QModelIndex TreeEdit::selectedIndex()
   return m_proxyModel->mapToSource(ui->treeView->selectionModel()->currentIndex());
 }
 
-void TreeEdit::on_pushButton_clicked()
-{
-
-
-
-
-  // save content of current model - create new model with same content
-  /*m_treeModel->writeFile(); // TODO do directly - not via file
-  TreeModel* treeModel = new TreeModel(this);
-
-  m_proxyModel->setSourceModel(treeModel);
-  ui->treeView->setModel(treeModel);
-  connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TreeEdit::onTreeViewSelectionChanged);
-
-
-
-  delete m_treeModel;
-  m_treeModel = treeModel;*/
-}
-
 void TreeEdit::onResetRequired()
 {
+  m_treeModel->writeFile(); // TODO use something smarter - do not use hard drive
+
+  // TODO is there another way of reseting?
   delete m_treeModel;
   delete m_proxyModel;
 
@@ -217,4 +205,27 @@ void TreeEdit::setupModel()
 
   connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TreeEdit::onTreeViewSelectionChanged);
   connect(m_treeModel, &TreeModel::resetRequired, this, &TreeEdit::onResetRequired);
+}
+
+void TreeEdit::on_pushButton_clicked()
+{
+  qDebug() << "find and mark item with id:" << ui->spinBox->value();
+  qDebug() << "found ids:" << getIds(QModelIndex());
+}
+
+QList<int> TreeEdit::getIds(QModelIndex parent)
+{
+  QList<int> ids;
+
+  int i = 0;
+  QModelIndex modelIndex = m_treeModel->index(i++, 0, parent);
+
+  while (modelIndex.isValid())
+  {
+    ids << static_cast<TreeItem*>(modelIndex.internalPointer())->id();
+    ids << getIds(modelIndex);
+    modelIndex = m_treeModel->index(i++, 0, parent);
+  }
+
+  return ids;
 }

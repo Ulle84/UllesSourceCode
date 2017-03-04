@@ -10,8 +10,6 @@
 class TreeItem
 {
 public:
-  static int counter;
-
   explicit TreeItem(const QJsonObject& json, TreeItem *parent = nullptr);
   ~TreeItem();
 
@@ -35,7 +33,11 @@ public:
   bool stringContained(const QString& searchString, Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
   bool moveChild(int currentPosition, int newPosition);
 
+  int id();
+
 private:
+  static int m_idCounter;
+  int m_id;
   QList<TreeItem*> m_childItems;
   QVariantList m_itemData;
   TreeItem* m_parentItem;

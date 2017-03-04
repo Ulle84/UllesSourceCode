@@ -48,10 +48,12 @@ public:
 private slots:
   void on_lineEditSearch_textChanged(const QString &searchText);
   void onTreeViewSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
-  void on_pushButton_clicked();
   void onResetRequired();
 
+  void on_pushButton_clicked();
+
 private:
+  QList<int> getIds(QModelIndex parent);
   void setupModel();
   QModelIndex selectedIndex();
   int indentation(const QModelIndex& modelIndex);
