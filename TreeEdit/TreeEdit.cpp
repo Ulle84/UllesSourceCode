@@ -209,11 +209,25 @@ void TreeEdit::setupModel()
 
 void TreeEdit::on_pushButton_clicked()
 {
-  qDebug() << "find and mark item with id:" << ui->spinBox->value();
-  qDebug() << "found ids:" << getIds(QModelIndex());
+  selectId(ui->spinBox->value());
 }
 
-QList<int> TreeEdit::getIds(QModelIndex parent)
+void TreeEdit::selectId(int id)
+{
+  qDebug() << "find and mark item with id:" << id;
+  QMap<int, QModelIndex> ids;
+  getAllIds(ids, QModelIndex()); // TODO is there a smarter way?
+  qDebug() << "found ids:" << ids;
+  if (ids.contains(id))
+  {
+    QModelIndex index = m_proxyModel->mapFromSource(ids[id]);
+    ui->treeView->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+  }
+
+}
+
+/*QList<int> TreeEdit::allIds(QModelIndex parent)
 {
   QList<int> ids;
 
@@ -223,9 +237,22 @@ QList<int> TreeEdit::getIds(QModelIndex parent)
   while (modelIndex.isValid())
   {
     ids << static_cast<TreeItem*>(modelIndex.internalPointer())->id();
-    ids << getIds(modelIndex);
+    ids << allIds(modelIndex);
     modelIndex = m_treeModel->index(i++, 0, parent);
   }
 
   return ids;
+}*/
+
+void TreeEdit::getAllIds(QMap<int, QModelIndex>& ids, QModelIndex parent)
+{
+  int i = 0;
+  QModelIndex modelIndex = m_treeModel->index(i++, 0, parent);
+
+  while (modelIndex.isValid())
+  {
+    ids[static_cast<TreeItem*>(modelIndex.internalPointer())->id()] = modelIndex;
+    getAllIds(ids, modelIndex);
+    modelIndex = m_treeModel->index(i++, 0, parent);
+  }
 }
