@@ -10,11 +10,12 @@
 class TreeItem
 {
 public:
-  explicit TreeItem(const QVector<QVariant> &data, TreeItem *parent = 0);
+  static int counter;
+
+  explicit TreeItem(const QJsonObject& json, TreeItem *parent = nullptr);
   ~TreeItem();
 
   QJsonObject toJson();
-  void fromJson(const QJsonObject& json);
 
   TreeItem *child(int number);
   int childCount() const;
@@ -36,7 +37,7 @@ public:
 
 private:
   QList<TreeItem*> m_childItems;
-  QVector<QVariant> m_itemData;
+  QVariantList m_itemData;
   TreeItem* m_parentItem;
 };
 

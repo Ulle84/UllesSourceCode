@@ -13,11 +13,8 @@ class TreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    TreeModel(const QStringList &headers, const QString &data, QObject *parent = 0);
+    TreeModel(QObject *parent = 0);
     ~TreeModel();
-
-    QJsonObject toJson();
-    void fromJson(const QJsonObject& json);
 
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -43,6 +40,11 @@ public:
     bool moveRight(const QModelIndex &index);
     bool moveLeft(const QModelIndex &index);
 
+    // TODO check methods
+    QJsonObject toJson();
+    void writeFile();
+    QJsonObject readFile();
+
 private:
     enum class MoveDirection
     {
@@ -53,11 +55,12 @@ private:
     };
 
     bool move (const QModelIndex &modelIndex, MoveDirection moveDirection);
-    void setupModelData(const QStringList &lines, TreeItem *parent);
-
     TreeItem *getItem(const QModelIndex &index) const;
 
     TreeItem *m_rootItem;
+
+    // TODO this is temporary - needs to be given by constructor?
+    const QString m_fileName = "/Users/Ulle/temp/content.txt";
 };
 
 #endif

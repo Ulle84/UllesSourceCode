@@ -1,12 +1,12 @@
 #include <QFile>
 #include <QDebug>
+#include <QJsonDocument>
 
 #include "TreeModel.h"
 #include "ProxyModel.h"
 
 #include "TreeEdit.h"
 #include "ui_TreeEdit.h"
-#include <QJsonDocument>
 
 TreeEdit::TreeEdit(QWidget *parent) :
   QWidget(parent),
@@ -14,16 +14,8 @@ TreeEdit::TreeEdit(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  QStringList headers;
-  headers << tr("Title") << tr("Description");
-
-  QFile file("/Users/Ulle/Programmierung/UllesSourceCode/TreeEdit/default.txt");
-  file.open(QIODevice::ReadOnly);
-  m_treeModel = new TreeModel(headers, file.readAll());
-  file.close();
-
+  m_treeModel = new TreeModel(this);
   m_proxyModel = new ProxyModel(this);
-
   m_proxyModel->setSourceModel(m_treeModel);
 
   ui->treeView->setModel(m_proxyModel);
@@ -39,15 +31,28 @@ bool TreeEdit::addNode()
 {
   QModelIndex index = ui->treeView->selectionModel()->currentIndex();
 
+
   if (!m_proxyModel->insertRow(index.row()+1, index.parent()))
     return false;
 
-  //updateActions();
+  ui->treeView->selectionModel()->setCurrentIndex(m_proxyModel->index(index.row()+1, 0, index.parent()), QItemSelectionModel::ClearAndSelect);
 
-  for (int column = 0; column < m_proxyModel->columnCount(index.parent()); ++column) {
-    QModelIndex child = m_proxyModel->index(index.row()+1, column, index.parent());
-    m_proxyModel->setData(child, QVariant("[No data]"), Qt::EditRole);
+  return true;
+}
+
+bool TreeEdit::addChildNode()
+{
+  QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+
+  if (indentation(index) >= m_maxIndentation)
+  {
+    return false;
   }
+
+  if (!m_proxyModel->insertRow(0, index))
+    return false;
+
+  ui->treeView->selectionModel()->setCurrentIndex(m_proxyModel->index(0, 0, index), QItemSelectionModel::ClearAndSelect);
 
   return true;
 }
@@ -65,35 +70,7 @@ int TreeEdit::indentation(const QModelIndex& modelIndex)
   return indent;
 }
 
-bool TreeEdit::addChildNode()
-{
-  QModelIndex index = ui->treeView->selectionModel()->currentIndex();
 
-  if (indentation(index) >= m_maxIndentation)
-  {
-    return false;
-  }
-
-  if (m_proxyModel->columnCount(index) == 0) {
-    if (!m_proxyModel->insertColumn(0, index))
-      return false;
-  }
-
-  if (!m_proxyModel->insertRow(0, index))
-    return false;
-
-  for (int column = 0; column < m_proxyModel->columnCount(index); ++column) {
-    QModelIndex child = m_proxyModel->index(0, column, index);
-    m_proxyModel->setData(child, QVariant("[No data]"), Qt::EditRole);
-    if (!m_proxyModel->headerData(column, Qt::Horizontal).isValid())
-      m_proxyModel->setHeaderData(column, Qt::Horizontal, QVariant("[No header]"), Qt::EditRole);
-  }
-
-  ui->treeView->selectionModel()->setCurrentIndex(m_proxyModel->index(0, 0, index), QItemSelectionModel::ClearAndSelect);
-  //updateActions();
-
-  return true;
-}
 
 bool TreeEdit::removeNode()
 {
@@ -102,6 +79,31 @@ bool TreeEdit::removeNode()
   return m_proxyModel->removeRow(index.row(), index.parent());
 
   //updateActions();
+}
+
+bool TreeEdit::insertColumn()
+{
+  int column = ui->treeView->selectionModel()->currentIndex().column();
+
+  // Insert a column in the parent item.
+  bool changed = m_proxyModel->insertColumn(column + 1);
+  if (changed)
+      m_proxyModel->setHeaderData(column + 1, Qt::Horizontal, QVariant("[No header]"), Qt::EditRole);
+
+
+  return changed;
+}
+
+bool TreeEdit::removeColumn()
+{
+  int column = ui->treeView->selectionModel()->currentIndex().column();
+
+  // Insert columns in each child of the parent item.
+  bool changed = m_proxyModel->removeColumn(column);
+
+
+
+  return changed;
 }
 
 bool TreeEdit::moveDown()
@@ -169,4 +171,19 @@ void TreeEdit::on_pushButton_clicked()
 {
   QJsonDocument jsonDocument(m_treeModel->toJson());
   ui->plainTextEdit->setPlainText(jsonDocument.toJson());
+}
+
+void TreeEdit::on_pushButton_2_clicked()
+{
+  m_treeModel->writeFile();
+}
+
+void TreeEdit::on_pushButton_3_clicked()
+{
+  insertColumn();
+}
+
+void TreeEdit::on_pushButton_4_clicked()
+{
+  removeColumn();
 }

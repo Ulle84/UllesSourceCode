@@ -84,6 +84,16 @@ QByteArray MainWindow::createTestObjectString()
   jsonObject["jsonArrayObjects"] = jsonArrayObjects;
   jsonObject["jsonArrayOneEntry"] = jsonArrayOneEntry;
 
+  QVariantList vl;
+  vl.append("test");
+  vl.append(true);
+  vl.append(2);
+  vl.append(3.4);
+
+  QJsonArray ja = QJsonArray::fromVariantList(vl);
+
+  jsonObject["1variantList"] = ja;
+
   QJsonDocument jsonDocument(jsonObject);
   return jsonDocument.toJson();
 }

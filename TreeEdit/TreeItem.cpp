@@ -1,13 +1,35 @@
-#include "TreeItem.h"
-
 #include <QStringList>
 #include <QJsonArray>
+#include <QDebug>
 
-TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parent)
+#include "TreeItem.h"
+
+int TreeItem::counter = 0;
+
+TreeItem::TreeItem(const QJsonObject &json, TreeItem *parent)
 {
+  counter++;
+  // TODO call append child directly here?
+
   m_parentItem = parent;
-  m_itemData = data;
+
+  if (json.contains("attributes") && json["attributes"].isArray())
+  {
+    QJsonArray attributes = json["attributes"].toArray();
+    m_itemData = attributes.toVariantList();
+  }
+
+  if (json.contains("children") && json["children"].isArray())
+  {
+    QJsonArray children = json["children"].toArray();
+    for (auto it : children)
+    {
+      TreeItem* treeItem = new TreeItem(it.toObject(), this);
+      appendChild(treeItem);
+    }
+  }
 }
+
 TreeItem::~TreeItem()
 {
   qDeleteAll(m_childItems);
@@ -17,8 +39,7 @@ QJsonObject TreeItem::toJson()
 {
   QJsonObject json;
 
-  json["title"] = m_itemData[0].toString();
-  json["description"] = m_itemData[1].toString();
+  json["attributes"] = QJsonArray::fromVariantList(m_itemData);
 
   if (m_childItems.length() > 0)
   {
@@ -31,11 +52,6 @@ QJsonObject TreeItem::toJson()
   }
 
   return json;
-}
-
-void TreeItem::fromJson(const QJsonObject &json)
-{
-
 }
 
 TreeItem *TreeItem::child(int number)
@@ -72,8 +88,16 @@ bool TreeItem::insertChildren(int position, int count, int columns)
     return false;
 
   for (int row = 0; row < count; ++row) {
-    QVector<QVariant> data(columns);
-    TreeItem *item = new TreeItem(data, this);
+    QJsonArray attributes;
+    //QVariantList data;
+    for (int column = 0; column < columns; ++column) {
+      attributes.append(counter);
+    }
+
+    QJsonObject object;
+    object["attributes"] = attributes;
+
+    TreeItem *item = new TreeItem(object, this);
     m_childItems.insert(position, item);
   }
 
@@ -121,7 +145,7 @@ bool TreeItem::removeColumns(int position, int columns)
     return false;
 
   for (int column = 0; column < columns; ++column)
-    m_itemData.remove(position);
+    m_itemData.removeAt(position);
 
   foreach (TreeItem *child, m_childItems)
     child->removeColumns(position, columns);
@@ -132,7 +156,9 @@ bool TreeItem::removeColumns(int position, int columns)
 bool TreeItem::setData(int column, const QVariant &value)
 {
   if (column < 0 || column >= m_itemData.size())
+  {
     return false;
+  }
 
   m_itemData[column] = value;
   return true;

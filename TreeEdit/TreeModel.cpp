@@ -3,32 +3,21 @@
 #include "TreeItem.h"
 #include "TreeModel.h"
 
-TreeModel::TreeModel(const QStringList &headers, const QString &data, QObject *parent)
+TreeModel::TreeModel(QObject *parent)
   : QAbstractItemModel(parent)
 {
-  QVector<QVariant> rootData;
-  foreach (QString header, headers)
-  {
-    rootData << header;
-  }
-
-  m_rootItem = new TreeItem(rootData);
-  setupModelData(data.split(QString("\n")), m_rootItem);
+  m_rootItem = new TreeItem(readFile());
 }
 
 TreeModel::~TreeModel()
 {
+  writeFile();
   delete m_rootItem;
 }
 
 QJsonObject TreeModel::toJson()
 {
   return m_rootItem->toJson();
-}
-
-void TreeModel::fromJson(const QJsonObject& json)
-{
-
 }
 
 int TreeModel::columnCount(const QModelIndex & /* parent */) const
@@ -185,56 +174,37 @@ bool TreeModel::setHeaderData(int section, Qt::Orientation orientation, const QV
   return result;
 }
 
-void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
+
+void TreeModel::writeFile()
 {
-  QList<TreeItem*> parents;
-  QList<int> indentations;
-  parents << parent;
-  indentations << 0;
+  QFile file(m_fileName);
 
-  int number = 0;
-
-  while (number < lines.count()) {
-    int position = 0;
-    while (position < lines[number].length()) {
-      if (lines[number].at(position) != ' ')
-        break;
-      ++position;
-    }
-
-    QString lineData = lines[number].mid(position).trimmed();
-
-    if (!lineData.isEmpty()) {
-      // Read the column data from the rest of the line.
-      QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
-      QVector<QVariant> columnData;
-      for (int column = 0; column < columnStrings.count(); ++column)
-        columnData << columnStrings[column];
-
-      if (position > indentations.last()) {
-        // The last child of the current parent is now the new parent
-        // unless the current parent has no children.
-
-        if (parents.last()->childCount() > 0) {
-          parents << parents.last()->child(parents.last()->childCount()-1);
-          indentations << position;
-        }
-      } else {
-        while (position < indentations.last() && parents.count() > 0) {
-          parents.pop_back();
-          indentations.pop_back();
-        }
-      }
-
-      // Append a new item to the current parent's list of children.
-      TreeItem *parent = parents.last();
-      parent->insertChildren(parent->childCount(), 1, m_rootItem->columnCount());
-      for (int column = 0; column < columnData.size(); ++column)
-        parent->child(parent->childCount() - 1)->setData(column, columnData[column]);
-    }
-
-    ++number;
+  if (!file.open(QIODevice::WriteOnly))
+  {
+    qWarning("Couldn't open save file.");
   }
+
+  QJsonDocument jsonDocument(m_rootItem->toJson());
+
+  file.write(jsonDocument.toJson());
+  file.close();
+}
+
+QJsonObject TreeModel::readFile()
+{
+  QFile file(m_fileName);
+
+  if (!file.open(QIODevice::ReadOnly))
+  {
+    qWarning("Couldn't open save file.");
+  }
+
+  QString settings = file.readAll();
+  file.close();
+
+
+  QJsonDocument sd = QJsonDocument::fromJson(settings.toUtf8());
+  return sd.object();
 }
 
 bool TreeModel::moveUp(const QModelIndex &index)

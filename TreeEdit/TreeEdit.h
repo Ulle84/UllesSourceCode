@@ -8,6 +8,8 @@
 // TODO save to file
 // TODO load from file
 // TODO store state of collapsed
+// TODO activate/deactivate actions depending on selected tree-item
+// TODO add new column - ask for column header at creation
 
 class TreeModel;
 class ProxyModel;
@@ -28,6 +30,8 @@ public:
   bool addNode();
   bool addChildNode();
   bool removeNode();
+  bool insertColumn();
+  bool removeColumn();
 
   bool moveDown();
   bool moveUp();
@@ -43,6 +47,12 @@ private slots:
   void on_lineEditSearch_textChanged(const QString &arg1);
 
   void on_pushButton_clicked();
+
+  void on_pushButton_2_clicked();
+
+  void on_pushButton_3_clicked();
+
+  void on_pushButton_4_clicked();
 
 private:
   QModelIndex selectedIndex();
