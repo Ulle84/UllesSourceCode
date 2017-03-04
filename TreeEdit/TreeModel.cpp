@@ -297,7 +297,7 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
 
   if (moveDirection == MoveDirection::Right)
   {
-    emit resetRequired();
+    emit resetRequired(getItem(modelIndex)->id());
   }
 
   return true;

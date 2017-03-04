@@ -183,7 +183,7 @@ QModelIndex TreeEdit::selectedIndex()
   return m_proxyModel->mapToSource(ui->treeView->selectionModel()->currentIndex());
 }
 
-void TreeEdit::onResetRequired()
+void TreeEdit::onResetRequired(int id)
 {
   m_treeModel->writeFile(); // TODO use something smarter - do not use hard drive
 
@@ -192,6 +192,7 @@ void TreeEdit::onResetRequired()
   delete m_proxyModel;
 
   setupModel();
+  selectId(id);
 }
 
 void TreeEdit::setupModel()

@@ -46,7 +46,7 @@ public:
     QJsonObject readFile();
 
 signals:
-    void resetRequired();
+    void resetRequired(int id);
 
 private:
     enum class MoveDirection

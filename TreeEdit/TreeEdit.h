@@ -48,7 +48,7 @@ public:
 private slots:
   void on_lineEditSearch_textChanged(const QString &searchText);
   void onTreeViewSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
-  void onResetRequired();
+  void onResetRequired(int id);
   void on_pushButton_clicked();
 
 private:
