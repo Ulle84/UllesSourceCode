@@ -272,23 +272,34 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
   qDebug() << "";
 
 
-  if (moveDirection == MoveDirection::Down || moveDirection == MoveDirection::Up)
+
+  // beginMoveRows currently only works if sourceParent == destinationParent
+  if (!beginMoveRows(sourceParent, sourcePosition, sourcePosition, destinationParent, destinationPosition))
   {
-    // beginMoveRows currently only works if sourceParent == destinationParent
-    if (!beginMoveRows(sourceParent, sourcePosition, sourcePosition, destinationParent, destinationPosition))
-    {
-      qDebug() << "move failed";
-      return false;
-    }
+    qDebug() << "move failed";
+    return false;
+  }
 
+  if (moveDirection == MoveDirection::Down)
+  {
+    destinationPosition = sourcePosition + 1;
+  }
+
+  getItem(destinationParent)->insertChild(destinationPosition, getItem(sourceParent)->takeChild(sourcePosition));
+
+  /*if (moveDirection == MoveDirection::Down || moveDirection == MoveDirection::Up)
+  {
     getItem(destinationParent)->moveChild(sourcePosition, moveDirection == MoveDirection::Down ? destinationPosition - 1 : destinationPosition);
-
-    endMoveRows();
   }
   else if (moveDirection == MoveDirection::Right || moveDirection == MoveDirection::Left)
   {
     getItem(destinationParent)->insertChild(destinationPosition, getItem(sourceParent)->takeChild(sourcePosition));
+  }*/
 
+  endMoveRows();
+
+  if (moveDirection == MoveDirection::Right || moveDirection == MoveDirection::Left)
+  {
     // this is a terrible workaround, because moving rows is not working if sourceParent != destinationParent
     emit resetRequired(getItem(modelIndex)->id());
   }

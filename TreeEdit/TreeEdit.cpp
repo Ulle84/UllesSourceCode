@@ -17,11 +17,15 @@ TreeEdit::TreeEdit(QWidget *parent) :
   ui->setupUi(this);
 
   setupModel();
+
+  // TODO line below is not working correctly
+  ui->treeView->setSelectionBehavior (QAbstractItemView::SelectRows);
 }
 
 TreeEdit::~TreeEdit()
 {
   delete ui;
+
 }
 
 bool TreeEdit::addNode()
@@ -218,13 +222,13 @@ void TreeEdit::selectId(int id)
   qDebug() << "find and mark item with id:" << id;
   QMap<int, QModelIndex> ids;
   getAllIds(ids, QModelIndex()); // TODO is there a smarter way? do not define all IDs but end recursive call if ID was found
-  qDebug() << "found ids:" << ids;
+  //qDebug() << "found ids:" << ids;
   if (ids.contains(id))
   {
     QModelIndex index = m_proxyModel->mapFromSource(ids[id]);
 
     // this does not work correctly - the row is marked, but if you press up you are in the first row
-    ui->treeView->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+    ui->treeView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::ClearAndSelect);
   }
 }
 

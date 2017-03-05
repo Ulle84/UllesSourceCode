@@ -14,6 +14,7 @@ public:
   ~TreeItem();
 
   QJsonObject toJson();
+  int id();
 
   TreeItem *child(int number);
   int childCount() const;
@@ -27,13 +28,12 @@ public:
   bool removeColumns(int position, int columns);
   int childNumber() const;
   bool setData(int column, const QVariant &value);
+
   void appendChild(TreeItem* child);
   bool insertChild(int position, TreeItem* child);
-
-  bool stringContained(const QString& searchString, Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
   bool moveChild(int currentPosition, int newPosition);
 
-  int id();
+  bool stringContained(const QString& searchString, Qt::CaseSensitivity caseSensitivity = Qt::CaseInsensitive);
 
 private:
   static int m_idCounter;
