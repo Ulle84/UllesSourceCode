@@ -217,15 +217,15 @@ void TreeEdit::selectId(int id)
 {
   qDebug() << "find and mark item with id:" << id;
   QMap<int, QModelIndex> ids;
-  getAllIds(ids, QModelIndex()); // TODO is there a smarter way?
+  getAllIds(ids, QModelIndex()); // TODO is there a smarter way? do not define all IDs but end recursive call if ID was found
   qDebug() << "found ids:" << ids;
   if (ids.contains(id))
   {
     QModelIndex index = m_proxyModel->mapFromSource(ids[id]);
+
+    // this does not work correctly - the row is marked, but if you press up you are in the first row
     ui->treeView->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-
   }
-
 }
 
 /*QList<int> TreeEdit::allIds(QModelIndex parent)

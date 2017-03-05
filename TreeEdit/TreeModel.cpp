@@ -256,14 +256,13 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
       return false;
     }
 
-    destinationPosition = 0; // TODO define correctly
     destinationParent = index(sourcePosition - 1, 0, destinationParent);
-    //destinationParent ->
+    destinationPosition = getItem(destinationParent)->childCount();
   }
   else if (moveDirection == MoveDirection::Left)
   {
+    destinationPosition = destinationParent.row() + 1;
     destinationParent = destinationParent.parent();
-    destinationPosition = 0; // TODO calculate depending on parent row
   }
 
   qDebug() << "sourceParent:" << sourceParent;
@@ -273,30 +272,24 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
   qDebug() << "";
 
 
-  // beginMoveRows currently only works if sourceParent == destinationParent
-  if (!beginMoveRows(sourceParent, sourcePosition, sourcePosition, destinationParent, destinationPosition))
-  {
-    qDebug() << "move failed";
-    return false;
-  }
-
-
-
-
   if (moveDirection == MoveDirection::Down || moveDirection == MoveDirection::Up)
   {
+    // beginMoveRows currently only works if sourceParent == destinationParent
+    if (!beginMoveRows(sourceParent, sourcePosition, sourcePosition, destinationParent, destinationPosition))
+    {
+      qDebug() << "move failed";
+      return false;
+    }
+
     getItem(destinationParent)->moveChild(sourcePosition, moveDirection == MoveDirection::Down ? destinationPosition - 1 : destinationPosition);
-  }
-  else if (moveDirection == MoveDirection::Right)
-  {
-    //getItem(destinationParent)->appendChild(getItem(sourceParent)->takeChild(sourcePosition));
-    getItem(destinationParent)->insertChild(0, getItem(sourceParent)->takeChild(sourcePosition));
-  }
 
-  endMoveRows();
-
-  if (moveDirection == MoveDirection::Right)
+    endMoveRows();
+  }
+  else if (moveDirection == MoveDirection::Right || moveDirection == MoveDirection::Left)
   {
+    getItem(destinationParent)->insertChild(destinationPosition, getItem(sourceParent)->takeChild(sourcePosition));
+
+    // this is a terrible workaround, because moving rows is not working if sourceParent != destinationParent
     emit resetRequired(getItem(modelIndex)->id());
   }
 
