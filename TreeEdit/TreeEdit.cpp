@@ -15,17 +15,11 @@ TreeEdit::TreeEdit(QWidget *parent) :
   ui(new Ui::TreeEdit)
 {
   ui->setupUi(this);
-
-  setupModel();
-
-  // TODO line below is not working correctly
-  ui->treeView->setSelectionBehavior (QAbstractItemView::SelectRows);
 }
 
 TreeEdit::~TreeEdit()
 {
   delete ui;
-
 }
 
 bool TreeEdit::addNode()
@@ -119,7 +113,7 @@ bool TreeEdit::moveLeft()
 
   if (indentation(index) <= 0)
   {
-    qDebug() << "moving left not possible - already a top level element";
+    //qDebug() << "moving left not possible - already a top level element";
     return false;
   }
 
@@ -132,7 +126,7 @@ bool TreeEdit::moveRight()
 
   if (indentation(index) >= m_maxIndentation)
   {
-    qDebug() << "moving right not possible - max indentation level of" << m_maxIndentation << "reached";
+    //qDebug() << "moving right not possible - max indentation level of" << m_maxIndentation << "reached";
     return false;
   }
 
@@ -154,6 +148,16 @@ void TreeEdit::setMaxIndentation(unsigned int maxIndentation)
   m_maxIndentation = maxIndentation;
 }
 
+void TreeEdit::setTree(const QJsonObject &tree)
+{
+  setupModel(tree);
+}
+
+QJsonObject TreeEdit::toJson()
+{
+  return m_treeModel->toJson();
+}
+
 void TreeEdit::on_lineEditSearch_textChanged(const QString &searchText)
 {
   m_proxyModel->setSearchString(searchText);
@@ -165,20 +169,12 @@ void TreeEdit::onTreeViewSelectionChanged(const QItemSelection &selected, const 
   if (!deselected.isEmpty())
   {
     QModelIndex deselectedIndex = m_proxyModel->mapSelectionToSource(deselected).indexes().first();
-
   }
 
   if (!selected.isEmpty())
   {
     QModelIndex selectedIndex = m_proxyModel->mapSelectionToSource(selected).indexes().first();
-
-    //selectedIndex
-
-    qDebug() << "new selected index:" << selectedIndex;
-    qDebug() << "parent of new selected index:" << selectedIndex.parent();
-    TreeItem *item = static_cast<TreeItem*>(selectedIndex.internalPointer());
-    qDebug() << "id:" << item->id();
-    qDebug() << "";
+    emit idChanged(static_cast<TreeItem*>(selectedIndex.internalPointer())->id());
   }
 }
 
@@ -189,19 +185,18 @@ QModelIndex TreeEdit::selectedIndex()
 
 void TreeEdit::onResetRequired(int id)
 {
-  m_treeModel->writeFile(); // TODO use something smarter - do not use hard drive
+  QJsonObject tree = m_treeModel->toJson();
 
-  // TODO is there another way of reseting?
   delete m_treeModel;
   delete m_proxyModel;
 
-  setupModel();
+  setupModel(tree);
   selectId(id);
 }
 
-void TreeEdit::setupModel()
+void TreeEdit::setupModel(const QJsonObject &tree)
 {
-  m_treeModel = new TreeModel(this);
+  m_treeModel = new TreeModel(tree, this);
   m_proxyModel = new ProxyModel(this);
   m_proxyModel->setSourceModel(m_treeModel);
 
@@ -212,42 +207,37 @@ void TreeEdit::setupModel()
   connect(m_treeModel, &TreeModel::resetRequired, this, &TreeEdit::onResetRequired);
 }
 
-void TreeEdit::on_pushButton_clicked()
-{
-  selectId(ui->spinBox->value());
-}
-
 void TreeEdit::selectId(int id)
 {
-  qDebug() << "find and mark item with id:" << id;
-  QMap<int, QModelIndex> ids;
-  getAllIds(ids, QModelIndex()); // TODO is there a smarter way? do not define all IDs but end recursive call if ID was found
-  //qDebug() << "found ids:" << ids;
-  if (ids.contains(id))
-  {
-    QModelIndex index = m_proxyModel->mapFromSource(ids[id]);
+  QModelIndex index = modelIndex(id, QModelIndex());
 
-    // this does not work correctly - the row is marked, but if you press up you are in the first row
-    ui->treeView->selectionModel()->setCurrentIndex(index, QItemSelectionModel::ClearAndSelect);
+  if (index.isValid())
+  {
+    ui->treeView->selectionModel()->setCurrentIndex(m_proxyModel->mapFromSource(index), QItemSelectionModel::ClearAndSelect);
   }
 }
 
-/*QList<int> TreeEdit::allIds(QModelIndex parent)
+QModelIndex TreeEdit::modelIndex(int id, const QModelIndex& parent)
 {
-  QList<int> ids;
-
   int i = 0;
-  QModelIndex modelIndex = m_treeModel->index(i++, 0, parent);
+  QModelIndex index1 = m_treeModel->index(i++, 0, parent);
 
-  while (modelIndex.isValid())
+  while (index1.isValid())
   {
-    ids << static_cast<TreeItem*>(modelIndex.internalPointer())->id();
-    ids << allIds(modelIndex);
-    modelIndex = m_treeModel->index(i++, 0, parent);
+    if (static_cast<TreeItem*>(index1.internalPointer())->id() == id)
+    {
+      return index1;
+    }
+    QModelIndex index2 = modelIndex(id, index1);
+    if (index2.isValid())
+    {
+      return index2;
+    }
+    index1 = m_treeModel->index(i++, 0, parent);
   }
 
-  return ids;
-}*/
+  return QModelIndex();
+}
 
 void TreeEdit::getAllIds(QMap<int, QModelIndex>& ids, QModelIndex parent)
 {

@@ -3,15 +3,14 @@
 #include "TreeItem.h"
 #include "TreeModel.h"
 
-TreeModel::TreeModel(QObject *parent)
+TreeModel::TreeModel(const QJsonObject &tree, QObject *parent)
   : QAbstractItemModel(parent)
 {
-  m_rootItem = new TreeItem(readFile());
+  m_rootItem = new TreeItem(tree);
 }
 
 TreeModel::~TreeModel()
 {
-  writeFile();
   delete m_rootItem;
 }
 
@@ -174,39 +173,6 @@ bool TreeModel::setHeaderData(int section, Qt::Orientation orientation, const QV
   return result;
 }
 
-
-void TreeModel::writeFile()
-{
-  QFile file(m_fileName);
-
-  if (!file.open(QIODevice::WriteOnly))
-  {
-    qWarning("Couldn't open save file.");
-  }
-
-  QJsonDocument jsonDocument(m_rootItem->toJson());
-
-  file.write(jsonDocument.toJson());
-  file.close();
-}
-
-QJsonObject TreeModel::readFile()
-{
-  QFile file(m_fileName);
-
-  if (!file.open(QIODevice::ReadOnly))
-  {
-    qWarning("Couldn't open save file.");
-  }
-
-  QString settings = file.readAll();
-  file.close();
-
-
-  QJsonDocument sd = QJsonDocument::fromJson(settings.toUtf8());
-  return sd.object();
-}
-
 bool TreeModel::moveUp(const QModelIndex &index)
 {
   return move(index, MoveDirection::Up);
@@ -252,7 +218,6 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
   {
     if (sourcePosition == 0)
     {
-      qDebug() << "moving right not possible!";
       return false;
     }
 
@@ -265,18 +230,8 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
     destinationParent = destinationParent.parent();
   }
 
-  qDebug() << "sourceParent:" << sourceParent;
-  qDebug() << "sourcePosition:" << sourcePosition;
-  qDebug() << "destinationParent:" << destinationParent;
-  qDebug() << "destinationPosition:" << destinationPosition;
-  qDebug() << "";
-
-
-
-  // beginMoveRows currently only works if sourceParent == destinationParent
   if (!beginMoveRows(sourceParent, sourcePosition, sourcePosition, destinationParent, destinationPosition))
   {
-    qDebug() << "move failed";
     return false;
   }
 
@@ -286,15 +241,6 @@ bool TreeModel::move(const QModelIndex &modelIndex, MoveDirection moveDirection)
   }
 
   getItem(destinationParent)->insertChild(destinationPosition, getItem(sourceParent)->takeChild(sourcePosition));
-
-  /*if (moveDirection == MoveDirection::Down || moveDirection == MoveDirection::Up)
-  {
-    getItem(destinationParent)->moveChild(sourcePosition, moveDirection == MoveDirection::Down ? destinationPosition - 1 : destinationPosition);
-  }
-  else if (moveDirection == MoveDirection::Right || moveDirection == MoveDirection::Left)
-  {
-    getItem(destinationParent)->insertChild(destinationPosition, getItem(sourceParent)->takeChild(sourcePosition));
-  }*/
 
   endMoveRows();
 

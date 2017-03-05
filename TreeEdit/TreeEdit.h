@@ -4,13 +4,8 @@
 #include <QWidget>
 #include <QItemSelection>
 
-// TODO move left does not work correctly
-// TODO move right does not work correctly
-// TODO save to file
-// TODO load from file
 // TODO store state of collapsed
 // TODO activate/deactivate actions depending on selected tree-item
-// TODO add new column - ask for column header at creation
 // TODO disable search filter before moving
 
 class TreeModel;
@@ -44,18 +39,22 @@ public:
   void setHeaderState(const QByteArray& headerState);
 
   void setMaxIndentation(unsigned int maxIndentation);
+  void setTree(const QJsonObject& tree);
+  QJsonObject toJson();
+
+signals:
+  void idChanged(int id);
 
 private slots:
   void on_lineEditSearch_textChanged(const QString &searchText);
   void onTreeViewSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
   void onResetRequired(int id);
-  void on_pushButton_clicked();
 
 private:
   void selectId(int id);
-  //QList<int> allIds(QModelIndex parent);
+  QModelIndex modelIndex(int id, const QModelIndex& parent);
   void getAllIds(QMap<int, QModelIndex>& ids, QModelIndex parent);
-  void setupModel();
+  void setupModel(const QJsonObject& tree);
   QModelIndex selectedIndex();
   int indentation(const QModelIndex& modelIndex);
 

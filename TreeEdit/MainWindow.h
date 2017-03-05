@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMap>
+#include <QString>
 
 class QSettings;
 
@@ -28,7 +30,16 @@ private slots:
   void on_actionInsertColunn_triggered();
   void on_actionRemoveColumn_triggered();
 
+  void onTreeEditIdChanged(int id);
+
 private:
+  const QString m_fileName = "/Users/Ulle/temp/content.txt";
+  QJsonObject readFile();
+  void writeFile();
+
+  int m_currentId = -1;
+  QMap<int, QString> m_testContent;
+
   Ui::MainWindow *ui;
   QSettings* m_settings;
 };

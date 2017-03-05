@@ -13,7 +13,7 @@ class TreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    TreeModel(QObject *parent = 0);
+    TreeModel(const QJsonObject& tree, QObject *parent = 0);
     ~TreeModel();
 
     QVariant data(const QModelIndex &index, int role) const override;
@@ -34,16 +34,12 @@ public:
     bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 
-    // TODO make enum and move-method public and delete this methods?
     bool moveUp(const QModelIndex &modelIndex);
     bool moveDown(const QModelIndex &index);
     bool moveRight(const QModelIndex &index);
     bool moveLeft(const QModelIndex &index);
 
-    // TODO check methods
     QJsonObject toJson();
-    void writeFile();
-    QJsonObject readFile();
 
 signals:
     void resetRequired(int id);
@@ -61,9 +57,6 @@ private:
     TreeItem *getItem(const QModelIndex &index) const;
 
     TreeItem *m_rootItem;
-
-    // TODO this is temporary - needs to be given by constructor?
-    const QString m_fileName = "/Users/Ulle/temp/content.txt";
 };
 
 #endif
