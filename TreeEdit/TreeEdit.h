@@ -7,6 +7,7 @@
 // TODO store state of collapsed
 // TODO activate/deactivate actions depending on selected tree-item
 // TODO disable search filter before moving
+// TODO provide context menu or key-bindings which only are triggered, if treeEdit has focus
 
 class TreeModel;
 class ProxyModel;

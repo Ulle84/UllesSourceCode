@@ -1,6 +1,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QJsonDocument>
 
 #include "MainWindow.h"
@@ -35,6 +36,10 @@ MainWindow::~MainWindow()
 {
   m_settings->setValue("geometry", geometry());
   m_settings->setValue("headerState", ui->treeEdit->headerState());
+  if (m_currentId >= 0)
+  {
+    m_textContent[m_currentId] = ui->plainTextEdit->toPlainText();
+  }
   writeFile();
   delete ui;
 }
@@ -86,15 +91,13 @@ void MainWindow::on_actionRemoveColumn_triggered()
 
 void MainWindow::onTreeEditIdChanged(int id)
 {
-  //qDebug() << "onTreeEditIdChanged id:" << id;
-
   if (m_currentId >= 0)
   {
-    m_testContent[m_currentId] = ui->plainTextEdit->toPlainText();
+    m_textContent[m_currentId] = ui->plainTextEdit->toPlainText();
   }
 
   m_currentId = id;
-  ui->plainTextEdit->setPlainText(m_testContent[m_currentId]);
+  ui->plainTextEdit->setPlainText(m_textContent[m_currentId]);
 
 }
 
@@ -111,7 +114,42 @@ QJsonObject MainWindow::readFile()
   file.close();
 
   QJsonDocument sd = QJsonDocument::fromJson(settings.toUtf8());
-  return sd.object();
+  QJsonObject object = sd.object();
+
+  setContent(object["content"].toArray());
+
+  return object["tree"].toObject();
+}
+
+void MainWindow::setContent(const QJsonArray &json)
+{
+  m_textContent.clear();
+
+  for (auto it : json)
+  {
+    QJsonObject object = it.toObject();
+    m_textContent[object["id"].toInt()] = object["text"].toString();
+  }
+}
+
+QJsonArray MainWindow::contentToJson()
+{
+  QJsonArray array;
+
+  for (auto it = m_textContent.cbegin(); it != m_textContent.cend(); ++it)
+  {
+    if (it.value().isEmpty())
+    {
+      continue;
+    }
+
+    QJsonObject object;
+    object["id"] = it.key();
+    object["text"] = it.value();
+    array.append(object);
+  }
+
+  return array;
 }
 
 void MainWindow::writeFile()
@@ -123,7 +161,11 @@ void MainWindow::writeFile()
     qWarning("Couldn't open save file.");
   }
 
-  QJsonDocument jsonDocument(ui->treeEdit->toJson());
+  QJsonObject object;
+  object["tree"] = ui->treeEdit->toJson();
+  object["content"] = contentToJson();
+
+  QJsonDocument jsonDocument(object);
 
   file.write(jsonDocument.toJson());
   file.close();

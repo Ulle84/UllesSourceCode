@@ -35,10 +35,12 @@ private slots:
 private:
   const QString m_fileName = "/Users/Ulle/temp/content.txt";
   QJsonObject readFile();
+  void setContent(const QJsonArray& json);
+  QJsonArray contentToJson();
   void writeFile();
 
   int m_currentId = -1;
-  QMap<int, QString> m_testContent;
+  QMap<int, QString> m_textContent;
 
   Ui::MainWindow *ui;
   QSettings* m_settings;
