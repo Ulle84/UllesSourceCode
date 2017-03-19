@@ -23,4 +23,5 @@ QString Article::getCategory()
       {
         (statistics->m_qtySoldMisc)++;
       }*/
+    return QString();
 }
